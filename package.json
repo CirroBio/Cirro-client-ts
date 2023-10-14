@@ -6,8 +6,6 @@
   },
   "license": "MIT",
   "homepage": "https://cirro.bio",
-  "main": "./dist/index.js",
-  "typings": "./dist/index.d.ts",
   "scripts": {
     "apiCodeGen": "openapi-generator-cli generate --generator-key cirro"
   },
