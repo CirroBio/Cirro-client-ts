@@ -1,5 +1,8 @@
 {
-  "name": "cirro-client-ts",
+  "name": "cirro-client",
+  "version": "0.0.1",
+  "description": "API client for Cirro",
+  "author": "CirroBio &lt;support@cirro.bio&gt;",
   "repository": {
     "type": "git",
     "url": "https://github.com/CirroBio/Cirro-client-ts.git"
@@ -9,10 +12,13 @@
   "main": "./dist/index.js",
   "typings": "./dist/index.d.ts",
   "scripts": {
-    "apiCodeGen": "openapi-generator-cli generate --generator-key cirro"
+    "build": "tsc",
+    "prepare": "npm run build"
   },
   "devDependencies": {
-    "@openapitools/openapi-generator-cli": "^2.7.0",
     "typescript": "^4.0"
+  },
+  "dependencies": {
+    "@cirrobio/api-client": "workspace:*"
   }
 }
