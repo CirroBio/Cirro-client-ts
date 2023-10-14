@@ -1,0 +1,21 @@
+{
+  "name": "cirro-client",
+  "version": "0.0.1",
+  "description": "API client for Cirro",
+  "author": "CirroBio &lt;support@cirro.bio&gt;",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/CirroBio/Cirro-client-ts.git"
+  },
+  "license": "MIT",
+  "homepage": "https://cirro.bio",
+  "main": "./dist/index.js",
+  "typings": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "prepare": "npm run build"
+  },
+  "devDependencies": {
+    "typescript": "^4.0"
+  }
+}

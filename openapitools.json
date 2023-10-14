@@ -7,14 +7,16 @@
       "cirro": {
         "generatorName": "typescript-fetch",
         "output": "#{cwd}",
-        "inputSpec": "https://api.cirro.bio/openapi/cirro-data-latest.yml",
+        "inputSpec": "https://api.dev.cirro.bio/openapi/cirro-data-latest.yml",
         "packageName": "cirro-client",
         "gitRepoId": "Cirro-client-ts",
         "gitUserId": "CirroBio",
+        "templateDir": "templates",
         "additionalProperties": {
           "typescriptThreePlus": true,
           "npmName": "cirro-client",
-          "npmVersion": "0.0.1"
+          "npmVersion": "0.0.1",
+          "author": "CirroBio <support@cirro.bio>"
         }
       }
     }
