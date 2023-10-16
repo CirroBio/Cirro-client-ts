@@ -31,25 +31,25 @@ import {
 export interface GetExecutionLogsRequest {
     datasetId: string;
     projectId: string;
-    forceLive: boolean;
+    forceLive?: boolean;
 }
 
 export interface GetProjectSummaryRequest {
     projectId: string;
-    numberOfDays: number;
+    numberOfDays?: number;
 }
 
 export interface GetTaskLogsRequest {
     datasetId: string;
     projectId: string;
     taskId: string;
-    forceLive: boolean;
+    forceLive?: boolean;
 }
 
 export interface GetTasksForExecutionRequest {
     datasetId: string;
     projectId: string;
-    forceLive: boolean;
+    forceLive?: boolean;
 }
 
 export interface StopAnalysisRequest {
@@ -73,10 +73,6 @@ export class ExecutionApi extends runtime.BaseAPI {
 
         if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
             throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling getExecutionLogs.');
-        }
-
-        if (requestParameters.forceLive === null || requestParameters.forceLive === undefined) {
-            throw new runtime.RequiredError('forceLive','Required parameter requestParameters.forceLive was null or undefined when calling getExecutionLogs.');
         }
 
         const queryParameters: any = {};
@@ -121,10 +117,6 @@ export class ExecutionApi extends runtime.BaseAPI {
     async getProjectSummaryRaw(requestParameters: GetProjectSummaryRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<{ [key: string]: Array<Task>; }>> {
         if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
             throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling getProjectSummary.');
-        }
-
-        if (requestParameters.numberOfDays === null || requestParameters.numberOfDays === undefined) {
-            throw new runtime.RequiredError('numberOfDays','Required parameter requestParameters.numberOfDays was null or undefined when calling getProjectSummary.');
         }
 
         const queryParameters: any = {};
@@ -179,10 +171,6 @@ export class ExecutionApi extends runtime.BaseAPI {
             throw new runtime.RequiredError('taskId','Required parameter requestParameters.taskId was null or undefined when calling getTaskLogs.');
         }
 
-        if (requestParameters.forceLive === null || requestParameters.forceLive === undefined) {
-            throw new runtime.RequiredError('forceLive','Required parameter requestParameters.forceLive was null or undefined when calling getTaskLogs.');
-        }
-
         const queryParameters: any = {};
 
         if (requestParameters.forceLive !== undefined) {
@@ -229,10 +217,6 @@ export class ExecutionApi extends runtime.BaseAPI {
 
         if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
             throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling getTasksForExecution.');
-        }
-
-        if (requestParameters.forceLive === null || requestParameters.forceLive === undefined) {
-            throw new runtime.RequiredError('forceLive','Required parameter requestParameters.forceLive was null or undefined when calling getTasksForExecution.');
         }
 
         const queryParameters: any = {};

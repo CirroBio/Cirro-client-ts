@@ -82,6 +82,14 @@ export class NotebooksApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
         const response = await this.request({
             path: `/projects/{projectId}/notebooks/instance`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))),
             method: 'POST',
@@ -115,6 +123,14 @@ export class NotebooksApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
         const response = await this.request({
             path: `/projects/{projectId}/notebooks/instance/{notebookInstanceId}`.replace(`{${"notebookInstanceId"}}`, encodeURIComponent(String(requestParameters.notebookInstanceId))).replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))),
             method: 'DELETE',
@@ -146,6 +162,14 @@ export class NotebooksApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
         const response = await this.request({
             path: `/projects/{projectId}/notebooks/instance/{notebookInstanceId}:generate-url`.replace(`{${"notebookInstanceId"}}`, encodeURIComponent(String(requestParameters.notebookInstanceId))).replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))),
             method: 'GET',
@@ -178,6 +202,14 @@ export class NotebooksApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
         const response = await this.request({
             path: `/projects/{projectId}/notebooks/instance/{notebookInstanceId}:status`.replace(`{${"notebookInstanceId"}}`, encodeURIComponent(String(requestParameters.notebookInstanceId))).replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))),
             method: 'GET',
@@ -210,6 +242,14 @@ export class NotebooksApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
         const response = await this.request({
             path: `/projects/{projectId}/notebooks/instance`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))),
             method: 'GET',
@@ -242,6 +282,14 @@ export class NotebooksApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
         const response = await this.request({
             path: `/projects/{projectId}/notebooks/instance/{notebookInstanceId}:stop`.replace(`{${"notebookInstanceId"}}`, encodeURIComponent(String(requestParameters.notebookInstanceId))).replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))),
             method: 'POST',

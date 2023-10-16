@@ -49,6 +49,18 @@ export interface SystemInfoResponse {
      * @memberof SystemInfoResponse
      */
     systemMessage: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof SystemInfoResponse
+     */
+    commitHash: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof SystemInfoResponse
+     */
+    version: string;
 }
 
 /**
@@ -61,6 +73,8 @@ export function instanceOfSystemInfoResponse(value: object): boolean {
     isInstance = isInstance && "dataEndpoint" in value;
     isInstance = isInstance && "region" in value;
     isInstance = isInstance && "systemMessage" in value;
+    isInstance = isInstance && "commitHash" in value;
+    isInstance = isInstance && "version" in value;
 
     return isInstance;
 }
@@ -80,6 +94,8 @@ export function SystemInfoResponseFromJSONTyped(json: any, ignoreDiscriminator: 
         'dataEndpoint': json['dataEndpoint'],
         'region': json['region'],
         'systemMessage': json['systemMessage'],
+        'commitHash': json['commitHash'],
+        'version': json['version'],
     };
 }
 
@@ -97,6 +113,8 @@ export function SystemInfoResponseToJSON(value?: SystemInfoResponse | null): any
         'dataEndpoint': value.dataEndpoint,
         'region': value.region,
         'systemMessage': value.systemMessage,
+        'commitHash': value.commitHash,
+        'version': value.version,
     };
 }
 
