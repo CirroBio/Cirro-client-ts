@@ -188,7 +188,7 @@ export class ExecutionApi extends runtime.BaseAPI {
             }
         }
         const response = await this.request({
-            path: `/projects/{projectId}/execution/{datasetId}/tasks/{taskId}/log`.replace(`{${"datasetId"}}`, encodeURIComponent(String(requestParameters.datasetId))).replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))).replace(`{${"taskId"}}`, encodeURIComponent(String(requestParameters.taskId))),
+            path: `/projects/{projectId}/execution/{datasetId}/tasks/{taskId}/logs`.replace(`{${"datasetId"}}`, encodeURIComponent(String(requestParameters.datasetId))).replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))).replace(`{${"taskId"}}`, encodeURIComponent(String(requestParameters.taskId))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,

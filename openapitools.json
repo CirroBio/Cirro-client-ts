@@ -13,7 +13,7 @@
         "templateDir": "#{cwd}/packages/api-client/templates",
         "additionalProperties": {
           "npmName": "@cirrobio/api-client",
-          "npmVersion": "0.0.1",
+          "npmVersion": "0.0.3-alpha",
           "author": "CirroBio"
         }
       }
