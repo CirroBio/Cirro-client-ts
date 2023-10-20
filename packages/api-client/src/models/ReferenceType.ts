@@ -25,6 +25,24 @@ export interface ReferenceType {
      * @memberof ReferenceType
      */
     name: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ReferenceType
+     */
+    description: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ReferenceType
+     */
+    directory: string;
+    /**
+     * 
+     * @type {Array<{ [key: string]: any; }>}
+     * @memberof ReferenceType
+     */
+    validation: Array<{ [key: string]: any; }>;
 }
 
 /**
@@ -33,6 +51,9 @@ export interface ReferenceType {
 export function instanceOfReferenceType(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "name" in value;
+    isInstance = isInstance && "description" in value;
+    isInstance = isInstance && "directory" in value;
+    isInstance = isInstance && "validation" in value;
 
     return isInstance;
 }
@@ -48,6 +69,9 @@ export function ReferenceTypeFromJSONTyped(json: any, ignoreDiscriminator: boole
     return {
         
         'name': json['name'],
+        'description': json['description'],
+        'directory': json['directory'],
+        'validation': json['validation'],
     };
 }
 
@@ -61,6 +85,9 @@ export function ReferenceTypeToJSON(value?: ReferenceType | null): any {
     return {
         
         'name': value.name,
+        'description': value.description,
+        'directory': value.directory,
+        'validation': value.validation,
     };
 }
 

@@ -91,7 +91,7 @@ export class NotebooksApi extends runtime.BaseAPI {
             }
         }
         const response = await this.request({
-            path: `/projects/{projectId}/notebooks/instance`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))),
+            path: `/projects/{projectId}/notebook-instances`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))),
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
@@ -132,7 +132,7 @@ export class NotebooksApi extends runtime.BaseAPI {
             }
         }
         const response = await this.request({
-            path: `/projects/{projectId}/notebooks/instance/{notebookInstanceId}`.replace(`{${"notebookInstanceId"}}`, encodeURIComponent(String(requestParameters.notebookInstanceId))).replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))),
+            path: `/projects/{projectId}/notebook-instances/{notebookInstanceId}`.replace(`{${"notebookInstanceId"}}`, encodeURIComponent(String(requestParameters.notebookInstanceId))).replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))),
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
@@ -171,7 +171,7 @@ export class NotebooksApi extends runtime.BaseAPI {
             }
         }
         const response = await this.request({
-            path: `/projects/{projectId}/notebooks/instance/{notebookInstanceId}:generate-url`.replace(`{${"notebookInstanceId"}}`, encodeURIComponent(String(requestParameters.notebookInstanceId))).replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))),
+            path: `/projects/{projectId}/notebook-instances/{notebookInstanceId}:generate-url`.replace(`{${"notebookInstanceId"}}`, encodeURIComponent(String(requestParameters.notebookInstanceId))).replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -211,7 +211,7 @@ export class NotebooksApi extends runtime.BaseAPI {
             }
         }
         const response = await this.request({
-            path: `/projects/{projectId}/notebooks/instance/{notebookInstanceId}:status`.replace(`{${"notebookInstanceId"}}`, encodeURIComponent(String(requestParameters.notebookInstanceId))).replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))),
+            path: `/projects/{projectId}/notebook-instances/{notebookInstanceId}:status`.replace(`{${"notebookInstanceId"}}`, encodeURIComponent(String(requestParameters.notebookInstanceId))).replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -251,7 +251,7 @@ export class NotebooksApi extends runtime.BaseAPI {
             }
         }
         const response = await this.request({
-            path: `/projects/{projectId}/notebooks/instance`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))),
+            path: `/projects/{projectId}/notebook-instances`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -291,7 +291,7 @@ export class NotebooksApi extends runtime.BaseAPI {
             }
         }
         const response = await this.request({
-            path: `/projects/{projectId}/notebooks/instance/{notebookInstanceId}:stop`.replace(`{${"notebookInstanceId"}}`, encodeURIComponent(String(requestParameters.notebookInstanceId))).replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))),
+            path: `/projects/{projectId}/notebook-instances/{notebookInstanceId}:stop`.replace(`{${"notebookInstanceId"}}`, encodeURIComponent(String(requestParameters.notebookInstanceId))).replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))),
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,

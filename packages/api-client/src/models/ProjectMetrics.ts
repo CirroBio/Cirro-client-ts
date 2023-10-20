@@ -26,17 +26,17 @@ export interface ProjectMetrics {
      */
     projectId: string;
     /**
-     * 
-     * @type {{ [key: string]: any; }}
+     * Costs by service by month
+     * @type {{ [key: string]: { [key: string]: number; }; }}
      * @memberof ProjectMetrics
      */
-    costs: { [key: string]: any; };
+    costs?: { [key: string]: { [key: string]: number; }; };
     /**
-     * 
+     * Storage usage by tier by day
      * @type {{ [key: string]: any; }}
      * @memberof ProjectMetrics
      */
-    storageMetrics: { [key: string]: any; };
+    storageMetrics?: { [key: string]: any; };
 }
 
 /**
@@ -45,8 +45,6 @@ export interface ProjectMetrics {
 export function instanceOfProjectMetrics(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "projectId" in value;
-    isInstance = isInstance && "costs" in value;
-    isInstance = isInstance && "storageMetrics" in value;
 
     return isInstance;
 }
@@ -62,8 +60,8 @@ export function ProjectMetricsFromJSONTyped(json: any, ignoreDiscriminator: bool
     return {
         
         'projectId': json['projectId'],
-        'costs': json['costs'],
-        'storageMetrics': json['storageMetrics'],
+        'costs': !exists(json, 'costs') ? undefined : json['costs'],
+        'storageMetrics': !exists(json, 'storageMetrics') ? undefined : json['storageMetrics'],
     };
 }
 

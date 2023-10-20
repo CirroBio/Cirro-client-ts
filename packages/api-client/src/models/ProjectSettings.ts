@@ -92,6 +92,30 @@ export interface ProjectSettings {
      * @memberof ProjectSettings
      */
     serviceConnections?: Array<string>;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof ProjectSettings
+     */
+    createVpc?: boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProjectSettings
+     */
+    vpcId?: string;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof ProjectSettings
+     */
+    batchSubnets?: Array<string>;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProjectSettings
+     */
+    kmsArn?: string;
 }
 
 /**
@@ -124,6 +148,10 @@ export function ProjectSettingsFromJSONTyped(json: any, ignoreDiscriminator: boo
         'maxSpotVCPU': !exists(json, 'maxSpotVCPU') ? undefined : json['maxSpotVCPU'],
         'retentionPolicyDays': !exists(json, 'retentionPolicyDays') ? undefined : json['retentionPolicyDays'],
         'serviceConnections': !exists(json, 'serviceConnections') ? undefined : json['serviceConnections'],
+        'createVpc': !exists(json, 'createVpc') ? undefined : json['createVpc'],
+        'vpcId': !exists(json, 'vpcId') ? undefined : json['vpcId'],
+        'batchSubnets': !exists(json, 'batchSubnets') ? undefined : json['batchSubnets'],
+        'kmsArn': !exists(json, 'kmsArn') ? undefined : json['kmsArn'],
     };
 }
 
@@ -147,6 +175,10 @@ export function ProjectSettingsToJSON(value?: ProjectSettings | null): any {
         'maxSpotVCPU': value.maxSpotVCPU,
         'retentionPolicyDays': value.retentionPolicyDays,
         'serviceConnections': value.serviceConnections,
+        'createVpc': value.createVpc,
+        'vpcId': value.vpcId,
+        'batchSubnets': value.batchSubnets,
+        'kmsArn': value.kmsArn,
     };
 }
 

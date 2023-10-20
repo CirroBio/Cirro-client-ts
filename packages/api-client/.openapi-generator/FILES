@@ -5,6 +5,7 @@ package.json
 src/apis/BillingApi.ts
 src/apis/DatasetsApi.ts
 src/apis/ExecutionApi.ts
+src/apis/MetadataApi.ts
 src/apis/MetricsApi.ts
 src/apis/NotebooksApi.ts
 src/apis/ProcessesApi.ts
@@ -20,6 +21,7 @@ src/models/CloudAccount.ts
 src/models/Contact.ts
 src/models/CreateNotebookInstanceRequest.ts
 src/models/CreateResponse.ts
+src/models/CustomPipelineSettings.ts
 src/models/CustomerType.ts
 src/models/Dataset.ts
 src/models/DatasetDetail.ts
@@ -31,6 +33,7 @@ src/models/LogEntry.ts
 src/models/NotebookInstance.ts
 src/models/OpenNotebookInstanceResponse.ts
 src/models/Process.ts
+src/models/ProcessDetail.ts
 src/models/Project.ts
 src/models/ProjectDetail.ts
 src/models/ProjectMetrics.ts
@@ -40,6 +43,7 @@ src/models/ProjectSettings.ts
 src/models/ReferenceType.ts
 src/models/Region.ts
 src/models/RegisterDatasetRequest.ts
+src/models/Sample.ts
 src/models/ServiceConnection.ts
 src/models/SetUserProjectRoleRequest.ts
 src/models/StopExecutionResponse.ts

@@ -31,7 +31,7 @@ export interface Process {
      * @type {string}
      * @memberof Process
      */
-    id?: string;
+    id: string;
     /**
      * 
      * @type {string}
@@ -68,6 +68,24 @@ export interface Process {
      * @memberof Process
      */
     childProcessIds?: Array<string>;
+    /**
+     * IDs of pipelines that can be ran upstream
+     * @type {Array<string>}
+     * @memberof Process
+     */
+    parentProcessIds?: Array<string>;
+    /**
+     * Username of the pipeline creator (blank if Cirro curated)
+     * @type {string}
+     * @memberof Process
+     */
+    owner?: string;
+    /**
+     * Projects that can run this pipeline
+     * @type {Array<string>}
+     * @memberof Process
+     */
+    linkedProjectIds?: Array<string>;
 }
 
 /**
@@ -75,6 +93,7 @@ export interface Process {
  */
 export function instanceOfProcess(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "id" in value;
 
     return isInstance;
 }
@@ -89,13 +108,16 @@ export function ProcessFromJSONTyped(json: any, ignoreDiscriminator: boolean): P
     }
     return {
         
-        'id': !exists(json, 'id') ? undefined : json['id'],
+        'id': json['id'],
         'name': !exists(json, 'name') ? undefined : json['name'],
         'description': !exists(json, 'description') ? undefined : json['description'],
         'executor': !exists(json, 'executor') ? undefined : ExecutorFromJSON(json['executor']),
         'documentationUrl': !exists(json, 'documentationUrl') ? undefined : json['documentationUrl'],
         'fileRequirementsMessage': !exists(json, 'fileRequirementsMessage') ? undefined : json['fileRequirementsMessage'],
         'childProcessIds': !exists(json, 'childProcessIds') ? undefined : json['childProcessIds'],
+        'parentProcessIds': !exists(json, 'parentProcessIds') ? undefined : json['parentProcessIds'],
+        'owner': !exists(json, 'owner') ? undefined : json['owner'],
+        'linkedProjectIds': !exists(json, 'linkedProjectIds') ? undefined : json['linkedProjectIds'],
     };
 }
 
@@ -115,6 +137,9 @@ export function ProcessToJSON(value?: Process | null): any {
         'documentationUrl': value.documentationUrl,
         'fileRequirementsMessage': value.fileRequirementsMessage,
         'childProcessIds': value.childProcessIds,
+        'parentProcessIds': value.parentProcessIds,
+        'owner': value.owner,
+        'linkedProjectIds': value.linkedProjectIds,
     };
 }
 

@@ -17,16 +17,27 @@ import * as runtime from '../runtime';
 import type {
   FormSchema,
   Process,
+  ProcessDetail,
 } from '../models/index';
 import {
     FormSchemaFromJSON,
     FormSchemaToJSON,
     ProcessFromJSON,
     ProcessToJSON,
+    ProcessDetailFromJSON,
+    ProcessDetailToJSON,
 } from '../models/index';
 
-export interface GetProcessFormRequest {
+export interface GetProcessRequest {
     processId: string;
+}
+
+export interface GetProcessParametersRequest {
+    processId: string;
+}
+
+export interface GetProcessesRequest {
+    includeArchived?: boolean;
 }
 
 /**
@@ -35,12 +46,52 @@ export interface GetProcessFormRequest {
 export class ProcessesApi extends runtime.BaseAPI {
 
     /**
+     * Retrieves detailed information on a process
+     * Get Process
+     */
+    async getProcessRaw(requestParameters: GetProcessRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ProcessDetail>> {
+        if (requestParameters.processId === null || requestParameters.processId === undefined) {
+            throw new runtime.RequiredError('processId','Required parameter requestParameters.processId was null or undefined when calling getProcess.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/processes/{processId}`.replace(`{${"processId"}}`, encodeURIComponent(String(requestParameters.processId))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => ProcessDetailFromJSON(jsonValue));
+    }
+
+    /**
+     * Retrieves detailed information on a process
+     * Get Process
+     */
+    async getProcess(requestParameters: GetProcessRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ProcessDetail> {
+        const response = await this.getProcessRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
      * Retrieves the input parameters for a process
      * Get Process Parameters
      */
-    async getProcessFormRaw(requestParameters: GetProcessFormRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FormSchema>> {
+    async getProcessParametersRaw(requestParameters: GetProcessParametersRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FormSchema>> {
         if (requestParameters.processId === null || requestParameters.processId === undefined) {
-            throw new runtime.RequiredError('processId','Required parameter requestParameters.processId was null or undefined when calling getProcessForm.');
+            throw new runtime.RequiredError('processId','Required parameter requestParameters.processId was null or undefined when calling getProcessParameters.');
         }
 
         const queryParameters: any = {};
@@ -69,8 +120,8 @@ export class ProcessesApi extends runtime.BaseAPI {
      * Retrieves the input parameters for a process
      * Get Process Parameters
      */
-    async getProcessForm(requestParameters: GetProcessFormRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<FormSchema> {
-        const response = await this.getProcessFormRaw(requestParameters, initOverrides);
+    async getProcessParameters(requestParameters: GetProcessParametersRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<FormSchema> {
+        const response = await this.getProcessParametersRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -78,8 +129,12 @@ export class ProcessesApi extends runtime.BaseAPI {
      * Retrieves a list of available processes
      * List Processes
      */
-    async getProcessesRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<Process>>> {
+    async getProcessesRaw(requestParameters: GetProcessesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<Process>>> {
         const queryParameters: any = {};
+
+        if (requestParameters.includeArchived !== undefined) {
+            queryParameters['includeArchived'] = requestParameters.includeArchived;
+        }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
@@ -105,8 +160,8 @@ export class ProcessesApi extends runtime.BaseAPI {
      * Retrieves a list of available processes
      * List Processes
      */
-    async getProcesses(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<Process>> {
-        const response = await this.getProcessesRaw(initOverrides);
+    async getProcesses(requestParameters: GetProcessesRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<Process>> {
+        const response = await this.getProcessesRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
