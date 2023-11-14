@@ -26,6 +26,7 @@ export * from './ProjectMetrics';
 export * from './ProjectRequest';
 export * from './ProjectRole';
 export * from './ProjectSettings';
+export * from './Reference';
 export * from './ReferenceType';
 export * from './Region';
 export * from './RegisterDatasetRequest';

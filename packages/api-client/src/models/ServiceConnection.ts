@@ -25,6 +25,12 @@ export interface ServiceConnection {
      * @memberof ServiceConnection
      */
     name: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ServiceConnection
+     */
+    description: string;
 }
 
 /**
@@ -33,6 +39,7 @@ export interface ServiceConnection {
 export function instanceOfServiceConnection(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "name" in value;
+    isInstance = isInstance && "description" in value;
 
     return isInstance;
 }
@@ -48,6 +55,7 @@ export function ServiceConnectionFromJSONTyped(json: any, ignoreDiscriminator: b
     return {
         
         'name': json['name'],
+        'description': json['description'],
     };
 }
 
@@ -61,6 +69,7 @@ export function ServiceConnectionToJSON(value?: ServiceConnection | null): any {
     return {
         
         'name': value.name,
+        'description': value.description,
     };
 }
 

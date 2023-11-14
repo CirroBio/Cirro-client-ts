@@ -15,13 +15,10 @@
 
 import * as runtime from '../runtime';
 import type {
-  ReferenceType,
   ServiceConnection,
   SystemInfoResponse,
 } from '../models/index';
 import {
-    ReferenceTypeFromJSON,
-    ReferenceTypeToJSON,
     ServiceConnectionFromJSON,
     ServiceConnectionToJSON,
     SystemInfoResponseFromJSON,
@@ -32,42 +29,6 @@ import {
  * 
  */
 export class SystemApi extends runtime.BaseAPI {
-
-    /**
-     * List available reference types
-     * Get reference types
-     */
-    async getReferenceTypesRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<ReferenceType>>> {
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("accessToken", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/reference-types`,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(ReferenceTypeFromJSON));
-    }
-
-    /**
-     * List available reference types
-     * Get reference types
-     */
-    async getReferenceTypes(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<ReferenceType>> {
-        const response = await this.getReferenceTypesRaw(initOverrides);
-        return await response.value();
-    }
 
     /**
      * List available service connections

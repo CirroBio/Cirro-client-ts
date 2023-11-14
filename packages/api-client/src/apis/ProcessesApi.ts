@@ -47,7 +47,7 @@ export class ProcessesApi extends runtime.BaseAPI {
 
     /**
      * Retrieves detailed information on a process
-     * Get Process
+     * Get process
      */
     async getProcessRaw(requestParameters: GetProcessRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ProcessDetail>> {
         if (requestParameters.processId === null || requestParameters.processId === undefined) {
@@ -78,7 +78,7 @@ export class ProcessesApi extends runtime.BaseAPI {
 
     /**
      * Retrieves detailed information on a process
-     * Get Process
+     * Get process
      */
     async getProcess(requestParameters: GetProcessRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ProcessDetail> {
         const response = await this.getProcessRaw(requestParameters, initOverrides);
@@ -87,7 +87,7 @@ export class ProcessesApi extends runtime.BaseAPI {
 
     /**
      * Retrieves the input parameters for a process
-     * Get Process Parameters
+     * Get process parameters
      */
     async getProcessParametersRaw(requestParameters: GetProcessParametersRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FormSchema>> {
         if (requestParameters.processId === null || requestParameters.processId === undefined) {
@@ -118,7 +118,7 @@ export class ProcessesApi extends runtime.BaseAPI {
 
     /**
      * Retrieves the input parameters for a process
-     * Get Process Parameters
+     * Get process parameters
      */
     async getProcessParameters(requestParameters: GetProcessParametersRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<FormSchema> {
         const response = await this.getProcessParametersRaw(requestParameters, initOverrides);
@@ -127,7 +127,7 @@ export class ProcessesApi extends runtime.BaseAPI {
 
     /**
      * Retrieves a list of available processes
-     * List Processes
+     * List processes
      */
     async getProcessesRaw(requestParameters: GetProcessesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<Process>>> {
         const queryParameters: any = {};
@@ -158,7 +158,7 @@ export class ProcessesApi extends runtime.BaseAPI {
 
     /**
      * Retrieves a list of available processes
-     * List Processes
+     * List processes
      */
     async getProcesses(requestParameters: GetProcessesRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<Process>> {
         const response = await this.getProcessesRaw(requestParameters, initOverrides);

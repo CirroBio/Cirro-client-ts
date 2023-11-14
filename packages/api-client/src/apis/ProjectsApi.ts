@@ -111,7 +111,7 @@ export class ProjectsApi extends runtime.BaseAPI {
 
     /**
      * Get detailed project information
-     * Get Project
+     * Get project
      */
     async getProjectRaw(requestParameters: GetProjectRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ProjectDetail>> {
         if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
@@ -142,7 +142,7 @@ export class ProjectsApi extends runtime.BaseAPI {
 
     /**
      * Get detailed project information
-     * Get Project
+     * Get project
      */
     async getProject(requestParameters: GetProjectRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ProjectDetail> {
         const response = await this.getProjectRaw(requestParameters, initOverrides);
@@ -151,7 +151,7 @@ export class ProjectsApi extends runtime.BaseAPI {
 
     /**
      * Retrieve a list of projects
-     * Get Projects
+     * Get projects
      */
     async getProjectsRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<Project>>> {
         const queryParameters: any = {};
@@ -178,7 +178,7 @@ export class ProjectsApi extends runtime.BaseAPI {
 
     /**
      * Retrieve a list of projects
-     * Get Projects
+     * Get projects
      */
     async getProjects(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<Project>> {
         const response = await this.getProjectsRaw(initOverrides);

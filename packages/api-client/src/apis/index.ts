@@ -8,5 +8,6 @@ export * from './MetricsApi';
 export * from './NotebooksApi';
 export * from './ProcessesApi';
 export * from './ProjectsApi';
+export * from './ReferencesApi';
 export * from './SystemApi';
 export * from './UsersApi';
