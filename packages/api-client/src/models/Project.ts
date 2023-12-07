@@ -13,6 +13,13 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { Tag } from './Tag';
+import {
+    TagFromJSON,
+    TagFromJSONTyped,
+    TagToJSON,
+} from './Tag';
+
 /**
  * 
  * @export
@@ -43,6 +50,12 @@ export interface Project {
      * @memberof Project
      */
     status: string;
+    /**
+     * 
+     * @type {Array<Tag>}
+     * @memberof Project
+     */
+    tags: Array<Tag>;
 }
 
 /**
@@ -54,6 +67,7 @@ export function instanceOfProject(value: object): boolean {
     isInstance = isInstance && "name" in value;
     isInstance = isInstance && "description" in value;
     isInstance = isInstance && "status" in value;
+    isInstance = isInstance && "tags" in value;
 
     return isInstance;
 }
@@ -72,6 +86,7 @@ export function ProjectFromJSONTyped(json: any, ignoreDiscriminator: boolean): P
         'name': json['name'],
         'description': json['description'],
         'status': json['status'],
+        'tags': ((json['tags'] as Array<any>).map(TagFromJSON)),
     };
 }
 
@@ -88,6 +103,7 @@ export function ProjectToJSON(value?: Project | null): any {
         'name': value.name,
         'description': value.description,
         'status': value.status,
+        'tags': ((value.tags as Array<any>).map(TagToJSON)),
     };
 }
 

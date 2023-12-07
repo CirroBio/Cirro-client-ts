@@ -28,94 +28,94 @@ import {
 export interface ProjectSettings {
     /**
      * 
-     * @type {string}
+     * @type {number}
      * @memberof ProjectSettings
      */
-    budgetAmount?: string;
+    budgetAmount: number;
     /**
      * 
      * @type {BudgetPeriod}
      * @memberof ProjectSettings
      */
-    budgetPeriod?: BudgetPeriod;
+    budgetPeriod: BudgetPeriod;
     /**
      * 
      * @type {string}
      * @memberof ProjectSettings
      */
-    dragenAmi?: string;
+    dragenAmi: string;
     /**
      * 
      * @type {boolean}
      * @memberof ProjectSettings
      */
-    enableBackup?: boolean;
+    enableCompute: boolean;
     /**
      * 
      * @type {boolean}
      * @memberof ProjectSettings
      */
-    enableCompute?: boolean;
+    enableDragen: boolean;
     /**
      * 
      * @type {boolean}
      * @memberof ProjectSettings
      */
-    enableDragen?: boolean;
+    enableBackup: boolean;
     /**
      * 
      * @type {boolean}
      * @memberof ProjectSettings
      */
-    enableSftp?: boolean;
+    enableSftp: boolean;
     /**
      * 
      * @type {number}
      * @memberof ProjectSettings
      */
-    maxF1VCPU?: number;
+    maxF1VCPU: number;
     /**
      * 
      * @type {number}
      * @memberof ProjectSettings
      */
-    maxSpotVCPU?: number;
+    maxSpotVCPU: number;
     /**
      * 
      * @type {number}
      * @memberof ProjectSettings
      */
-    retentionPolicyDays?: number;
+    retentionPolicyDays: number;
     /**
      * 
      * @type {Array<string>}
      * @memberof ProjectSettings
      */
-    serviceConnections?: Array<string>;
+    serviceConnections: Array<string>;
     /**
      * 
      * @type {boolean}
      * @memberof ProjectSettings
      */
-    createVpc?: boolean;
+    createVpc: boolean;
     /**
      * 
      * @type {string}
      * @memberof ProjectSettings
      */
-    vpcId?: string;
+    vpcId: string;
     /**
      * 
      * @type {Array<string>}
      * @memberof ProjectSettings
      */
-    batchSubnets?: Array<string>;
+    batchSubnets: Array<string>;
     /**
      * 
      * @type {string}
      * @memberof ProjectSettings
      */
-    kmsArn?: string;
+    kmsArn: string;
 }
 
 /**
@@ -123,6 +123,21 @@ export interface ProjectSettings {
  */
 export function instanceOfProjectSettings(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "budgetAmount" in value;
+    isInstance = isInstance && "budgetPeriod" in value;
+    isInstance = isInstance && "dragenAmi" in value;
+    isInstance = isInstance && "enableCompute" in value;
+    isInstance = isInstance && "enableDragen" in value;
+    isInstance = isInstance && "enableBackup" in value;
+    isInstance = isInstance && "enableSftp" in value;
+    isInstance = isInstance && "maxF1VCPU" in value;
+    isInstance = isInstance && "maxSpotVCPU" in value;
+    isInstance = isInstance && "retentionPolicyDays" in value;
+    isInstance = isInstance && "serviceConnections" in value;
+    isInstance = isInstance && "createVpc" in value;
+    isInstance = isInstance && "vpcId" in value;
+    isInstance = isInstance && "batchSubnets" in value;
+    isInstance = isInstance && "kmsArn" in value;
 
     return isInstance;
 }
@@ -137,21 +152,21 @@ export function ProjectSettingsFromJSONTyped(json: any, ignoreDiscriminator: boo
     }
     return {
         
-        'budgetAmount': !exists(json, 'budgetAmount') ? undefined : json['budgetAmount'],
-        'budgetPeriod': !exists(json, 'budgetPeriod') ? undefined : BudgetPeriodFromJSON(json['budgetPeriod']),
-        'dragenAmi': !exists(json, 'dragenAmi') ? undefined : json['dragenAmi'],
-        'enableBackup': !exists(json, 'enableBackup') ? undefined : json['enableBackup'],
-        'enableCompute': !exists(json, 'enableCompute') ? undefined : json['enableCompute'],
-        'enableDragen': !exists(json, 'enableDragen') ? undefined : json['enableDragen'],
-        'enableSftp': !exists(json, 'enableSftp') ? undefined : json['enableSftp'],
-        'maxF1VCPU': !exists(json, 'maxF1VCPU') ? undefined : json['maxF1VCPU'],
-        'maxSpotVCPU': !exists(json, 'maxSpotVCPU') ? undefined : json['maxSpotVCPU'],
-        'retentionPolicyDays': !exists(json, 'retentionPolicyDays') ? undefined : json['retentionPolicyDays'],
-        'serviceConnections': !exists(json, 'serviceConnections') ? undefined : json['serviceConnections'],
-        'createVpc': !exists(json, 'createVpc') ? undefined : json['createVpc'],
-        'vpcId': !exists(json, 'vpcId') ? undefined : json['vpcId'],
-        'batchSubnets': !exists(json, 'batchSubnets') ? undefined : json['batchSubnets'],
-        'kmsArn': !exists(json, 'kmsArn') ? undefined : json['kmsArn'],
+        'budgetAmount': json['budgetAmount'],
+        'budgetPeriod': BudgetPeriodFromJSON(json['budgetPeriod']),
+        'dragenAmi': json['dragenAmi'],
+        'enableCompute': json['enableCompute'],
+        'enableDragen': json['enableDragen'],
+        'enableBackup': json['enableBackup'],
+        'enableSftp': json['enableSftp'],
+        'maxF1VCPU': json['maxF1VCPU'],
+        'maxSpotVCPU': json['maxSpotVCPU'],
+        'retentionPolicyDays': json['retentionPolicyDays'],
+        'serviceConnections': json['serviceConnections'],
+        'createVpc': json['createVpc'],
+        'vpcId': json['vpcId'],
+        'batchSubnets': json['batchSubnets'],
+        'kmsArn': json['kmsArn'],
     };
 }
 
@@ -167,9 +182,9 @@ export function ProjectSettingsToJSON(value?: ProjectSettings | null): any {
         'budgetAmount': value.budgetAmount,
         'budgetPeriod': BudgetPeriodToJSON(value.budgetPeriod),
         'dragenAmi': value.dragenAmi,
-        'enableBackup': value.enableBackup,
         'enableCompute': value.enableCompute,
         'enableDragen': value.enableDragen,
+        'enableBackup': value.enableBackup,
         'enableSftp': value.enableSftp,
         'maxF1VCPU': value.maxF1VCPU,
         'maxSpotVCPU': value.maxSpotVCPU,

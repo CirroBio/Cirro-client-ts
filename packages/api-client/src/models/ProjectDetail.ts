@@ -64,10 +64,10 @@ export interface ProjectDetail {
     billingAccountId: string;
     /**
      * 
-     * @type {Contact}
+     * @type {Array<Contact>}
      * @memberof ProjectDetail
      */
-    contact: Contact;
+    contacts: Array<Contact>;
     /**
      * 
      * @type {string}
@@ -121,7 +121,7 @@ export function instanceOfProjectDetail(value: object): boolean {
     isInstance = isInstance && "name" in value;
     isInstance = isInstance && "description" in value;
     isInstance = isInstance && "billingAccountId" in value;
-    isInstance = isInstance && "contact" in value;
+    isInstance = isInstance && "contacts" in value;
     isInstance = isInstance && "status" in value;
     isInstance = isInstance && "settings" in value;
     isInstance = isInstance && "statusMessage" in value;
@@ -147,7 +147,7 @@ export function ProjectDetailFromJSONTyped(json: any, ignoreDiscriminator: boole
         'name': json['name'],
         'description': json['description'],
         'billingAccountId': json['billingAccountId'],
-        'contact': ContactFromJSON(json['contact']),
+        'contacts': ((json['contacts'] as Array<any>).map(ContactFromJSON)),
         'status': json['status'],
         'settings': ProjectSettingsFromJSON(json['settings']),
         'statusMessage': json['statusMessage'],
@@ -171,7 +171,7 @@ export function ProjectDetailToJSON(value?: ProjectDetail | null): any {
         'name': value.name,
         'description': value.description,
         'billingAccountId': value.billingAccountId,
-        'contact': ContactToJSON(value.contact),
+        'contacts': ((value.contacts as Array<any>).map(ContactToJSON)),
         'status': value.status,
         'settings': ProjectSettingsToJSON(value.settings),
         'statusMessage': value.statusMessage,
