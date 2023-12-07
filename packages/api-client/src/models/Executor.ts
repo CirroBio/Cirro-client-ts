@@ -12,17 +12,16 @@
  * Do not edit the class manually.
  */
 
-
 /**
  * Process executor
  * @export
+ * @enum {string}
  */
-export const Executor = {
-    Ingest: 'INGEST',
-    Nextflow: 'NEXTFLOW',
-    Cromwell: 'CROMWELL'
-} as const;
-export type Executor = typeof Executor[keyof typeof Executor];
+export enum Executor {
+    Ingest = 'INGEST',
+    Nextflow = 'NEXTFLOW',
+    Cromwell = 'CROMWELL'
+}
 
 
 export function ExecutorFromJSON(json: any): Executor {

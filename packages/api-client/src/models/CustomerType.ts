@@ -12,18 +12,17 @@
  * Do not edit the class manually.
  */
 
-
 /**
  * 
  * @export
+ * @enum {string}
  */
-export const CustomerType = {
-    Free: 'FREE',
-    Usage: 'USAGE',
-    Marketplace: 'MARKETPLACE',
-    Contract: 'CONTRACT'
-} as const;
-export type CustomerType = typeof CustomerType[keyof typeof CustomerType];
+export enum CustomerType {
+    Free = 'FREE',
+    Usage = 'USAGE',
+    Marketplace = 'MARKETPLACE',
+    Contract = 'CONTRACT'
+}
 
 
 export function CustomerTypeFromJSON(json: any): CustomerType {

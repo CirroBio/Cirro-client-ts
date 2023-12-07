@@ -12,16 +12,15 @@
  * Do not edit the class manually.
  */
 
-
 /**
  * 
  * @export
+ * @enum {string}
  */
-export const DatasetType = {
-    Upload: 'UPLOAD',
-    Public: 'PUBLIC'
-} as const;
-export type DatasetType = typeof DatasetType[keyof typeof DatasetType];
+export enum DatasetType {
+    Upload = 'UPLOAD',
+    Public = 'PUBLIC'
+}
 
 
 export function DatasetTypeFromJSON(json: any): DatasetType {

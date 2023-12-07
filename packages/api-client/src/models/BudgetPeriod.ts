@@ -12,17 +12,16 @@
  * Do not edit the class manually.
  */
 
-
 /**
  * 
  * @export
+ * @enum {string}
  */
-export const BudgetPeriod = {
-    Annually: 'ANNUALLY',
-    Quarterly: 'QUARTERLY',
-    Monthly: 'MONTHLY'
-} as const;
-export type BudgetPeriod = typeof BudgetPeriod[keyof typeof BudgetPeriod];
+export enum BudgetPeriod {
+    Annually = 'ANNUALLY',
+    Quarterly = 'QUARTERLY',
+    Monthly = 'MONTHLY'
+}
 
 
 export function BudgetPeriodFromJSON(json: any): BudgetPeriod {

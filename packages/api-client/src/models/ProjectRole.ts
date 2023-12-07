@@ -12,18 +12,17 @@
  * Do not edit the class manually.
  */
 
-
 /**
  * 
  * @export
+ * @enum {string}
  */
-export const ProjectRole = {
-    Admin: 'ADMIN',
-    Contributor: 'CONTRIBUTOR',
-    Collaborator: 'COLLABORATOR',
-    None: 'NONE'
-} as const;
-export type ProjectRole = typeof ProjectRole[keyof typeof ProjectRole];
+export enum ProjectRole {
+    Admin = 'ADMIN',
+    Contributor = 'CONTRIBUTOR',
+    Collaborator = 'COLLABORATOR',
+    None = 'NONE'
+}
 
 
 export function ProjectRoleFromJSON(json: any): ProjectRole {

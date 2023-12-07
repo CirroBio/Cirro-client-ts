@@ -13,8 +13,9 @@
         "templateDir": "#{cwd}/packages/api-client/templates",
         "additionalProperties": {
           "npmName": "@cirrobio/api-client",
-          "npmVersion": "0.0.6-alpha",
-          "author": "CirroBio"
+          "npmVersion": "0.0.7-alpha",
+          "author": "CirroBio",
+          "stringEnums": true
         }
       }
     }

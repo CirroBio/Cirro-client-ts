@@ -12,17 +12,16 @@
  * Do not edit the class manually.
  */
 
-
 /**
  * 
  * @export
+ * @enum {string}
  */
-export const BillingMethod = {
-    BudgetNumber: 'BUDGET_NUMBER',
-    PurchaseOrder: 'PURCHASE_ORDER',
-    Credit: 'CREDIT'
-} as const;
-export type BillingMethod = typeof BillingMethod[keyof typeof BillingMethod];
+export enum BillingMethod {
+    BudgetNumber = 'BUDGET_NUMBER',
+    PurchaseOrder = 'PURCHASE_ORDER',
+    Credit = 'CREDIT'
+}
 
 
 export function BillingMethodFromJSON(json: any): BillingMethod {
