@@ -13,6 +13,13 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { ProjectRole } from './ProjectRole';
+import {
+    ProjectRoleFromJSON,
+    ProjectRoleFromJSONTyped,
+    ProjectRoleToJSON,
+} from './ProjectRole';
+
 /**
  * 
  * @export
@@ -21,10 +28,22 @@ import { exists, mapValues } from '../runtime';
 export interface SetUserProjectRoleRequest {
     /**
      * 
-     * @type {SetUserProjectRoleRequest}
+     * @type {string}
      * @memberof SetUserProjectRoleRequest
      */
-    setUserProjectRoleRequest?: SetUserProjectRoleRequest;
+    username: string;
+    /**
+     * 
+     * @type {ProjectRole}
+     * @memberof SetUserProjectRoleRequest
+     */
+    role: ProjectRole;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof SetUserProjectRoleRequest
+     */
+    supressNotification?: boolean;
 }
 
 /**
@@ -32,6 +51,8 @@ export interface SetUserProjectRoleRequest {
  */
 export function instanceOfSetUserProjectRoleRequest(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "username" in value;
+    isInstance = isInstance && "role" in value;
 
     return isInstance;
 }
@@ -46,7 +67,9 @@ export function SetUserProjectRoleRequestFromJSONTyped(json: any, ignoreDiscrimi
     }
     return {
         
-        'setUserProjectRoleRequest': !exists(json, 'setUserProjectRoleRequest') ? undefined : SetUserProjectRoleRequestFromJSON(json['setUserProjectRoleRequest']),
+        'username': json['username'],
+        'role': ProjectRoleFromJSON(json['role']),
+        'supressNotification': !exists(json, 'supressNotification') ? undefined : json['supressNotification'],
     };
 }
 
@@ -59,7 +82,9 @@ export function SetUserProjectRoleRequestToJSON(value?: SetUserProjectRoleReques
     }
     return {
         
-        'setUserProjectRoleRequest': SetUserProjectRoleRequestToJSON(value.setUserProjectRoleRequest),
+        'username': value.username,
+        'role': ProjectRoleToJSON(value.role),
+        'supressNotification': value.supressNotification,
     };
 }
 

@@ -54,7 +54,6 @@ export interface GetProjectUsersRequest {
 
 export interface SetUserProjectRoleOperationRequest {
     projectId: string;
-    username: string;
     setUserProjectRoleRequest: SetUserProjectRoleRequest;
 }
 
@@ -241,10 +240,6 @@ export class ProjectsApi extends runtime.BaseAPI {
             throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling setUserProjectRole.');
         }
 
-        if (requestParameters.username === null || requestParameters.username === undefined) {
-            throw new runtime.RequiredError('username','Required parameter requestParameters.username was null or undefined when calling setUserProjectRole.');
-        }
-
         if (requestParameters.setUserProjectRoleRequest === null || requestParameters.setUserProjectRoleRequest === undefined) {
             throw new runtime.RequiredError('setUserProjectRoleRequest','Required parameter requestParameters.setUserProjectRoleRequest was null or undefined when calling setUserProjectRole.');
         }
@@ -264,7 +259,7 @@ export class ProjectsApi extends runtime.BaseAPI {
             }
         }
         const response = await this.request({
-            path: `/projects/{projectId}/permissions/{username}`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))).replace(`{${"username"}}`, encodeURIComponent(String(requestParameters.username))),
+            path: `/projects/{projectId}/permissions`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))),
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
