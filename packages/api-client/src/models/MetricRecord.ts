@@ -20,11 +20,11 @@ import { exists, mapValues } from '../runtime';
  */
 export interface MetricRecord {
     /**
-     * 
-     * @type {Date}
+     * Date in ISO 8601 format
+     * @type {string}
      * @memberof MetricRecord
      */
-    date: Date;
+    date?: string;
     /**
      * 
      * @type {string}
@@ -44,7 +44,6 @@ export interface MetricRecord {
  */
 export function instanceOfMetricRecord(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "date" in value;
     isInstance = isInstance && "unit" in value;
 
     return isInstance;
@@ -60,7 +59,7 @@ export function MetricRecordFromJSONTyped(json: any, ignoreDiscriminator: boolea
     }
     return {
         
-        'date': (new Date(json['date'])),
+        'date': !exists(json, 'date') ? undefined : json['date'],
         'unit': json['unit'],
         'services': !exists(json, 'services') ? undefined : json['services'],
     };
@@ -75,7 +74,7 @@ export function MetricRecordToJSON(value?: MetricRecord | null): any {
     }
     return {
         
-        'date': (value.date.toISOString().substring(0,10)),
+        'date': value.date,
         'unit': value.unit,
         'services': value.services,
     };
