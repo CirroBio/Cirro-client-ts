@@ -19,6 +19,7 @@ import type {
   Project,
   ProjectDetail,
   ProjectRequest,
+  ProjectUser,
   SetUserProjectRoleRequest,
   Tag,
 } from '../models/index';
@@ -31,6 +32,8 @@ import {
     ProjectDetailToJSON,
     ProjectRequestFromJSON,
     ProjectRequestToJSON,
+    ProjectUserFromJSON,
+    ProjectUserToJSON,
     SetUserProjectRoleRequestFromJSON,
     SetUserProjectRoleRequestToJSON,
     TagFromJSON,
@@ -42,6 +45,10 @@ export interface CreateProjectRequest {
 }
 
 export interface GetProjectRequest {
+    projectId: string;
+}
+
+export interface GetProjectUsersRequest {
     projectId: string;
 }
 
@@ -146,6 +153,46 @@ export class ProjectsApi extends runtime.BaseAPI {
      */
     async getProject(requestParameters: GetProjectRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ProjectDetail> {
         const response = await this.getProjectRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Gets users who have access to the project
+     * Get project permissions
+     */
+    async getProjectUsersRaw(requestParameters: GetProjectUsersRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<ProjectUser>>> {
+        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
+            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling getProjectUsers.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/projects/{projectId}/permissions`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(ProjectUserFromJSON));
+    }
+
+    /**
+     * Gets users who have access to the project
+     * Get project permissions
+     */
+    async getProjectUsers(requestParameters: GetProjectUsersRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<ProjectUser>> {
+        const response = await this.getProjectUsersRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

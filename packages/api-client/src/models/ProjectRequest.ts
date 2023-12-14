@@ -79,13 +79,13 @@ export interface ProjectRequest {
      * @type {CloudAccount}
      * @memberof ProjectRequest
      */
-    account: CloudAccount;
+    account: CloudAccount | null;
     /**
      * 
      * @type {Array<Tag>}
      * @memberof ProjectRequest
      */
-    tags: Array<Tag>;
+    tags: Array<Tag> | null;
 }
 
 /**
@@ -120,7 +120,7 @@ export function ProjectRequestFromJSONTyped(json: any, ignoreDiscriminator: bool
         'settings': ProjectSettingsFromJSON(json['settings']),
         'contacts': ((json['contacts'] as Array<any>).map(ContactFromJSON)),
         'account': CloudAccountFromJSON(json['account']),
-        'tags': ((json['tags'] as Array<any>).map(TagFromJSON)),
+        'tags': (json['tags'] === null ? null : (json['tags'] as Array<any>).map(TagFromJSON)),
     };
 }
 
@@ -139,7 +139,7 @@ export function ProjectRequestToJSON(value?: ProjectRequest | null): any {
         'settings': ProjectSettingsToJSON(value.settings),
         'contacts': ((value.contacts as Array<any>).map(ContactToJSON)),
         'account': CloudAccountToJSON(value.account),
-        'tags': ((value.tags as Array<any>).map(TagToJSON)),
+        'tags': (value.tags === null ? null : (value.tags as Array<any>).map(TagToJSON)),
     };
 }
 

@@ -32,6 +32,42 @@ export interface GetProjectMetricsRequest {
 export class MetricsApi extends runtime.BaseAPI {
 
     /**
+     * Retrieves metrics for all projects.
+     * Get all project metrics
+     */
+    async getAllMetricsRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<ProjectMetrics>>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/metrics`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(ProjectMetricsFromJSON));
+    }
+
+    /**
+     * Retrieves metrics for all projects.
+     * Get all project metrics
+     */
+    async getAllMetrics(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<ProjectMetrics>> {
+        const response = await this.getAllMetricsRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
      * Retrieves metrics about a project.
      * Get project metrics
      */

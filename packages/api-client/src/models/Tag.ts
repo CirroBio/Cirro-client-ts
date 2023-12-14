@@ -31,6 +31,12 @@ export interface Tag {
      * @memberof Tag
      */
     value: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof Tag
+     */
+    editable: boolean;
 }
 
 /**
@@ -40,6 +46,7 @@ export function instanceOfTag(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "key" in value;
     isInstance = isInstance && "value" in value;
+    isInstance = isInstance && "editable" in value;
 
     return isInstance;
 }
@@ -56,6 +63,7 @@ export function TagFromJSONTyped(json: any, ignoreDiscriminator: boolean): Tag {
         
         'key': json['key'],
         'value': json['value'],
+        'editable': json['editable'],
     };
 }
 
@@ -70,6 +78,7 @@ export function TagToJSON(value?: Tag | null): any {
         
         'key': value.key,
         'value': value.value,
+        'editable': value.editable,
     };
 }
 

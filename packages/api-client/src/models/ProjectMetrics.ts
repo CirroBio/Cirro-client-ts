@@ -13,6 +13,13 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { MetricRecord } from './MetricRecord';
+import {
+    MetricRecordFromJSON,
+    MetricRecordFromJSONTyped,
+    MetricRecordToJSON,
+} from './MetricRecord';
+
 /**
  * 
  * @export
@@ -27,16 +34,16 @@ export interface ProjectMetrics {
     projectId: string;
     /**
      * Costs by service by month
-     * @type {{ [key: string]: { [key: string]: number; }; }}
+     * @type {Array<MetricRecord>}
      * @memberof ProjectMetrics
      */
-    costs?: { [key: string]: { [key: string]: number; }; };
+    costs?: Array<MetricRecord>;
     /**
      * Storage usage by tier by day
-     * @type {{ [key: string]: any; }}
+     * @type {Array<MetricRecord>}
      * @memberof ProjectMetrics
      */
-    storageMetrics?: { [key: string]: any; };
+    storageMetrics?: Array<MetricRecord>;
 }
 
 /**
@@ -60,8 +67,8 @@ export function ProjectMetricsFromJSONTyped(json: any, ignoreDiscriminator: bool
     return {
         
         'projectId': json['projectId'],
-        'costs': !exists(json, 'costs') ? undefined : json['costs'],
-        'storageMetrics': !exists(json, 'storageMetrics') ? undefined : json['storageMetrics'],
+        'costs': !exists(json, 'costs') ? undefined : ((json['costs'] as Array<any>).map(MetricRecordFromJSON)),
+        'storageMetrics': !exists(json, 'storageMetrics') ? undefined : ((json['storageMetrics'] as Array<any>).map(MetricRecordFromJSON)),
     };
 }
 
@@ -75,8 +82,8 @@ export function ProjectMetricsToJSON(value?: ProjectMetrics | null): any {
     return {
         
         'projectId': value.projectId,
-        'costs': value.costs,
-        'storageMetrics': value.storageMetrics,
+        'costs': value.costs === undefined ? undefined : ((value.costs as Array<any>).map(MetricRecordToJSON)),
+        'storageMetrics': value.storageMetrics === undefined ? undefined : ((value.storageMetrics as Array<any>).map(MetricRecordToJSON)),
     };
 }
 

@@ -31,6 +31,7 @@ src/models/Executor.ts
 src/models/FormSchema.ts
 src/models/GetExecutionLogsResponse.ts
 src/models/LogEntry.ts
+src/models/MetricRecord.ts
 src/models/NotebookInstance.ts
 src/models/OpenNotebookInstanceResponse.ts
 src/models/Process.ts
@@ -41,6 +42,7 @@ src/models/ProjectMetrics.ts
 src/models/ProjectRequest.ts
 src/models/ProjectRole.ts
 src/models/ProjectSettings.ts
+src/models/ProjectUser.ts
 src/models/Reference.ts
 src/models/ReferenceType.ts
 src/models/Region.ts
