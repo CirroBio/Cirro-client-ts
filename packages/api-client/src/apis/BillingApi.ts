@@ -16,17 +16,20 @@
 import * as runtime from '../runtime';
 import type {
   BillingAccount,
+  BillingAccountRequest,
   CreateResponse,
 } from '../models/index';
 import {
     BillingAccountFromJSON,
     BillingAccountToJSON,
+    BillingAccountRequestFromJSON,
+    BillingAccountRequestToJSON,
     CreateResponseFromJSON,
     CreateResponseToJSON,
 } from '../models/index';
 
 export interface CreateBillingAccountRequest {
-    billingAccount: BillingAccount;
+    billingAccountRequest: BillingAccountRequest;
 }
 
 export interface DeleteBillingAccountRequest {
@@ -39,7 +42,7 @@ export interface GetBillingAccountsRequest {
 
 export interface UpdateBillingAccountRequest {
     billingAccountId: string;
-    billingAccount: BillingAccount;
+    billingAccountRequest: BillingAccountRequest;
 }
 
 /**
@@ -52,8 +55,8 @@ export class BillingApi extends runtime.BaseAPI {
      * Create billing account
      */
     async createBillingAccountRaw(requestParameters: CreateBillingAccountRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateResponse>> {
-        if (requestParameters.billingAccount === null || requestParameters.billingAccount === undefined) {
-            throw new runtime.RequiredError('billingAccount','Required parameter requestParameters.billingAccount was null or undefined when calling createBillingAccount.');
+        if (requestParameters.billingAccountRequest === null || requestParameters.billingAccountRequest === undefined) {
+            throw new runtime.RequiredError('billingAccountRequest','Required parameter requestParameters.billingAccountRequest was null or undefined when calling createBillingAccount.');
         }
 
         const queryParameters: any = {};
@@ -75,7 +78,7 @@ export class BillingApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: BillingAccountToJSON(requestParameters.billingAccount),
+            body: BillingAccountRequestToJSON(requestParameters.billingAccountRequest),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => CreateResponseFromJSON(jsonValue));
@@ -213,8 +216,8 @@ export class BillingApi extends runtime.BaseAPI {
             throw new runtime.RequiredError('billingAccountId','Required parameter requestParameters.billingAccountId was null or undefined when calling updateBillingAccount.');
         }
 
-        if (requestParameters.billingAccount === null || requestParameters.billingAccount === undefined) {
-            throw new runtime.RequiredError('billingAccount','Required parameter requestParameters.billingAccount was null or undefined when calling updateBillingAccount.');
+        if (requestParameters.billingAccountRequest === null || requestParameters.billingAccountRequest === undefined) {
+            throw new runtime.RequiredError('billingAccountRequest','Required parameter requestParameters.billingAccountRequest was null or undefined when calling updateBillingAccount.');
         }
 
         const queryParameters: any = {};
@@ -236,7 +239,7 @@ export class BillingApi extends runtime.BaseAPI {
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: BillingAccountToJSON(requestParameters.billingAccount),
+            body: BillingAccountRequestToJSON(requestParameters.billingAccountRequest),
         }, initOverrides);
 
         return new runtime.VoidApiResponse(response);

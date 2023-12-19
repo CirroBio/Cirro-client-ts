@@ -17,6 +17,7 @@ src/apis/UsersApi.ts
 src/apis/index.ts
 src/index.ts
 src/models/BillingAccount.ts
+src/models/BillingAccountRequest.ts
 src/models/BillingMethod.ts
 src/models/BudgetPeriod.ts
 src/models/CloudAccount.ts

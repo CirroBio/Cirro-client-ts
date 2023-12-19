@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 export * from './BillingAccount';
+export * from './BillingAccountRequest';
 export * from './BillingMethod';
 export * from './BudgetPeriod';
 export * from './CloudAccount';

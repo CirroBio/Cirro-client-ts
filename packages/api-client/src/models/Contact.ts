@@ -24,25 +24,25 @@ export interface Contact {
      * @type {string}
      * @memberof Contact
      */
-    name: string;
+    name?: string;
     /**
      * 
      * @type {string}
      * @memberof Contact
      */
-    organization: string;
+    organization?: string;
     /**
      * 
      * @type {string}
      * @memberof Contact
      */
-    email: string;
+    email?: string;
     /**
      * 
      * @type {string}
      * @memberof Contact
      */
-    phone: string;
+    phone?: string;
 }
 
 /**
@@ -50,10 +50,6 @@ export interface Contact {
  */
 export function instanceOfContact(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "organization" in value;
-    isInstance = isInstance && "email" in value;
-    isInstance = isInstance && "phone" in value;
 
     return isInstance;
 }
@@ -68,10 +64,10 @@ export function ContactFromJSONTyped(json: any, ignoreDiscriminator: boolean): C
     }
     return {
         
-        'name': json['name'],
-        'organization': json['organization'],
-        'email': json['email'],
-        'phone': json['phone'],
+        'name': !exists(json, 'name') ? undefined : json['name'],
+        'organization': !exists(json, 'organization') ? undefined : json['organization'],
+        'email': !exists(json, 'email') ? undefined : json['email'],
+        'phone': !exists(json, 'phone') ? undefined : json['phone'],
     };
 }
 
