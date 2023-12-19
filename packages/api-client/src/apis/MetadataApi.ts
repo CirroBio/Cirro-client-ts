@@ -26,6 +26,11 @@ export interface GetProjectSamplesRequest {
     projectId: string;
 }
 
+export interface UpdateSampleRequest {
+    projectId: string;
+    sample: Sample;
+}
+
 /**
  * 
  */
@@ -52,7 +57,7 @@ export class MetadataApi extends runtime.BaseAPI {
             }
         }
         const response = await this.request({
-            path: `/projects/{projectId}/metadata/samples`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))),
+            path: `/projects/{projectId}/samples`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -66,6 +71,51 @@ export class MetadataApi extends runtime.BaseAPI {
      */
     async getProjectSamples(requestParameters: GetProjectSamplesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<Sample>> {
         const response = await this.getProjectSamplesRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Update sample
+     */
+    async updateSampleRaw(requestParameters: UpdateSampleRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Sample>> {
+        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
+            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling updateSample.');
+        }
+
+        if (requestParameters.sample === null || requestParameters.sample === undefined) {
+            throw new runtime.RequiredError('sample','Required parameter requestParameters.sample was null or undefined when calling updateSample.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/projects/{projectId}/samples`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))),
+            method: 'PUT',
+            headers: headerParameters,
+            query: queryParameters,
+            body: SampleToJSON(requestParameters.sample),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SampleFromJSON(jsonValue));
+    }
+
+    /**
+     * Update sample
+     */
+    async updateSample(requestParameters: UpdateSampleRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Sample> {
+        const response = await this.updateSampleRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

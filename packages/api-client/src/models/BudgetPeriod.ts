@@ -13,7 +13,7 @@
  */
 
 /**
- * 
+ * Time period associated with the budget amount
  * @export
  * @enum {string}
  */

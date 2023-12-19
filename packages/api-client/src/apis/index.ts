@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 export * from './BillingApi';
+export * from './DashboardsApi';
 export * from './DatasetsApi';
 export * from './ExecutionApi';
 export * from './MetadataApi';

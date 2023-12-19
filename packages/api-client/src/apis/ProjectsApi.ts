@@ -52,6 +52,10 @@ export interface GetProjectUsersRequest {
     projectId: string;
 }
 
+export interface RedeployProjectRequest {
+    projectId: string;
+}
+
 export interface SetUserProjectRoleOperationRequest {
     projectId: string;
     setUserProjectRoleRequest: SetUserProjectRoleRequest;
@@ -229,6 +233,45 @@ export class ProjectsApi extends runtime.BaseAPI {
     async getProjects(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<Project>> {
         const response = await this.getProjectsRaw(initOverrides);
         return await response.value();
+    }
+
+    /**
+     * Redeploys cloud resources for a project
+     * Redeploy project
+     */
+    async redeployProjectRaw(requestParameters: RedeployProjectRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
+            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling redeployProject.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/projects/{projectId}:re-deploy`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))),
+            method: 'PUT',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Redeploys cloud resources for a project
+     * Redeploy project
+     */
+    async redeployProject(requestParameters: RedeployProjectRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.redeployProjectRaw(requestParameters, initOverrides);
     }
 
     /**

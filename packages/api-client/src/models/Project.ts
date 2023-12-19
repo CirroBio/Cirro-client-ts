@@ -13,6 +13,12 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { Status } from './Status';
+import {
+    StatusFromJSON,
+    StatusFromJSONTyped,
+    StatusToJSON,
+} from './Status';
 import type { Tag } from './Tag';
 import {
     TagFromJSON,
@@ -46,16 +52,22 @@ export interface Project {
     description: string;
     /**
      * 
-     * @type {string}
+     * @type {Status}
      * @memberof Project
      */
-    status: string;
+    status: Status;
     /**
      * 
      * @type {Array<Tag>}
      * @memberof Project
      */
     tags: Array<Tag>;
+    /**
+     * 
+     * @type {string}
+     * @memberof Project
+     */
+    billingAccountId: string;
 }
 
 /**
@@ -68,6 +80,7 @@ export function instanceOfProject(value: object): boolean {
     isInstance = isInstance && "description" in value;
     isInstance = isInstance && "status" in value;
     isInstance = isInstance && "tags" in value;
+    isInstance = isInstance && "billingAccountId" in value;
 
     return isInstance;
 }
@@ -85,8 +98,9 @@ export function ProjectFromJSONTyped(json: any, ignoreDiscriminator: boolean): P
         'id': json['id'],
         'name': json['name'],
         'description': json['description'],
-        'status': json['status'],
+        'status': StatusFromJSON(json['status']),
         'tags': ((json['tags'] as Array<any>).map(TagFromJSON)),
+        'billingAccountId': json['billingAccountId'],
     };
 }
 
@@ -102,8 +116,9 @@ export function ProjectToJSON(value?: Project | null): any {
         'id': value.id,
         'name': value.name,
         'description': value.description,
-        'status': value.status,
+        'status': StatusToJSON(value.status),
         'tags': ((value.tags as Array<any>).map(TagToJSON)),
+        'billingAccountId': value.billingAccountId,
     };
 }
 

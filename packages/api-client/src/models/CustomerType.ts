@@ -18,10 +18,8 @@
  * @enum {string}
  */
 export enum CustomerType {
-    Free = 'FREE',
-    Usage = 'USAGE',
-    Marketplace = 'MARKETPLACE',
-    Contract = 'CONTRACT'
+    Internal = 'INTERNAL',
+    External = 'EXTERNAL'
 }
 
 

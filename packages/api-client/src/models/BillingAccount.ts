@@ -92,6 +92,12 @@ export interface BillingAccount {
      * @memberof BillingAccount
      */
     sharedWith: Array<string>;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof BillingAccount
+     */
+    isArchived: boolean;
 }
 
 /**
@@ -108,6 +114,7 @@ export function instanceOfBillingAccount(value: object): boolean {
     isInstance = isInstance && "primaryBudgetNumber" in value;
     isInstance = isInstance && "owner" in value;
     isInstance = isInstance && "sharedWith" in value;
+    isInstance = isInstance && "isArchived" in value;
 
     return isInstance;
 }
@@ -131,6 +138,7 @@ export function BillingAccountFromJSONTyped(json: any, ignoreDiscriminator: bool
         'primaryBudgetNumber': json['primaryBudgetNumber'],
         'owner': json['owner'],
         'sharedWith': json['sharedWith'],
+        'isArchived': json['isArchived'],
     };
 }
 
@@ -152,6 +160,7 @@ export function BillingAccountToJSON(value?: BillingAccount | null): any {
         'primaryBudgetNumber': value.primaryBudgetNumber,
         'owner': value.owner,
         'sharedWith': value.sharedWith,
+        'isArchived': value.isArchived,
     };
 }
 

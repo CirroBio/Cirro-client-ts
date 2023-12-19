@@ -13,6 +13,12 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { Status } from './Status';
+import {
+    StatusFromJSON,
+    StatusFromJSONTyped,
+    StatusToJSON,
+} from './Status';
 import type { Tag } from './Tag';
 import {
     TagFromJSON,
@@ -43,7 +49,7 @@ export interface Dataset {
      * @type {string}
      * @memberof Dataset
      */
-    desc: string;
+    description: string;
     /**
      * 
      * @type {string}
@@ -58,10 +64,10 @@ export interface Dataset {
     sourceDatasets: Array<string>;
     /**
      * 
-     * @type {string}
+     * @type {Status}
      * @memberof Dataset
      */
-    status: string;
+    status: Status;
     /**
      * 
      * @type {Array<Tag>}
@@ -76,16 +82,16 @@ export interface Dataset {
     createdBy: string;
     /**
      * 
-     * @type {string}
+     * @type {Date}
      * @memberof Dataset
      */
-    createdAt: string;
+    createdAt: Date;
     /**
      * 
-     * @type {string}
+     * @type {Date}
      * @memberof Dataset
      */
-    updatedAt: string;
+    updatedAt: Date;
 }
 
 /**
@@ -95,7 +101,7 @@ export function instanceOfDataset(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "id" in value;
     isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "desc" in value;
+    isInstance = isInstance && "description" in value;
     isInstance = isInstance && "processId" in value;
     isInstance = isInstance && "sourceDatasets" in value;
     isInstance = isInstance && "status" in value;
@@ -119,14 +125,14 @@ export function DatasetFromJSONTyped(json: any, ignoreDiscriminator: boolean): D
         
         'id': json['id'],
         'name': json['name'],
-        'desc': json['desc'],
+        'description': json['description'],
         'processId': json['processId'],
         'sourceDatasets': json['sourceDatasets'],
-        'status': json['status'],
+        'status': StatusFromJSON(json['status']),
         'tags': ((json['tags'] as Array<any>).map(TagFromJSON)),
         'createdBy': json['createdBy'],
-        'createdAt': json['createdAt'],
-        'updatedAt': json['updatedAt'],
+        'createdAt': (new Date(json['createdAt'])),
+        'updatedAt': (new Date(json['updatedAt'])),
     };
 }
 
@@ -141,14 +147,14 @@ export function DatasetToJSON(value?: Dataset | null): any {
         
         'id': value.id,
         'name': value.name,
-        'desc': value.desc,
+        'description': value.description,
         'processId': value.processId,
         'sourceDatasets': value.sourceDatasets,
-        'status': value.status,
+        'status': StatusToJSON(value.status),
         'tags': ((value.tags as Array<any>).map(TagToJSON)),
         'createdBy': value.createdBy,
-        'createdAt': value.createdAt,
-        'updatedAt': value.updatedAt,
+        'createdAt': (value.createdAt.toISOString()),
+        'updatedAt': (value.updatedAt.toISOString()),
     };
 }
 

@@ -16,20 +16,23 @@
 import * as runtime from '../runtime';
 import type {
   CreateResponse,
-  Dataset,
   DatasetDetail,
+  PaginatedResponseDatasetListDto,
   RegisterDatasetRequest,
+  RegisterPublicDataRequest,
   UpdateDatasetRequest,
 } from '../models/index';
 import {
     CreateResponseFromJSON,
     CreateResponseToJSON,
-    DatasetFromJSON,
-    DatasetToJSON,
     DatasetDetailFromJSON,
     DatasetDetailToJSON,
+    PaginatedResponseDatasetListDtoFromJSON,
+    PaginatedResponseDatasetListDtoToJSON,
     RegisterDatasetRequestFromJSON,
     RegisterDatasetRequestToJSON,
+    RegisterPublicDataRequestFromJSON,
+    RegisterPublicDataRequestToJSON,
     UpdateDatasetRequestFromJSON,
     UpdateDatasetRequestToJSON,
 } from '../models/index';
@@ -51,6 +54,11 @@ export interface GetDatasetsRequest {
 export interface RegisterDatasetOperationRequest {
     projectId: string;
     registerDatasetRequest: RegisterDatasetRequest;
+}
+
+export interface RegisterPublicDatasetRequest {
+    projectId: string;
+    registerPublicDataRequest: RegisterPublicDataRequest;
 }
 
 export interface UpdateDatasetOperationRequest {
@@ -160,7 +168,7 @@ export class DatasetsApi extends runtime.BaseAPI {
      * Retrieves a list of datasets for a given project
      * List datasets
      */
-    async getDatasetsRaw(requestParameters: GetDatasetsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<Dataset>>> {
+    async getDatasetsRaw(requestParameters: GetDatasetsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PaginatedResponseDatasetListDto>> {
         if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
             throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling getDatasets.');
         }
@@ -184,21 +192,21 @@ export class DatasetsApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(DatasetFromJSON));
+        return new runtime.JSONApiResponse(response, (jsonValue) => PaginatedResponseDatasetListDtoFromJSON(jsonValue));
     }
 
     /**
      * Retrieves a list of datasets for a given project
      * List datasets
      */
-    async getDatasets(requestParameters: GetDatasetsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<Dataset>> {
+    async getDatasets(requestParameters: GetDatasetsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<PaginatedResponseDatasetListDto> {
         const response = await this.getDatasetsRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      * Registers a dataset in the system
-     * Register dataset
+     * Register private dataset
      */
     async registerDatasetRaw(requestParameters: RegisterDatasetOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateResponse>> {
         if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
@@ -224,7 +232,7 @@ export class DatasetsApi extends runtime.BaseAPI {
             }
         }
         const response = await this.request({
-            path: `/projects/{projectId}/datasets`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))),
+            path: `/projects/{projectId}/datasets/upload`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))),
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
@@ -236,10 +244,57 @@ export class DatasetsApi extends runtime.BaseAPI {
 
     /**
      * Registers a dataset in the system
-     * Register dataset
+     * Register private dataset
      */
     async registerDataset(requestParameters: RegisterDatasetOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateResponse> {
         const response = await this.registerDatasetRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Download data from public repositories
+     * Register public dataset
+     */
+    async registerPublicDatasetRaw(requestParameters: RegisterPublicDatasetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateResponse>> {
+        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
+            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling registerPublicDataset.');
+        }
+
+        if (requestParameters.registerPublicDataRequest === null || requestParameters.registerPublicDataRequest === undefined) {
+            throw new runtime.RequiredError('registerPublicDataRequest','Required parameter requestParameters.registerPublicDataRequest was null or undefined when calling registerPublicDataset.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/projects/{projectId}/datasets/public`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: RegisterPublicDataRequestToJSON(requestParameters.registerPublicDataRequest),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => CreateResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Download data from public repositories
+     * Register public dataset
+     */
+    async registerPublicDataset(requestParameters: RegisterPublicDatasetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateResponse> {
+        const response = await this.registerPublicDatasetRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

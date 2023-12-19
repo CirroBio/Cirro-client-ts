@@ -13,6 +13,12 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { Status } from './Status';
+import {
+    StatusFromJSON,
+    StatusFromJSONTyped,
+    StatusToJSON,
+} from './Status';
 import type { Tag } from './Tag';
 import {
     TagFromJSON,
@@ -43,7 +49,7 @@ export interface DatasetDetail {
      * @type {string}
      * @memberof DatasetDetail
      */
-    desc: string;
+    description: string;
     /**
      * 
      * @type {string}
@@ -58,22 +64,22 @@ export interface DatasetDetail {
     processId: string;
     /**
      * 
-     * @type {string}
-     * @memberof DatasetDetail
-     */
-    processName: string;
-    /**
-     * 
      * @type {Array<string>}
      * @memberof DatasetDetail
      */
     sourceDatasets: Array<string>;
     /**
      * 
+     * @type {Status}
+     * @memberof DatasetDetail
+     */
+    status: Status;
+    /**
+     * 
      * @type {string}
      * @memberof DatasetDetail
      */
-    status: string;
+    statusMessage: string;
     /**
      * 
      * @type {Array<Tag>}
@@ -100,16 +106,16 @@ export interface DatasetDetail {
     createdBy: string;
     /**
      * 
-     * @type {string}
+     * @type {Date}
      * @memberof DatasetDetail
      */
-    createdAt: string;
+    createdAt: Date;
     /**
      * 
-     * @type {string}
+     * @type {Date}
      * @memberof DatasetDetail
      */
-    updatedAt: string;
+    updatedAt: Date;
 }
 
 /**
@@ -119,12 +125,12 @@ export function instanceOfDatasetDetail(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "id" in value;
     isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "desc" in value;
+    isInstance = isInstance && "description" in value;
     isInstance = isInstance && "s3" in value;
     isInstance = isInstance && "processId" in value;
-    isInstance = isInstance && "processName" in value;
     isInstance = isInstance && "sourceDatasets" in value;
     isInstance = isInstance && "status" in value;
+    isInstance = isInstance && "statusMessage" in value;
     isInstance = isInstance && "tags" in value;
     isInstance = isInstance && "params" in value;
     isInstance = isInstance && "info" in value;
@@ -147,18 +153,18 @@ export function DatasetDetailFromJSONTyped(json: any, ignoreDiscriminator: boole
         
         'id': json['id'],
         'name': json['name'],
-        'desc': json['desc'],
+        'description': json['description'],
         's3': json['s3'],
         'processId': json['processId'],
-        'processName': json['processName'],
         'sourceDatasets': json['sourceDatasets'],
-        'status': json['status'],
+        'status': StatusFromJSON(json['status']),
+        'statusMessage': json['statusMessage'],
         'tags': ((json['tags'] as Array<any>).map(TagFromJSON)),
         'params': json['params'],
         'info': json['info'],
         'createdBy': json['createdBy'],
-        'createdAt': json['createdAt'],
-        'updatedAt': json['updatedAt'],
+        'createdAt': (new Date(json['createdAt'])),
+        'updatedAt': (new Date(json['updatedAt'])),
     };
 }
 
@@ -173,18 +179,18 @@ export function DatasetDetailToJSON(value?: DatasetDetail | null): any {
         
         'id': value.id,
         'name': value.name,
-        'desc': value.desc,
+        'description': value.description,
         's3': value.s3,
         'processId': value.processId,
-        'processName': value.processName,
         'sourceDatasets': value.sourceDatasets,
-        'status': value.status,
+        'status': StatusToJSON(value.status),
+        'statusMessage': value.statusMessage,
         'tags': ((value.tags as Array<any>).map(TagToJSON)),
         'params': value.params,
         'info': value.info,
         'createdBy': value.createdBy,
-        'createdAt': value.createdAt,
-        'updatedAt': value.updatedAt,
+        'createdAt': (value.createdAt.toISOString()),
+        'updatedAt': (value.updatedAt.toISOString()),
     };
 }
 

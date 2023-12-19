@@ -25,6 +25,12 @@ import {
     ProjectSettingsFromJSONTyped,
     ProjectSettingsToJSON,
 } from './ProjectSettings';
+import type { Status } from './Status';
+import {
+    StatusFromJSON,
+    StatusFromJSONTyped,
+    StatusToJSON,
+} from './Status';
 import type { Tag } from './Tag';
 import {
     TagFromJSON,
@@ -70,10 +76,10 @@ export interface ProjectDetail {
     contacts: Array<Contact>;
     /**
      * 
-     * @type {string}
+     * @type {Status}
      * @memberof ProjectDetail
      */
-    status: string;
+    status: Status;
     /**
      * 
      * @type {ProjectSettings}
@@ -100,16 +106,16 @@ export interface ProjectDetail {
     createdBy: string;
     /**
      * 
-     * @type {string}
+     * @type {Date}
      * @memberof ProjectDetail
      */
-    createdAt: string;
+    createdAt: Date;
     /**
      * 
-     * @type {string}
+     * @type {Date}
      * @memberof ProjectDetail
      */
-    updatedAt: string;
+    updatedAt: Date;
 }
 
 /**
@@ -148,13 +154,13 @@ export function ProjectDetailFromJSONTyped(json: any, ignoreDiscriminator: boole
         'description': json['description'],
         'billingAccountId': json['billingAccountId'],
         'contacts': ((json['contacts'] as Array<any>).map(ContactFromJSON)),
-        'status': json['status'],
+        'status': StatusFromJSON(json['status']),
         'settings': ProjectSettingsFromJSON(json['settings']),
         'statusMessage': json['statusMessage'],
         'tags': ((json['tags'] as Array<any>).map(TagFromJSON)),
         'createdBy': json['createdBy'],
-        'createdAt': json['createdAt'],
-        'updatedAt': json['updatedAt'],
+        'createdAt': (new Date(json['createdAt'])),
+        'updatedAt': (new Date(json['updatedAt'])),
     };
 }
 
@@ -172,13 +178,13 @@ export function ProjectDetailToJSON(value?: ProjectDetail | null): any {
         'description': value.description,
         'billingAccountId': value.billingAccountId,
         'contacts': ((value.contacts as Array<any>).map(ContactToJSON)),
-        'status': value.status,
+        'status': StatusToJSON(value.status),
         'settings': ProjectSettingsToJSON(value.settings),
         'statusMessage': value.statusMessage,
         'tags': ((value.tags as Array<any>).map(TagToJSON)),
         'createdBy': value.createdBy,
-        'createdAt': value.createdAt,
-        'updatedAt': value.updatedAt,
+        'createdAt': (value.createdAt.toISOString()),
+        'updatedAt': (value.updatedAt.toISOString()),
     };
 }
 

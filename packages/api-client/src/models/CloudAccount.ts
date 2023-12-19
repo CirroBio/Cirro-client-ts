@@ -13,13 +13,6 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import type { Region } from './Region';
-import {
-    RegionFromJSON,
-    RegionFromJSONTyped,
-    RegionToJSON,
-} from './Region';
-
 /**
  * 
  * @export
@@ -27,25 +20,19 @@ import {
  */
 export interface CloudAccount {
     /**
-     * 
-     * @type {Region}
-     * @memberof CloudAccount
-     */
-    region?: Region;
-    /**
-     * 
+     * AWS Account ID
      * @type {string}
      * @memberof CloudAccount
      */
     accountId?: string;
     /**
-     * 
+     * Name used to describe the account
      * @type {string}
      * @memberof CloudAccount
      */
     accountName?: string;
     /**
-     * 
+     * AWS Region Code
      * @type {string}
      * @memberof CloudAccount
      */
@@ -71,7 +58,6 @@ export function CloudAccountFromJSONTyped(json: any, ignoreDiscriminator: boolea
     }
     return {
         
-        'region': !exists(json, 'region') ? undefined : RegionFromJSON(json['region']),
         'accountId': !exists(json, 'accountId') ? undefined : json['accountId'],
         'accountName': !exists(json, 'accountName') ? undefined : json['accountName'],
         'regionName': !exists(json, 'regionName') ? undefined : json['regionName'],
@@ -87,7 +73,6 @@ export function CloudAccountToJSON(value?: CloudAccount | null): any {
     }
     return {
         
-        'region': RegionToJSON(value.region),
         'accountId': value.accountId,
         'accountName': value.accountName,
         'regionName': value.regionName,

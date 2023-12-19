@@ -27,11 +27,11 @@ import {
  */
 export interface ProjectSettings {
     /**
-     * 
+     * Total allowed cost for the budget period
      * @type {number}
      * @memberof ProjectSettings
      */
-    budgetAmount: number;
+    budgetAmount?: number;
     /**
      * 
      * @type {BudgetPeriod}
@@ -39,53 +39,53 @@ export interface ProjectSettings {
      */
     budgetPeriod: BudgetPeriod;
     /**
-     * 
+     * AMI ID for the DRAGEN compute environment (if enabled)
      * @type {string}
      * @memberof ProjectSettings
      */
-    dragenAmi: string;
+    dragenAmi?: string | null;
     /**
-     * 
+     * Enables the default compute environment
      * @type {boolean}
      * @memberof ProjectSettings
      */
-    enableCompute: boolean;
+    enableCompute?: boolean;
     /**
-     * 
+     * Enables the DRAGEN compute environment
      * @type {boolean}
      * @memberof ProjectSettings
      */
-    enableDragen: boolean;
+    enableDragen?: boolean;
     /**
-     * 
+     * Enables the AWS Backup service for S3
      * @type {boolean}
      * @memberof ProjectSettings
      */
-    enableBackup: boolean;
+    enableBackup?: boolean;
     /**
-     * 
+     * Enables access to files over SFTP
      * @type {boolean}
      * @memberof ProjectSettings
      */
-    enableSftp: boolean;
+    enableSftp?: boolean;
     /**
-     * 
+     * Service quota limit for On Demand F1 instances
      * @type {number}
      * @memberof ProjectSettings
      */
-    maxF1VCPU: number;
+    maxF1VCPU?: number;
     /**
-     * 
+     * Service quota limit for SPOT instances
      * @type {number}
      * @memberof ProjectSettings
      */
-    maxSpotVCPU: number;
+    maxSpotVCPU?: number;
     /**
-     * 
+     * Days to keep deleted datasets before being permanently erased
      * @type {number}
      * @memberof ProjectSettings
      */
-    retentionPolicyDays: number;
+    retentionPolicyDays?: number;
     /**
      * 
      * @type {Array<string>}
@@ -93,29 +93,29 @@ export interface ProjectSettings {
      */
     serviceConnections: Array<string>;
     /**
-     * 
+     * Creates a default VPC for the compute environment, if false, VPC ID must be provided
      * @type {boolean}
      * @memberof ProjectSettings
      */
-    createVpc: boolean;
+    createVpc?: boolean;
     /**
-     * 
+     * VPC that the compute environment will use
      * @type {string}
      * @memberof ProjectSettings
      */
-    vpcId: string;
+    vpcId?: string | null;
     /**
-     * 
+     * List of subnets that the compute environment will use
      * @type {Array<string>}
      * @memberof ProjectSettings
      */
-    batchSubnets: Array<string>;
+    batchSubnets?: Array<string> | null;
     /**
-     * 
+     * KMS Key ARN to encrypt S3 objects, one will be created if the arn is not provided
      * @type {string}
      * @memberof ProjectSettings
      */
-    kmsArn: string;
+    kmsArn?: string | null;
 }
 
 /**
@@ -123,21 +123,8 @@ export interface ProjectSettings {
  */
 export function instanceOfProjectSettings(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "budgetAmount" in value;
     isInstance = isInstance && "budgetPeriod" in value;
-    isInstance = isInstance && "dragenAmi" in value;
-    isInstance = isInstance && "enableCompute" in value;
-    isInstance = isInstance && "enableDragen" in value;
-    isInstance = isInstance && "enableBackup" in value;
-    isInstance = isInstance && "enableSftp" in value;
-    isInstance = isInstance && "maxF1VCPU" in value;
-    isInstance = isInstance && "maxSpotVCPU" in value;
-    isInstance = isInstance && "retentionPolicyDays" in value;
     isInstance = isInstance && "serviceConnections" in value;
-    isInstance = isInstance && "createVpc" in value;
-    isInstance = isInstance && "vpcId" in value;
-    isInstance = isInstance && "batchSubnets" in value;
-    isInstance = isInstance && "kmsArn" in value;
 
     return isInstance;
 }
@@ -152,21 +139,21 @@ export function ProjectSettingsFromJSONTyped(json: any, ignoreDiscriminator: boo
     }
     return {
         
-        'budgetAmount': json['budgetAmount'],
+        'budgetAmount': !exists(json, 'budgetAmount') ? undefined : json['budgetAmount'],
         'budgetPeriod': BudgetPeriodFromJSON(json['budgetPeriod']),
-        'dragenAmi': json['dragenAmi'],
-        'enableCompute': json['enableCompute'],
-        'enableDragen': json['enableDragen'],
-        'enableBackup': json['enableBackup'],
-        'enableSftp': json['enableSftp'],
-        'maxF1VCPU': json['maxF1VCPU'],
-        'maxSpotVCPU': json['maxSpotVCPU'],
-        'retentionPolicyDays': json['retentionPolicyDays'],
+        'dragenAmi': !exists(json, 'dragenAmi') ? undefined : json['dragenAmi'],
+        'enableCompute': !exists(json, 'enableCompute') ? undefined : json['enableCompute'],
+        'enableDragen': !exists(json, 'enableDragen') ? undefined : json['enableDragen'],
+        'enableBackup': !exists(json, 'enableBackup') ? undefined : json['enableBackup'],
+        'enableSftp': !exists(json, 'enableSftp') ? undefined : json['enableSftp'],
+        'maxF1VCPU': !exists(json, 'maxF1VCPU') ? undefined : json['maxF1VCPU'],
+        'maxSpotVCPU': !exists(json, 'maxSpotVCPU') ? undefined : json['maxSpotVCPU'],
+        'retentionPolicyDays': !exists(json, 'retentionPolicyDays') ? undefined : json['retentionPolicyDays'],
         'serviceConnections': json['serviceConnections'],
-        'createVpc': json['createVpc'],
-        'vpcId': json['vpcId'],
-        'batchSubnets': json['batchSubnets'],
-        'kmsArn': json['kmsArn'],
+        'createVpc': !exists(json, 'createVpc') ? undefined : json['createVpc'],
+        'vpcId': !exists(json, 'vpcId') ? undefined : json['vpcId'],
+        'batchSubnets': !exists(json, 'batchSubnets') ? undefined : json['batchSubnets'],
+        'kmsArn': !exists(json, 'kmsArn') ? undefined : json['kmsArn'],
     };
 }
 

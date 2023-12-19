@@ -16,66 +16,90 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface Sample
+ * @interface Dashboard
  */
-export interface Sample {
+export interface Dashboard {
     /**
      * 
      * @type {string}
-     * @memberof Sample
+     * @memberof Dashboard
+     */
+    id: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Dashboard
      */
     name: string;
     /**
      * 
-     * @type {{ [key: string]: any; }}
-     * @memberof Sample
+     * @type {string}
+     * @memberof Dashboard
      */
-    metadata: { [key: string]: any; };
+    description: string;
+    /**
+     * 
+     * @type {{ [key: string]: any; }}
+     * @memberof Dashboard
+     */
+    dashboardData: { [key: string]: any; };
+    /**
+     * 
+     * @type {string}
+     * @memberof Dashboard
+     */
+    createdBy: string;
     /**
      * 
      * @type {Date}
-     * @memberof Sample
+     * @memberof Dashboard
      */
     createdAt: Date;
     /**
      * 
      * @type {Date}
-     * @memberof Sample
+     * @memberof Dashboard
      */
     updatedAt: Date;
 }
 
 /**
- * Check if a given object implements the Sample interface.
+ * Check if a given object implements the Dashboard interface.
  */
-export function instanceOfSample(value: object): boolean {
+export function instanceOfDashboard(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "id" in value;
     isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "metadata" in value;
+    isInstance = isInstance && "description" in value;
+    isInstance = isInstance && "dashboardData" in value;
+    isInstance = isInstance && "createdBy" in value;
     isInstance = isInstance && "createdAt" in value;
     isInstance = isInstance && "updatedAt" in value;
 
     return isInstance;
 }
 
-export function SampleFromJSON(json: any): Sample {
-    return SampleFromJSONTyped(json, false);
+export function DashboardFromJSON(json: any): Dashboard {
+    return DashboardFromJSONTyped(json, false);
 }
 
-export function SampleFromJSONTyped(json: any, ignoreDiscriminator: boolean): Sample {
+export function DashboardFromJSONTyped(json: any, ignoreDiscriminator: boolean): Dashboard {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
+        'id': json['id'],
         'name': json['name'],
-        'metadata': json['metadata'],
+        'description': json['description'],
+        'dashboardData': json['dashboardData'],
+        'createdBy': json['createdBy'],
         'createdAt': (new Date(json['createdAt'])),
         'updatedAt': (new Date(json['updatedAt'])),
     };
 }
 
-export function SampleToJSON(value?: Sample | null): any {
+export function DashboardToJSON(value?: Dashboard | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -84,8 +108,11 @@ export function SampleToJSON(value?: Sample | null): any {
     }
     return {
         
+        'id': value.id,
         'name': value.name,
-        'metadata': value.metadata,
+        'description': value.description,
+        'dashboardData': value.dashboardData,
+        'createdBy': value.createdBy,
         'createdAt': (value.createdAt.toISOString()),
         'updatedAt': (value.updatedAt.toISOString()),
     };

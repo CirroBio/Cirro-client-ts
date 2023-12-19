@@ -33,6 +33,10 @@ export interface DeleteBillingAccountRequest {
     billingAccountId: string;
 }
 
+export interface GetBillingAccountsRequest {
+    includeArchived?: boolean;
+}
+
 export interface UpdateBillingAccountRequest {
     billingAccountId: string;
     billingAccount: BillingAccount;
@@ -126,11 +130,50 @@ export class BillingApi extends runtime.BaseAPI {
     }
 
     /**
+     * Generates a billing report xlsx with cost information
+     * Generate billing report
+     */
+    async generateBillingReportRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/billing-report`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Generates a billing report xlsx with cost information
+     * Generate billing report
+     */
+    async generateBillingReport(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.generateBillingReportRaw(initOverrides);
+    }
+
+    /**
      * Gets a list of billing accounts the current user has access to
      * List billing accounts
      */
-    async getBillingAccountsRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<BillingAccount>>> {
+    async getBillingAccountsRaw(requestParameters: GetBillingAccountsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<BillingAccount>>> {
         const queryParameters: any = {};
+
+        if (requestParameters.includeArchived !== undefined) {
+            queryParameters['includeArchived'] = requestParameters.includeArchived;
+        }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
@@ -156,8 +199,8 @@ export class BillingApi extends runtime.BaseAPI {
      * Gets a list of billing accounts the current user has access to
      * List billing accounts
      */
-    async getBillingAccounts(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<BillingAccount>> {
-        const response = await this.getBillingAccountsRaw(initOverrides);
+    async getBillingAccounts(requestParameters: GetBillingAccountsRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<BillingAccount>> {
+        const response = await this.getBillingAccountsRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

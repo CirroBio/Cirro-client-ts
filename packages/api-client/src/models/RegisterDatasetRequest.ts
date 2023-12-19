@@ -21,10 +21,28 @@ import { exists, mapValues } from '../runtime';
 export interface RegisterDatasetRequest {
     /**
      * 
-     * @type {RegisterDatasetRequest}
+     * @type {string}
      * @memberof RegisterDatasetRequest
      */
-    registerDatasetRequest?: RegisterDatasetRequest;
+    name: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof RegisterDatasetRequest
+     */
+    description: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof RegisterDatasetRequest
+     */
+    processId: string;
+    /**
+     * List of file names (with relative paths) that will be uploaded
+     * @type {Array<string>}
+     * @memberof RegisterDatasetRequest
+     */
+    expectedFiles?: Array<string>;
 }
 
 /**
@@ -32,6 +50,9 @@ export interface RegisterDatasetRequest {
  */
 export function instanceOfRegisterDatasetRequest(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "name" in value;
+    isInstance = isInstance && "description" in value;
+    isInstance = isInstance && "processId" in value;
 
     return isInstance;
 }
@@ -46,7 +67,10 @@ export function RegisterDatasetRequestFromJSONTyped(json: any, ignoreDiscriminat
     }
     return {
         
-        'registerDatasetRequest': !exists(json, 'registerDatasetRequest') ? undefined : RegisterDatasetRequestFromJSON(json['registerDatasetRequest']),
+        'name': json['name'],
+        'description': json['description'],
+        'processId': json['processId'],
+        'expectedFiles': !exists(json, 'expectedFiles') ? undefined : json['expectedFiles'],
     };
 }
 
@@ -59,7 +83,10 @@ export function RegisterDatasetRequestToJSON(value?: RegisterDatasetRequest | nu
     }
     return {
         
-        'registerDatasetRequest': RegisterDatasetRequestToJSON(value.registerDatasetRequest),
+        'name': value.name,
+        'description': value.description,
+        'processId': value.processId,
+        'expectedFiles': value.expectedFiles,
     };
 }
 
