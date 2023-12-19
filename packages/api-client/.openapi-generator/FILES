@@ -21,12 +21,12 @@ src/models/BillingMethod.ts
 src/models/BudgetPeriod.ts
 src/models/CloudAccount.ts
 src/models/Contact.ts
-src/models/CreateDashboardRequest.ts
 src/models/CreateNotebookInstanceRequest.ts
 src/models/CreateResponse.ts
 src/models/CustomPipelineSettings.ts
 src/models/CustomerType.ts
 src/models/Dashboard.ts
+src/models/DashboardRequest.ts
 src/models/Dataset.ts
 src/models/DatasetDetail.ts
 src/models/Executor.ts
@@ -35,6 +35,7 @@ src/models/GetExecutionLogsResponse.ts
 src/models/LogEntry.ts
 src/models/MetricRecord.ts
 src/models/NotebookInstance.ts
+src/models/NotebookInstanceStatusResponse.ts
 src/models/OpenNotebookInstanceResponse.ts
 src/models/PaginatedResponseDatasetListDto.ts
 src/models/Process.ts

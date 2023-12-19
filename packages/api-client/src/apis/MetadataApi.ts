@@ -15,14 +15,21 @@
 
 import * as runtime from '../runtime';
 import type {
+  FormSchema,
   Sample,
 } from '../models/index';
 import {
+    FormSchemaFromJSON,
+    FormSchemaToJSON,
     SampleFromJSON,
     SampleToJSON,
 } from '../models/index';
 
 export interface GetProjectSamplesRequest {
+    projectId: string;
+}
+
+export interface GetProjectSchemaRequest {
     projectId: string;
 }
 
@@ -71,6 +78,44 @@ export class MetadataApi extends runtime.BaseAPI {
      */
     async getProjectSamples(requestParameters: GetProjectSamplesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<Sample>> {
         const response = await this.getProjectSamplesRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Get project metadata schema
+     */
+    async getProjectSchemaRaw(requestParameters: GetProjectSchemaRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FormSchema>> {
+        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
+            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling getProjectSchema.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/projects/{projectId}/schema`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => FormSchemaFromJSON(jsonValue));
+    }
+
+    /**
+     * Get project metadata schema
+     */
+    async getProjectSchema(requestParameters: GetProjectSchemaRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<FormSchema> {
+        const response = await this.getProjectSchemaRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

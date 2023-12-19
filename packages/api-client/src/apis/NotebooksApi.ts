@@ -18,6 +18,7 @@ import type {
   CreateNotebookInstanceRequest,
   CreateResponse,
   NotebookInstance,
+  NotebookInstanceStatusResponse,
   OpenNotebookInstanceResponse,
 } from '../models/index';
 import {
@@ -27,6 +28,8 @@ import {
     CreateResponseToJSON,
     NotebookInstanceFromJSON,
     NotebookInstanceToJSON,
+    NotebookInstanceStatusResponseFromJSON,
+    NotebookInstanceStatusResponseToJSON,
     OpenNotebookInstanceResponseFromJSON,
     OpenNotebookInstanceResponseToJSON,
 } from '../models/index';
@@ -189,7 +192,7 @@ export class NotebooksApi extends runtime.BaseAPI {
 
     /**
      */
-    async getNotebookInstanceStatusRaw(requestParameters: GetNotebookInstanceStatusRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<string>> {
+    async getNotebookInstanceStatusRaw(requestParameters: GetNotebookInstanceStatusRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<NotebookInstanceStatusResponse>> {
         if (requestParameters.notebookInstanceId === null || requestParameters.notebookInstanceId === undefined) {
             throw new runtime.RequiredError('notebookInstanceId','Required parameter requestParameters.notebookInstanceId was null or undefined when calling getNotebookInstanceStatus.');
         }
@@ -217,16 +220,12 @@ export class NotebooksApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        if (this.isJsonMime(response.headers.get('content-type'))) {
-            return new runtime.JSONApiResponse<string>(response);
-        } else {
-            return new runtime.TextApiResponse(response) as any;
-        }
+        return new runtime.JSONApiResponse(response, (jsonValue) => NotebookInstanceStatusResponseFromJSON(jsonValue));
     }
 
     /**
      */
-    async getNotebookInstanceStatus(requestParameters: GetNotebookInstanceStatusRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<string> {
+    async getNotebookInstanceStatus(requestParameters: GetNotebookInstanceStatusRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<NotebookInstanceStatusResponse> {
         const response = await this.getNotebookInstanceStatusRaw(requestParameters, initOverrides);
         return await response.value();
     }

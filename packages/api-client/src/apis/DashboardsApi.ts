@@ -15,22 +15,22 @@
 
 import * as runtime from '../runtime';
 import type {
-  CreateDashboardRequest,
   CreateResponse,
   Dashboard,
+  DashboardRequest,
 } from '../models/index';
 import {
-    CreateDashboardRequestFromJSON,
-    CreateDashboardRequestToJSON,
     CreateResponseFromJSON,
     CreateResponseToJSON,
     DashboardFromJSON,
     DashboardToJSON,
+    DashboardRequestFromJSON,
+    DashboardRequestToJSON,
 } from '../models/index';
 
-export interface CreateDashboardOperationRequest {
+export interface CreateDashboardRequest {
     projectId: string;
-    createDashboardRequest: CreateDashboardRequest;
+    dashboardRequest: DashboardRequest;
 }
 
 export interface DeleteDashboardRequest {
@@ -50,7 +50,7 @@ export interface GetDashboardsRequest {
 export interface UpdateDashboardRequest {
     projectId: string;
     dashboardId: string;
-    createDashboardRequest: CreateDashboardRequest;
+    dashboardRequest: DashboardRequest;
 }
 
 /**
@@ -62,13 +62,13 @@ export class DashboardsApi extends runtime.BaseAPI {
      * Creates a dashboard
      * Create dashboard
      */
-    async createDashboardRaw(requestParameters: CreateDashboardOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateResponse>> {
+    async createDashboardRaw(requestParameters: CreateDashboardRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateResponse>> {
         if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
             throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling createDashboard.');
         }
 
-        if (requestParameters.createDashboardRequest === null || requestParameters.createDashboardRequest === undefined) {
-            throw new runtime.RequiredError('createDashboardRequest','Required parameter requestParameters.createDashboardRequest was null or undefined when calling createDashboard.');
+        if (requestParameters.dashboardRequest === null || requestParameters.dashboardRequest === undefined) {
+            throw new runtime.RequiredError('dashboardRequest','Required parameter requestParameters.dashboardRequest was null or undefined when calling createDashboard.');
         }
 
         const queryParameters: any = {};
@@ -90,7 +90,7 @@ export class DashboardsApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: CreateDashboardRequestToJSON(requestParameters.createDashboardRequest),
+            body: DashboardRequestToJSON(requestParameters.dashboardRequest),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => CreateResponseFromJSON(jsonValue));
@@ -100,7 +100,7 @@ export class DashboardsApi extends runtime.BaseAPI {
      * Creates a dashboard
      * Create dashboard
      */
-    async createDashboard(requestParameters: CreateDashboardOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateResponse> {
+    async createDashboard(requestParameters: CreateDashboardRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateResponse> {
         const response = await this.createDashboardRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -246,8 +246,8 @@ export class DashboardsApi extends runtime.BaseAPI {
             throw new runtime.RequiredError('dashboardId','Required parameter requestParameters.dashboardId was null or undefined when calling updateDashboard.');
         }
 
-        if (requestParameters.createDashboardRequest === null || requestParameters.createDashboardRequest === undefined) {
-            throw new runtime.RequiredError('createDashboardRequest','Required parameter requestParameters.createDashboardRequest was null or undefined when calling updateDashboard.');
+        if (requestParameters.dashboardRequest === null || requestParameters.dashboardRequest === undefined) {
+            throw new runtime.RequiredError('dashboardRequest','Required parameter requestParameters.dashboardRequest was null or undefined when calling updateDashboard.');
         }
 
         const queryParameters: any = {};
@@ -269,7 +269,7 @@ export class DashboardsApi extends runtime.BaseAPI {
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: CreateDashboardRequestToJSON(requestParameters.createDashboardRequest),
+            body: DashboardRequestToJSON(requestParameters.dashboardRequest),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => DashboardFromJSON(jsonValue));

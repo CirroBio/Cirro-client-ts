@@ -20,7 +20,7 @@ import { exists, mapValues } from '../runtime';
  */
 export interface FormSchema {
     /**
-     * JSONSchema representation of the pipeline parameters
+     * JSONSchema representation of the parameters
      * @type {{ [key: string]: any; }}
      * @memberof FormSchema
      */

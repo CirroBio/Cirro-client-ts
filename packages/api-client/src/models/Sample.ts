@@ -24,6 +24,12 @@ export interface Sample {
      * @type {string}
      * @memberof Sample
      */
+    id: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Sample
+     */
     name: string;
     /**
      * 
@@ -50,6 +56,7 @@ export interface Sample {
  */
 export function instanceOfSample(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "id" in value;
     isInstance = isInstance && "name" in value;
     isInstance = isInstance && "metadata" in value;
     isInstance = isInstance && "createdAt" in value;
@@ -68,6 +75,7 @@ export function SampleFromJSONTyped(json: any, ignoreDiscriminator: boolean): Sa
     }
     return {
         
+        'id': json['id'],
         'name': json['name'],
         'metadata': json['metadata'],
         'createdAt': (new Date(json['createdAt'])),
@@ -84,6 +92,7 @@ export function SampleToJSON(value?: Sample | null): any {
     }
     return {
         
+        'id': value.id,
         'name': value.name,
         'metadata': value.metadata,
         'createdAt': (value.createdAt.toISOString()),
