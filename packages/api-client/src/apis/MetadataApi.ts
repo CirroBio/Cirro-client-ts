@@ -33,8 +33,8 @@ import {
 
 export interface GetProjectSamplesRequest {
     projectId: string;
-    limit: number;
-    nextToken: string;
+    limit?: number;
+    nextToken?: string;
 }
 
 export interface GetProjectSchemaRequest {
@@ -58,14 +58,6 @@ export class MetadataApi extends runtime.BaseAPI {
     async getProjectSamplesRaw(requestParameters: GetProjectSamplesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PaginatedResponseSampleDto>> {
         if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
             throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling getProjectSamples.');
-        }
-
-        if (requestParameters.limit === null || requestParameters.limit === undefined) {
-            throw new runtime.RequiredError('limit','Required parameter requestParameters.limit was null or undefined when calling getProjectSamples.');
-        }
-
-        if (requestParameters.nextToken === null || requestParameters.nextToken === undefined) {
-            throw new runtime.RequiredError('nextToken','Required parameter requestParameters.nextToken was null or undefined when calling getProjectSamples.');
         }
 
         const queryParameters: any = {};
