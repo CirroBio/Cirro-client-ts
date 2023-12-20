@@ -39,6 +39,12 @@ export interface Dashboard {
     description: string;
     /**
      * 
+     * @type {Array<string>}
+     * @memberof Dashboard
+     */
+    processIds: Array<string>;
+    /**
+     * 
      * @type {{ [key: string]: any; }}
      * @memberof Dashboard
      */
@@ -77,6 +83,7 @@ export function instanceOfDashboard(value: object): boolean {
     isInstance = isInstance && "id" in value;
     isInstance = isInstance && "name" in value;
     isInstance = isInstance && "description" in value;
+    isInstance = isInstance && "processIds" in value;
     isInstance = isInstance && "dashboardData" in value;
     isInstance = isInstance && "info" in value;
     isInstance = isInstance && "createdBy" in value;
@@ -99,6 +106,7 @@ export function DashboardFromJSONTyped(json: any, ignoreDiscriminator: boolean):
         'id': json['id'],
         'name': json['name'],
         'description': json['description'],
+        'processIds': json['processIds'],
         'dashboardData': json['dashboardData'],
         'info': json['info'],
         'createdBy': json['createdBy'],
@@ -119,6 +127,7 @@ export function DashboardToJSON(value?: Dashboard | null): any {
         'id': value.id,
         'name': value.name,
         'description': value.description,
+        'processIds': value.processIds,
         'dashboardData': value.dashboardData,
         'info': value.info,
         'createdBy': value.createdBy,

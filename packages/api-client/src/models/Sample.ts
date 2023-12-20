@@ -39,6 +39,12 @@ export interface Sample {
     metadata: { [key: string]: any; };
     /**
      * 
+     * @type {Array<string>}
+     * @memberof Sample
+     */
+    datasetIds: Array<string>;
+    /**
+     * 
      * @type {Date}
      * @memberof Sample
      */
@@ -59,6 +65,7 @@ export function instanceOfSample(value: object): boolean {
     isInstance = isInstance && "id" in value;
     isInstance = isInstance && "name" in value;
     isInstance = isInstance && "metadata" in value;
+    isInstance = isInstance && "datasetIds" in value;
     isInstance = isInstance && "createdAt" in value;
     isInstance = isInstance && "updatedAt" in value;
 
@@ -78,6 +85,7 @@ export function SampleFromJSONTyped(json: any, ignoreDiscriminator: boolean): Sa
         'id': json['id'],
         'name': json['name'],
         'metadata': json['metadata'],
+        'datasetIds': json['datasetIds'],
         'createdAt': (new Date(json['createdAt'])),
         'updatedAt': (new Date(json['updatedAt'])),
     };
@@ -95,6 +103,7 @@ export function SampleToJSON(value?: Sample | null): any {
         'id': value.id,
         'name': value.name,
         'metadata': value.metadata,
+        'datasetIds': value.datasetIds,
         'createdAt': (value.createdAt.toISOString()),
         'updatedAt': (value.updatedAt.toISOString()),
     };

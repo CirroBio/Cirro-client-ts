@@ -33,6 +33,12 @@ export interface DashboardRequest {
     description: string;
     /**
      * 
+     * @type {Array<string>}
+     * @memberof DashboardRequest
+     */
+    processIds: Array<string>;
+    /**
+     * 
      * @type {{ [key: string]: any; }}
      * @memberof DashboardRequest
      */
@@ -52,6 +58,7 @@ export function instanceOfDashboardRequest(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "name" in value;
     isInstance = isInstance && "description" in value;
+    isInstance = isInstance && "processIds" in value;
     isInstance = isInstance && "dashboardData" in value;
     isInstance = isInstance && "info" in value;
 
@@ -70,6 +77,7 @@ export function DashboardRequestFromJSONTyped(json: any, ignoreDiscriminator: bo
         
         'name': json['name'],
         'description': json['description'],
+        'processIds': json['processIds'],
         'dashboardData': json['dashboardData'],
         'info': json['info'],
     };
@@ -86,6 +94,7 @@ export function DashboardRequestToJSON(value?: DashboardRequest | null): any {
         
         'name': value.name,
         'description': value.description,
+        'processIds': value.processIds,
         'dashboardData': value.dashboardData,
         'info': value.info,
     };

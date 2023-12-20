@@ -16,17 +16,25 @@
 import * as runtime from '../runtime';
 import type {
   FormSchema,
+  PaginatedResponseSampleDto,
   Sample,
+  SampleRequest,
 } from '../models/index';
 import {
     FormSchemaFromJSON,
     FormSchemaToJSON,
+    PaginatedResponseSampleDtoFromJSON,
+    PaginatedResponseSampleDtoToJSON,
     SampleFromJSON,
     SampleToJSON,
+    SampleRequestFromJSON,
+    SampleRequestToJSON,
 } from '../models/index';
 
 export interface GetProjectSamplesRequest {
     projectId: string;
+    limit: number;
+    nextToken: string;
 }
 
 export interface GetProjectSchemaRequest {
@@ -35,7 +43,8 @@ export interface GetProjectSchemaRequest {
 
 export interface UpdateSampleRequest {
     projectId: string;
-    sample: Sample;
+    sampleId: string;
+    sampleRequest: SampleRequest;
 }
 
 /**
@@ -46,12 +55,28 @@ export class MetadataApi extends runtime.BaseAPI {
     /**
      * Get project samples
      */
-    async getProjectSamplesRaw(requestParameters: GetProjectSamplesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<Sample>>> {
+    async getProjectSamplesRaw(requestParameters: GetProjectSamplesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PaginatedResponseSampleDto>> {
         if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
             throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling getProjectSamples.');
         }
 
+        if (requestParameters.limit === null || requestParameters.limit === undefined) {
+            throw new runtime.RequiredError('limit','Required parameter requestParameters.limit was null or undefined when calling getProjectSamples.');
+        }
+
+        if (requestParameters.nextToken === null || requestParameters.nextToken === undefined) {
+            throw new runtime.RequiredError('nextToken','Required parameter requestParameters.nextToken was null or undefined when calling getProjectSamples.');
+        }
+
         const queryParameters: any = {};
+
+        if (requestParameters.limit !== undefined) {
+            queryParameters['limit'] = requestParameters.limit;
+        }
+
+        if (requestParameters.nextToken !== undefined) {
+            queryParameters['nextToken'] = requestParameters.nextToken;
+        }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
@@ -70,13 +95,13 @@ export class MetadataApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(SampleFromJSON));
+        return new runtime.JSONApiResponse(response, (jsonValue) => PaginatedResponseSampleDtoFromJSON(jsonValue));
     }
 
     /**
      * Get project samples
      */
-    async getProjectSamples(requestParameters: GetProjectSamplesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<Sample>> {
+    async getProjectSamples(requestParameters: GetProjectSamplesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<PaginatedResponseSampleDto> {
         const response = await this.getProjectSamplesRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -127,8 +152,12 @@ export class MetadataApi extends runtime.BaseAPI {
             throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling updateSample.');
         }
 
-        if (requestParameters.sample === null || requestParameters.sample === undefined) {
-            throw new runtime.RequiredError('sample','Required parameter requestParameters.sample was null or undefined when calling updateSample.');
+        if (requestParameters.sampleId === null || requestParameters.sampleId === undefined) {
+            throw new runtime.RequiredError('sampleId','Required parameter requestParameters.sampleId was null or undefined when calling updateSample.');
+        }
+
+        if (requestParameters.sampleRequest === null || requestParameters.sampleRequest === undefined) {
+            throw new runtime.RequiredError('sampleRequest','Required parameter requestParameters.sampleRequest was null or undefined when calling updateSample.');
         }
 
         const queryParameters: any = {};
@@ -146,11 +175,11 @@ export class MetadataApi extends runtime.BaseAPI {
             }
         }
         const response = await this.request({
-            path: `/projects/{projectId}/samples`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))),
+            path: `/projects/{projectId}/samples/{sampleId}`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))).replace(`{${"sampleId"}}`, encodeURIComponent(String(requestParameters.sampleId))),
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: SampleToJSON(requestParameters.sample),
+            body: SampleRequestToJSON(requestParameters.sampleRequest),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => SampleFromJSON(jsonValue));

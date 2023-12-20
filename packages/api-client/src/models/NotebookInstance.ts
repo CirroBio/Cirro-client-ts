@@ -13,6 +13,13 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { Status } from './Status';
+import {
+    StatusFromJSON,
+    StatusFromJSONTyped,
+    StatusToJSON,
+} from './Status';
+
 /**
  * 
  * @export
@@ -33,6 +40,30 @@ export interface NotebookInstance {
     name: string;
     /**
      * 
+     * @type {Status}
+     * @memberof NotebookInstance
+     */
+    status: Status;
+    /**
+     * 
+     * @type {string}
+     * @memberof NotebookInstance
+     */
+    instanceType: string;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof NotebookInstance
+     */
+    acceleratorTypes: Array<string>;
+    /**
+     * 
+     * @type {number}
+     * @memberof NotebookInstance
+     */
+    volumeSizeGB: number;
+    /**
+     * 
      * @type {string}
      * @memberof NotebookInstance
      */
@@ -46,6 +77,10 @@ export function instanceOfNotebookInstance(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "id" in value;
     isInstance = isInstance && "name" in value;
+    isInstance = isInstance && "status" in value;
+    isInstance = isInstance && "instanceType" in value;
+    isInstance = isInstance && "acceleratorTypes" in value;
+    isInstance = isInstance && "volumeSizeGB" in value;
     isInstance = isInstance && "createdBy" in value;
 
     return isInstance;
@@ -63,6 +98,10 @@ export function NotebookInstanceFromJSONTyped(json: any, ignoreDiscriminator: bo
         
         'id': json['id'],
         'name': json['name'],
+        'status': StatusFromJSON(json['status']),
+        'instanceType': json['instanceType'],
+        'acceleratorTypes': json['acceleratorTypes'],
+        'volumeSizeGB': json['volumeSizeGB'],
         'createdBy': json['createdBy'],
     };
 }
@@ -78,6 +117,10 @@ export function NotebookInstanceToJSON(value?: NotebookInstance | null): any {
         
         'id': value.id,
         'name': value.name,
+        'status': StatusToJSON(value.status),
+        'instanceType': value.instanceType,
+        'acceleratorTypes': value.acceleratorTypes,
+        'volumeSizeGB': value.volumeSizeGB,
         'createdBy': value.createdBy,
     };
 }

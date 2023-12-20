@@ -39,6 +39,7 @@ src/models/NotebookInstance.ts
 src/models/NotebookInstanceStatusResponse.ts
 src/models/OpenNotebookInstanceResponse.ts
 src/models/PaginatedResponseDatasetListDto.ts
+src/models/PaginatedResponseSampleDto.ts
 src/models/Process.ts
 src/models/ProcessDetail.ts
 src/models/Project.ts
@@ -53,6 +54,7 @@ src/models/ReferenceType.ts
 src/models/RegisterDatasetRequest.ts
 src/models/RegisterPublicDataRequest.ts
 src/models/Sample.ts
+src/models/SampleRequest.ts
 src/models/ServiceConnection.ts
 src/models/SetUserProjectRoleRequest.ts
 src/models/Status.ts
