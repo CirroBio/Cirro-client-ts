@@ -69,6 +69,8 @@ export interface StopNotebookInstanceRequest {
 export class NotebooksApi extends runtime.BaseAPI {
 
     /**
+     * Creates a notebook instance within the project
+     * Create notebook instance
      */
     async createNotebookInstanceRaw(requestParameters: CreateNotebookInstanceOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateResponse>> {
         if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
@@ -105,6 +107,8 @@ export class NotebooksApi extends runtime.BaseAPI {
     }
 
     /**
+     * Creates a notebook instance within the project
+     * Create notebook instance
      */
     async createNotebookInstance(requestParameters: CreateNotebookInstanceOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateResponse> {
         const response = await this.createNotebookInstanceRaw(requestParameters, initOverrides);
@@ -112,6 +116,8 @@ export class NotebooksApi extends runtime.BaseAPI {
     }
 
     /**
+     * Triggers a deletion of the notebook instance
+     * Delete notebook instance
      */
     async deleteNotebookInstanceRaw(requestParameters: DeleteNotebookInstanceRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.notebookInstanceId === null || requestParameters.notebookInstanceId === undefined) {
@@ -145,12 +151,16 @@ export class NotebooksApi extends runtime.BaseAPI {
     }
 
     /**
+     * Triggers a deletion of the notebook instance
+     * Delete notebook instance
      */
     async deleteNotebookInstance(requestParameters: DeleteNotebookInstanceRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.deleteNotebookInstanceRaw(requestParameters, initOverrides);
     }
 
     /**
+     * Creates an authenticated URL to open up the notebook instance in your browser
+     * Generate notebook instance URL
      */
     async generateNotebookInstanceUrlRaw(requestParameters: GenerateNotebookInstanceUrlRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<OpenNotebookInstanceResponse>> {
         if (requestParameters.notebookInstanceId === null || requestParameters.notebookInstanceId === undefined) {
@@ -184,6 +194,8 @@ export class NotebooksApi extends runtime.BaseAPI {
     }
 
     /**
+     * Creates an authenticated URL to open up the notebook instance in your browser
+     * Generate notebook instance URL
      */
     async generateNotebookInstanceUrl(requestParameters: GenerateNotebookInstanceUrlRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<OpenNotebookInstanceResponse> {
         const response = await this.generateNotebookInstanceUrlRaw(requestParameters, initOverrides);
@@ -191,6 +203,8 @@ export class NotebooksApi extends runtime.BaseAPI {
     }
 
     /**
+     * Retrieves the status of the instance
+     * Get notebook instance status
      */
     async getNotebookInstanceStatusRaw(requestParameters: GetNotebookInstanceStatusRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<NotebookInstanceStatusResponse>> {
         if (requestParameters.notebookInstanceId === null || requestParameters.notebookInstanceId === undefined) {
@@ -224,6 +238,8 @@ export class NotebooksApi extends runtime.BaseAPI {
     }
 
     /**
+     * Retrieves the status of the instance
+     * Get notebook instance status
      */
     async getNotebookInstanceStatus(requestParameters: GetNotebookInstanceStatusRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<NotebookInstanceStatusResponse> {
         const response = await this.getNotebookInstanceStatusRaw(requestParameters, initOverrides);
@@ -231,6 +247,8 @@ export class NotebooksApi extends runtime.BaseAPI {
     }
 
     /**
+     * Retrieves a list of notebook instances that the user has access to
+     * Get notebook instances
      */
     async getNotebookInstancesRaw(requestParameters: GetNotebookInstancesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<NotebookInstance>>> {
         if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
@@ -260,6 +278,8 @@ export class NotebooksApi extends runtime.BaseAPI {
     }
 
     /**
+     * Retrieves a list of notebook instances that the user has access to
+     * Get notebook instances
      */
     async getNotebookInstances(requestParameters: GetNotebookInstancesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<NotebookInstance>> {
         const response = await this.getNotebookInstancesRaw(requestParameters, initOverrides);
@@ -267,6 +287,8 @@ export class NotebooksApi extends runtime.BaseAPI {
     }
 
     /**
+     * Shuts down a running notebook instance
+     * Stop notebook instance
      */
     async stopNotebookInstanceRaw(requestParameters: StopNotebookInstanceRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.notebookInstanceId === null || requestParameters.notebookInstanceId === undefined) {
@@ -300,6 +322,8 @@ export class NotebooksApi extends runtime.BaseAPI {
     }
 
     /**
+     * Shuts down a running notebook instance
+     * Stop notebook instance
      */
     async stopNotebookInstance(requestParameters: StopNotebookInstanceRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.stopNotebookInstanceRaw(requestParameters, initOverrides);

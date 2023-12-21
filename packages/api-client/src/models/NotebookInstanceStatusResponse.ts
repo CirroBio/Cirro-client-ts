@@ -25,6 +25,12 @@ export interface NotebookInstanceStatusResponse {
      * @memberof NotebookInstanceStatusResponse
      */
     status: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof NotebookInstanceStatusResponse
+     */
+    statusMessage: string;
 }
 
 /**
@@ -33,6 +39,7 @@ export interface NotebookInstanceStatusResponse {
 export function instanceOfNotebookInstanceStatusResponse(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "status" in value;
+    isInstance = isInstance && "statusMessage" in value;
 
     return isInstance;
 }
@@ -48,6 +55,7 @@ export function NotebookInstanceStatusResponseFromJSONTyped(json: any, ignoreDis
     return {
         
         'status': json['status'],
+        'statusMessage': json['statusMessage'],
     };
 }
 
@@ -61,6 +69,7 @@ export function NotebookInstanceStatusResponseToJSON(value?: NotebookInstanceSta
     return {
         
         'status': value.status,
+        'statusMessage': value.statusMessage,
     };
 }
 

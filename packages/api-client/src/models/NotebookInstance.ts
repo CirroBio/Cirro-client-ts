@@ -68,6 +68,12 @@ export interface NotebookInstance {
      * @memberof NotebookInstance
      */
     createdBy: string;
+    /**
+     * 
+     * @type {Date}
+     * @memberof NotebookInstance
+     */
+    createdAt: Date;
 }
 
 /**
@@ -82,6 +88,7 @@ export function instanceOfNotebookInstance(value: object): boolean {
     isInstance = isInstance && "acceleratorTypes" in value;
     isInstance = isInstance && "volumeSizeGB" in value;
     isInstance = isInstance && "createdBy" in value;
+    isInstance = isInstance && "createdAt" in value;
 
     return isInstance;
 }
@@ -103,6 +110,7 @@ export function NotebookInstanceFromJSONTyped(json: any, ignoreDiscriminator: bo
         'acceleratorTypes': json['acceleratorTypes'],
         'volumeSizeGB': json['volumeSizeGB'],
         'createdBy': json['createdBy'],
+        'createdAt': (new Date(json['createdAt'])),
     };
 }
 
@@ -122,6 +130,7 @@ export function NotebookInstanceToJSON(value?: NotebookInstance | null): any {
         'acceleratorTypes': value.acceleratorTypes,
         'volumeSizeGB': value.volumeSizeGB,
         'createdBy': value.createdBy,
+        'createdAt': (value.createdAt.toISOString()),
     };
 }
 

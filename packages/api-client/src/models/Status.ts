@@ -24,6 +24,7 @@ export enum Status {
     Archived = 'ARCHIVED',
     Deleted = 'DELETED',
     Deleting = 'DELETING',
+    Suspended = 'SUSPENDED',
     Delete = 'DELETE',
     Failed = 'FAILED'
 }

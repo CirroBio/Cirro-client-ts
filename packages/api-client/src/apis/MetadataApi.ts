@@ -41,6 +41,11 @@ export interface GetProjectSchemaRequest {
     projectId: string;
 }
 
+export interface UpdateProjectSchemaRequest {
+    projectId: string;
+    formSchema: FormSchema;
+}
+
 export interface UpdateSampleRequest {
     projectId: string;
     sampleId: string;
@@ -53,6 +58,7 @@ export interface UpdateSampleRequest {
 export class MetadataApi extends runtime.BaseAPI {
 
     /**
+     * Retrieves a list of samples associated with a project along with their metadata
      * Get project samples
      */
     async getProjectSamplesRaw(requestParameters: GetProjectSamplesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PaginatedResponseSampleDto>> {
@@ -91,6 +97,7 @@ export class MetadataApi extends runtime.BaseAPI {
     }
 
     /**
+     * Retrieves a list of samples associated with a project along with their metadata
      * Get project samples
      */
     async getProjectSamples(requestParameters: GetProjectSamplesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<PaginatedResponseSampleDto> {
@@ -137,6 +144,51 @@ export class MetadataApi extends runtime.BaseAPI {
     }
 
     /**
+     * Update project metadata schema
+     */
+    async updateProjectSchemaRaw(requestParameters: UpdateProjectSchemaRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
+            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling updateProjectSchema.');
+        }
+
+        if (requestParameters.formSchema === null || requestParameters.formSchema === undefined) {
+            throw new runtime.RequiredError('formSchema','Required parameter requestParameters.formSchema was null or undefined when calling updateProjectSchema.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/projects/{projectId}/schema`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))),
+            method: 'PUT',
+            headers: headerParameters,
+            query: queryParameters,
+            body: FormSchemaToJSON(requestParameters.formSchema),
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Update project metadata schema
+     */
+    async updateProjectSchema(requestParameters: UpdateProjectSchemaRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.updateProjectSchemaRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Updates metadata on a sample
      * Update sample
      */
     async updateSampleRaw(requestParameters: UpdateSampleRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Sample>> {
@@ -178,6 +230,7 @@ export class MetadataApi extends runtime.BaseAPI {
     }
 
     /**
+     * Updates metadata on a sample
      * Update sample
      */
     async updateSample(requestParameters: UpdateSampleRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Sample> {
