@@ -13,56 +13,48 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import type { Tag } from './Tag';
-import {
-    TagFromJSON,
-    TagFromJSONTyped,
-    TagToJSON,
-} from './Tag';
-
 /**
  * 
  * @export
- * @interface UpdateDatasetRequest
+ * @interface ImportDataRequest
  */
-export interface UpdateDatasetRequest {
+export interface ImportDataRequest {
     /**
      * 
      * @type {string}
-     * @memberof UpdateDatasetRequest
+     * @memberof ImportDataRequest
      */
     name: string;
     /**
      * 
      * @type {string}
-     * @memberof UpdateDatasetRequest
+     * @memberof ImportDataRequest
      */
     description: string;
     /**
-     * 
-     * @type {Array<Tag>}
-     * @memberof UpdateDatasetRequest
+     * List of SRA/ENA/DDBJ/GEO/Synapse IDs
+     * @type {Array<string>}
+     * @memberof ImportDataRequest
      */
-    tags: Array<Tag>;
+    publicIds?: Array<string>;
 }
 
 /**
- * Check if a given object implements the UpdateDatasetRequest interface.
+ * Check if a given object implements the ImportDataRequest interface.
  */
-export function instanceOfUpdateDatasetRequest(value: object): boolean {
+export function instanceOfImportDataRequest(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "name" in value;
     isInstance = isInstance && "description" in value;
-    isInstance = isInstance && "tags" in value;
 
     return isInstance;
 }
 
-export function UpdateDatasetRequestFromJSON(json: any): UpdateDatasetRequest {
-    return UpdateDatasetRequestFromJSONTyped(json, false);
+export function ImportDataRequestFromJSON(json: any): ImportDataRequest {
+    return ImportDataRequestFromJSONTyped(json, false);
 }
 
-export function UpdateDatasetRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): UpdateDatasetRequest {
+export function ImportDataRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): ImportDataRequest {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -70,11 +62,11 @@ export function UpdateDatasetRequestFromJSONTyped(json: any, ignoreDiscriminator
         
         'name': json['name'],
         'description': json['description'],
-        'tags': ((json['tags'] as Array<any>).map(TagFromJSON)),
+        'publicIds': !exists(json, 'publicIds') ? undefined : json['publicIds'],
     };
 }
 
-export function UpdateDatasetRequestToJSON(value?: UpdateDatasetRequest | null): any {
+export function ImportDataRequestToJSON(value?: ImportDataRequest | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -85,7 +77,7 @@ export function UpdateDatasetRequestToJSON(value?: UpdateDatasetRequest | null):
         
         'name': value.name,
         'description': value.description,
-        'tags': ((value.tags as Array<any>).map(TagToJSON)),
+        'publicIds': value.publicIds,
     };
 }
 

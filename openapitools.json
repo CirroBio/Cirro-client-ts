@@ -16,7 +16,7 @@
         },
         "additionalProperties": {
           "npmName": "@cirrobio/api-client",
-          "npmVersion": "0.0.16-alpha",
+          "npmVersion": "0.0.17-alpha",
           "author": "CirroBio",
           "stringEnums": true
         }

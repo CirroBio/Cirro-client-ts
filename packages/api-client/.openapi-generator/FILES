@@ -30,9 +30,11 @@ src/models/Dashboard.ts
 src/models/DashboardRequest.ts
 src/models/Dataset.ts
 src/models/DatasetDetail.ts
+src/models/DatasetFile.ts
 src/models/Executor.ts
 src/models/FormSchema.ts
 src/models/GetExecutionLogsResponse.ts
+src/models/ImportDataRequest.ts
 src/models/LogEntry.ts
 src/models/MetricRecord.ts
 src/models/NotebookInstance.ts
@@ -51,8 +53,6 @@ src/models/ProjectSettings.ts
 src/models/ProjectUser.ts
 src/models/Reference.ts
 src/models/ReferenceType.ts
-src/models/RegisterDatasetRequest.ts
-src/models/RegisterPublicDataRequest.ts
 src/models/Sample.ts
 src/models/SampleRequest.ts
 src/models/ServiceConnection.ts
@@ -64,6 +64,8 @@ src/models/Tag.ts
 src/models/Task.ts
 src/models/UpdateDatasetRequest.ts
 src/models/UpdateUserRequest.ts
+src/models/UploadDatasetCreateResponse.ts
+src/models/UploadDatasetRequest.ts
 src/models/User.ts
 src/models/index.ts
 src/runtime.ts
