@@ -32,11 +32,11 @@ export interface ImportDataRequest {
      */
     description: string;
     /**
-     * List of SRA/ENA/DDBJ/GEO/Synapse IDs
+     * 
      * @type {Array<string>}
      * @memberof ImportDataRequest
      */
-    publicIds?: Array<string>;
+    publicIds: Array<string>;
 }
 
 /**
@@ -46,6 +46,7 @@ export function instanceOfImportDataRequest(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "name" in value;
     isInstance = isInstance && "description" in value;
+    isInstance = isInstance && "publicIds" in value;
 
     return isInstance;
 }
@@ -62,7 +63,7 @@ export function ImportDataRequestFromJSONTyped(json: any, ignoreDiscriminator: b
         
         'name': json['name'],
         'description': json['description'],
-        'publicIds': !exists(json, 'publicIds') ? undefined : json['publicIds'],
+        'publicIds': json['publicIds'],
     };
 }
 

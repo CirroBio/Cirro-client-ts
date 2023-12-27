@@ -20,23 +20,23 @@ import { exists, mapValues } from '../runtime';
  */
 export interface DatasetFile {
     /**
-     * 
+     * Relative path to file
      * @type {string}
      * @memberof DatasetFile
      */
-    path: string;
+    path?: string;
     /**
-     * 
+     * File size (in bytes)
      * @type {number}
      * @memberof DatasetFile
      */
-    size: number;
+    size?: number;
     /**
-     * 
+     * Metadata associated with the file
      * @type {{ [key: string]: string; }}
      * @memberof DatasetFile
      */
-    metadata: { [key: string]: string; };
+    metadata?: { [key: string]: string; };
 }
 
 /**
@@ -44,9 +44,6 @@ export interface DatasetFile {
  */
 export function instanceOfDatasetFile(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "path" in value;
-    isInstance = isInstance && "size" in value;
-    isInstance = isInstance && "metadata" in value;
 
     return isInstance;
 }
@@ -61,9 +58,9 @@ export function DatasetFileFromJSONTyped(json: any, ignoreDiscriminator: boolean
     }
     return {
         
-        'path': json['path'],
-        'size': json['size'],
-        'metadata': json['metadata'],
+        'path': !exists(json, 'path') ? undefined : json['path'],
+        'size': !exists(json, 'size') ? undefined : json['size'],
+        'metadata': !exists(json, 'metadata') ? undefined : json['metadata'],
     };
 }
 

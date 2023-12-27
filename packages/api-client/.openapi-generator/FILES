@@ -29,8 +29,10 @@ src/models/CustomerType.ts
 src/models/Dashboard.ts
 src/models/DashboardRequest.ts
 src/models/Dataset.ts
+src/models/DatasetAssetsManifest.ts
 src/models/DatasetDetail.ts
 src/models/DatasetFile.ts
+src/models/DatasetViz.ts
 src/models/Executor.ts
 src/models/FormSchema.ts
 src/models/GetExecutionLogsResponse.ts

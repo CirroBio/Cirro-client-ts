@@ -38,11 +38,11 @@ export interface UploadDatasetRequest {
      */
     processId: string;
     /**
-     * List of file names (with relative paths) that will be uploaded
+     * 
      * @type {Array<string>}
      * @memberof UploadDatasetRequest
      */
-    expectedFiles?: Array<string>;
+    expectedFiles: Array<string>;
 }
 
 /**
@@ -53,6 +53,7 @@ export function instanceOfUploadDatasetRequest(value: object): boolean {
     isInstance = isInstance && "name" in value;
     isInstance = isInstance && "description" in value;
     isInstance = isInstance && "processId" in value;
+    isInstance = isInstance && "expectedFiles" in value;
 
     return isInstance;
 }
@@ -70,7 +71,7 @@ export function UploadDatasetRequestFromJSONTyped(json: any, ignoreDiscriminator
         'name': json['name'],
         'description': json['description'],
         'processId': json['processId'],
-        'expectedFiles': !exists(json, 'expectedFiles') ? undefined : json['expectedFiles'],
+        'expectedFiles': json['expectedFiles'],
     };
 }
 

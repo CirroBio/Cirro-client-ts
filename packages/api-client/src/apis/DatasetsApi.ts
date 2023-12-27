@@ -16,8 +16,8 @@
 import * as runtime from '../runtime';
 import type {
   CreateResponse,
+  DatasetAssetsManifest,
   DatasetDetail,
-  DatasetFile,
   ImportDataRequest,
   PaginatedResponseDatasetListDto,
   UpdateDatasetRequest,
@@ -27,10 +27,10 @@ import type {
 import {
     CreateResponseFromJSON,
     CreateResponseToJSON,
+    DatasetAssetsManifestFromJSON,
+    DatasetAssetsManifestToJSON,
     DatasetDetailFromJSON,
     DatasetDetailToJSON,
-    DatasetFileFromJSON,
-    DatasetFileToJSON,
     ImportDataRequestFromJSON,
     ImportDataRequestToJSON,
     PaginatedResponseDatasetListDtoFromJSON,
@@ -53,13 +53,15 @@ export interface GetDatasetRequest {
     projectId: string;
 }
 
-export interface GetDatasetFilesRequest {
+export interface GetDatasetManifestRequest {
     datasetId: string;
     projectId: string;
 }
 
 export interface GetDatasetsRequest {
     projectId: string;
+    limit?: number;
+    nextToken?: string;
 }
 
 export interface ImportPublicDatasetRequest {
@@ -176,16 +178,16 @@ export class DatasetsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Gets list of files in a dataset
-     * Get dataset files
+     * Gets a listing of files, charts, and other assets available for the dataset
+     * Get dataset manifest
      */
-    async getDatasetFilesRaw(requestParameters: GetDatasetFilesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<DatasetFile>>> {
+    async getDatasetManifestRaw(requestParameters: GetDatasetManifestRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<DatasetAssetsManifest>> {
         if (requestParameters.datasetId === null || requestParameters.datasetId === undefined) {
-            throw new runtime.RequiredError('datasetId','Required parameter requestParameters.datasetId was null or undefined when calling getDatasetFiles.');
+            throw new runtime.RequiredError('datasetId','Required parameter requestParameters.datasetId was null or undefined when calling getDatasetManifest.');
         }
 
         if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
-            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling getDatasetFiles.');
+            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling getDatasetManifest.');
         }
 
         const queryParameters: any = {};
@@ -207,15 +209,15 @@ export class DatasetsApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(DatasetFileFromJSON));
+        return new runtime.JSONApiResponse(response, (jsonValue) => DatasetAssetsManifestFromJSON(jsonValue));
     }
 
     /**
-     * Gets list of files in a dataset
-     * Get dataset files
+     * Gets a listing of files, charts, and other assets available for the dataset
+     * Get dataset manifest
      */
-    async getDatasetFiles(requestParameters: GetDatasetFilesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<DatasetFile>> {
-        const response = await this.getDatasetFilesRaw(requestParameters, initOverrides);
+    async getDatasetManifest(requestParameters: GetDatasetManifestRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<DatasetAssetsManifest> {
+        const response = await this.getDatasetManifestRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -229,6 +231,14 @@ export class DatasetsApi extends runtime.BaseAPI {
         }
 
         const queryParameters: any = {};
+
+        if (requestParameters.limit !== undefined) {
+            queryParameters['limit'] = requestParameters.limit;
+        }
+
+        if (requestParameters.nextToken !== undefined) {
+            queryParameters['nextToken'] = requestParameters.nextToken;
+        }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
