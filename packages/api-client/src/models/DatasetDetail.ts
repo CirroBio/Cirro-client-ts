@@ -64,6 +64,12 @@ export interface DatasetDetail {
     processId: string;
     /**
      * 
+     * @type {string}
+     * @memberof DatasetDetail
+     */
+    projectId: string;
+    /**
+     * 
      * @type {Array<string>}
      * @memberof DatasetDetail
      */
@@ -128,6 +134,7 @@ export function instanceOfDatasetDetail(value: object): boolean {
     isInstance = isInstance && "description" in value;
     isInstance = isInstance && "s3" in value;
     isInstance = isInstance && "processId" in value;
+    isInstance = isInstance && "projectId" in value;
     isInstance = isInstance && "sourceDatasets" in value;
     isInstance = isInstance && "status" in value;
     isInstance = isInstance && "statusMessage" in value;
@@ -156,6 +163,7 @@ export function DatasetDetailFromJSONTyped(json: any, ignoreDiscriminator: boole
         'description': json['description'],
         's3': json['s3'],
         'processId': json['processId'],
+        'projectId': json['projectId'],
         'sourceDatasets': json['sourceDatasets'],
         'status': StatusFromJSON(json['status']),
         'statusMessage': json['statusMessage'],
@@ -182,6 +190,7 @@ export function DatasetDetailToJSON(value?: DatasetDetail | null): any {
         'description': value.description,
         's3': value.s3,
         'processId': value.processId,
+        'projectId': value.projectId,
         'sourceDatasets': value.sourceDatasets,
         'status': StatusToJSON(value.status),
         'statusMessage': value.statusMessage,

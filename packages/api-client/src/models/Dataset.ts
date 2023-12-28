@@ -55,6 +55,12 @@ export interface Dataset {
      * @type {string}
      * @memberof Dataset
      */
+    projectId: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Dataset
+     */
     processId: string;
     /**
      * 
@@ -102,6 +108,7 @@ export function instanceOfDataset(value: object): boolean {
     isInstance = isInstance && "id" in value;
     isInstance = isInstance && "name" in value;
     isInstance = isInstance && "description" in value;
+    isInstance = isInstance && "projectId" in value;
     isInstance = isInstance && "processId" in value;
     isInstance = isInstance && "sourceDatasets" in value;
     isInstance = isInstance && "status" in value;
@@ -126,6 +133,7 @@ export function DatasetFromJSONTyped(json: any, ignoreDiscriminator: boolean): D
         'id': json['id'],
         'name': json['name'],
         'description': json['description'],
+        'projectId': json['projectId'],
         'processId': json['processId'],
         'sourceDatasets': json['sourceDatasets'],
         'status': StatusFromJSON(json['status']),
@@ -148,6 +156,7 @@ export function DatasetToJSON(value?: Dataset | null): any {
         'id': value.id,
         'name': value.name,
         'description': value.description,
+        'projectId': value.projectId,
         'processId': value.processId,
         'sourceDatasets': value.sourceDatasets,
         'status': StatusToJSON(value.status),
