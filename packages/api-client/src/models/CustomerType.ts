@@ -19,6 +19,7 @@
  */
 export enum CustomerType {
     Internal = 'INTERNAL',
+    Consortium = 'CONSORTIUM',
     External = 'EXTERNAL'
 }
 

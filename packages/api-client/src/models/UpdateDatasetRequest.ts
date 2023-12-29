@@ -40,6 +40,12 @@ export interface UpdateDatasetRequest {
     description: string;
     /**
      * 
+     * @type {string}
+     * @memberof UpdateDatasetRequest
+     */
+    processId: string;
+    /**
+     * 
      * @type {Array<Tag>}
      * @memberof UpdateDatasetRequest
      */
@@ -53,6 +59,7 @@ export function instanceOfUpdateDatasetRequest(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "name" in value;
     isInstance = isInstance && "description" in value;
+    isInstance = isInstance && "processId" in value;
     isInstance = isInstance && "tags" in value;
 
     return isInstance;
@@ -70,6 +77,7 @@ export function UpdateDatasetRequestFromJSONTyped(json: any, ignoreDiscriminator
         
         'name': json['name'],
         'description': json['description'],
+        'processId': json['processId'],
         'tags': ((json['tags'] as Array<any>).map(TagFromJSON)),
     };
 }
@@ -85,6 +93,7 @@ export function UpdateDatasetRequestToJSON(value?: UpdateDatasetRequest | null):
         
         'name': value.name,
         'description': value.description,
+        'processId': value.processId,
         'tags': ((value.tags as Array<any>).map(TagToJSON)),
     };
 }
