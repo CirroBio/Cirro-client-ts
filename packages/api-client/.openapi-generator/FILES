@@ -55,6 +55,7 @@ src/models/ProjectSettings.ts
 src/models/ProjectUser.ts
 src/models/Reference.ts
 src/models/ReferenceType.ts
+src/models/RunAnalysisRequest.ts
 src/models/Sample.ts
 src/models/SampleRequest.ts
 src/models/ServiceConnection.ts

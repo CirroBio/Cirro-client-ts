@@ -15,13 +15,19 @@
 
 import * as runtime from '../runtime';
 import type {
+  CreateResponse,
   GetExecutionLogsResponse,
+  RunAnalysisRequest,
   StopExecutionResponse,
   Task,
 } from '../models/index';
 import {
+    CreateResponseFromJSON,
+    CreateResponseToJSON,
     GetExecutionLogsResponseFromJSON,
     GetExecutionLogsResponseToJSON,
+    RunAnalysisRequestFromJSON,
+    RunAnalysisRequestToJSON,
     StopExecutionResponseFromJSON,
     StopExecutionResponseToJSON,
     TaskFromJSON,
@@ -50,6 +56,11 @@ export interface GetTasksForExecutionRequest {
     datasetId: string;
     projectId: string;
     forceLive?: boolean;
+}
+
+export interface RunAnalysisOperationRequest {
+    projectId: string;
+    runAnalysisRequest: RunAnalysisRequest;
 }
 
 export interface StopAnalysisRequest {
@@ -251,6 +262,53 @@ export class ExecutionApi extends runtime.BaseAPI {
      */
     async getTasksForExecution(requestParameters: GetTasksForExecutionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<Task>> {
         const response = await this.getTasksForExecutionRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Run analysis
+     * Run analysis
+     */
+    async runAnalysisRaw(requestParameters: RunAnalysisOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateResponse>> {
+        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
+            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling runAnalysis.');
+        }
+
+        if (requestParameters.runAnalysisRequest === null || requestParameters.runAnalysisRequest === undefined) {
+            throw new runtime.RequiredError('runAnalysisRequest','Required parameter requestParameters.runAnalysisRequest was null or undefined when calling runAnalysis.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/projects/{projectId}/execution`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: RunAnalysisRequestToJSON(requestParameters.runAnalysisRequest),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => CreateResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Run analysis
+     * Run analysis
+     */
+    async runAnalysis(requestParameters: RunAnalysisOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateResponse> {
+        const response = await this.runAnalysisRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

@@ -69,9 +69,24 @@ export interface ImportPublicDatasetRequest {
     importDataRequest: ImportDataRequest;
 }
 
+export interface IngestSamplesRequest {
+    projectId: string;
+    datasetId: string;
+}
+
+export interface RegenerateManifestRequest {
+    projectId: string;
+    datasetId: string;
+}
+
 export interface RegisterDatasetRequest {
     projectId: string;
     uploadDatasetRequest: UploadDatasetRequest;
+}
+
+export interface RerunTransformRequest {
+    projectId: string;
+    datasetId: string;
 }
 
 export interface UpdateDatasetOperationRequest {
@@ -317,6 +332,92 @@ export class DatasetsApi extends runtime.BaseAPI {
     }
 
     /**
+     * Rerun sample ingest (TODO).
+     * Rerun sample ingest
+     */
+    async ingestSamplesRaw(requestParameters: IngestSamplesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
+            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling ingestSamples.');
+        }
+
+        if (requestParameters.datasetId === null || requestParameters.datasetId === undefined) {
+            throw new runtime.RequiredError('datasetId','Required parameter requestParameters.datasetId was null or undefined when calling ingestSamples.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/projects/{projectId}/datasets/{datasetId}/ingest-samples`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))).replace(`{${"datasetId"}}`, encodeURIComponent(String(requestParameters.datasetId))),
+            method: 'PUT',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Rerun sample ingest (TODO).
+     * Rerun sample ingest
+     */
+    async ingestSamples(requestParameters: IngestSamplesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.ingestSamplesRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Regenerate dataset manifest (TODO).
+     * Regenerate dataset manifest
+     */
+    async regenerateManifestRaw(requestParameters: RegenerateManifestRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
+            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling regenerateManifest.');
+        }
+
+        if (requestParameters.datasetId === null || requestParameters.datasetId === undefined) {
+            throw new runtime.RequiredError('datasetId','Required parameter requestParameters.datasetId was null or undefined when calling regenerateManifest.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/projects/{projectId}/datasets/{datasetId}/regenerate-manifest`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))).replace(`{${"datasetId"}}`, encodeURIComponent(String(requestParameters.datasetId))),
+            method: 'PUT',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Regenerate dataset manifest (TODO).
+     * Regenerate dataset manifest
+     */
+    async regenerateManifest(requestParameters: RegenerateManifestRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.regenerateManifestRaw(requestParameters, initOverrides);
+    }
+
+    /**
      * Registers a dataset in the system that you upload files into
      * Upload private dataset
      */
@@ -361,6 +462,49 @@ export class DatasetsApi extends runtime.BaseAPI {
     async registerDataset(requestParameters: RegisterDatasetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<UploadDatasetCreateResponse> {
         const response = await this.registerDatasetRaw(requestParameters, initOverrides);
         return await response.value();
+    }
+
+    /**
+     * Rerun data transforms (TODO).
+     * Rerun data transforms
+     */
+    async rerunTransformRaw(requestParameters: RerunTransformRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
+            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling rerunTransform.');
+        }
+
+        if (requestParameters.datasetId === null || requestParameters.datasetId === undefined) {
+            throw new runtime.RequiredError('datasetId','Required parameter requestParameters.datasetId was null or undefined when calling rerunTransform.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/projects/{projectId}/datasets/{datasetId}/rerun-transform`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))).replace(`{${"datasetId"}}`, encodeURIComponent(String(requestParameters.datasetId))),
+            method: 'PUT',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Rerun data transforms (TODO).
+     * Rerun data transforms
+     */
+    async rerunTransform(requestParameters: RerunTransformRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.rerunTransformRaw(requestParameters, initOverrides);
     }
 
     /**

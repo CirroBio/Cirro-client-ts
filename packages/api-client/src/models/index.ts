@@ -39,6 +39,7 @@ export * from './ProjectSettings';
 export * from './ProjectUser';
 export * from './Reference';
 export * from './ReferenceType';
+export * from './RunAnalysisRequest';
 export * from './Sample';
 export * from './SampleRequest';
 export * from './ServiceConnection';
