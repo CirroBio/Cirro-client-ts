@@ -67,7 +67,7 @@ export interface Dataset {
      * @type {Array<string>}
      * @memberof Dataset
      */
-    sourceDatasets: Array<string>;
+    sourceDatasetIds: Array<string>;
     /**
      * 
      * @type {Status}
@@ -110,7 +110,7 @@ export function instanceOfDataset(value: object): boolean {
     isInstance = isInstance && "description" in value;
     isInstance = isInstance && "projectId" in value;
     isInstance = isInstance && "processId" in value;
-    isInstance = isInstance && "sourceDatasets" in value;
+    isInstance = isInstance && "sourceDatasetIds" in value;
     isInstance = isInstance && "status" in value;
     isInstance = isInstance && "tags" in value;
     isInstance = isInstance && "createdBy" in value;
@@ -135,7 +135,7 @@ export function DatasetFromJSONTyped(json: any, ignoreDiscriminator: boolean): D
         'description': json['description'],
         'projectId': json['projectId'],
         'processId': json['processId'],
-        'sourceDatasets': json['sourceDatasets'],
+        'sourceDatasetIds': json['sourceDatasetIds'],
         'status': StatusFromJSON(json['status']),
         'tags': ((json['tags'] as Array<any>).map(TagFromJSON)),
         'createdBy': json['createdBy'],
@@ -158,7 +158,7 @@ export function DatasetToJSON(value?: Dataset | null): any {
         'description': value.description,
         'projectId': value.projectId,
         'processId': value.processId,
-        'sourceDatasets': value.sourceDatasets,
+        'sourceDatasetIds': value.sourceDatasetIds,
         'status': StatusToJSON(value.status),
         'tags': ((value.tags as Array<any>).map(TagToJSON)),
         'createdBy': value.createdBy,

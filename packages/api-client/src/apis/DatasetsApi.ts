@@ -79,11 +79,6 @@ export interface RegenerateManifestRequest {
     datasetId: string;
 }
 
-export interface RegisterDatasetRequest {
-    projectId: string;
-    uploadDatasetRequest: UploadDatasetRequest;
-}
-
 export interface RerunTransformRequest {
     projectId: string;
     datasetId: string;
@@ -93,6 +88,11 @@ export interface UpdateDatasetOperationRequest {
     projectId: string;
     datasetId: string;
     updateDatasetRequest: UpdateDatasetRequest;
+}
+
+export interface UploadDatasetOperationRequest {
+    projectId: string;
+    uploadDatasetRequest: UploadDatasetRequest;
 }
 
 /**
@@ -418,53 +418,6 @@ export class DatasetsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Registers a dataset in the system that you upload files into
-     * Upload private dataset
-     */
-    async registerDatasetRaw(requestParameters: RegisterDatasetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<UploadDatasetCreateResponse>> {
-        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
-            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling registerDataset.');
-        }
-
-        if (requestParameters.uploadDatasetRequest === null || requestParameters.uploadDatasetRequest === undefined) {
-            throw new runtime.RequiredError('uploadDatasetRequest','Required parameter requestParameters.uploadDatasetRequest was null or undefined when calling registerDataset.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("accessToken", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/projects/{projectId}/datasets/upload`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))),
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-            body: UploadDatasetRequestToJSON(requestParameters.uploadDatasetRequest),
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => UploadDatasetCreateResponseFromJSON(jsonValue));
-    }
-
-    /**
-     * Registers a dataset in the system that you upload files into
-     * Upload private dataset
-     */
-    async registerDataset(requestParameters: RegisterDatasetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<UploadDatasetCreateResponse> {
-        const response = await this.registerDatasetRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
      * Rerun data transforms (TODO).
      * Rerun data transforms
      */
@@ -555,6 +508,53 @@ export class DatasetsApi extends runtime.BaseAPI {
      */
     async updateDataset(requestParameters: UpdateDatasetOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<DatasetDetail> {
         const response = await this.updateDatasetRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Registers a dataset in the system that you upload files into
+     * Upload private dataset
+     */
+    async uploadDatasetRaw(requestParameters: UploadDatasetOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<UploadDatasetCreateResponse>> {
+        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
+            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling uploadDataset.');
+        }
+
+        if (requestParameters.uploadDatasetRequest === null || requestParameters.uploadDatasetRequest === undefined) {
+            throw new runtime.RequiredError('uploadDatasetRequest','Required parameter requestParameters.uploadDatasetRequest was null or undefined when calling uploadDataset.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/projects/{projectId}/datasets/upload`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: UploadDatasetRequestToJSON(requestParameters.uploadDatasetRequest),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => UploadDatasetCreateResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Registers a dataset in the system that you upload files into
+     * Upload private dataset
+     */
+    async uploadDataset(requestParameters: UploadDatasetOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<UploadDatasetCreateResponse> {
+        const response = await this.uploadDatasetRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
