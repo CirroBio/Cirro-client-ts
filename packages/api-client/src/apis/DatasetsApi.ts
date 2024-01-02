@@ -104,7 +104,7 @@ export class DatasetsApi extends runtime.BaseAPI {
      * Deletes the dataset, files are saved according to the project\'s retention time.
      * Delete a dataset
      */
-    async deleteDatasetRaw(requestParameters: DeleteDatasetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<string>> {
+    async deleteDatasetRaw(requestParameters: DeleteDatasetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
             throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling deleteDataset.');
         }
@@ -132,20 +132,15 @@ export class DatasetsApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        if (this.isJsonMime(response.headers.get('content-type'))) {
-            return new runtime.JSONApiResponse<string>(response);
-        } else {
-            return new runtime.TextApiResponse(response) as any;
-        }
+        return new runtime.VoidApiResponse(response);
     }
 
     /**
      * Deletes the dataset, files are saved according to the project\'s retention time.
      * Delete a dataset
      */
-    async deleteDataset(requestParameters: DeleteDatasetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<string> {
-        const response = await this.deleteDatasetRaw(requestParameters, initOverrides);
-        return await response.value();
+    async deleteDataset(requestParameters: DeleteDatasetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.deleteDatasetRaw(requestParameters, initOverrides);
     }
 
     /**
