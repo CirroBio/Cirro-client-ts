@@ -4,6 +4,7 @@ export * from './BillingApi';
 export * from './DashboardsApi';
 export * from './DatasetsApi';
 export * from './ExecutionApi';
+export * from './FileApi';
 export * from './MetadataApi';
 export * from './MetricsApi';
 export * from './NotebooksApi';

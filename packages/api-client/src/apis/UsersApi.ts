@@ -15,10 +15,16 @@
 
 import * as runtime from '../runtime';
 import type {
+  InviteUserRequest,
+  InviteUserResponse,
   UpdateUserRequest,
   User,
 } from '../models/index';
 import {
+    InviteUserRequestFromJSON,
+    InviteUserRequestToJSON,
+    InviteUserResponseFromJSON,
+    InviteUserResponseToJSON,
     UpdateUserRequestFromJSON,
     UpdateUserRequestToJSON,
     UserFromJSON,
@@ -31,6 +37,10 @@ export interface GetUserRequest {
 
 export interface GetUsersRequest {
     username: string;
+}
+
+export interface InviteUserOperationRequest {
+    inviteUserRequest: InviteUserRequest;
 }
 
 export interface UpdateUserOperationRequest {
@@ -124,6 +134,49 @@ export class UsersApi extends runtime.BaseAPI {
      */
     async getUsers(requestParameters: GetUsersRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<User>> {
         const response = await this.getUsersRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Invites a user to the system
+     * Invite user
+     */
+    async inviteUserRaw(requestParameters: InviteUserOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<InviteUserResponse>> {
+        if (requestParameters.inviteUserRequest === null || requestParameters.inviteUserRequest === undefined) {
+            throw new runtime.RequiredError('inviteUserRequest','Required parameter requestParameters.inviteUserRequest was null or undefined when calling inviteUser.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/users`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: InviteUserRequestToJSON(requestParameters.inviteUserRequest),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => InviteUserResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Invites a user to the system
+     * Invite user
+     */
+    async inviteUser(requestParameters: InviteUserOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<InviteUserResponse> {
+        const response = await this.inviteUserRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
