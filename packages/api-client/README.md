@@ -36,7 +36,7 @@ navigate to the folder of your consuming project and run one of the following co
 _published:_
 
 ```
-npm install @cirrobio/api-client@0.0.25-alpha --save
+npm install @cirrobio/api-client@0.0.26-alpha --save
 ```
 
 _unPublished (not recommended):_

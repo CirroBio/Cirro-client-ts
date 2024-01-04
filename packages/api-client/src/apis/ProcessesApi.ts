@@ -18,6 +18,8 @@ import type {
   FormSchema,
   Process,
   ProcessDetail,
+  ValidateDataInputsRequest,
+  ValidateDataInputsResponse,
 } from '../models/index';
 import {
     FormSchemaFromJSON,
@@ -26,6 +28,10 @@ import {
     ProcessToJSON,
     ProcessDetailFromJSON,
     ProcessDetailToJSON,
+    ValidateDataInputsRequestFromJSON,
+    ValidateDataInputsRequestToJSON,
+    ValidateDataInputsResponseFromJSON,
+    ValidateDataInputsResponseToJSON,
 } from '../models/index';
 
 export interface GetProcessRequest {
@@ -38,6 +44,11 @@ export interface GetProcessParametersRequest {
 
 export interface GetProcessesRequest {
     includeArchived?: boolean;
+}
+
+export interface ValidateDataInputsOperationRequest {
+    processId: string;
+    validateDataInputsRequest: ValidateDataInputsRequest;
 }
 
 /**
@@ -162,6 +173,53 @@ export class ProcessesApi extends runtime.BaseAPI {
      */
     async getProcesses(requestParameters: GetProcessesRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<Process>> {
         const response = await this.getProcessesRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Checks the input file names with the expected files for a data type (ingest processes only)
+     * Validate data inputs
+     */
+    async validateDataInputsRaw(requestParameters: ValidateDataInputsOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ValidateDataInputsResponse>> {
+        if (requestParameters.processId === null || requestParameters.processId === undefined) {
+            throw new runtime.RequiredError('processId','Required parameter requestParameters.processId was null or undefined when calling validateDataInputs.');
+        }
+
+        if (requestParameters.validateDataInputsRequest === null || requestParameters.validateDataInputsRequest === undefined) {
+            throw new runtime.RequiredError('validateDataInputsRequest','Required parameter requestParameters.validateDataInputsRequest was null or undefined when calling validateDataInputs.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/processes/{processId}/validate-inputs`.replace(`{${"processId"}}`, encodeURIComponent(String(requestParameters.processId))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: ValidateDataInputsRequestToJSON(requestParameters.validateDataInputsRequest),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => ValidateDataInputsResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Checks the input file names with the expected files for a data type (ingest processes only)
+     * Validate data inputs
+     */
+    async validateDataInputs(requestParameters: ValidateDataInputsOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ValidateDataInputsResponse> {
+        const response = await this.validateDataInputsRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

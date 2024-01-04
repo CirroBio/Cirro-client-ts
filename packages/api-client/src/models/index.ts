@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+export * from './AllowedDataType';
 export * from './BillingAccount';
 export * from './BillingAccountRequest';
 export * from './BillingMethod';
@@ -18,6 +19,7 @@ export * from './DatasetDetail';
 export * from './DatasetFile';
 export * from './DatasetViz';
 export * from './Executor';
+export * from './FileNamePattern';
 export * from './FormSchema';
 export * from './GenerateSftpCredentialsRequest';
 export * from './GetExecutionLogsResponse';
@@ -59,3 +61,5 @@ export * from './UpdateUserRequest';
 export * from './UploadDatasetCreateResponse';
 export * from './UploadDatasetRequest';
 export * from './User';
+export * from './ValidateDataInputsRequest';
+export * from './ValidateDataInputsResponse';
