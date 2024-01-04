@@ -37,6 +37,7 @@ src/models/DatasetFile.ts
 src/models/DatasetViz.ts
 src/models/Executor.ts
 src/models/FileNamePattern.ts
+src/models/FileRequirements.ts
 src/models/FormSchema.ts
 src/models/GenerateSftpCredentialsRequest.ts
 src/models/GetExecutionLogsResponse.ts
@@ -78,8 +79,7 @@ src/models/UpdateUserRequest.ts
 src/models/UploadDatasetCreateResponse.ts
 src/models/UploadDatasetRequest.ts
 src/models/User.ts
-src/models/ValidateDataInputsRequest.ts
-src/models/ValidateDataInputsResponse.ts
+src/models/ValidateFileRequirementsRequest.ts
 src/models/index.ts
 src/runtime.ts
 tsconfig.json

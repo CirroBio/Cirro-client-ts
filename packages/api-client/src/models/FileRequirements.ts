@@ -23,33 +23,33 @@ import {
 /**
  * 
  * @export
- * @interface ValidateDataInputsResponse
+ * @interface FileRequirements
  */
-export interface ValidateDataInputsResponse {
+export interface FileRequirements {
     /**
      * 
      * @type {Array<string>}
-     * @memberof ValidateDataInputsResponse
+     * @memberof FileRequirements
      */
     files: Array<string>;
     /**
      * 
      * @type {string}
-     * @memberof ValidateDataInputsResponse
+     * @memberof FileRequirements
      */
     errorMsg: string;
     /**
      * 
      * @type {Array<AllowedDataType>}
-     * @memberof ValidateDataInputsResponse
+     * @memberof FileRequirements
      */
     allowedDataTypes: Array<AllowedDataType>;
 }
 
 /**
- * Check if a given object implements the ValidateDataInputsResponse interface.
+ * Check if a given object implements the FileRequirements interface.
  */
-export function instanceOfValidateDataInputsResponse(value: object): boolean {
+export function instanceOfFileRequirements(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "files" in value;
     isInstance = isInstance && "errorMsg" in value;
@@ -58,11 +58,11 @@ export function instanceOfValidateDataInputsResponse(value: object): boolean {
     return isInstance;
 }
 
-export function ValidateDataInputsResponseFromJSON(json: any): ValidateDataInputsResponse {
-    return ValidateDataInputsResponseFromJSONTyped(json, false);
+export function FileRequirementsFromJSON(json: any): FileRequirements {
+    return FileRequirementsFromJSONTyped(json, false);
 }
 
-export function ValidateDataInputsResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): ValidateDataInputsResponse {
+export function FileRequirementsFromJSONTyped(json: any, ignoreDiscriminator: boolean): FileRequirements {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -74,7 +74,7 @@ export function ValidateDataInputsResponseFromJSONTyped(json: any, ignoreDiscrim
     };
 }
 
-export function ValidateDataInputsResponseToJSON(value?: ValidateDataInputsResponse | null): any {
+export function FileRequirementsToJSON(value?: FileRequirements | null): any {
     if (value === undefined) {
         return undefined;
     }

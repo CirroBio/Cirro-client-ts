@@ -16,27 +16,27 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface ValidateDataInputsRequest
+ * @interface ValidateFileRequirementsRequest
  */
-export interface ValidateDataInputsRequest {
+export interface ValidateFileRequirementsRequest {
     /**
      * 
      * @type {string}
-     * @memberof ValidateDataInputsRequest
+     * @memberof ValidateFileRequirementsRequest
      */
     sampleSheet: string;
     /**
      * 
      * @type {Array<string>}
-     * @memberof ValidateDataInputsRequest
+     * @memberof ValidateFileRequirementsRequest
      */
     fileNames: Array<string>;
 }
 
 /**
- * Check if a given object implements the ValidateDataInputsRequest interface.
+ * Check if a given object implements the ValidateFileRequirementsRequest interface.
  */
-export function instanceOfValidateDataInputsRequest(value: object): boolean {
+export function instanceOfValidateFileRequirementsRequest(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "sampleSheet" in value;
     isInstance = isInstance && "fileNames" in value;
@@ -44,11 +44,11 @@ export function instanceOfValidateDataInputsRequest(value: object): boolean {
     return isInstance;
 }
 
-export function ValidateDataInputsRequestFromJSON(json: any): ValidateDataInputsRequest {
-    return ValidateDataInputsRequestFromJSONTyped(json, false);
+export function ValidateFileRequirementsRequestFromJSON(json: any): ValidateFileRequirementsRequest {
+    return ValidateFileRequirementsRequestFromJSONTyped(json, false);
 }
 
-export function ValidateDataInputsRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): ValidateDataInputsRequest {
+export function ValidateFileRequirementsRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): ValidateFileRequirementsRequest {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -59,7 +59,7 @@ export function ValidateDataInputsRequestFromJSONTyped(json: any, ignoreDiscrimi
     };
 }
 
-export function ValidateDataInputsRequestToJSON(value?: ValidateDataInputsRequest | null): any {
+export function ValidateFileRequirementsRequestToJSON(value?: ValidateFileRequirementsRequest | null): any {
     if (value === undefined) {
         return undefined;
     }

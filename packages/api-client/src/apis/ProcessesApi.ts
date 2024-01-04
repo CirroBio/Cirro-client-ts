@@ -15,23 +15,23 @@
 
 import * as runtime from '../runtime';
 import type {
+  FileRequirements,
   FormSchema,
   Process,
   ProcessDetail,
-  ValidateDataInputsRequest,
-  ValidateDataInputsResponse,
+  ValidateFileRequirementsRequest,
 } from '../models/index';
 import {
+    FileRequirementsFromJSON,
+    FileRequirementsToJSON,
     FormSchemaFromJSON,
     FormSchemaToJSON,
     ProcessFromJSON,
     ProcessToJSON,
     ProcessDetailFromJSON,
     ProcessDetailToJSON,
-    ValidateDataInputsRequestFromJSON,
-    ValidateDataInputsRequestToJSON,
-    ValidateDataInputsResponseFromJSON,
-    ValidateDataInputsResponseToJSON,
+    ValidateFileRequirementsRequestFromJSON,
+    ValidateFileRequirementsRequestToJSON,
 } from '../models/index';
 
 export interface GetProcessRequest {
@@ -46,9 +46,9 @@ export interface GetProcessesRequest {
     includeArchived?: boolean;
 }
 
-export interface ValidateDataInputsOperationRequest {
+export interface ValidateFileRequirementsOperationRequest {
     processId: string;
-    validateDataInputsRequest: ValidateDataInputsRequest;
+    validateFileRequirementsRequest: ValidateFileRequirementsRequest;
 }
 
 /**
@@ -178,15 +178,15 @@ export class ProcessesApi extends runtime.BaseAPI {
 
     /**
      * Checks the input file names with the expected files for a data type (ingest processes only)
-     * Validate data inputs
+     * Validate file requirements
      */
-    async validateDataInputsRaw(requestParameters: ValidateDataInputsOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ValidateDataInputsResponse>> {
+    async validateFileRequirementsRaw(requestParameters: ValidateFileRequirementsOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FileRequirements>> {
         if (requestParameters.processId === null || requestParameters.processId === undefined) {
-            throw new runtime.RequiredError('processId','Required parameter requestParameters.processId was null or undefined when calling validateDataInputs.');
+            throw new runtime.RequiredError('processId','Required parameter requestParameters.processId was null or undefined when calling validateFileRequirements.');
         }
 
-        if (requestParameters.validateDataInputsRequest === null || requestParameters.validateDataInputsRequest === undefined) {
-            throw new runtime.RequiredError('validateDataInputsRequest','Required parameter requestParameters.validateDataInputsRequest was null or undefined when calling validateDataInputs.');
+        if (requestParameters.validateFileRequirementsRequest === null || requestParameters.validateFileRequirementsRequest === undefined) {
+            throw new runtime.RequiredError('validateFileRequirementsRequest','Required parameter requestParameters.validateFileRequirementsRequest was null or undefined when calling validateFileRequirements.');
         }
 
         const queryParameters: any = {};
@@ -204,22 +204,22 @@ export class ProcessesApi extends runtime.BaseAPI {
             }
         }
         const response = await this.request({
-            path: `/processes/{processId}/validate-inputs`.replace(`{${"processId"}}`, encodeURIComponent(String(requestParameters.processId))),
+            path: `/processes/{processId}/validate-files`.replace(`{${"processId"}}`, encodeURIComponent(String(requestParameters.processId))),
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: ValidateDataInputsRequestToJSON(requestParameters.validateDataInputsRequest),
+            body: ValidateFileRequirementsRequestToJSON(requestParameters.validateFileRequirementsRequest),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => ValidateDataInputsResponseFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => FileRequirementsFromJSON(jsonValue));
     }
 
     /**
      * Checks the input file names with the expected files for a data type (ingest processes only)
-     * Validate data inputs
+     * Validate file requirements
      */
-    async validateDataInputs(requestParameters: ValidateDataInputsOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ValidateDataInputsResponse> {
-        const response = await this.validateDataInputsRaw(requestParameters, initOverrides);
+    async validateFileRequirements(requestParameters: ValidateFileRequirementsOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<FileRequirements> {
+        const response = await this.validateFileRequirementsRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
