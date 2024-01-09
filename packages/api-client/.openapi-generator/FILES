@@ -27,6 +27,9 @@ src/models/Contact.ts
 src/models/CreateNotebookInstanceRequest.ts
 src/models/CreateResponse.ts
 src/models/CustomPipelineSettings.ts
+src/models/CustomPipelineSettingsDto1.ts
+src/models/CustomProcessRequest.ts
+src/models/CustomProcessRequestPipelineCode.ts
 src/models/CustomerType.ts
 src/models/Dashboard.ts
 src/models/DashboardRequest.ts
@@ -51,6 +54,7 @@ src/models/NotebookInstanceStatusResponse.ts
 src/models/OpenNotebookInstanceResponse.ts
 src/models/PaginatedResponseDatasetListDto.ts
 src/models/PaginatedResponseSampleDto.ts
+src/models/PipelineCode.ts
 src/models/Process.ts
 src/models/ProcessDetail.ts
 src/models/Project.ts
@@ -62,6 +66,7 @@ src/models/ProjectSettings.ts
 src/models/ProjectUser.ts
 src/models/Reference.ts
 src/models/ReferenceType.ts
+src/models/RepositoryType.ts
 src/models/RunAnalysisRequest.ts
 src/models/S3Credentials.ts
 src/models/Sample.ts

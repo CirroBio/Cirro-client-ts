@@ -15,6 +15,9 @@
 
 import * as runtime from '../runtime';
 import type {
+  CreateResponse,
+  CustomPipelineSettingsDto1,
+  CustomProcessRequest,
   FileRequirements,
   FormSchema,
   Process,
@@ -22,6 +25,12 @@ import type {
   ValidateFileRequirementsRequest,
 } from '../models/index';
 import {
+    CreateResponseFromJSON,
+    CreateResponseToJSON,
+    CustomPipelineSettingsDto1FromJSON,
+    CustomPipelineSettingsDto1ToJSON,
+    CustomProcessRequestFromJSON,
+    CustomProcessRequestToJSON,
     FileRequirementsFromJSON,
     FileRequirementsToJSON,
     FormSchemaFromJSON,
@@ -33,6 +42,14 @@ import {
     ValidateFileRequirementsRequestFromJSON,
     ValidateFileRequirementsRequestToJSON,
 } from '../models/index';
+
+export interface ArchiveCustomProcessRequest {
+    processId: string;
+}
+
+export interface CreateCustomProcessRequest {
+    customProcessRequest: CustomProcessRequest;
+}
 
 export interface GetProcessRequest {
     processId: string;
@@ -46,6 +63,15 @@ export interface GetProcessesRequest {
     includeArchived?: boolean;
 }
 
+export interface SyncCustomProcessRequest {
+    processId: string;
+}
+
+export interface UpdateCustomProcessRequest {
+    processId: string;
+    customProcessRequest: CustomProcessRequest;
+}
+
 export interface ValidateFileRequirementsOperationRequest {
     processId: string;
     validateFileRequirementsRequest: ValidateFileRequirementsRequest;
@@ -55,6 +81,88 @@ export interface ValidateFileRequirementsOperationRequest {
  * 
  */
 export class ProcessesApi extends runtime.BaseAPI {
+
+    /**
+     * Removes the process from the list of available options
+     * Archive custom process
+     */
+    async archiveCustomProcessRaw(requestParameters: ArchiveCustomProcessRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.processId === null || requestParameters.processId === undefined) {
+            throw new runtime.RequiredError('processId','Required parameter requestParameters.processId was null or undefined when calling archiveCustomProcess.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/processes/{processId}`.replace(`{${"processId"}}`, encodeURIComponent(String(requestParameters.processId))),
+            method: 'DELETE',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Removes the process from the list of available options
+     * Archive custom process
+     */
+    async archiveCustomProcess(requestParameters: ArchiveCustomProcessRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.archiveCustomProcessRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Creates a custom data type or pipeline which you can use in the listed projects.
+     * Create custom process
+     */
+    async createCustomProcessRaw(requestParameters: CreateCustomProcessRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateResponse>> {
+        if (requestParameters.customProcessRequest === null || requestParameters.customProcessRequest === undefined) {
+            throw new runtime.RequiredError('customProcessRequest','Required parameter requestParameters.customProcessRequest was null or undefined when calling createCustomProcess.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/processes`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: CustomProcessRequestToJSON(requestParameters.customProcessRequest),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => CreateResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Creates a custom data type or pipeline which you can use in the listed projects.
+     * Create custom process
+     */
+    async createCustomProcess(requestParameters: CreateCustomProcessRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateResponse> {
+        const response = await this.createCustomProcessRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
 
     /**
      * Retrieves detailed information on a process
@@ -174,6 +282,92 @@ export class ProcessesApi extends runtime.BaseAPI {
     async getProcesses(requestParameters: GetProcessesRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<Process>> {
         const response = await this.getProcessesRaw(requestParameters, initOverrides);
         return await response.value();
+    }
+
+    /**
+     * Updates the process definition from the repository
+     * Sync custom process
+     */
+    async syncCustomProcessRaw(requestParameters: SyncCustomProcessRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CustomPipelineSettingsDto1>> {
+        if (requestParameters.processId === null || requestParameters.processId === undefined) {
+            throw new runtime.RequiredError('processId','Required parameter requestParameters.processId was null or undefined when calling syncCustomProcess.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/processes/{processId}:sync`.replace(`{${"processId"}}`, encodeURIComponent(String(requestParameters.processId))),
+            method: 'PUT',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => CustomPipelineSettingsDto1FromJSON(jsonValue));
+    }
+
+    /**
+     * Updates the process definition from the repository
+     * Sync custom process
+     */
+    async syncCustomProcess(requestParameters: SyncCustomProcessRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CustomPipelineSettingsDto1> {
+        const response = await this.syncCustomProcessRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Updates the custom process
+     * Update custom process
+     */
+    async updateCustomProcessRaw(requestParameters: UpdateCustomProcessRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.processId === null || requestParameters.processId === undefined) {
+            throw new runtime.RequiredError('processId','Required parameter requestParameters.processId was null or undefined when calling updateCustomProcess.');
+        }
+
+        if (requestParameters.customProcessRequest === null || requestParameters.customProcessRequest === undefined) {
+            throw new runtime.RequiredError('customProcessRequest','Required parameter requestParameters.customProcessRequest was null or undefined when calling updateCustomProcess.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/processes/{processId}`.replace(`{${"processId"}}`, encodeURIComponent(String(requestParameters.processId))),
+            method: 'PUT',
+            headers: headerParameters,
+            query: queryParameters,
+            body: CustomProcessRequestToJSON(requestParameters.customProcessRequest),
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Updates the custom process
+     * Update custom process
+     */
+    async updateCustomProcess(requestParameters: UpdateCustomProcessRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.updateCustomProcessRaw(requestParameters, initOverrides);
     }
 
     /**

@@ -20,11 +20,11 @@ import { exists, mapValues } from '../runtime';
  */
 export interface GenerateSftpCredentialsRequest {
     /**
-     * 
+     * Number of days the credentials are valid for
      * @type {number}
      * @memberof GenerateSftpCredentialsRequest
      */
-    lifetimeDays: number;
+    lifetimeDays?: number;
 }
 
 /**
@@ -32,7 +32,6 @@ export interface GenerateSftpCredentialsRequest {
  */
 export function instanceOfGenerateSftpCredentialsRequest(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "lifetimeDays" in value;
 
     return isInstance;
 }
@@ -47,7 +46,7 @@ export function GenerateSftpCredentialsRequestFromJSONTyped(json: any, ignoreDis
     }
     return {
         
-        'lifetimeDays': json['lifetimeDays'],
+        'lifetimeDays': !exists(json, 'lifetimeDays') ? undefined : json['lifetimeDays'],
     };
 }
 
