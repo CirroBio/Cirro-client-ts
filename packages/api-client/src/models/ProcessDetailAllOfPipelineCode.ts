@@ -23,50 +23,50 @@ import {
 /**
  * 
  * @export
- * @interface CustomProcessRequestPipelineCode
+ * @interface ProcessDetailAllOfPipelineCode
  */
-export interface CustomProcessRequestPipelineCode {
+export interface ProcessDetailAllOfPipelineCode {
     /**
      * GitHub repository which contains the workflow code
      * @type {string}
-     * @memberof CustomProcessRequestPipelineCode
+     * @memberof ProcessDetailAllOfPipelineCode
      */
     repositoryPath: string;
     /**
      * Branch, tag, or commit hash of the pipeline code
      * @type {string}
-     * @memberof CustomProcessRequestPipelineCode
+     * @memberof ProcessDetailAllOfPipelineCode
      */
     version?: string;
     /**
      * 
      * @type {RepositoryType}
-     * @memberof CustomProcessRequestPipelineCode
+     * @memberof ProcessDetailAllOfPipelineCode
      */
     repositoryType?: RepositoryType;
     /**
      * Main script for running the pipeline
      * @type {string}
-     * @memberof CustomProcessRequestPipelineCode
+     * @memberof ProcessDetailAllOfPipelineCode
      */
     entryPoint?: string;
 }
 
 /**
- * Check if a given object implements the CustomProcessRequestPipelineCode interface.
+ * Check if a given object implements the ProcessDetailAllOfPipelineCode interface.
  */
-export function instanceOfCustomProcessRequestPipelineCode(value: object): boolean {
+export function instanceOfProcessDetailAllOfPipelineCode(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "repositoryPath" in value;
 
     return isInstance;
 }
 
-export function CustomProcessRequestPipelineCodeFromJSON(json: any): CustomProcessRequestPipelineCode {
-    return CustomProcessRequestPipelineCodeFromJSONTyped(json, false);
+export function ProcessDetailAllOfPipelineCodeFromJSON(json: any): ProcessDetailAllOfPipelineCode {
+    return ProcessDetailAllOfPipelineCodeFromJSONTyped(json, false);
 }
 
-export function CustomProcessRequestPipelineCodeFromJSONTyped(json: any, ignoreDiscriminator: boolean): CustomProcessRequestPipelineCode {
+export function ProcessDetailAllOfPipelineCodeFromJSONTyped(json: any, ignoreDiscriminator: boolean): ProcessDetailAllOfPipelineCode {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -79,7 +79,7 @@ export function CustomProcessRequestPipelineCodeFromJSONTyped(json: any, ignoreD
     };
 }
 
-export function CustomProcessRequestPipelineCodeToJSON(value?: CustomProcessRequestPipelineCode | null): any {
+export function ProcessDetailAllOfPipelineCodeToJSON(value?: ProcessDetailAllOfPipelineCode | null): any {
     if (value === undefined) {
         return undefined;
     }

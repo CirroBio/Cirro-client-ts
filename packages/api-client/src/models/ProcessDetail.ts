@@ -25,6 +25,12 @@ import {
     ExecutorFromJSONTyped,
     ExecutorToJSON,
 } from './Executor';
+import type { ProcessDetailAllOfPipelineCode } from './ProcessDetailAllOfPipelineCode';
+import {
+    ProcessDetailAllOfPipelineCodeFromJSON,
+    ProcessDetailAllOfPipelineCodeFromJSONTyped,
+    ProcessDetailAllOfPipelineCodeToJSON,
+} from './ProcessDetailAllOfPipelineCode';
 
 /**
  * 
@@ -33,7 +39,7 @@ import {
  */
 export interface ProcessDetail {
     /**
-     * Unique ID of the Process
+     * 
      * @type {string}
      * @memberof ProcessDetail
      */
@@ -63,11 +69,11 @@ export interface ProcessDetail {
      */
     documentationUrl: string;
     /**
-     * Description of the files to be uploaded (optional)
+     * 
      * @type {string}
      * @memberof ProcessDetail
      */
-    fileRequirementsMessage?: string;
+    fileRequirementsMessage: string;
     /**
      * 
      * @type {Array<string>}
@@ -94,6 +100,12 @@ export interface ProcessDetail {
     linkedProjectIds: Array<string>;
     /**
      * 
+     * @type {ProcessDetailAllOfPipelineCode}
+     * @memberof ProcessDetail
+     */
+    pipelineCode: ProcessDetailAllOfPipelineCode;
+    /**
+     * 
      * @type {CustomPipelineSettings}
      * @memberof ProcessDetail
      */
@@ -116,10 +128,12 @@ export function instanceOfProcessDetail(value: object): boolean {
     isInstance = isInstance && "description" in value;
     isInstance = isInstance && "executor" in value;
     isInstance = isInstance && "documentationUrl" in value;
+    isInstance = isInstance && "fileRequirementsMessage" in value;
     isInstance = isInstance && "childProcessIds" in value;
     isInstance = isInstance && "parentProcessIds" in value;
     isInstance = isInstance && "owner" in value;
     isInstance = isInstance && "linkedProjectIds" in value;
+    isInstance = isInstance && "pipelineCode" in value;
     isInstance = isInstance && "customSettings" in value;
     isInstance = isInstance && "isArchived" in value;
 
@@ -141,11 +155,12 @@ export function ProcessDetailFromJSONTyped(json: any, ignoreDiscriminator: boole
         'description': json['description'],
         'executor': ExecutorFromJSON(json['executor']),
         'documentationUrl': json['documentationUrl'],
-        'fileRequirementsMessage': !exists(json, 'fileRequirementsMessage') ? undefined : json['fileRequirementsMessage'],
+        'fileRequirementsMessage': json['fileRequirementsMessage'],
         'childProcessIds': json['childProcessIds'],
         'parentProcessIds': json['parentProcessIds'],
         'owner': json['owner'],
         'linkedProjectIds': json['linkedProjectIds'],
+        'pipelineCode': ProcessDetailAllOfPipelineCodeFromJSON(json['pipelineCode']),
         'customSettings': CustomPipelineSettingsFromJSON(json['customSettings']),
         'isArchived': json['isArchived'],
     };
@@ -170,6 +185,7 @@ export function ProcessDetailToJSON(value?: ProcessDetail | null): any {
         'parentProcessIds': value.parentProcessIds,
         'owner': value.owner,
         'linkedProjectIds': value.linkedProjectIds,
+        'pipelineCode': ProcessDetailAllOfPipelineCodeToJSON(value.pipelineCode),
         'customSettings': CustomPipelineSettingsToJSON(value.customSettings),
         'isArchived': value.isArchived,
     };

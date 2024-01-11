@@ -92,4 +92,30 @@ export class SystemApi extends runtime.BaseAPI {
         return await response.value();
     }
 
+    /**
+     * Get system info
+     */
+    async info1Raw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SystemInfoResponse>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const response = await this.request({
+            path: `/info/system`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SystemInfoResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Get system info
+     */
+    async info1(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SystemInfoResponse> {
+        const response = await this.info1Raw(initOverrides);
+        return await response.value();
+    }
+
 }

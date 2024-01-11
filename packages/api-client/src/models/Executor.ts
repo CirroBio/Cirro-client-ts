@@ -13,7 +13,7 @@
  */
 
 /**
- * Process executor
+ * How the workflow is executed
  * @export
  * @enum {string}
  */

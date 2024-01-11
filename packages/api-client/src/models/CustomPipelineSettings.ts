@@ -20,41 +20,41 @@ import { exists, mapValues } from '../runtime';
  */
 export interface CustomPipelineSettings {
     /**
-     * 
+     * GitHub repository that contains the process definition
      * @type {string}
      * @memberof CustomPipelineSettings
      */
     repository: string;
     /**
-     * 
+     * Branch, tag, or commit hash of the repo that contains the process definition
      * @type {string}
      * @memberof CustomPipelineSettings
      */
-    branch: string;
+    branch?: string;
     /**
-     * 
+     * Folder within the repo that contains the process definition
      * @type {string}
      * @memberof CustomPipelineSettings
      */
-    folder: string;
+    folder?: string;
     /**
      * 
      * @type {Date}
      * @memberof CustomPipelineSettings
      */
-    lastSync: Date;
+    lastSync?: Date | null;
     /**
      * 
      * @type {string}
      * @memberof CustomPipelineSettings
      */
-    syncStatus: string;
+    syncStatus?: string | null;
     /**
      * 
      * @type {string}
      * @memberof CustomPipelineSettings
      */
-    commitHash: string;
+    commitHash?: string | null;
 }
 
 /**
@@ -63,11 +63,6 @@ export interface CustomPipelineSettings {
 export function instanceOfCustomPipelineSettings(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "repository" in value;
-    isInstance = isInstance && "branch" in value;
-    isInstance = isInstance && "folder" in value;
-    isInstance = isInstance && "lastSync" in value;
-    isInstance = isInstance && "syncStatus" in value;
-    isInstance = isInstance && "commitHash" in value;
 
     return isInstance;
 }
@@ -83,11 +78,11 @@ export function CustomPipelineSettingsFromJSONTyped(json: any, ignoreDiscriminat
     return {
         
         'repository': json['repository'],
-        'branch': json['branch'],
-        'folder': json['folder'],
-        'lastSync': (new Date(json['lastSync'])),
-        'syncStatus': json['syncStatus'],
-        'commitHash': json['commitHash'],
+        'branch': !exists(json, 'branch') ? undefined : json['branch'],
+        'folder': !exists(json, 'folder') ? undefined : json['folder'],
+        'lastSync': !exists(json, 'lastSync') ? undefined : (json['lastSync'] === null ? null : new Date(json['lastSync'])),
+        'syncStatus': !exists(json, 'syncStatus') ? undefined : json['syncStatus'],
+        'commitHash': !exists(json, 'commitHash') ? undefined : json['commitHash'],
     };
 }
 
@@ -103,7 +98,7 @@ export function CustomPipelineSettingsToJSON(value?: CustomPipelineSettings | nu
         'repository': value.repository,
         'branch': value.branch,
         'folder': value.folder,
-        'lastSync': (value.lastSync.toISOString()),
+        'lastSync': value.lastSync === undefined ? undefined : (value.lastSync === null ? null : value.lastSync.toISOString()),
         'syncStatus': value.syncStatus,
         'commitHash': value.commitHash,
     };
