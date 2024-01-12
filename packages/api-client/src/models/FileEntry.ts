@@ -16,43 +16,43 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface DatasetFile
+ * @interface FileEntry
  */
-export interface DatasetFile {
+export interface FileEntry {
     /**
      * Relative path to file
      * @type {string}
-     * @memberof DatasetFile
+     * @memberof FileEntry
      */
     path?: string;
     /**
      * File size (in bytes)
      * @type {number}
-     * @memberof DatasetFile
+     * @memberof FileEntry
      */
     size?: number;
     /**
      * Metadata associated with the file
      * @type {{ [key: string]: string; }}
-     * @memberof DatasetFile
+     * @memberof FileEntry
      */
     metadata?: { [key: string]: string; };
 }
 
 /**
- * Check if a given object implements the DatasetFile interface.
+ * Check if a given object implements the FileEntry interface.
  */
-export function instanceOfDatasetFile(value: object): boolean {
+export function instanceOfFileEntry(value: object): boolean {
     let isInstance = true;
 
     return isInstance;
 }
 
-export function DatasetFileFromJSON(json: any): DatasetFile {
-    return DatasetFileFromJSONTyped(json, false);
+export function FileEntryFromJSON(json: any): FileEntry {
+    return FileEntryFromJSONTyped(json, false);
 }
 
-export function DatasetFileFromJSONTyped(json: any, ignoreDiscriminator: boolean): DatasetFile {
+export function FileEntryFromJSONTyped(json: any, ignoreDiscriminator: boolean): FileEntry {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -64,7 +64,7 @@ export function DatasetFileFromJSONTyped(json: any, ignoreDiscriminator: boolean
     };
 }
 
-export function DatasetFileToJSON(value?: DatasetFile | null): any {
+export function FileEntryToJSON(value?: FileEntry | null): any {
     if (value === undefined) {
         return undefined;
     }

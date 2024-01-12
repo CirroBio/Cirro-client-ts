@@ -13,6 +13,13 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { FileEntry } from './FileEntry';
+import {
+    FileEntryFromJSON,
+    FileEntryFromJSONTyped,
+    FileEntryToJSON,
+} from './FileEntry';
+
 /**
  * 
  * @export
@@ -33,10 +40,10 @@ export interface Reference {
     referenceType: string;
     /**
      * 
-     * @type {Array<string>}
+     * @type {Array<FileEntry>}
      * @memberof Reference
      */
-    files: Array<string>;
+    files: Array<FileEntry>;
     /**
      * 
      * @type {string}
@@ -77,7 +84,7 @@ export function ReferenceFromJSONTyped(json: any, ignoreDiscriminator: boolean):
         
         'name': json['name'],
         'referenceType': json['referenceType'],
-        'files': json['files'],
+        'files': ((json['files'] as Array<any>).map(FileEntryFromJSON)),
         'createdBy': json['createdBy'],
         'createdAt': (new Date(json['createdAt'])),
     };
@@ -94,7 +101,7 @@ export function ReferenceToJSON(value?: Reference | null): any {
         
         'name': value.name,
         'referenceType': value.referenceType,
-        'files': value.files,
+        'files': ((value.files as Array<any>).map(FileEntryToJSON)),
         'createdBy': value.createdBy,
         'createdAt': (value.createdAt.toISOString()),
     };

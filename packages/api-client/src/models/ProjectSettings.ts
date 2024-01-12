@@ -37,7 +37,7 @@ export interface ProjectSettings {
      * @type {BudgetPeriod}
      * @memberof ProjectSettings
      */
-    budgetPeriod: BudgetPeriod;
+    budgetPeriod?: BudgetPeriod;
     /**
      * AMI ID for the DRAGEN compute environment (if enabled)
      * @type {string}
@@ -123,7 +123,6 @@ export interface ProjectSettings {
  */
 export function instanceOfProjectSettings(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "budgetPeriod" in value;
     isInstance = isInstance && "serviceConnections" in value;
 
     return isInstance;
@@ -140,7 +139,7 @@ export function ProjectSettingsFromJSONTyped(json: any, ignoreDiscriminator: boo
     return {
         
         'budgetAmount': !exists(json, 'budgetAmount') ? undefined : json['budgetAmount'],
-        'budgetPeriod': BudgetPeriodFromJSON(json['budgetPeriod']),
+        'budgetPeriod': !exists(json, 'budgetPeriod') ? undefined : BudgetPeriodFromJSON(json['budgetPeriod']),
         'dragenAmi': !exists(json, 'dragenAmi') ? undefined : json['dragenAmi'],
         'enableCompute': !exists(json, 'enableCompute') ? undefined : json['enableCompute'],
         'enableDragen': !exists(json, 'enableDragen') ? undefined : json['enableDragen'],

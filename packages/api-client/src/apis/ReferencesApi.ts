@@ -110,7 +110,7 @@ export class ReferencesApi extends runtime.BaseAPI {
      * List available references for a given project
      * Get project references
      */
-    async getReferencesForProjectRaw(requestParameters: GetReferencesForProjectRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Reference>> {
+    async getReferencesForProjectRaw(requestParameters: GetReferencesForProjectRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<Reference>>> {
         if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
             throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling getReferencesForProject.');
         }
@@ -134,14 +134,14 @@ export class ReferencesApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => ReferenceFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(ReferenceFromJSON));
     }
 
     /**
      * List available references for a given project
      * Get project references
      */
-    async getReferencesForProject(requestParameters: GetReferencesForProjectRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Reference> {
+    async getReferencesForProject(requestParameters: GetReferencesForProjectRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<Reference>> {
         const response = await this.getReferencesForProjectRaw(requestParameters, initOverrides);
         return await response.value();
     }

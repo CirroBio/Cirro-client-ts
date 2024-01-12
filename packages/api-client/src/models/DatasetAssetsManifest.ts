@@ -13,18 +13,18 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import type { DatasetFile } from './DatasetFile';
-import {
-    DatasetFileFromJSON,
-    DatasetFileFromJSONTyped,
-    DatasetFileToJSON,
-} from './DatasetFile';
 import type { DatasetViz } from './DatasetViz';
 import {
     DatasetVizFromJSON,
     DatasetVizFromJSONTyped,
     DatasetVizToJSON,
 } from './DatasetViz';
+import type { FileEntry } from './FileEntry';
+import {
+    FileEntryFromJSON,
+    FileEntryFromJSONTyped,
+    FileEntryToJSON,
+} from './FileEntry';
 
 /**
  * 
@@ -40,10 +40,10 @@ export interface DatasetAssetsManifest {
     domain?: string;
     /**
      * List of files in the dataset, including metadata
-     * @type {Array<DatasetFile>}
+     * @type {Array<FileEntry>}
      * @memberof DatasetAssetsManifest
      */
-    files?: Array<DatasetFile>;
+    files?: Array<FileEntry>;
     /**
      * List of viz to render for the dataset
      * @type {Array<DatasetViz>}
@@ -72,7 +72,7 @@ export function DatasetAssetsManifestFromJSONTyped(json: any, ignoreDiscriminato
     return {
         
         'domain': !exists(json, 'domain') ? undefined : json['domain'],
-        'files': !exists(json, 'files') ? undefined : ((json['files'] as Array<any>).map(DatasetFileFromJSON)),
+        'files': !exists(json, 'files') ? undefined : ((json['files'] as Array<any>).map(FileEntryFromJSON)),
         'viz': !exists(json, 'viz') ? undefined : ((json['viz'] as Array<any>).map(DatasetVizFromJSON)),
     };
 }
@@ -87,7 +87,7 @@ export function DatasetAssetsManifestToJSON(value?: DatasetAssetsManifest | null
     return {
         
         'domain': value.domain,
-        'files': value.files === undefined ? undefined : ((value.files as Array<any>).map(DatasetFileToJSON)),
+        'files': value.files === undefined ? undefined : ((value.files as Array<any>).map(FileEntryToJSON)),
         'viz': value.viz === undefined ? undefined : ((value.viz as Array<any>).map(DatasetVizToJSON)),
     };
 }

@@ -43,7 +43,7 @@ export interface PipelineCode {
      * @type {RepositoryType}
      * @memberof PipelineCode
      */
-    repositoryType: RepositoryType;
+    repositoryType?: RepositoryType;
     /**
      * Main script for running the pipeline
      * @type {string}
@@ -59,7 +59,6 @@ export function instanceOfPipelineCode(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "repositoryPath" in value;
     isInstance = isInstance && "version" in value;
-    isInstance = isInstance && "repositoryType" in value;
     isInstance = isInstance && "entryPoint" in value;
 
     return isInstance;
@@ -77,7 +76,7 @@ export function PipelineCodeFromJSONTyped(json: any, ignoreDiscriminator: boolea
         
         'repositoryPath': json['repositoryPath'],
         'version': json['version'],
-        'repositoryType': RepositoryTypeFromJSON(json['repositoryType']),
+        'repositoryType': !exists(json, 'repositoryType') ? undefined : RepositoryTypeFromJSON(json['repositoryType']),
         'entryPoint': json['entryPoint'],
     };
 }
