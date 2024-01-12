@@ -25,12 +25,12 @@ import {
     ExecutorFromJSONTyped,
     ExecutorToJSON,
 } from './Executor';
-import type { ProcessDetailAllOfPipelineCode } from './ProcessDetailAllOfPipelineCode';
+import type { PipelineCode } from './PipelineCode';
 import {
-    ProcessDetailAllOfPipelineCodeFromJSON,
-    ProcessDetailAllOfPipelineCodeFromJSONTyped,
-    ProcessDetailAllOfPipelineCodeToJSON,
-} from './ProcessDetailAllOfPipelineCode';
+    PipelineCodeFromJSON,
+    PipelineCodeFromJSONTyped,
+    PipelineCodeToJSON,
+} from './PipelineCode';
 
 /**
  * 
@@ -67,13 +67,13 @@ export interface ProcessDetail {
      * @type {string}
      * @memberof ProcessDetail
      */
-    documentationUrl: string;
+    documentationUrl?: string | null;
     /**
      * 
      * @type {string}
      * @memberof ProcessDetail
      */
-    fileRequirementsMessage: string;
+    fileRequirementsMessage?: string | null;
     /**
      * 
      * @type {Array<string>}
@@ -91,7 +91,7 @@ export interface ProcessDetail {
      * @type {string}
      * @memberof ProcessDetail
      */
-    owner: string;
+    owner?: string;
     /**
      * 
      * @type {Array<string>}
@@ -100,10 +100,10 @@ export interface ProcessDetail {
     linkedProjectIds: Array<string>;
     /**
      * 
-     * @type {ProcessDetailAllOfPipelineCode}
+     * @type {PipelineCode}
      * @memberof ProcessDetail
      */
-    pipelineCode: ProcessDetailAllOfPipelineCode;
+    pipelineCode?: PipelineCode | null;
     /**
      * 
      * @type {CustomPipelineSettings}
@@ -111,11 +111,11 @@ export interface ProcessDetail {
      */
     customSettings: CustomPipelineSettings;
     /**
-     * 
+     * Whether the process is marked for removal
      * @type {boolean}
      * @memberof ProcessDetail
      */
-    isArchived: boolean;
+    isArchived?: boolean;
 }
 
 /**
@@ -127,15 +127,10 @@ export function instanceOfProcessDetail(value: object): boolean {
     isInstance = isInstance && "name" in value;
     isInstance = isInstance && "description" in value;
     isInstance = isInstance && "executor" in value;
-    isInstance = isInstance && "documentationUrl" in value;
-    isInstance = isInstance && "fileRequirementsMessage" in value;
     isInstance = isInstance && "childProcessIds" in value;
     isInstance = isInstance && "parentProcessIds" in value;
-    isInstance = isInstance && "owner" in value;
     isInstance = isInstance && "linkedProjectIds" in value;
-    isInstance = isInstance && "pipelineCode" in value;
     isInstance = isInstance && "customSettings" in value;
-    isInstance = isInstance && "isArchived" in value;
 
     return isInstance;
 }
@@ -154,15 +149,15 @@ export function ProcessDetailFromJSONTyped(json: any, ignoreDiscriminator: boole
         'name': json['name'],
         'description': json['description'],
         'executor': ExecutorFromJSON(json['executor']),
-        'documentationUrl': json['documentationUrl'],
-        'fileRequirementsMessage': json['fileRequirementsMessage'],
+        'documentationUrl': !exists(json, 'documentationUrl') ? undefined : json['documentationUrl'],
+        'fileRequirementsMessage': !exists(json, 'fileRequirementsMessage') ? undefined : json['fileRequirementsMessage'],
         'childProcessIds': json['childProcessIds'],
         'parentProcessIds': json['parentProcessIds'],
-        'owner': json['owner'],
+        'owner': !exists(json, 'owner') ? undefined : json['owner'],
         'linkedProjectIds': json['linkedProjectIds'],
-        'pipelineCode': ProcessDetailAllOfPipelineCodeFromJSON(json['pipelineCode']),
+        'pipelineCode': !exists(json, 'pipelineCode') ? undefined : PipelineCodeFromJSON(json['pipelineCode']),
         'customSettings': CustomPipelineSettingsFromJSON(json['customSettings']),
-        'isArchived': json['isArchived'],
+        'isArchived': !exists(json, 'isArchived') ? undefined : json['isArchived'],
     };
 }
 
@@ -185,7 +180,7 @@ export function ProcessDetailToJSON(value?: ProcessDetail | null): any {
         'parentProcessIds': value.parentProcessIds,
         'owner': value.owner,
         'linkedProjectIds': value.linkedProjectIds,
-        'pipelineCode': ProcessDetailAllOfPipelineCodeToJSON(value.pipelineCode),
+        'pipelineCode': PipelineCodeToJSON(value.pipelineCode),
         'customSettings': CustomPipelineSettingsToJSON(value.customSettings),
         'isArchived': value.isArchived,
     };

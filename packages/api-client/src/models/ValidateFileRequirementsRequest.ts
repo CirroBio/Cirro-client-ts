@@ -21,16 +21,16 @@ import { exists, mapValues } from '../runtime';
 export interface ValidateFileRequirementsRequest {
     /**
      * 
-     * @type {string}
-     * @memberof ValidateFileRequirementsRequest
-     */
-    sampleSheet: string;
-    /**
-     * 
      * @type {Array<string>}
      * @memberof ValidateFileRequirementsRequest
      */
     fileNames: Array<string>;
+    /**
+     * 
+     * @type {string}
+     * @memberof ValidateFileRequirementsRequest
+     */
+    sampleSheet: string;
 }
 
 /**
@@ -38,8 +38,8 @@ export interface ValidateFileRequirementsRequest {
  */
 export function instanceOfValidateFileRequirementsRequest(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "sampleSheet" in value;
     isInstance = isInstance && "fileNames" in value;
+    isInstance = isInstance && "sampleSheet" in value;
 
     return isInstance;
 }
@@ -54,8 +54,8 @@ export function ValidateFileRequirementsRequestFromJSONTyped(json: any, ignoreDi
     }
     return {
         
-        'sampleSheet': json['sampleSheet'],
         'fileNames': json['fileNames'],
+        'sampleSheet': json['sampleSheet'],
     };
 }
 
@@ -68,8 +68,8 @@ export function ValidateFileRequirementsRequestToJSON(value?: ValidateFileRequir
     }
     return {
         
-        'sampleSheet': value.sampleSheet,
         'fileNames': value.fileNames,
+        'sampleSheet': value.sampleSheet,
     };
 }
 

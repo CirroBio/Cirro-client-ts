@@ -43,7 +43,7 @@ export interface Process {
      * @type {string}
      * @memberof Process
      */
-    description: string;
+    description?: string;
     /**
      * 
      * @type {Executor}
@@ -61,7 +61,7 @@ export interface Process {
      * @type {string}
      * @memberof Process
      */
-    fileRequirementsMessage?: string | null;
+    fileRequirementsMessage?: string;
     /**
      * IDs of pipelines that can be ran downstream
      * @type {Array<string>}
@@ -69,7 +69,7 @@ export interface Process {
      */
     childProcessIds?: Array<string>;
     /**
-     * IDs of pipelines that can be ran upstream
+     * IDs of pipelines that can run this pipeline
      * @type {Array<string>}
      * @memberof Process
      */
@@ -94,7 +94,6 @@ export interface Process {
 export function instanceOfProcess(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "id" in value;
-    isInstance = isInstance && "description" in value;
 
     return isInstance;
 }
@@ -111,7 +110,7 @@ export function ProcessFromJSONTyped(json: any, ignoreDiscriminator: boolean): P
         
         'id': json['id'],
         'name': !exists(json, 'name') ? undefined : json['name'],
-        'description': json['description'],
+        'description': !exists(json, 'description') ? undefined : json['description'],
         'executor': !exists(json, 'executor') ? undefined : ExecutorFromJSON(json['executor']),
         'documentationUrl': !exists(json, 'documentationUrl') ? undefined : json['documentationUrl'],
         'fileRequirementsMessage': !exists(json, 'fileRequirementsMessage') ? undefined : json['fileRequirementsMessage'],

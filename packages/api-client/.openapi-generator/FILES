@@ -35,6 +35,7 @@ src/models/DatasetAssetsManifest.ts
 src/models/DatasetDetail.ts
 src/models/DatasetFile.ts
 src/models/DatasetViz.ts
+src/models/ErrorMessage.ts
 src/models/Executor.ts
 src/models/FileNamePattern.ts
 src/models/FileRequirements.ts
@@ -52,9 +53,9 @@ src/models/OpenNotebookInstanceResponse.ts
 src/models/PaginatedResponseDatasetListDto.ts
 src/models/PaginatedResponseSampleDto.ts
 src/models/PipelineCode.ts
+src/models/PortalErrorResponse.ts
 src/models/Process.ts
 src/models/ProcessDetail.ts
-src/models/ProcessDetailAllOfPipelineCode.ts
 src/models/Project.ts
 src/models/ProjectDetail.ts
 src/models/ProjectMetrics.ts
@@ -74,6 +75,7 @@ src/models/SetUserProjectRoleRequest.ts
 src/models/SftpCredentials.ts
 src/models/Status.ts
 src/models/StopExecutionResponse.ts
+src/models/SyncStatus.ts
 src/models/SystemInfoResponse.ts
 src/models/Tag.ts
 src/models/Task.ts

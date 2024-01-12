@@ -79,13 +79,13 @@ export interface ProjectRequest {
      * @type {CloudAccount}
      * @memberof ProjectRequest
      */
-    account: CloudAccount | null;
+    account?: CloudAccount | null;
     /**
      * 
      * @type {Array<Tag>}
      * @memberof ProjectRequest
      */
-    tags: Array<Tag> | null;
+    tags?: Array<Tag> | null;
 }
 
 /**
@@ -98,8 +98,6 @@ export function instanceOfProjectRequest(value: object): boolean {
     isInstance = isInstance && "billingAccountId" in value;
     isInstance = isInstance && "settings" in value;
     isInstance = isInstance && "contacts" in value;
-    isInstance = isInstance && "account" in value;
-    isInstance = isInstance && "tags" in value;
 
     return isInstance;
 }
@@ -119,8 +117,8 @@ export function ProjectRequestFromJSONTyped(json: any, ignoreDiscriminator: bool
         'billingAccountId': json['billingAccountId'],
         'settings': ProjectSettingsFromJSON(json['settings']),
         'contacts': ((json['contacts'] as Array<any>).map(ContactFromJSON)),
-        'account': CloudAccountFromJSON(json['account']),
-        'tags': (json['tags'] === null ? null : (json['tags'] as Array<any>).map(TagFromJSON)),
+        'account': !exists(json, 'account') ? undefined : CloudAccountFromJSON(json['account']),
+        'tags': !exists(json, 'tags') ? undefined : (json['tags'] === null ? null : (json['tags'] as Array<any>).map(TagFromJSON)),
     };
 }
 
@@ -139,7 +137,7 @@ export function ProjectRequestToJSON(value?: ProjectRequest | null): any {
         'settings': ProjectSettingsToJSON(value.settings),
         'contacts': ((value.contacts as Array<any>).map(ContactToJSON)),
         'account': CloudAccountToJSON(value.account),
-        'tags': (value.tags === null ? null : (value.tags as Array<any>).map(TagToJSON)),
+        'tags': value.tags === undefined ? undefined : (value.tags === null ? null : (value.tags as Array<any>).map(TagToJSON)),
     };
 }
 

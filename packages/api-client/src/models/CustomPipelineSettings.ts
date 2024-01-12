@@ -13,8 +13,15 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { SyncStatus } from './SyncStatus';
+import {
+    SyncStatusFromJSON,
+    SyncStatusFromJSONTyped,
+    SyncStatusToJSON,
+} from './SyncStatus';
+
 /**
- * 
+ * Used to describe the location of the process definition dependencies
  * @export
  * @interface CustomPipelineSettings
  */
@@ -38,19 +45,19 @@ export interface CustomPipelineSettings {
      */
     folder?: string;
     /**
-     * 
+     * Time of last sync
      * @type {Date}
      * @memberof CustomPipelineSettings
      */
     lastSync?: Date | null;
     /**
      * 
-     * @type {string}
+     * @type {SyncStatus}
      * @memberof CustomPipelineSettings
      */
-    syncStatus?: string | null;
+    syncStatus?: SyncStatus | null;
     /**
-     * 
+     * Commit hash of the last successful sync
      * @type {string}
      * @memberof CustomPipelineSettings
      */
@@ -81,7 +88,7 @@ export function CustomPipelineSettingsFromJSONTyped(json: any, ignoreDiscriminat
         'branch': !exists(json, 'branch') ? undefined : json['branch'],
         'folder': !exists(json, 'folder') ? undefined : json['folder'],
         'lastSync': !exists(json, 'lastSync') ? undefined : (json['lastSync'] === null ? null : new Date(json['lastSync'])),
-        'syncStatus': !exists(json, 'syncStatus') ? undefined : json['syncStatus'],
+        'syncStatus': !exists(json, 'syncStatus') ? undefined : SyncStatusFromJSON(json['syncStatus']),
         'commitHash': !exists(json, 'commitHash') ? undefined : json['commitHash'],
     };
 }
@@ -99,7 +106,7 @@ export function CustomPipelineSettingsToJSON(value?: CustomPipelineSettings | nu
         'branch': value.branch,
         'folder': value.folder,
         'lastSync': value.lastSync === undefined ? undefined : (value.lastSync === null ? null : value.lastSync.toISOString()),
-        'syncStatus': value.syncStatus,
+        'syncStatus': SyncStatusToJSON(value.syncStatus),
         'commitHash': value.commitHash,
     };
 }

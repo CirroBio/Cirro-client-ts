@@ -21,7 +21,7 @@ import {
 } from './RepositoryType';
 
 /**
- * Used to describe the pipeline analysis code
+ * Used to describe the pipeline analysis code, not required for ingest processes
  * @export
  * @interface PipelineCode
  */
@@ -37,19 +37,19 @@ export interface PipelineCode {
      * @type {string}
      * @memberof PipelineCode
      */
-    version?: string;
+    version: string;
     /**
      * 
      * @type {RepositoryType}
      * @memberof PipelineCode
      */
-    repositoryType?: RepositoryType;
+    repositoryType: RepositoryType;
     /**
      * Main script for running the pipeline
      * @type {string}
      * @memberof PipelineCode
      */
-    entryPoint?: string;
+    entryPoint: string;
 }
 
 /**
@@ -58,6 +58,9 @@ export interface PipelineCode {
 export function instanceOfPipelineCode(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "repositoryPath" in value;
+    isInstance = isInstance && "version" in value;
+    isInstance = isInstance && "repositoryType" in value;
+    isInstance = isInstance && "entryPoint" in value;
 
     return isInstance;
 }
@@ -73,9 +76,9 @@ export function PipelineCodeFromJSONTyped(json: any, ignoreDiscriminator: boolea
     return {
         
         'repositoryPath': json['repositoryPath'],
-        'version': !exists(json, 'version') ? undefined : json['version'],
-        'repositoryType': !exists(json, 'repositoryType') ? undefined : RepositoryTypeFromJSON(json['repositoryType']),
-        'entryPoint': !exists(json, 'entryPoint') ? undefined : json['entryPoint'],
+        'version': json['version'],
+        'repositoryType': RepositoryTypeFromJSON(json['repositoryType']),
+        'entryPoint': json['entryPoint'],
     };
 }
 
