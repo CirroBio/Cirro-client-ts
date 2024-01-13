@@ -31,13 +31,19 @@ export interface Reference {
      * @type {string}
      * @memberof Reference
      */
+    id: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Reference
+     */
     name: string;
     /**
      * 
      * @type {string}
      * @memberof Reference
      */
-    referenceType: string;
+    type: string;
     /**
      * 
      * @type {Array<FileEntry>}
@@ -63,8 +69,9 @@ export interface Reference {
  */
 export function instanceOfReference(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "id" in value;
     isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "referenceType" in value;
+    isInstance = isInstance && "type" in value;
     isInstance = isInstance && "files" in value;
     isInstance = isInstance && "createdBy" in value;
     isInstance = isInstance && "createdAt" in value;
@@ -82,8 +89,9 @@ export function ReferenceFromJSONTyped(json: any, ignoreDiscriminator: boolean):
     }
     return {
         
+        'id': json['id'],
         'name': json['name'],
-        'referenceType': json['referenceType'],
+        'type': json['type'],
         'files': ((json['files'] as Array<any>).map(FileEntryFromJSON)),
         'createdBy': json['createdBy'],
         'createdAt': (new Date(json['createdAt'])),
@@ -99,8 +107,9 @@ export function ReferenceToJSON(value?: Reference | null): any {
     }
     return {
         
+        'id': value.id,
         'name': value.name,
-        'referenceType': value.referenceType,
+        'type': value.type,
         'files': ((value.files as Array<any>).map(FileEntryToJSON)),
         'createdBy': value.createdBy,
         'createdAt': (value.createdAt.toISOString()),
