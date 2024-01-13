@@ -25,6 +25,7 @@ src/models/BudgetPeriod.ts
 src/models/CloudAccount.ts
 src/models/Contact.ts
 src/models/CreateNotebookInstanceRequest.ts
+src/models/CreateReferenceRequest.ts
 src/models/CreateResponse.ts
 src/models/CustomPipelineSettings.ts
 src/models/CustomerType.ts

@@ -8,6 +8,7 @@ export * from './BudgetPeriod';
 export * from './CloudAccount';
 export * from './Contact';
 export * from './CreateNotebookInstanceRequest';
+export * from './CreateReferenceRequest';
 export * from './CreateResponse';
 export * from './CustomPipelineSettings';
 export * from './CustomerType';

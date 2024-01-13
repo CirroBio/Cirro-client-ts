@@ -15,17 +15,33 @@
 
 import * as runtime from '../runtime';
 import type {
+  CreateReferenceRequest,
   Reference,
   ReferenceType,
 } from '../models/index';
 import {
+    CreateReferenceRequestFromJSON,
+    CreateReferenceRequestToJSON,
     ReferenceFromJSON,
     ReferenceToJSON,
     ReferenceTypeFromJSON,
     ReferenceTypeToJSON,
 } from '../models/index';
 
+export interface CreateProjectReferenceRequest {
+    projectId: string;
+    createReferenceRequest: CreateReferenceRequest;
+}
+
+export interface DeleteProjectReferenceRequest {
+    projectId: string;
+}
+
 export interface GetReferencesForProjectRequest {
+    projectId: string;
+}
+
+export interface RefreshProjectReferencesRequest {
     projectId: string;
 }
 
@@ -33,6 +49,92 @@ export interface GetReferencesForProjectRequest {
  * 
  */
 export class ReferencesApi extends runtime.BaseAPI {
+
+    /**
+     * Creates a reference
+     * Create project reference
+     */
+    async createProjectReferenceRaw(requestParameters: CreateProjectReferenceRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Reference>> {
+        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
+            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling createProjectReference.');
+        }
+
+        if (requestParameters.createReferenceRequest === null || requestParameters.createReferenceRequest === undefined) {
+            throw new runtime.RequiredError('createReferenceRequest','Required parameter requestParameters.createReferenceRequest was null or undefined when calling createProjectReference.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/projects/{projectId}/references`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: CreateReferenceRequestToJSON(requestParameters.createReferenceRequest),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => ReferenceFromJSON(jsonValue));
+    }
+
+    /**
+     * Creates a reference
+     * Create project reference
+     */
+    async createProjectReference(requestParameters: CreateProjectReferenceRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Reference> {
+        const response = await this.createProjectReferenceRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Deletes a reference
+     * Delete project reference
+     */
+    async deleteProjectReferenceRaw(requestParameters: DeleteProjectReferenceRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
+            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling deleteProjectReference.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/projects/{projectId}/references`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))),
+            method: 'DELETE',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Deletes a reference
+     * Delete project reference
+     */
+    async deleteProjectReference(requestParameters: DeleteProjectReferenceRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.deleteProjectReferenceRaw(requestParameters, initOverrides);
+    }
 
     /**
      * List available reference types
@@ -144,6 +246,45 @@ export class ReferencesApi extends runtime.BaseAPI {
     async getReferencesForProject(requestParameters: GetReferencesForProjectRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<Reference>> {
         const response = await this.getReferencesForProjectRaw(requestParameters, initOverrides);
         return await response.value();
+    }
+
+    /**
+     * Refresh project references (internal)
+     * Refresh project references
+     */
+    async refreshProjectReferencesRaw(requestParameters: RefreshProjectReferencesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
+            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling refreshProjectReferences.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/projects/{projectId}/references`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))),
+            method: 'PUT',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Refresh project references (internal)
+     * Refresh project references
+     */
+    async refreshProjectReferences(requestParameters: RefreshProjectReferencesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.refreshProjectReferencesRaw(requestParameters, initOverrides);
     }
 
 }

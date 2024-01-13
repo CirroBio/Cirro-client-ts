@@ -43,6 +43,12 @@ export interface Reference {
      * @type {string}
      * @memberof Reference
      */
+    description: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Reference
+     */
     type: string;
     /**
      * 
@@ -71,6 +77,7 @@ export function instanceOfReference(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "id" in value;
     isInstance = isInstance && "name" in value;
+    isInstance = isInstance && "description" in value;
     isInstance = isInstance && "type" in value;
     isInstance = isInstance && "files" in value;
     isInstance = isInstance && "createdBy" in value;
@@ -91,6 +98,7 @@ export function ReferenceFromJSONTyped(json: any, ignoreDiscriminator: boolean):
         
         'id': json['id'],
         'name': json['name'],
+        'description': json['description'],
         'type': json['type'],
         'files': ((json['files'] as Array<any>).map(FileEntryFromJSON)),
         'createdBy': json['createdBy'],
@@ -109,6 +117,7 @@ export function ReferenceToJSON(value?: Reference | null): any {
         
         'id': value.id,
         'name': value.name,
+        'description': value.description,
         'type': value.type,
         'files': ((value.files as Array<any>).map(FileEntryToJSON)),
         'createdBy': value.createdBy,
