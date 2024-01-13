@@ -50,6 +50,7 @@ export * from './ProjectUser';
 export * from './Reference';
 export * from './ReferenceType';
 export * from './RepositoryType';
+export * from './ResourcesInfo';
 export * from './RunAnalysisRequest';
 export * from './S3Credentials';
 export * from './Sample';

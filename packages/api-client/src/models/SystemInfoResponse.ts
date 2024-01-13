@@ -13,6 +13,13 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { ResourcesInfo } from './ResourcesInfo';
+import {
+    ResourcesInfoFromJSON,
+    ResourcesInfoFromJSONTyped,
+    ResourcesInfoToJSON,
+} from './ResourcesInfo';
+
 /**
  * 
  * @export
@@ -61,6 +68,12 @@ export interface SystemInfoResponse {
      * @memberof SystemInfoResponse
      */
     version: string;
+    /**
+     * 
+     * @type {ResourcesInfo}
+     * @memberof SystemInfoResponse
+     */
+    resourcesInfo: ResourcesInfo;
 }
 
 /**
@@ -75,6 +88,7 @@ export function instanceOfSystemInfoResponse(value: object): boolean {
     isInstance = isInstance && "systemMessage" in value;
     isInstance = isInstance && "commitHash" in value;
     isInstance = isInstance && "version" in value;
+    isInstance = isInstance && "resourcesInfo" in value;
 
     return isInstance;
 }
@@ -96,6 +110,7 @@ export function SystemInfoResponseFromJSONTyped(json: any, ignoreDiscriminator: 
         'systemMessage': json['systemMessage'],
         'commitHash': json['commitHash'],
         'version': json['version'],
+        'resourcesInfo': ResourcesInfoFromJSON(json['resourcesInfo']),
     };
 }
 
@@ -115,6 +130,7 @@ export function SystemInfoResponseToJSON(value?: SystemInfoResponse | null): any
         'systemMessage': value.systemMessage,
         'commitHash': value.commitHash,
         'version': value.version,
+        'resourcesInfo': ResourcesInfoToJSON(value.resourcesInfo),
     };
 }
 
