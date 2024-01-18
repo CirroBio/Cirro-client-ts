@@ -15,18 +15,18 @@
 
 import * as runtime from '../runtime';
 import type {
+  AWSCredentials,
   FileAccessRequest,
   GenerateSftpCredentialsRequest,
-  S3Credentials,
   SftpCredentials,
 } from '../models/index';
 import {
+    AWSCredentialsFromJSON,
+    AWSCredentialsToJSON,
     FileAccessRequestFromJSON,
     FileAccessRequestToJSON,
     GenerateSftpCredentialsRequestFromJSON,
     GenerateSftpCredentialsRequestToJSON,
-    S3CredentialsFromJSON,
-    S3CredentialsToJSON,
     SftpCredentialsFromJSON,
     SftpCredentialsToJSON,
 } from '../models/index';
@@ -50,7 +50,7 @@ export class FileApi extends runtime.BaseAPI {
      * Generates credentials used for connecting via S3
      * Create project file access token
      */
-    async generateProjectFileAccessTokenRaw(requestParameters: GenerateProjectFileAccessTokenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<S3Credentials>> {
+    async generateProjectFileAccessTokenRaw(requestParameters: GenerateProjectFileAccessTokenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AWSCredentials>> {
         if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
             throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling generateProjectFileAccessToken.');
         }
@@ -81,14 +81,14 @@ export class FileApi extends runtime.BaseAPI {
             body: FileAccessRequestToJSON(requestParameters.fileAccessRequest),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => S3CredentialsFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => AWSCredentialsFromJSON(jsonValue));
     }
 
     /**
      * Generates credentials used for connecting via S3
      * Create project file access token
      */
-    async generateProjectFileAccessToken(requestParameters: GenerateProjectFileAccessTokenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<S3Credentials> {
+    async generateProjectFileAccessToken(requestParameters: GenerateProjectFileAccessTokenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AWSCredentials> {
         const response = await this.generateProjectFileAccessTokenRaw(requestParameters, initOverrides);
         return await response.value();
     }

@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+export * from './AWSCredentials';
 export * from './AccessType';
 export * from './AllowedDataType';
 export * from './BillingAccount';
@@ -54,7 +55,6 @@ export * from './ReferenceType';
 export * from './RepositoryType';
 export * from './ResourcesInfo';
 export * from './RunAnalysisRequest';
-export * from './S3Credentials';
 export * from './Sample';
 export * from './SampleRequest';
 export * from './ServiceConnection';

@@ -16,45 +16,45 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface S3Credentials
+ * @interface AWSCredentials
  */
-export interface S3Credentials {
+export interface AWSCredentials {
     /**
      * 
      * @type {string}
-     * @memberof S3Credentials
+     * @memberof AWSCredentials
      */
     accessKeyId: string;
     /**
      * 
      * @type {string}
-     * @memberof S3Credentials
+     * @memberof AWSCredentials
      */
     secretAccessKey: string;
     /**
      * 
      * @type {string}
-     * @memberof S3Credentials
+     * @memberof AWSCredentials
      */
     sessionToken: string;
     /**
      * 
      * @type {Date}
-     * @memberof S3Credentials
+     * @memberof AWSCredentials
      */
     expiration: Date;
     /**
-     * Region of S3 Bucket
+     * Region of requested resource (i.e., S3 Bucket)
      * @type {string}
-     * @memberof S3Credentials
+     * @memberof AWSCredentials
      */
     region?: string;
 }
 
 /**
- * Check if a given object implements the S3Credentials interface.
+ * Check if a given object implements the AWSCredentials interface.
  */
-export function instanceOfS3Credentials(value: object): boolean {
+export function instanceOfAWSCredentials(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "accessKeyId" in value;
     isInstance = isInstance && "secretAccessKey" in value;
@@ -64,11 +64,11 @@ export function instanceOfS3Credentials(value: object): boolean {
     return isInstance;
 }
 
-export function S3CredentialsFromJSON(json: any): S3Credentials {
-    return S3CredentialsFromJSONTyped(json, false);
+export function AWSCredentialsFromJSON(json: any): AWSCredentials {
+    return AWSCredentialsFromJSONTyped(json, false);
 }
 
-export function S3CredentialsFromJSONTyped(json: any, ignoreDiscriminator: boolean): S3Credentials {
+export function AWSCredentialsFromJSONTyped(json: any, ignoreDiscriminator: boolean): AWSCredentials {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -82,7 +82,7 @@ export function S3CredentialsFromJSONTyped(json: any, ignoreDiscriminator: boole
     };
 }
 
-export function S3CredentialsToJSON(value?: S3Credentials | null): any {
+export function AWSCredentialsToJSON(value?: AWSCredentials | null): any {
     if (value === undefined) {
         return undefined;
     }
