@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+export * from './AccessType';
 export * from './AllowedDataType';
 export * from './BillingAccount';
 export * from './BillingAccountRequest';
@@ -20,6 +21,7 @@ export * from './DatasetDetail';
 export * from './DatasetViz';
 export * from './ErrorMessage';
 export * from './Executor';
+export * from './FileAccessRequest';
 export * from './FileEntry';
 export * from './FileNamePattern';
 export * from './FileRequirements';

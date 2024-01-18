@@ -15,11 +15,14 @@
 
 import * as runtime from '../runtime';
 import type {
+  FileAccessRequest,
   GenerateSftpCredentialsRequest,
   S3Credentials,
   SftpCredentials,
 } from '../models/index';
 import {
+    FileAccessRequestFromJSON,
+    FileAccessRequestToJSON,
     GenerateSftpCredentialsRequestFromJSON,
     GenerateSftpCredentialsRequestToJSON,
     S3CredentialsFromJSON,
@@ -28,11 +31,12 @@ import {
     SftpCredentialsToJSON,
 } from '../models/index';
 
-export interface GenerateFileAccessTokenRequest {
+export interface GenerateProjectFileAccessTokenRequest {
     projectId: string;
+    fileAccessRequest: FileAccessRequest;
 }
 
-export interface GenerateSftpTokenRequest {
+export interface GenerateProjectSftpTokenRequest {
     projectId: string;
     generateSftpCredentialsRequest: GenerateSftpCredentialsRequest;
 }
@@ -44,16 +48,22 @@ export class FileApi extends runtime.BaseAPI {
 
     /**
      * Generates credentials used for connecting via S3
-     * Create file access token
+     * Create project file access token
      */
-    async generateFileAccessTokenRaw(requestParameters: GenerateFileAccessTokenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<S3Credentials>> {
+    async generateProjectFileAccessTokenRaw(requestParameters: GenerateProjectFileAccessTokenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<S3Credentials>> {
         if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
-            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling generateFileAccessToken.');
+            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling generateProjectFileAccessToken.');
+        }
+
+        if (requestParameters.fileAccessRequest === null || requestParameters.fileAccessRequest === undefined) {
+            throw new runtime.RequiredError('fileAccessRequest','Required parameter requestParameters.fileAccessRequest was null or undefined when calling generateProjectFileAccessToken.');
         }
 
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.accessToken) {
             const token = this.configuration.accessToken;
@@ -68,6 +78,7 @@ export class FileApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
+            body: FileAccessRequestToJSON(requestParameters.fileAccessRequest),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => S3CredentialsFromJSON(jsonValue));
@@ -75,24 +86,24 @@ export class FileApi extends runtime.BaseAPI {
 
     /**
      * Generates credentials used for connecting via S3
-     * Create file access token
+     * Create project file access token
      */
-    async generateFileAccessToken(requestParameters: GenerateFileAccessTokenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<S3Credentials> {
-        const response = await this.generateFileAccessTokenRaw(requestParameters, initOverrides);
+    async generateProjectFileAccessToken(requestParameters: GenerateProjectFileAccessTokenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<S3Credentials> {
+        const response = await this.generateProjectFileAccessTokenRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      * Generates credentials used for connecting via SFTP
-     * Create SFTP Token
+     * Create project SFTP Token
      */
-    async generateSftpTokenRaw(requestParameters: GenerateSftpTokenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SftpCredentials>> {
+    async generateProjectSftpTokenRaw(requestParameters: GenerateProjectSftpTokenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SftpCredentials>> {
         if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
-            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling generateSftpToken.');
+            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling generateProjectSftpToken.');
         }
 
         if (requestParameters.generateSftpCredentialsRequest === null || requestParameters.generateSftpCredentialsRequest === undefined) {
-            throw new runtime.RequiredError('generateSftpCredentialsRequest','Required parameter requestParameters.generateSftpCredentialsRequest was null or undefined when calling generateSftpToken.');
+            throw new runtime.RequiredError('generateSftpCredentialsRequest','Required parameter requestParameters.generateSftpCredentialsRequest was null or undefined when calling generateProjectSftpToken.');
         }
 
         const queryParameters: any = {};
@@ -122,10 +133,10 @@ export class FileApi extends runtime.BaseAPI {
 
     /**
      * Generates credentials used for connecting via SFTP
-     * Create SFTP Token
+     * Create project SFTP Token
      */
-    async generateSftpToken(requestParameters: GenerateSftpTokenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SftpCredentials> {
-        const response = await this.generateSftpTokenRaw(requestParameters, initOverrides);
+    async generateProjectSftpToken(requestParameters: GenerateProjectSftpTokenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SftpCredentials> {
+        const response = await this.generateProjectSftpTokenRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

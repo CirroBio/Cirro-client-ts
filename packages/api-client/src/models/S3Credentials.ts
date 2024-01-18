@@ -30,12 +30,6 @@ export interface S3Credentials {
      * @type {string}
      * @memberof S3Credentials
      */
-    expiration: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof S3Credentials
-     */
     secretAccessKey: string;
     /**
      * 
@@ -45,10 +39,16 @@ export interface S3Credentials {
     sessionToken: string;
     /**
      * 
+     * @type {Date}
+     * @memberof S3Credentials
+     */
+    expiration: Date;
+    /**
+     * Region of S3 Bucket
      * @type {string}
      * @memberof S3Credentials
      */
-    region: string;
+    region?: string;
 }
 
 /**
@@ -57,10 +57,9 @@ export interface S3Credentials {
 export function instanceOfS3Credentials(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "accessKeyId" in value;
-    isInstance = isInstance && "expiration" in value;
     isInstance = isInstance && "secretAccessKey" in value;
     isInstance = isInstance && "sessionToken" in value;
-    isInstance = isInstance && "region" in value;
+    isInstance = isInstance && "expiration" in value;
 
     return isInstance;
 }
@@ -76,10 +75,10 @@ export function S3CredentialsFromJSONTyped(json: any, ignoreDiscriminator: boole
     return {
         
         'accessKeyId': json['accessKeyId'],
-        'expiration': json['expiration'],
         'secretAccessKey': json['secretAccessKey'],
         'sessionToken': json['sessionToken'],
-        'region': json['region'],
+        'expiration': (new Date(json['expiration'])),
+        'region': !exists(json, 'region') ? undefined : json['region'],
     };
 }
 
@@ -93,9 +92,9 @@ export function S3CredentialsToJSON(value?: S3Credentials | null): any {
     return {
         
         'accessKeyId': value.accessKeyId,
-        'expiration': value.expiration,
         'secretAccessKey': value.secretAccessKey,
         'sessionToken': value.sessionToken,
+        'expiration': (value.expiration.toISOString()),
         'region': value.region,
     };
 }
