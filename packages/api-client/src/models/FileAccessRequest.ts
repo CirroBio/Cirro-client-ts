@@ -37,13 +37,13 @@ export interface FileAccessRequest {
      * @type {string}
      * @memberof FileAccessRequest
      */
-    datasetId: string;
+    datasetId?: string | null;
     /**
      * 
      * @type {number}
      * @memberof FileAccessRequest
      */
-    tokenLifetimeHours: number;
+    tokenLifetimeHours?: number | null;
 }
 
 /**
@@ -52,8 +52,6 @@ export interface FileAccessRequest {
 export function instanceOfFileAccessRequest(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "accessType" in value;
-    isInstance = isInstance && "datasetId" in value;
-    isInstance = isInstance && "tokenLifetimeHours" in value;
 
     return isInstance;
 }
@@ -69,8 +67,8 @@ export function FileAccessRequestFromJSONTyped(json: any, ignoreDiscriminator: b
     return {
         
         'accessType': AccessTypeFromJSON(json['accessType']),
-        'datasetId': json['datasetId'],
-        'tokenLifetimeHours': json['tokenLifetimeHours'],
+        'datasetId': !exists(json, 'datasetId') ? undefined : json['datasetId'],
+        'tokenLifetimeHours': !exists(json, 'tokenLifetimeHours') ? undefined : json['tokenLifetimeHours'],
     };
 }
 
