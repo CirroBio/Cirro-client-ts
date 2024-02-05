@@ -20,17 +20,17 @@ import { exists, mapValues } from '../runtime';
  */
 export interface ImportDataRequest {
     /**
-     * 
+     * Name of the dataset
      * @type {string}
      * @memberof ImportDataRequest
      */
     name: string;
     /**
-     * 
+     * Description of the dataset
      * @type {string}
      * @memberof ImportDataRequest
      */
-    description: string;
+    description?: string;
     /**
      * 
      * @type {Array<string>}
@@ -45,7 +45,6 @@ export interface ImportDataRequest {
 export function instanceOfImportDataRequest(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "description" in value;
     isInstance = isInstance && "publicIds" in value;
 
     return isInstance;
@@ -62,7 +61,7 @@ export function ImportDataRequestFromJSONTyped(json: any, ignoreDiscriminator: b
     return {
         
         'name': json['name'],
-        'description': json['description'],
+        'description': !exists(json, 'description') ? undefined : json['description'],
         'publicIds': json['publicIds'],
     };
 }

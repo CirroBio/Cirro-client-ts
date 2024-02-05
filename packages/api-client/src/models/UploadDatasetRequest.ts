@@ -20,19 +20,19 @@ import { exists, mapValues } from '../runtime';
  */
 export interface UploadDatasetRequest {
     /**
-     * 
+     * Name of the dataset
      * @type {string}
      * @memberof UploadDatasetRequest
      */
     name: string;
     /**
-     * 
+     * Description of the dataset
      * @type {string}
      * @memberof UploadDatasetRequest
      */
-    description: string;
+    description?: string;
     /**
-     * 
+     * ID of the ingest process
      * @type {string}
      * @memberof UploadDatasetRequest
      */
@@ -51,7 +51,6 @@ export interface UploadDatasetRequest {
 export function instanceOfUploadDatasetRequest(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "description" in value;
     isInstance = isInstance && "processId" in value;
     isInstance = isInstance && "expectedFiles" in value;
 
@@ -69,7 +68,7 @@ export function UploadDatasetRequestFromJSONTyped(json: any, ignoreDiscriminator
     return {
         
         'name': json['name'],
-        'description': json['description'],
+        'description': !exists(json, 'description') ? undefined : json['description'],
         'processId': json['processId'],
         'expectedFiles': json['expectedFiles'],
     };

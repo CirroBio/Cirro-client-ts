@@ -26,7 +26,7 @@ export interface CloudAccount {
      */
     accountId?: string;
     /**
-     * Name used to describe the account
+     * Name used to describe the account, useful when the account hosts multiple projects
      * @type {string}
      * @memberof CloudAccount
      */

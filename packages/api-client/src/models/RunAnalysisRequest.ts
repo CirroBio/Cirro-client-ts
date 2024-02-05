@@ -20,43 +20,43 @@ import { exists, mapValues } from '../runtime';
  */
 export interface RunAnalysisRequest {
     /**
-     * 
+     * Name of the dataset
      * @type {string}
      * @memberof RunAnalysisRequest
      */
     name: string;
     /**
-     * 
+     * Description of the dataset (optional)
      * @type {string}
      * @memberof RunAnalysisRequest
      */
-    description: string;
+    description?: string | null;
     /**
-     * 
+     * Process ID of the workflow
      * @type {string}
      * @memberof RunAnalysisRequest
      */
     processId: string;
     /**
-     * 
+     * These datasets contain files that are inputs to this workflow.
      * @type {Array<string>}
      * @memberof RunAnalysisRequest
      */
     sourceDatasetIds: Array<string>;
     /**
-     * 
+     * Used for caching task execution. If the parameters are the same as the dataset specified here, it will re-use the output to minimize duplicate work
      * @type {string}
      * @memberof RunAnalysisRequest
      */
-    resumeDatasetId: string;
+    resumeDatasetId?: string | null;
     /**
-     * 
+     * Parameters used in workflow (can be empty)
      * @type {{ [key: string]: any; }}
      * @memberof RunAnalysisRequest
      */
     params: { [key: string]: any; };
     /**
-     * 
+     * Emails to notify upon workflow success or failure
      * @type {Array<string>}
      * @memberof RunAnalysisRequest
      */
@@ -69,10 +69,8 @@ export interface RunAnalysisRequest {
 export function instanceOfRunAnalysisRequest(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "description" in value;
     isInstance = isInstance && "processId" in value;
     isInstance = isInstance && "sourceDatasetIds" in value;
-    isInstance = isInstance && "resumeDatasetId" in value;
     isInstance = isInstance && "params" in value;
     isInstance = isInstance && "notificationEmails" in value;
 
@@ -90,10 +88,10 @@ export function RunAnalysisRequestFromJSONTyped(json: any, ignoreDiscriminator: 
     return {
         
         'name': json['name'],
-        'description': json['description'],
+        'description': !exists(json, 'description') ? undefined : json['description'],
         'processId': json['processId'],
         'sourceDatasetIds': json['sourceDatasetIds'],
-        'resumeDatasetId': json['resumeDatasetId'],
+        'resumeDatasetId': !exists(json, 'resumeDatasetId') ? undefined : json['resumeDatasetId'],
         'params': json['params'],
         'notificationEmails': json['notificationEmails'],
     };

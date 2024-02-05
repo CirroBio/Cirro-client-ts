@@ -37,7 +37,7 @@ export interface Process {
      * @type {string}
      * @memberof Process
      */
-    name?: string;
+    name: string;
     /**
      * 
      * @type {string}
@@ -45,11 +45,17 @@ export interface Process {
      */
     description?: string;
     /**
+     * Name of the data type this pipeline produces (if it is not defined, use the name)
+     * @type {string}
+     * @memberof Process
+     */
+    dataType?: string | null;
+    /**
      * 
      * @type {Executor}
      * @memberof Process
      */
-    executor?: Executor;
+    executor: Executor;
     /**
      * Link to pipeline documentation
      * @type {string}
@@ -63,7 +69,7 @@ export interface Process {
      */
     fileRequirementsMessage?: string;
     /**
-     * IDs of pipelines that can be ran downstream
+     * IDs of pipelines that can be run downstream
      * @type {Array<string>}
      * @memberof Process
      */
@@ -86,6 +92,12 @@ export interface Process {
      * @memberof Process
      */
     linkedProjectIds?: Array<string>;
+    /**
+     * Whether the pipeline is marked as archived
+     * @type {boolean}
+     * @memberof Process
+     */
+    isArchived?: boolean;
 }
 
 /**
@@ -94,6 +106,8 @@ export interface Process {
 export function instanceOfProcess(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "id" in value;
+    isInstance = isInstance && "name" in value;
+    isInstance = isInstance && "executor" in value;
 
     return isInstance;
 }
@@ -109,15 +123,17 @@ export function ProcessFromJSONTyped(json: any, ignoreDiscriminator: boolean): P
     return {
         
         'id': json['id'],
-        'name': !exists(json, 'name') ? undefined : json['name'],
+        'name': json['name'],
         'description': !exists(json, 'description') ? undefined : json['description'],
-        'executor': !exists(json, 'executor') ? undefined : ExecutorFromJSON(json['executor']),
+        'dataType': !exists(json, 'dataType') ? undefined : json['dataType'],
+        'executor': ExecutorFromJSON(json['executor']),
         'documentationUrl': !exists(json, 'documentationUrl') ? undefined : json['documentationUrl'],
         'fileRequirementsMessage': !exists(json, 'fileRequirementsMessage') ? undefined : json['fileRequirementsMessage'],
         'childProcessIds': !exists(json, 'childProcessIds') ? undefined : json['childProcessIds'],
         'parentProcessIds': !exists(json, 'parentProcessIds') ? undefined : json['parentProcessIds'],
         'owner': !exists(json, 'owner') ? undefined : json['owner'],
         'linkedProjectIds': !exists(json, 'linkedProjectIds') ? undefined : json['linkedProjectIds'],
+        'isArchived': !exists(json, 'isArchived') ? undefined : json['isArchived'],
     };
 }
 
@@ -133,6 +149,7 @@ export function ProcessToJSON(value?: Process | null): any {
         'id': value.id,
         'name': value.name,
         'description': value.description,
+        'dataType': value.dataType,
         'executor': ExecutorToJSON(value.executor),
         'documentationUrl': value.documentationUrl,
         'fileRequirementsMessage': value.fileRequirementsMessage,
@@ -140,6 +157,7 @@ export function ProcessToJSON(value?: Process | null): any {
         'parentProcessIds': value.parentProcessIds,
         'owner': value.owner,
         'linkedProjectIds': value.linkedProjectIds,
+        'isArchived': value.isArchived,
     };
 }
 

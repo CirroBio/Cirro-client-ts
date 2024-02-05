@@ -39,13 +39,13 @@ import {
  */
 export interface ProcessDetail {
     /**
-     * 
+     * Unique ID of the Process
      * @type {string}
      * @memberof ProcessDetail
      */
     id: string;
     /**
-     * 
+     * Friendly name for the process
      * @type {string}
      * @memberof ProcessDetail
      */
@@ -57,47 +57,41 @@ export interface ProcessDetail {
      */
     description: string;
     /**
+     * Name of the data type this pipeline produces (if it is not defined, use the name)
+     * @type {string}
+     * @memberof ProcessDetail
+     */
+    dataType?: string | null;
+    /**
      * 
      * @type {Executor}
      * @memberof ProcessDetail
      */
     executor: Executor;
     /**
-     * 
-     * @type {string}
-     * @memberof ProcessDetail
-     */
-    documentationUrl?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof ProcessDetail
-     */
-    fileRequirementsMessage?: string | null;
-    /**
-     * 
+     * IDs of pipelines that can be run downstream
      * @type {Array<string>}
      * @memberof ProcessDetail
      */
     childProcessIds: Array<string>;
     /**
-     * 
+     * IDs of pipelines that can run this pipeline
      * @type {Array<string>}
      * @memberof ProcessDetail
      */
     parentProcessIds: Array<string>;
     /**
-     * 
+     * Link to pipeline documentation
      * @type {string}
      * @memberof ProcessDetail
      */
-    owner?: string;
+    documentationUrl?: string | null;
     /**
-     * 
-     * @type {Array<string>}
+     * Description of the files to be uploaded (optional)
+     * @type {string}
      * @memberof ProcessDetail
      */
-    linkedProjectIds: Array<string>;
+    fileRequirementsMessage?: string | null;
     /**
      * 
      * @type {PipelineCode}
@@ -105,11 +99,23 @@ export interface ProcessDetail {
      */
     pipelineCode?: PipelineCode | null;
     /**
+     * Username of the pipeline creator (blank if Cirro curated)
+     * @type {string}
+     * @memberof ProcessDetail
+     */
+    owner?: string | null;
+    /**
+     * Projects that can run this pipeline
+     * @type {Array<string>}
+     * @memberof ProcessDetail
+     */
+    linkedProjectIds: Array<string>;
+    /**
      * 
      * @type {CustomPipelineSettings}
      * @memberof ProcessDetail
      */
-    customSettings: CustomPipelineSettings;
+    customSettings?: CustomPipelineSettings | null;
     /**
      * Whether the process is marked for removal
      * @type {boolean}
@@ -130,7 +136,6 @@ export function instanceOfProcessDetail(value: object): boolean {
     isInstance = isInstance && "childProcessIds" in value;
     isInstance = isInstance && "parentProcessIds" in value;
     isInstance = isInstance && "linkedProjectIds" in value;
-    isInstance = isInstance && "customSettings" in value;
 
     return isInstance;
 }
@@ -148,15 +153,16 @@ export function ProcessDetailFromJSONTyped(json: any, ignoreDiscriminator: boole
         'id': json['id'],
         'name': json['name'],
         'description': json['description'],
+        'dataType': !exists(json, 'dataType') ? undefined : json['dataType'],
         'executor': ExecutorFromJSON(json['executor']),
-        'documentationUrl': !exists(json, 'documentationUrl') ? undefined : json['documentationUrl'],
-        'fileRequirementsMessage': !exists(json, 'fileRequirementsMessage') ? undefined : json['fileRequirementsMessage'],
         'childProcessIds': json['childProcessIds'],
         'parentProcessIds': json['parentProcessIds'],
+        'documentationUrl': !exists(json, 'documentationUrl') ? undefined : json['documentationUrl'],
+        'fileRequirementsMessage': !exists(json, 'fileRequirementsMessage') ? undefined : json['fileRequirementsMessage'],
+        'pipelineCode': !exists(json, 'pipelineCode') ? undefined : PipelineCodeFromJSON(json['pipelineCode']),
         'owner': !exists(json, 'owner') ? undefined : json['owner'],
         'linkedProjectIds': json['linkedProjectIds'],
-        'pipelineCode': !exists(json, 'pipelineCode') ? undefined : PipelineCodeFromJSON(json['pipelineCode']),
-        'customSettings': CustomPipelineSettingsFromJSON(json['customSettings']),
+        'customSettings': !exists(json, 'customSettings') ? undefined : CustomPipelineSettingsFromJSON(json['customSettings']),
         'isArchived': !exists(json, 'isArchived') ? undefined : json['isArchived'],
     };
 }
@@ -173,14 +179,15 @@ export function ProcessDetailToJSON(value?: ProcessDetail | null): any {
         'id': value.id,
         'name': value.name,
         'description': value.description,
+        'dataType': value.dataType,
         'executor': ExecutorToJSON(value.executor),
-        'documentationUrl': value.documentationUrl,
-        'fileRequirementsMessage': value.fileRequirementsMessage,
         'childProcessIds': value.childProcessIds,
         'parentProcessIds': value.parentProcessIds,
+        'documentationUrl': value.documentationUrl,
+        'fileRequirementsMessage': value.fileRequirementsMessage,
+        'pipelineCode': PipelineCodeToJSON(value.pipelineCode),
         'owner': value.owner,
         'linkedProjectIds': value.linkedProjectIds,
-        'pipelineCode': PipelineCodeToJSON(value.pipelineCode),
         'customSettings': CustomPipelineSettingsToJSON(value.customSettings),
         'isArchived': value.isArchived,
     };
