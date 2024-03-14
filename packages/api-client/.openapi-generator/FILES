@@ -2,6 +2,7 @@
 .npmignore
 README.md
 package.json
+src/apis/AuditApi.ts
 src/apis/BillingApi.ts
 src/apis/DashboardsApi.ts
 src/apis/DatasetsApi.ts
@@ -20,11 +21,13 @@ src/index.ts
 src/models/AWSCredentials.ts
 src/models/AccessType.ts
 src/models/AllowedDataType.ts
+src/models/AuditEvent.ts
 src/models/BillingAccount.ts
 src/models/BillingAccountRequest.ts
 src/models/BillingMethod.ts
 src/models/BudgetPeriod.ts
 src/models/CloudAccount.ts
+src/models/ColumnDefinition.ts
 src/models/Contact.ts
 src/models/CreateNotebookInstanceRequest.ts
 src/models/CreateReferenceRequest.ts
@@ -50,6 +53,7 @@ src/models/ImportDataRequest.ts
 src/models/InviteUserRequest.ts
 src/models/InviteUserResponse.ts
 src/models/LogEntry.ts
+src/models/LoginProvider.ts
 src/models/MetricRecord.ts
 src/models/NotebookInstance.ts
 src/models/NotebookInstanceStatusResponse.ts
@@ -81,8 +85,10 @@ src/models/Status.ts
 src/models/StopExecutionResponse.ts
 src/models/SyncStatus.ts
 src/models/SystemInfoResponse.ts
+src/models/Table.ts
 src/models/Tag.ts
 src/models/Task.ts
+src/models/TenantInfo.ts
 src/models/UpdateDatasetRequest.ts
 src/models/UpdateUserRequest.ts
 src/models/UploadDatasetCreateResponse.ts

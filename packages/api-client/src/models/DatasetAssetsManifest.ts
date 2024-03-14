@@ -25,6 +25,12 @@ import {
     FileEntryFromJSONTyped,
     FileEntryToJSON,
 } from './FileEntry';
+import type { Table } from './Table';
+import {
+    TableFromJSON,
+    TableFromJSONTyped,
+    TableToJSON,
+} from './Table';
 
 /**
  * 
@@ -50,6 +56,12 @@ export interface DatasetAssetsManifest {
      * @memberof DatasetAssetsManifest
      */
     viz?: Array<DatasetViz>;
+    /**
+     * List of web optimized tables for the dataset
+     * @type {Array<Table>}
+     * @memberof DatasetAssetsManifest
+     */
+    tables?: Array<Table>;
 }
 
 /**
@@ -74,6 +86,7 @@ export function DatasetAssetsManifestFromJSONTyped(json: any, ignoreDiscriminato
         'domain': !exists(json, 'domain') ? undefined : json['domain'],
         'files': !exists(json, 'files') ? undefined : ((json['files'] as Array<any>).map(FileEntryFromJSON)),
         'viz': !exists(json, 'viz') ? undefined : ((json['viz'] as Array<any>).map(DatasetVizFromJSON)),
+        'tables': !exists(json, 'tables') ? undefined : ((json['tables'] as Array<any>).map(TableFromJSON)),
     };
 }
 
@@ -89,6 +102,7 @@ export function DatasetAssetsManifestToJSON(value?: DatasetAssetsManifest | null
         'domain': value.domain,
         'files': value.files === undefined ? undefined : ((value.files as Array<any>).map(FileEntryToJSON)),
         'viz': value.viz === undefined ? undefined : ((value.viz as Array<any>).map(DatasetVizToJSON)),
+        'tables': value.tables === undefined ? undefined : ((value.tables as Array<any>).map(TableToJSON)),
     };
 }
 

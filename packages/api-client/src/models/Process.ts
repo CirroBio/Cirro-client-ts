@@ -93,6 +93,12 @@ export interface Process {
      */
     linkedProjectIds?: Array<string>;
     /**
+     * Whether the pipeline is allowed to have multiple dataset sources
+     * @type {boolean}
+     * @memberof Process
+     */
+    allowMultipleSources?: boolean;
+    /**
      * Whether the pipeline is marked as archived
      * @type {boolean}
      * @memberof Process
@@ -133,6 +139,7 @@ export function ProcessFromJSONTyped(json: any, ignoreDiscriminator: boolean): P
         'parentProcessIds': !exists(json, 'parentProcessIds') ? undefined : json['parentProcessIds'],
         'owner': !exists(json, 'owner') ? undefined : json['owner'],
         'linkedProjectIds': !exists(json, 'linkedProjectIds') ? undefined : json['linkedProjectIds'],
+        'allowMultipleSources': !exists(json, 'allowMultipleSources') ? undefined : json['allowMultipleSources'],
         'isArchived': !exists(json, 'isArchived') ? undefined : json['isArchived'],
     };
 }
@@ -157,6 +164,7 @@ export function ProcessToJSON(value?: Process | null): any {
         'parentProcessIds': value.parentProcessIds,
         'owner': value.owner,
         'linkedProjectIds': value.linkedProjectIds,
+        'allowMultipleSources': value.allowMultipleSources,
         'isArchived': value.isArchived,
     };
 }

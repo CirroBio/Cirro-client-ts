@@ -19,6 +19,12 @@ import {
     ResourcesInfoFromJSONTyped,
     ResourcesInfoToJSON,
 } from './ResourcesInfo';
+import type { TenantInfo } from './TenantInfo';
+import {
+    TenantInfoFromJSON,
+    TenantInfoFromJSONTyped,
+    TenantInfoToJSON,
+} from './TenantInfo';
 
 /**
  * 
@@ -43,7 +49,7 @@ export interface SystemInfoResponse {
      * @type {string}
      * @memberof SystemInfoResponse
      */
-    dataEndpoint: string;
+    referencesBucket: string;
     /**
      * 
      * @type {string}
@@ -74,6 +80,12 @@ export interface SystemInfoResponse {
      * @memberof SystemInfoResponse
      */
     resourcesInfo: ResourcesInfo;
+    /**
+     * 
+     * @type {TenantInfo}
+     * @memberof SystemInfoResponse
+     */
+    tenantInfo: TenantInfo;
 }
 
 /**
@@ -83,12 +95,13 @@ export function instanceOfSystemInfoResponse(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "sdkAppId" in value;
     isInstance = isInstance && "resourcesBucket" in value;
-    isInstance = isInstance && "dataEndpoint" in value;
+    isInstance = isInstance && "referencesBucket" in value;
     isInstance = isInstance && "region" in value;
     isInstance = isInstance && "systemMessage" in value;
     isInstance = isInstance && "commitHash" in value;
     isInstance = isInstance && "version" in value;
     isInstance = isInstance && "resourcesInfo" in value;
+    isInstance = isInstance && "tenantInfo" in value;
 
     return isInstance;
 }
@@ -105,12 +118,13 @@ export function SystemInfoResponseFromJSONTyped(json: any, ignoreDiscriminator: 
         
         'sdkAppId': json['sdkAppId'],
         'resourcesBucket': json['resourcesBucket'],
-        'dataEndpoint': json['dataEndpoint'],
+        'referencesBucket': json['referencesBucket'],
         'region': json['region'],
         'systemMessage': json['systemMessage'],
         'commitHash': json['commitHash'],
         'version': json['version'],
         'resourcesInfo': ResourcesInfoFromJSON(json['resourcesInfo']),
+        'tenantInfo': TenantInfoFromJSON(json['tenantInfo']),
     };
 }
 
@@ -125,12 +139,13 @@ export function SystemInfoResponseToJSON(value?: SystemInfoResponse | null): any
         
         'sdkAppId': value.sdkAppId,
         'resourcesBucket': value.resourcesBucket,
-        'dataEndpoint': value.dataEndpoint,
+        'referencesBucket': value.referencesBucket,
         'region': value.region,
         'systemMessage': value.systemMessage,
         'commitHash': value.commitHash,
         'version': value.version,
         'resourcesInfo': ResourcesInfoToJSON(value.resourcesInfo),
+        'tenantInfo': TenantInfoToJSON(value.tenantInfo),
     };
 }
 
