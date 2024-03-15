@@ -61,7 +61,7 @@ export interface Table {
      * @type {Array<ColumnDefinition>}
      * @memberof Table
      */
-    cols: Array<ColumnDefinition>;
+    cols?: Array<ColumnDefinition> | null;
 }
 
 /**
@@ -70,7 +70,6 @@ export interface Table {
 export function instanceOfTable(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "desc" in value;
-    isInstance = isInstance && "cols" in value;
 
     return isInstance;
 }
@@ -90,7 +89,7 @@ export function TableFromJSONTyped(json: any, ignoreDiscriminator: boolean): Tab
         'type': !exists(json, 'type') ? undefined : json['type'],
         'rows': !exists(json, 'rows') ? undefined : json['rows'],
         'path': !exists(json, 'path') ? undefined : json['path'],
-        'cols': ((json['cols'] as Array<any>).map(ColumnDefinitionFromJSON)),
+        'cols': !exists(json, 'cols') ? undefined : (json['cols'] === null ? null : (json['cols'] as Array<any>).map(ColumnDefinitionFromJSON)),
     };
 }
 
@@ -108,7 +107,7 @@ export function TableToJSON(value?: Table | null): any {
         'type': value.type,
         'rows': value.rows,
         'path': value.path,
-        'cols': ((value.cols as Array<any>).map(ColumnDefinitionToJSON)),
+        'cols': value.cols === undefined ? undefined : (value.cols === null ? null : (value.cols as Array<any>).map(ColumnDefinitionToJSON)),
     };
 }
 
