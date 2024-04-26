@@ -31,7 +31,7 @@ export interface ProjectSettings {
      * @type {number}
      * @memberof ProjectSettings
      */
-    budgetAmount?: number;
+    budgetAmount: number;
     /**
      * 
      * @type {BudgetPeriod}
@@ -93,25 +93,19 @@ export interface ProjectSettings {
      */
     serviceConnections: Array<string>;
     /**
-     * Creates a default VPC for the compute environment, if false, VPC ID must be provided
-     * @type {boolean}
-     * @memberof ProjectSettings
-     */
-    createVpc?: boolean;
-    /**
      * VPC that the compute environment will use
      * @type {string}
      * @memberof ProjectSettings
      */
     vpcId?: string | null;
     /**
-     * List of subnets that the compute environment will use
+     * 
      * @type {Array<string>}
      * @memberof ProjectSettings
      */
     batchSubnets?: Array<string> | null;
     /**
-     * KMS Key ARN to encrypt S3 objects, one will be created if the arn is not provided
+     * KMS Key ARN to encrypt S3 objects, if not provided, default bucket encryption will be used
      * @type {string}
      * @memberof ProjectSettings
      */
@@ -123,6 +117,7 @@ export interface ProjectSettings {
  */
 export function instanceOfProjectSettings(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "budgetAmount" in value;
     isInstance = isInstance && "budgetPeriod" in value;
     isInstance = isInstance && "serviceConnections" in value;
 
@@ -139,7 +134,7 @@ export function ProjectSettingsFromJSONTyped(json: any, ignoreDiscriminator: boo
     }
     return {
         
-        'budgetAmount': !exists(json, 'budgetAmount') ? undefined : json['budgetAmount'],
+        'budgetAmount': json['budgetAmount'],
         'budgetPeriod': BudgetPeriodFromJSON(json['budgetPeriod']),
         'dragenAmi': !exists(json, 'dragenAmi') ? undefined : json['dragenAmi'],
         'enableCompute': !exists(json, 'enableCompute') ? undefined : json['enableCompute'],
@@ -150,7 +145,6 @@ export function ProjectSettingsFromJSONTyped(json: any, ignoreDiscriminator: boo
         'maxSpotVCPU': !exists(json, 'maxSpotVCPU') ? undefined : json['maxSpotVCPU'],
         'retentionPolicyDays': !exists(json, 'retentionPolicyDays') ? undefined : json['retentionPolicyDays'],
         'serviceConnections': json['serviceConnections'],
-        'createVpc': !exists(json, 'createVpc') ? undefined : json['createVpc'],
         'vpcId': !exists(json, 'vpcId') ? undefined : json['vpcId'],
         'batchSubnets': !exists(json, 'batchSubnets') ? undefined : json['batchSubnets'],
         'kmsArn': !exists(json, 'kmsArn') ? undefined : json['kmsArn'],
@@ -177,7 +171,6 @@ export function ProjectSettingsToJSON(value?: ProjectSettings | null): any {
         'maxSpotVCPU': value.maxSpotVCPU,
         'retentionPolicyDays': value.retentionPolicyDays,
         'serviceConnections': value.serviceConnections,
-        'createVpc': value.createVpc,
         'vpcId': value.vpcId,
         'batchSubnets': value.batchSubnets,
         'kmsArn': value.kmsArn,

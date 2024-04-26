@@ -22,6 +22,7 @@ src/models/AWSCredentials.ts
 src/models/AccessType.ts
 src/models/AllowedDataType.ts
 src/models/AuditEvent.ts
+src/models/AuthInfo.ts
 src/models/BillingAccount.ts
 src/models/BillingAccountRequest.ts
 src/models/BillingMethod.ts

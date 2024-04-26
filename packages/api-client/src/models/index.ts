@@ -4,6 +4,7 @@ export * from './AWSCredentials';
 export * from './AccessType';
 export * from './AllowedDataType';
 export * from './AuditEvent';
+export * from './AuthInfo';
 export * from './BillingAccount';
 export * from './BillingAccountRequest';
 export * from './BillingMethod';

@@ -13,6 +13,12 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { AuthInfo } from './AuthInfo';
+import {
+    AuthInfoFromJSON,
+    AuthInfoFromJSONTyped,
+    AuthInfoToJSON,
+} from './AuthInfo';
 import type { ResourcesInfo } from './ResourcesInfo';
 import {
     ResourcesInfoFromJSON,
@@ -37,12 +43,6 @@ export interface SystemInfoResponse {
      * @type {string}
      * @memberof SystemInfoResponse
      */
-    sdkAppId: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof SystemInfoResponse
-     */
     resourcesBucket: string;
     /**
      * 
@@ -55,6 +55,12 @@ export interface SystemInfoResponse {
      * @type {string}
      * @memberof SystemInfoResponse
      */
+    liveEndpoint: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof SystemInfoResponse
+     */
     region: string;
     /**
      * 
@@ -62,6 +68,12 @@ export interface SystemInfoResponse {
      * @memberof SystemInfoResponse
      */
     systemMessage: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof SystemInfoResponse
+     */
+    maintenanceModeEnabled: boolean;
     /**
      * 
      * @type {string}
@@ -86,6 +98,12 @@ export interface SystemInfoResponse {
      * @memberof SystemInfoResponse
      */
     tenantInfo: TenantInfo;
+    /**
+     * 
+     * @type {AuthInfo}
+     * @memberof SystemInfoResponse
+     */
+    auth: AuthInfo;
 }
 
 /**
@@ -93,15 +111,17 @@ export interface SystemInfoResponse {
  */
 export function instanceOfSystemInfoResponse(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "sdkAppId" in value;
     isInstance = isInstance && "resourcesBucket" in value;
     isInstance = isInstance && "referencesBucket" in value;
+    isInstance = isInstance && "liveEndpoint" in value;
     isInstance = isInstance && "region" in value;
     isInstance = isInstance && "systemMessage" in value;
+    isInstance = isInstance && "maintenanceModeEnabled" in value;
     isInstance = isInstance && "commitHash" in value;
     isInstance = isInstance && "version" in value;
     isInstance = isInstance && "resourcesInfo" in value;
     isInstance = isInstance && "tenantInfo" in value;
+    isInstance = isInstance && "auth" in value;
 
     return isInstance;
 }
@@ -116,15 +136,17 @@ export function SystemInfoResponseFromJSONTyped(json: any, ignoreDiscriminator: 
     }
     return {
         
-        'sdkAppId': json['sdkAppId'],
         'resourcesBucket': json['resourcesBucket'],
         'referencesBucket': json['referencesBucket'],
+        'liveEndpoint': json['liveEndpoint'],
         'region': json['region'],
         'systemMessage': json['systemMessage'],
+        'maintenanceModeEnabled': json['maintenanceModeEnabled'],
         'commitHash': json['commitHash'],
         'version': json['version'],
         'resourcesInfo': ResourcesInfoFromJSON(json['resourcesInfo']),
         'tenantInfo': TenantInfoFromJSON(json['tenantInfo']),
+        'auth': AuthInfoFromJSON(json['auth']),
     };
 }
 
@@ -137,15 +159,17 @@ export function SystemInfoResponseToJSON(value?: SystemInfoResponse | null): any
     }
     return {
         
-        'sdkAppId': value.sdkAppId,
         'resourcesBucket': value.resourcesBucket,
         'referencesBucket': value.referencesBucket,
+        'liveEndpoint': value.liveEndpoint,
         'region': value.region,
         'systemMessage': value.systemMessage,
+        'maintenanceModeEnabled': value.maintenanceModeEnabled,
         'commitHash': value.commitHash,
         'version': value.version,
         'resourcesInfo': ResourcesInfoToJSON(value.resourcesInfo),
         'tenantInfo': TenantInfoToJSON(value.tenantInfo),
+        'auth': AuthInfoToJSON(value.auth),
     };
 }
 

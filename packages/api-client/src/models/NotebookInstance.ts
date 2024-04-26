@@ -49,6 +49,12 @@ export interface NotebookInstance {
      * @type {string}
      * @memberof NotebookInstance
      */
+    statusMessage: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof NotebookInstance
+     */
     instanceType: string;
     /**
      * 
@@ -90,6 +96,7 @@ export function instanceOfNotebookInstance(value: object): boolean {
     isInstance = isInstance && "id" in value;
     isInstance = isInstance && "name" in value;
     isInstance = isInstance && "status" in value;
+    isInstance = isInstance && "statusMessage" in value;
     isInstance = isInstance && "instanceType" in value;
     isInstance = isInstance && "acceleratorTypes" in value;
     isInstance = isInstance && "volumeSizeGB" in value;
@@ -113,6 +120,7 @@ export function NotebookInstanceFromJSONTyped(json: any, ignoreDiscriminator: bo
         'id': json['id'],
         'name': json['name'],
         'status': StatusFromJSON(json['status']),
+        'statusMessage': json['statusMessage'],
         'instanceType': json['instanceType'],
         'acceleratorTypes': json['acceleratorTypes'],
         'volumeSizeGB': json['volumeSizeGB'],
@@ -134,6 +142,7 @@ export function NotebookInstanceToJSON(value?: NotebookInstance | null): any {
         'id': value.id,
         'name': value.name,
         'status': StatusToJSON(value.status),
+        'statusMessage': value.statusMessage,
         'instanceType': value.instanceType,
         'acceleratorTypes': value.acceleratorTypes,
         'volumeSizeGB': value.volumeSizeGB,
