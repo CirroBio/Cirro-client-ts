@@ -19,6 +19,7 @@ import type {
   InviteUserResponse,
   UpdateUserRequest,
   User,
+  UserDetail,
 } from '../models/index';
 import {
     InviteUserRequestFromJSON,
@@ -29,6 +30,8 @@ import {
     UpdateUserRequestToJSON,
     UserFromJSON,
     UserToJSON,
+    UserDetailFromJSON,
+    UserDetailToJSON,
 } from '../models/index';
 
 export interface GetUserRequest {
@@ -41,6 +44,10 @@ export interface GetUsersRequest {
 
 export interface InviteUserOperationRequest {
     inviteUserRequest: InviteUserRequest;
+}
+
+export interface SignOutUserRequest {
+    username: string;
 }
 
 export interface UpdateUserOperationRequest {
@@ -57,7 +64,7 @@ export class UsersApi extends runtime.BaseAPI {
      * Get user information
      * Get user
      */
-    async getUserRaw(requestParameters: GetUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<User>> {
+    async getUserRaw(requestParameters: GetUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<UserDetail>> {
         if (requestParameters.username === null || requestParameters.username === undefined) {
             throw new runtime.RequiredError('username','Required parameter requestParameters.username was null or undefined when calling getUser.');
         }
@@ -81,14 +88,14 @@ export class UsersApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => UserFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => UserDetailFromJSON(jsonValue));
     }
 
     /**
      * Get user information
      * Get user
      */
-    async getUser(requestParameters: GetUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<User> {
+    async getUser(requestParameters: GetUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<UserDetail> {
         const response = await this.getUserRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -178,6 +185,45 @@ export class UsersApi extends runtime.BaseAPI {
     async inviteUser(requestParameters: InviteUserOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<InviteUserResponse> {
         const response = await this.inviteUserRaw(requestParameters, initOverrides);
         return await response.value();
+    }
+
+    /**
+     * Signs user out from all sessions
+     * Sign out user
+     */
+    async signOutUserRaw(requestParameters: SignOutUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.username === null || requestParameters.username === undefined) {
+            throw new runtime.RequiredError('username','Required parameter requestParameters.username was null or undefined when calling signOutUser.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/users/{username}:signOut`.replace(`{${"username"}}`, encodeURIComponent(String(requestParameters.username))),
+            method: 'PUT',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Signs user out from all sessions
+     * Sign out user
+     */
+    async signOutUser(requestParameters: SignOutUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.signOutUserRaw(requestParameters, initOverrides);
     }
 
     /**

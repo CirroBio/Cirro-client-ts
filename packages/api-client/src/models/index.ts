@@ -78,4 +78,6 @@ export * from './UpdateUserRequest';
 export * from './UploadDatasetCreateResponse';
 export * from './UploadDatasetRequest';
 export * from './User';
+export * from './UserDetail';
+export * from './UserProjectAssignment';
 export * from './ValidateFileRequirementsRequest';
