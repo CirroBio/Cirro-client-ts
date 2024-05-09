@@ -13,6 +13,13 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { CloudAccountType } from './CloudAccountType';
+import {
+    CloudAccountTypeFromJSON,
+    CloudAccountTypeFromJSONTyped,
+    CloudAccountTypeToJSON,
+} from './CloudAccountType';
+
 /**
  * 
  * @export
@@ -32,11 +39,17 @@ export interface CloudAccount {
      */
     accountName?: string;
     /**
-     * AWS Region Code
+     * AWS Region Code (defaults to region of Cirro app)
      * @type {string}
      * @memberof CloudAccount
      */
     regionName?: string;
+    /**
+     * 
+     * @type {CloudAccountType}
+     * @memberof CloudAccount
+     */
+    accountType: CloudAccountType;
 }
 
 /**
@@ -44,6 +57,7 @@ export interface CloudAccount {
  */
 export function instanceOfCloudAccount(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "accountType" in value;
 
     return isInstance;
 }
@@ -61,6 +75,7 @@ export function CloudAccountFromJSONTyped(json: any, ignoreDiscriminator: boolea
         'accountId': !exists(json, 'accountId') ? undefined : json['accountId'],
         'accountName': !exists(json, 'accountName') ? undefined : json['accountName'],
         'regionName': !exists(json, 'regionName') ? undefined : json['regionName'],
+        'accountType': CloudAccountTypeFromJSON(json['accountType']),
     };
 }
 
@@ -76,6 +91,7 @@ export function CloudAccountToJSON(value?: CloudAccount | null): any {
         'accountId': value.accountId,
         'accountName': value.accountName,
         'regionName': value.regionName,
+        'accountType': CloudAccountTypeToJSON(value.accountType),
     };
 }
 

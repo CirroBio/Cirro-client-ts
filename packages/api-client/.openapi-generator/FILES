@@ -28,6 +28,7 @@ src/models/BillingAccountRequest.ts
 src/models/BillingMethod.ts
 src/models/BudgetPeriod.ts
 src/models/CloudAccount.ts
+src/models/CloudAccountType.ts
 src/models/ColumnDefinition.ts
 src/models/Contact.ts
 src/models/CreateNotebookInstanceRequest.ts

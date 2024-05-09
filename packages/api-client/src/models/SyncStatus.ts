@@ -13,7 +13,7 @@
  */
 
 /**
- * Status of last sync
+ * Status of the last sync operation
  * @export
  * @enum {string}
  */

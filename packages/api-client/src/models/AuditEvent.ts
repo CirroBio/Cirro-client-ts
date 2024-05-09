@@ -54,13 +54,13 @@ export interface AuditEvent {
      * @type {{ [key: string]: any; }}
      * @memberof AuditEvent
      */
-    eventDetail?: { [key: string]: any; };
+    eventDetail?: { [key: string]: any; } | null;
     /**
      * The changes made to the entity (if applicable)
      * @type {{ [key: string]: string; }}
      * @memberof AuditEvent
      */
-    changes?: { [key: string]: string; };
+    changes?: { [key: string]: string; } | null;
     /**
      * The username of the user who performed the action
      * @type {string}

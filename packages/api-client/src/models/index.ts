@@ -10,6 +10,7 @@ export * from './BillingAccountRequest';
 export * from './BillingMethod';
 export * from './BudgetPeriod';
 export * from './CloudAccount';
+export * from './CloudAccountType';
 export * from './ColumnDefinition';
 export * from './Contact';
 export * from './CreateNotebookInstanceRequest';

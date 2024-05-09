@@ -87,11 +87,11 @@ export interface ProjectSettings {
      */
     retentionPolicyDays?: number;
     /**
-     * 
+     * List of service connections to enable
      * @type {Array<string>}
      * @memberof ProjectSettings
      */
-    serviceConnections: Array<string>;
+    serviceConnections?: Array<string>;
     /**
      * VPC that the compute environment will use
      * @type {string}
@@ -99,11 +99,17 @@ export interface ProjectSettings {
      */
     vpcId?: string | null;
     /**
-     * 
+     * List of subnets that the compute environment will use
      * @type {Array<string>}
      * @memberof ProjectSettings
      */
     batchSubnets?: Array<string> | null;
+    /**
+     * List of subnets that the sagemaker instances will use
+     * @type {Array<string>}
+     * @memberof ProjectSettings
+     */
+    sagemakerSubnets?: Array<string> | null;
     /**
      * KMS Key ARN to encrypt S3 objects, if not provided, default bucket encryption will be used
      * @type {string}
@@ -119,7 +125,6 @@ export function instanceOfProjectSettings(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "budgetAmount" in value;
     isInstance = isInstance && "budgetPeriod" in value;
-    isInstance = isInstance && "serviceConnections" in value;
 
     return isInstance;
 }
@@ -144,9 +149,10 @@ export function ProjectSettingsFromJSONTyped(json: any, ignoreDiscriminator: boo
         'maxF1VCPU': !exists(json, 'maxF1VCPU') ? undefined : json['maxF1VCPU'],
         'maxSpotVCPU': !exists(json, 'maxSpotVCPU') ? undefined : json['maxSpotVCPU'],
         'retentionPolicyDays': !exists(json, 'retentionPolicyDays') ? undefined : json['retentionPolicyDays'],
-        'serviceConnections': json['serviceConnections'],
+        'serviceConnections': !exists(json, 'serviceConnections') ? undefined : json['serviceConnections'],
         'vpcId': !exists(json, 'vpcId') ? undefined : json['vpcId'],
         'batchSubnets': !exists(json, 'batchSubnets') ? undefined : json['batchSubnets'],
+        'sagemakerSubnets': !exists(json, 'sagemakerSubnets') ? undefined : json['sagemakerSubnets'],
         'kmsArn': !exists(json, 'kmsArn') ? undefined : json['kmsArn'],
     };
 }
@@ -173,6 +179,7 @@ export function ProjectSettingsToJSON(value?: ProjectSettings | null): any {
         'serviceConnections': value.serviceConnections,
         'vpcId': value.vpcId,
         'batchSubnets': value.batchSubnets,
+        'sagemakerSubnets': value.sagemakerSubnets,
         'kmsArn': value.kmsArn,
     };
 }
