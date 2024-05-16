@@ -20,35 +20,47 @@ import { exists, mapValues } from '../runtime';
  */
 export interface UpdateUserRequest {
     /**
-     * 
+     * Display name of the user
      * @type {string}
      * @memberof UpdateUserRequest
      */
     name: string;
     /**
-     * 
+     * Email address of the user
      * @type {string}
      * @memberof UpdateUserRequest
      */
     email: string;
     /**
-     * 
+     * Phone number of the user
      * @type {string}
      * @memberof UpdateUserRequest
      */
-    phone: string;
+    phone?: string;
     /**
-     * 
+     * Department or lab the user belongs to
      * @type {string}
      * @memberof UpdateUserRequest
      */
-    department: string;
+    department?: string;
     /**
-     * 
+     * The organization the user belongs to, only editable by administrators
+     * @type {string}
+     * @memberof UpdateUserRequest
+     */
+    organization?: string;
+    /**
+     * Additional settings for the user
      * @type {{ [key: string]: any; }}
      * @memberof UpdateUserRequest
      */
-    settings: { [key: string]: any; };
+    settings?: { [key: string]: any; };
+    /**
+     * Groups the user belongs to, only editable by administrators
+     * @type {Array<string>}
+     * @memberof UpdateUserRequest
+     */
+    groups?: Array<string>;
 }
 
 /**
@@ -58,9 +70,6 @@ export function instanceOfUpdateUserRequest(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "name" in value;
     isInstance = isInstance && "email" in value;
-    isInstance = isInstance && "phone" in value;
-    isInstance = isInstance && "department" in value;
-    isInstance = isInstance && "settings" in value;
 
     return isInstance;
 }
@@ -77,9 +86,11 @@ export function UpdateUserRequestFromJSONTyped(json: any, ignoreDiscriminator: b
         
         'name': json['name'],
         'email': json['email'],
-        'phone': json['phone'],
-        'department': json['department'],
-        'settings': json['settings'],
+        'phone': !exists(json, 'phone') ? undefined : json['phone'],
+        'department': !exists(json, 'department') ? undefined : json['department'],
+        'organization': !exists(json, 'organization') ? undefined : json['organization'],
+        'settings': !exists(json, 'settings') ? undefined : json['settings'],
+        'groups': !exists(json, 'groups') ? undefined : json['groups'],
     };
 }
 
@@ -96,7 +107,9 @@ export function UpdateUserRequestToJSON(value?: UpdateUserRequest | null): any {
         'email': value.email,
         'phone': value.phone,
         'department': value.department,
+        'organization': value.organization,
         'settings': value.settings,
+        'groups': value.groups,
     };
 }
 

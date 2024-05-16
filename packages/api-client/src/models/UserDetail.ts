@@ -80,6 +80,12 @@ export interface UserDetail {
      * @memberof UserDetail
      */
     projectAssignments: Array<UserProjectAssignment>;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof UserDetail
+     */
+    groups: Array<string>;
 }
 
 /**
@@ -95,6 +101,7 @@ export function instanceOfUserDetail(value: object): boolean {
     isInstance = isInstance && "department" in value;
     isInstance = isInstance && "invitedBy" in value;
     isInstance = isInstance && "projectAssignments" in value;
+    isInstance = isInstance && "groups" in value;
 
     return isInstance;
 }
@@ -118,6 +125,7 @@ export function UserDetailFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'invitedBy': json['invitedBy'],
         'signUpTime': !exists(json, 'signUpTime') ? undefined : (json['signUpTime'] === null ? null : new Date(json['signUpTime'])),
         'projectAssignments': ((json['projectAssignments'] as Array<any>).map(UserProjectAssignmentFromJSON)),
+        'groups': json['groups'],
     };
 }
 
@@ -139,6 +147,7 @@ export function UserDetailToJSON(value?: UserDetail | null): any {
         'invitedBy': value.invitedBy,
         'signUpTime': value.signUpTime === undefined ? undefined : (value.signUpTime === null ? null : value.signUpTime.toISOString()),
         'projectAssignments': ((value.projectAssignments as Array<any>).map(UserProjectAssignmentToJSON)),
+        'groups': value.groups,
     };
 }
 
