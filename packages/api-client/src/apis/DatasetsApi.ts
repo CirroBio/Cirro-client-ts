@@ -56,8 +56,8 @@ export interface GetDatasetRequest {
 export interface GetDatasetManifestRequest {
     datasetId: string;
     projectId: string;
-    fileOffset: number;
-    fileLimit: number;
+    fileOffset?: number;
+    fileLimit?: number;
 }
 
 export interface GetDatasetsRequest {
@@ -200,14 +200,6 @@ export class DatasetsApi extends runtime.BaseAPI {
 
         if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
             throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling getDatasetManifest.');
-        }
-
-        if (requestParameters.fileOffset === null || requestParameters.fileOffset === undefined) {
-            throw new runtime.RequiredError('fileOffset','Required parameter requestParameters.fileOffset was null or undefined when calling getDatasetManifest.');
-        }
-
-        if (requestParameters.fileLimit === null || requestParameters.fileLimit === undefined) {
-            throw new runtime.RequiredError('fileLimit','Required parameter requestParameters.fileLimit was null or undefined when calling getDatasetManifest.');
         }
 
         const queryParameters: any = {};
