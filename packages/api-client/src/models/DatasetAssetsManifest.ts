@@ -51,6 +51,12 @@ export interface DatasetAssetsManifest {
      */
     files?: Array<FileEntry>;
     /**
+     * Total number of files in the dataset, used for pagination
+     * @type {number}
+     * @memberof DatasetAssetsManifest
+     */
+    totalFiles?: number;
+    /**
      * List of viz to render for the dataset
      * @type {Array<DatasetViz>}
      * @memberof DatasetAssetsManifest
@@ -85,6 +91,7 @@ export function DatasetAssetsManifestFromJSONTyped(json: any, ignoreDiscriminato
         
         'domain': !exists(json, 'domain') ? undefined : json['domain'],
         'files': !exists(json, 'files') ? undefined : ((json['files'] as Array<any>).map(FileEntryFromJSON)),
+        'totalFiles': !exists(json, 'totalFiles') ? undefined : json['totalFiles'],
         'viz': !exists(json, 'viz') ? undefined : ((json['viz'] as Array<any>).map(DatasetVizFromJSON)),
         'tables': !exists(json, 'tables') ? undefined : ((json['tables'] as Array<any>).map(TableFromJSON)),
     };
@@ -101,6 +108,7 @@ export function DatasetAssetsManifestToJSON(value?: DatasetAssetsManifest | null
         
         'domain': value.domain,
         'files': value.files === undefined ? undefined : ((value.files as Array<any>).map(FileEntryToJSON)),
+        'totalFiles': value.totalFiles,
         'viz': value.viz === undefined ? undefined : ((value.viz as Array<any>).map(DatasetVizToJSON)),
         'tables': value.tables === undefined ? undefined : ((value.tables as Array<any>).map(TableToJSON)),
     };
