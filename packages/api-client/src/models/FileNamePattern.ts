@@ -20,17 +20,23 @@ import { exists, mapValues } from '../runtime';
  */
 export interface FileNamePattern {
     /**
-     * 
+     * User-readable name for the file type used for display.
      * @type {string}
      * @memberof FileNamePattern
      */
     exampleName: string;
     /**
-     * 
+     * File description.
      * @type {string}
      * @memberof FileNamePattern
      */
     description: string;
+    /**
+     * File name pattern, formatted as a valid regex, to extract sample name and other metadata.
+     * @type {string}
+     * @memberof FileNamePattern
+     */
+    sampleMatchingPattern: string;
 }
 
 /**
@@ -40,6 +46,7 @@ export function instanceOfFileNamePattern(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "exampleName" in value;
     isInstance = isInstance && "description" in value;
+    isInstance = isInstance && "sampleMatchingPattern" in value;
 
     return isInstance;
 }
@@ -56,6 +63,7 @@ export function FileNamePatternFromJSONTyped(json: any, ignoreDiscriminator: boo
         
         'exampleName': json['exampleName'],
         'description': json['description'],
+        'sampleMatchingPattern': json['sampleMatchingPattern'],
     };
 }
 
@@ -70,6 +78,7 @@ export function FileNamePatternToJSON(value?: FileNamePattern | null): any {
         
         'exampleName': value.exampleName,
         'description': value.description,
+        'sampleMatchingPattern': value.sampleMatchingPattern,
     };
 }
 

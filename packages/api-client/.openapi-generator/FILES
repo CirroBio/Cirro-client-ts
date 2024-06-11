@@ -46,6 +46,7 @@ src/models/ErrorMessage.ts
 src/models/Executor.ts
 src/models/FileAccessRequest.ts
 src/models/FileEntry.ts
+src/models/FileMappingRule.ts
 src/models/FileNamePattern.ts
 src/models/FileRequirements.ts
 src/models/FormSchema.ts

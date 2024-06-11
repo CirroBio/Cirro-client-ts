@@ -28,6 +28,7 @@ export * from './ErrorMessage';
 export * from './Executor';
 export * from './FileAccessRequest';
 export * from './FileEntry';
+export * from './FileMappingRule';
 export * from './FileNamePattern';
 export * from './FileRequirements';
 export * from './FormSchema';

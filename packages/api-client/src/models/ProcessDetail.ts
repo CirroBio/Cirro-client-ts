@@ -25,6 +25,12 @@ import {
     ExecutorFromJSONTyped,
     ExecutorToJSON,
 } from './Executor';
+import type { FileMappingRule } from './FileMappingRule';
+import {
+    FileMappingRuleFromJSON,
+    FileMappingRuleFromJSONTyped,
+    FileMappingRuleToJSON,
+} from './FileMappingRule';
 import type { PipelineCode } from './PipelineCode';
 import {
     PipelineCodeFromJSON,
@@ -128,6 +134,12 @@ export interface ProcessDetail {
      * @memberof ProcessDetail
      */
     isArchived?: boolean;
+    /**
+     * Describes the files that this dataset type expects.
+     * @type {Array<FileMappingRule>}
+     * @memberof ProcessDetail
+     */
+    fileMappingRules?: Array<FileMappingRule> | null;
 }
 
 /**
@@ -171,6 +183,7 @@ export function ProcessDetailFromJSONTyped(json: any, ignoreDiscriminator: boole
         'allowMultipleSources': !exists(json, 'allowMultipleSources') ? undefined : json['allowMultipleSources'],
         'customSettings': !exists(json, 'customSettings') ? undefined : CustomPipelineSettingsFromJSON(json['customSettings']),
         'isArchived': !exists(json, 'isArchived') ? undefined : json['isArchived'],
+        'fileMappingRules': !exists(json, 'fileMappingRules') ? undefined : (json['fileMappingRules'] === null ? null : (json['fileMappingRules'] as Array<any>).map(FileMappingRuleFromJSON)),
     };
 }
 
@@ -198,6 +211,7 @@ export function ProcessDetailToJSON(value?: ProcessDetail | null): any {
         'allowMultipleSources': value.allowMultipleSources,
         'customSettings': CustomPipelineSettingsToJSON(value.customSettings),
         'isArchived': value.isArchived,
+        'fileMappingRules': value.fileMappingRules === undefined ? undefined : (value.fileMappingRules === null ? null : (value.fileMappingRules as Array<any>).map(FileMappingRuleToJSON)),
     };
 }
 
