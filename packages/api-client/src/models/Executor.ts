@@ -20,7 +20,8 @@
 export enum Executor {
     Ingest = 'INGEST',
     Nextflow = 'NEXTFLOW',
-    Cromwell = 'CROMWELL'
+    Cromwell = 'CROMWELL',
+    OmicsReady2Run = 'OMICS_READY2RUN'
 }
 
 
