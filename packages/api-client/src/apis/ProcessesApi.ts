@@ -20,6 +20,7 @@ import type {
   ErrorMessage,
   FileRequirements,
   FormSchema,
+  PipelineCost,
   PortalErrorResponse,
   Process,
   ProcessDetail,
@@ -36,6 +37,8 @@ import {
     FileRequirementsToJSON,
     FormSchemaFromJSON,
     FormSchemaToJSON,
+    PipelineCostFromJSON,
+    PipelineCostToJSON,
     PortalErrorResponseFromJSON,
     PortalErrorResponseToJSON,
     ProcessFromJSON,
@@ -48,6 +51,11 @@ import {
 
 export interface ArchiveCustomProcessRequest {
     processId: string;
+}
+
+export interface CalculatePipelineCostRequest {
+    processId: string;
+    body: object;
 }
 
 export interface CreateCustomProcessRequest {
@@ -122,6 +130,53 @@ export class ProcessesApi extends runtime.BaseAPI {
      */
     async archiveCustomProcess(requestParameters: ArchiveCustomProcessRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.archiveCustomProcessRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Retrieves the cost of running the pipeline
+     * Calculate pipeline cost
+     */
+    async calculatePipelineCostRaw(requestParameters: CalculatePipelineCostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PipelineCost>> {
+        if (requestParameters.processId === null || requestParameters.processId === undefined) {
+            throw new runtime.RequiredError('processId','Required parameter requestParameters.processId was null or undefined when calling calculatePipelineCost.');
+        }
+
+        if (requestParameters.body === null || requestParameters.body === undefined) {
+            throw new runtime.RequiredError('body','Required parameter requestParameters.body was null or undefined when calling calculatePipelineCost.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/processes/{processId}/cost`.replace(`{${"processId"}}`, encodeURIComponent(String(requestParameters.processId))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: requestParameters.body as any,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => PipelineCostFromJSON(jsonValue));
+    }
+
+    /**
+     * Retrieves the cost of running the pipeline
+     * Calculate pipeline cost
+     */
+    async calculatePipelineCost(requestParameters: CalculatePipelineCostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<PipelineCost> {
+        const response = await this.calculatePipelineCostRaw(requestParameters, initOverrides);
+        return await response.value();
     }
 
     /**

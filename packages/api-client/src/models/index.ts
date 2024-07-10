@@ -46,6 +46,7 @@ export * from './OpenNotebookInstanceResponse';
 export * from './PaginatedResponseDatasetListDto';
 export * from './PaginatedResponseSampleDto';
 export * from './PipelineCode';
+export * from './PipelineCost';
 export * from './PortalErrorResponse';
 export * from './Process';
 export * from './ProcessDetail';
