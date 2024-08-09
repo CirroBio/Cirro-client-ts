@@ -24,7 +24,7 @@ export interface PipelineCost {
      * @type {number}
      * @memberof PipelineCost
      */
-    totalCost?: number;
+    totalCost?: number | null;
     /**
      * Is this an estimate of the cost?
      * @type {boolean}

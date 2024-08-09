@@ -15,8 +15,11 @@
 
 import * as runtime from '../runtime';
 import type {
+  ApproveProjectAccessRequest,
+  CreateProjectAccessRequest,
   CreateResponse,
   Project,
+  ProjectAccessRequest,
   ProjectDetail,
   ProjectRequest,
   ProjectUser,
@@ -24,10 +27,16 @@ import type {
   Tag,
 } from '../models/index';
 import {
+    ApproveProjectAccessRequestFromJSON,
+    ApproveProjectAccessRequestToJSON,
+    CreateProjectAccessRequestFromJSON,
+    CreateProjectAccessRequestToJSON,
     CreateResponseFromJSON,
     CreateResponseToJSON,
     ProjectFromJSON,
     ProjectToJSON,
+    ProjectAccessRequestFromJSON,
+    ProjectAccessRequestToJSON,
     ProjectDetailFromJSON,
     ProjectDetailToJSON,
     ProjectRequestFromJSON,
@@ -40,8 +49,29 @@ import {
     TagToJSON,
 } from '../models/index';
 
+export interface ApproveAccessRequestRequest {
+    projectId: string;
+    accessRequestId: string;
+    approveProjectAccessRequest: ApproveProjectAccessRequest;
+}
+
+export interface CreateAccessRequestRequest {
+    projectId: string;
+    createProjectAccessRequest: CreateProjectAccessRequest;
+}
+
 export interface CreateProjectRequest {
     projectRequest: ProjectRequest;
+}
+
+export interface DenyAccessRequestRequest {
+    projectId: string;
+    accessRequestId: string;
+}
+
+export interface GetAccessRequestsRequest {
+    projectId: string;
+    includeClosed?: boolean;
 }
 
 export interface GetProjectRequest {
@@ -75,6 +105,103 @@ export interface UpdateProjectTagsRequest {
  * 
  */
 export class ProjectsApi extends runtime.BaseAPI {
+
+    /**
+     * Approves an access request for the project
+     * Approve access request
+     */
+    async approveAccessRequestRaw(requestParameters: ApproveAccessRequestRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
+            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling approveAccessRequest.');
+        }
+
+        if (requestParameters.accessRequestId === null || requestParameters.accessRequestId === undefined) {
+            throw new runtime.RequiredError('accessRequestId','Required parameter requestParameters.accessRequestId was null or undefined when calling approveAccessRequest.');
+        }
+
+        if (requestParameters.approveProjectAccessRequest === null || requestParameters.approveProjectAccessRequest === undefined) {
+            throw new runtime.RequiredError('approveProjectAccessRequest','Required parameter requestParameters.approveProjectAccessRequest was null or undefined when calling approveAccessRequest.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/projects/{projectId}/access-requests/{accessRequestId}:approve`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))).replace(`{${"accessRequestId"}}`, encodeURIComponent(String(requestParameters.accessRequestId))),
+            method: 'PUT',
+            headers: headerParameters,
+            query: queryParameters,
+            body: ApproveProjectAccessRequestToJSON(requestParameters.approveProjectAccessRequest),
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Approves an access request for the project
+     * Approve access request
+     */
+    async approveAccessRequest(requestParameters: ApproveAccessRequestRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.approveAccessRequestRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Creates an access request for the project
+     * Create access request
+     */
+    async createAccessRequestRaw(requestParameters: CreateAccessRequestRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateResponse>> {
+        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
+            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling createAccessRequest.');
+        }
+
+        if (requestParameters.createProjectAccessRequest === null || requestParameters.createProjectAccessRequest === undefined) {
+            throw new runtime.RequiredError('createProjectAccessRequest','Required parameter requestParameters.createProjectAccessRequest was null or undefined when calling createAccessRequest.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/projects/{projectId}/access-requests`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: CreateProjectAccessRequestToJSON(requestParameters.createProjectAccessRequest),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => CreateResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Creates an access request for the project
+     * Create access request
+     */
+    async createAccessRequest(requestParameters: CreateAccessRequestRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateResponse> {
+        const response = await this.createAccessRequestRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
 
     /**
      * Creates a project
@@ -116,6 +243,129 @@ export class ProjectsApi extends runtime.BaseAPI {
      */
     async createProject(requestParameters: CreateProjectRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateResponse> {
         const response = await this.createProjectRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Denies an access request for the project
+     * Deny access request
+     */
+    async denyAccessRequestRaw(requestParameters: DenyAccessRequestRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
+            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling denyAccessRequest.');
+        }
+
+        if (requestParameters.accessRequestId === null || requestParameters.accessRequestId === undefined) {
+            throw new runtime.RequiredError('accessRequestId','Required parameter requestParameters.accessRequestId was null or undefined when calling denyAccessRequest.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/projects/{projectId}/access-requests/{accessRequestId}:deny`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))).replace(`{${"accessRequestId"}}`, encodeURIComponent(String(requestParameters.accessRequestId))),
+            method: 'PUT',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Denies an access request for the project
+     * Deny access request
+     */
+    async denyAccessRequest(requestParameters: DenyAccessRequestRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.denyAccessRequestRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Gets users who have requested access to the project
+     * Get access requests
+     */
+    async getAccessRequestsRaw(requestParameters: GetAccessRequestsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<ProjectAccessRequest>>> {
+        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
+            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling getAccessRequests.');
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters.includeClosed !== undefined) {
+            queryParameters['includeClosed'] = requestParameters.includeClosed;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/projects/{projectId}/access-requests`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(ProjectAccessRequestFromJSON));
+    }
+
+    /**
+     * Gets users who have requested access to the project
+     * Get access requests
+     */
+    async getAccessRequests(requestParameters: GetAccessRequestsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<ProjectAccessRequest>> {
+        const response = await this.getAccessRequestsRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Retrieve a list of projects that a user can request access to
+     * Get discoverable projects
+     */
+    async getDiscoverableProjectsRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<Project>>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/projects/discover`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(ProjectFromJSON));
+    }
+
+    /**
+     * Retrieve a list of projects that a user can request access to
+     * Get discoverable projects
+     */
+    async getDiscoverableProjects(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<Project>> {
+        const response = await this.getDiscoverableProjectsRaw(initOverrides);
         return await response.value();
     }
 

@@ -21,6 +21,7 @@ src/index.ts
 src/models/AWSCredentials.ts
 src/models/AccessType.ts
 src/models/AllowedDataType.ts
+src/models/ApproveProjectAccessRequest.ts
 src/models/AuditEvent.ts
 src/models/AuthInfo.ts
 src/models/BillingAccount.ts
@@ -32,6 +33,7 @@ src/models/CloudAccountType.ts
 src/models/ColumnDefinition.ts
 src/models/Contact.ts
 src/models/CreateNotebookInstanceRequest.ts
+src/models/CreateProjectAccessRequest.ts
 src/models/CreateReferenceRequest.ts
 src/models/CreateResponse.ts
 src/models/CustomPipelineSettings.ts
@@ -69,6 +71,7 @@ src/models/PortalErrorResponse.ts
 src/models/Process.ts
 src/models/ProcessDetail.ts
 src/models/Project.ts
+src/models/ProjectAccessRequest.ts
 src/models/ProjectDetail.ts
 src/models/ProjectMetrics.ts
 src/models/ProjectRequest.ts
@@ -78,6 +81,7 @@ src/models/ProjectUser.ts
 src/models/Reference.ts
 src/models/ReferenceType.ts
 src/models/RepositoryType.ts
+src/models/RequestStatus.ts
 src/models/ResourcesInfo.ts
 src/models/RunAnalysisRequest.ts
 src/models/Sample.ts

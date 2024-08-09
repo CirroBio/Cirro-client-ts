@@ -36,25 +36,25 @@ export interface Sample {
      * @type {{ [key: string]: any; }}
      * @memberof Sample
      */
-    metadata: { [key: string]: any; };
+    metadata?: { [key: string]: any; } | null;
     /**
      * 
      * @type {Array<string>}
      * @memberof Sample
      */
-    datasetIds: Array<string>;
+    datasetIds?: Array<string> | null;
     /**
      * 
      * @type {Date}
      * @memberof Sample
      */
-    createdAt: Date;
+    createdAt?: Date | null;
     /**
      * 
      * @type {Date}
      * @memberof Sample
      */
-    updatedAt: Date;
+    updatedAt?: Date | null;
 }
 
 /**
@@ -64,10 +64,6 @@ export function instanceOfSample(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "id" in value;
     isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "metadata" in value;
-    isInstance = isInstance && "datasetIds" in value;
-    isInstance = isInstance && "createdAt" in value;
-    isInstance = isInstance && "updatedAt" in value;
 
     return isInstance;
 }
@@ -84,10 +80,10 @@ export function SampleFromJSONTyped(json: any, ignoreDiscriminator: boolean): Sa
         
         'id': json['id'],
         'name': json['name'],
-        'metadata': json['metadata'],
-        'datasetIds': json['datasetIds'],
-        'createdAt': (new Date(json['createdAt'])),
-        'updatedAt': (new Date(json['updatedAt'])),
+        'metadata': !exists(json, 'metadata') ? undefined : json['metadata'],
+        'datasetIds': !exists(json, 'datasetIds') ? undefined : json['datasetIds'],
+        'createdAt': !exists(json, 'createdAt') ? undefined : (json['createdAt'] === null ? null : new Date(json['createdAt'])),
+        'updatedAt': !exists(json, 'updatedAt') ? undefined : (json['updatedAt'] === null ? null : new Date(json['updatedAt'])),
     };
 }
 
@@ -104,8 +100,8 @@ export function SampleToJSON(value?: Sample | null): any {
         'name': value.name,
         'metadata': value.metadata,
         'datasetIds': value.datasetIds,
-        'createdAt': (value.createdAt.toISOString()),
-        'updatedAt': (value.updatedAt.toISOString()),
+        'createdAt': value.createdAt === undefined ? undefined : (value.createdAt === null ? null : value.createdAt.toISOString()),
+        'updatedAt': value.updatedAt === undefined ? undefined : (value.updatedAt === null ? null : value.updatedAt.toISOString()),
     };
 }
 

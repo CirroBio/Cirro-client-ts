@@ -116,6 +116,12 @@ export interface ProjectSettings {
      * @memberof ProjectSettings
      */
     kmsArn?: string | null;
+    /**
+     * Enables the project to be discoverable by other users
+     * @type {boolean}
+     * @memberof ProjectSettings
+     */
+    isDiscoverable?: boolean | null;
 }
 
 /**
@@ -154,6 +160,7 @@ export function ProjectSettingsFromJSONTyped(json: any, ignoreDiscriminator: boo
         'batchSubnets': !exists(json, 'batchSubnets') ? undefined : json['batchSubnets'],
         'sagemakerSubnets': !exists(json, 'sagemakerSubnets') ? undefined : json['sagemakerSubnets'],
         'kmsArn': !exists(json, 'kmsArn') ? undefined : json['kmsArn'],
+        'isDiscoverable': !exists(json, 'isDiscoverable') ? undefined : json['isDiscoverable'],
     };
 }
 
@@ -181,6 +188,7 @@ export function ProjectSettingsToJSON(value?: ProjectSettings | null): any {
         'batchSubnets': value.batchSubnets,
         'sagemakerSubnets': value.sagemakerSubnets,
         'kmsArn': value.kmsArn,
+        'isDiscoverable': value.isDiscoverable,
     };
 }
 
