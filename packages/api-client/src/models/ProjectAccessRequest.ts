@@ -80,6 +80,12 @@ export interface ProjectAccessRequest {
      * @memberof ProjectAccessRequest
      */
     createdAt: Date;
+    /**
+     * 
+     * @type {Date}
+     * @memberof ProjectAccessRequest
+     */
+    expiry: Date;
 }
 
 /**
@@ -95,6 +101,7 @@ export function instanceOfProjectAccessRequest(value: object): boolean {
     isInstance = isInstance && "status" in value;
     isInstance = isInstance && "reviewerUsername" in value;
     isInstance = isInstance && "createdAt" in value;
+    isInstance = isInstance && "expiry" in value;
 
     return isInstance;
 }
@@ -117,6 +124,7 @@ export function ProjectAccessRequestFromJSONTyped(json: any, ignoreDiscriminator
         'status': RequestStatusFromJSON(json['status']),
         'reviewerUsername': json['reviewerUsername'],
         'createdAt': (new Date(json['createdAt'])),
+        'expiry': (new Date(json['expiry'])),
     };
 }
 
@@ -137,6 +145,7 @@ export function ProjectAccessRequestToJSON(value?: ProjectAccessRequest | null):
         'status': RequestStatusToJSON(value.status),
         'reviewerUsername': value.reviewerUsername,
         'createdAt': (value.createdAt.toISOString()),
+        'expiry': (value.expiry.toISOString()),
     };
 }
 

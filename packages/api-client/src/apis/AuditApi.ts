@@ -27,7 +27,9 @@ export interface GetEventRequest {
 }
 
 export interface ListEventsRequest {
-    username: string;
+    username?: string;
+    entityType?: ListEventsEntityTypeEnum;
+    entityId?: string;
 }
 
 /**
@@ -72,14 +74,18 @@ export class AuditApi extends runtime.BaseAPI {
      * List audit events
      */
     async listEventsRaw(requestParameters: ListEventsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<AuditEvent>>> {
-        if (requestParameters.username === null || requestParameters.username === undefined) {
-            throw new runtime.RequiredError('username','Required parameter requestParameters.username was null or undefined when calling listEvents.');
-        }
-
         const queryParameters: any = {};
 
         if (requestParameters.username !== undefined) {
             queryParameters['username'] = requestParameters.username;
+        }
+
+        if (requestParameters.entityType !== undefined) {
+            queryParameters['entityType'] = requestParameters.entityType;
+        }
+
+        if (requestParameters.entityId !== undefined) {
+            queryParameters['entityId'] = requestParameters.entityId;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -98,9 +104,24 @@ export class AuditApi extends runtime.BaseAPI {
      * Gets a list of audit events
      * List audit events
      */
-    async listEvents(requestParameters: ListEventsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<AuditEvent>> {
+    async listEvents(requestParameters: ListEventsRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<AuditEvent>> {
         const response = await this.listEventsRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
+}
+
+/**
+  * @export
+  * @enum {string}
+  */
+export enum ListEventsEntityTypeEnum {
+    Project = 'Project',
+    Sample = 'Sample',
+    Dataset = 'Dataset',
+    User = 'User',
+    BillingAccount = 'BillingAccount',
+    Process = 'Process',
+    NotebookInstance = 'NotebookInstance',
+    UserProjectAssignment = 'UserProjectAssignment'
 }
