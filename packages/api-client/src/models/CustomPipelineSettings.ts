@@ -62,6 +62,12 @@ export interface CustomPipelineSettings {
      * @memberof CustomPipelineSettings
      */
     commitHash?: string | null;
+    /**
+     * Whether we are authorized to access the repository
+     * @type {boolean}
+     * @memberof CustomPipelineSettings
+     */
+    isAuthorized?: boolean;
 }
 
 /**
@@ -90,6 +96,7 @@ export function CustomPipelineSettingsFromJSONTyped(json: any, ignoreDiscriminat
         'lastSync': !exists(json, 'lastSync') ? undefined : (json['lastSync'] === null ? null : new Date(json['lastSync'])),
         'syncStatus': !exists(json, 'syncStatus') ? undefined : SyncStatusFromJSON(json['syncStatus']),
         'commitHash': !exists(json, 'commitHash') ? undefined : json['commitHash'],
+        'isAuthorized': !exists(json, 'isAuthorized') ? undefined : json['isAuthorized'],
     };
 }
 
@@ -108,6 +115,7 @@ export function CustomPipelineSettingsToJSON(value?: CustomPipelineSettings | nu
         'lastSync': value.lastSync === undefined ? undefined : (value.lastSync === null ? null : value.lastSync.toISOString()),
         'syncStatus': SyncStatusToJSON(value.syncStatus),
         'commitHash': value.commitHash,
+        'isAuthorized': value.isAuthorized,
     };
 }
 
