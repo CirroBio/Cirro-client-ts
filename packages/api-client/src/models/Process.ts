@@ -63,6 +63,12 @@ export interface Process {
      */
     category: string;
     /**
+     * Type of pipeline
+     * @type {string}
+     * @memberof Process
+     */
+    pipelineType: string;
+    /**
      * Link to pipeline documentation
      * @type {string}
      * @memberof Process
@@ -121,6 +127,7 @@ export function instanceOfProcess(value: object): boolean {
     isInstance = isInstance && "name" in value;
     isInstance = isInstance && "executor" in value;
     isInstance = isInstance && "category" in value;
+    isInstance = isInstance && "pipelineType" in value;
 
     return isInstance;
 }
@@ -141,6 +148,7 @@ export function ProcessFromJSONTyped(json: any, ignoreDiscriminator: boolean): P
         'dataType': !exists(json, 'dataType') ? undefined : json['dataType'],
         'executor': ExecutorFromJSON(json['executor']),
         'category': json['category'],
+        'pipelineType': json['pipelineType'],
         'documentationUrl': !exists(json, 'documentationUrl') ? undefined : json['documentationUrl'],
         'fileRequirementsMessage': !exists(json, 'fileRequirementsMessage') ? undefined : json['fileRequirementsMessage'],
         'childProcessIds': !exists(json, 'childProcessIds') ? undefined : json['childProcessIds'],
@@ -167,6 +175,7 @@ export function ProcessToJSON(value?: Process | null): any {
         'dataType': value.dataType,
         'executor': ExecutorToJSON(value.executor),
         'category': value.category,
+        'pipelineType': value.pipelineType,
         'documentationUrl': value.documentationUrl,
         'fileRequirementsMessage': value.fileRequirementsMessage,
         'childProcessIds': value.childProcessIds,
