@@ -75,6 +75,12 @@ export interface ProcessDetail {
      */
     executor: Executor;
     /**
+     * Category of the pipeline
+     * @type {string}
+     * @memberof ProcessDetail
+     */
+    category: string;
+    /**
      * IDs of pipelines that can be run downstream
      * @type {Array<string>}
      * @memberof ProcessDetail
@@ -151,6 +157,7 @@ export function instanceOfProcessDetail(value: object): boolean {
     isInstance = isInstance && "name" in value;
     isInstance = isInstance && "description" in value;
     isInstance = isInstance && "executor" in value;
+    isInstance = isInstance && "category" in value;
     isInstance = isInstance && "childProcessIds" in value;
     isInstance = isInstance && "parentProcessIds" in value;
     isInstance = isInstance && "linkedProjectIds" in value;
@@ -173,6 +180,7 @@ export function ProcessDetailFromJSONTyped(json: any, ignoreDiscriminator: boole
         'description': json['description'],
         'dataType': !exists(json, 'dataType') ? undefined : json['dataType'],
         'executor': ExecutorFromJSON(json['executor']),
+        'category': json['category'],
         'childProcessIds': json['childProcessIds'],
         'parentProcessIds': json['parentProcessIds'],
         'documentationUrl': !exists(json, 'documentationUrl') ? undefined : json['documentationUrl'],
@@ -201,6 +209,7 @@ export function ProcessDetailToJSON(value?: ProcessDetail | null): any {
         'description': value.description,
         'dataType': value.dataType,
         'executor': ExecutorToJSON(value.executor),
+        'category': value.category,
         'childProcessIds': value.childProcessIds,
         'parentProcessIds': value.parentProcessIds,
         'documentationUrl': value.documentationUrl,
