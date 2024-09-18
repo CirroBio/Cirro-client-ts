@@ -28,6 +28,7 @@ export * from './DatasetDetail';
 export * from './DatasetViz';
 export * from './ErrorMessage';
 export * from './Executor';
+export * from './FeatureFlags';
 export * from './FileAccessRequest';
 export * from './FileEntry';
 export * from './FileMappingRule';

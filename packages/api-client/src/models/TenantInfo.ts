@@ -13,6 +13,12 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { FeatureFlags } from './FeatureFlags';
+import {
+    FeatureFlagsFromJSON,
+    FeatureFlagsFromJSONTyped,
+    FeatureFlagsToJSON,
+} from './FeatureFlags';
 import type { LoginProvider } from './LoginProvider';
 import {
     LoginProviderFromJSON,
@@ -80,6 +86,12 @@ export interface TenantInfo {
      * @memberof TenantInfo
      */
     loginProviders: Array<LoginProvider>;
+    /**
+     * 
+     * @type {FeatureFlags}
+     * @memberof TenantInfo
+     */
+    features: FeatureFlags;
 }
 
 /**
@@ -96,6 +108,7 @@ export function instanceOfTenantInfo(value: object): boolean {
     isInstance = isInstance && "termsOfServiceUrl" in value;
     isInstance = isInstance && "privacyPolicyUrl" in value;
     isInstance = isInstance && "loginProviders" in value;
+    isInstance = isInstance && "features" in value;
 
     return isInstance;
 }
@@ -119,6 +132,7 @@ export function TenantInfoFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'termsOfServiceUrl': json['termsOfServiceUrl'],
         'privacyPolicyUrl': json['privacyPolicyUrl'],
         'loginProviders': ((json['loginProviders'] as Array<any>).map(LoginProviderFromJSON)),
+        'features': FeatureFlagsFromJSON(json['features']),
     };
 }
 
@@ -140,6 +154,7 @@ export function TenantInfoToJSON(value?: TenantInfo | null): any {
         'termsOfServiceUrl': value.termsOfServiceUrl,
         'privacyPolicyUrl': value.privacyPolicyUrl,
         'loginProviders': ((value.loginProviders as Array<any>).map(LoginProviderToJSON)),
+        'features': FeatureFlagsToJSON(value.features),
     };
 }
 

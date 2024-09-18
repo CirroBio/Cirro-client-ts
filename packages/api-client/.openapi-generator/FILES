@@ -46,6 +46,7 @@ src/models/DatasetDetail.ts
 src/models/DatasetViz.ts
 src/models/ErrorMessage.ts
 src/models/Executor.ts
+src/models/FeatureFlags.ts
 src/models/FileAccessRequest.ts
 src/models/FileEntry.ts
 src/models/FileMappingRule.ts

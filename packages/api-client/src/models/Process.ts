@@ -57,7 +57,7 @@ export interface Process {
      */
     executor: Executor;
     /**
-     * Category of the pipeline
+     * Category of the process
      * @type {string}
      * @memberof Process
      */

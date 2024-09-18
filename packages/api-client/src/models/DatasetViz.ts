@@ -38,11 +38,11 @@ export interface DatasetViz {
      */
     type?: string;
     /**
-     * Path to config file used to render viz
-     * @type {string}
+     * Config or path to config used to render viz
+     * @type {any}
      * @memberof DatasetViz
      */
-    config?: string;
+    config?: any | null;
 }
 
 /**
