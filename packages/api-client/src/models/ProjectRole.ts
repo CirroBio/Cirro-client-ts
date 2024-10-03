@@ -18,6 +18,7 @@
  * @enum {string}
  */
 export enum ProjectRole {
+    Owner = 'OWNER',
     Admin = 'ADMIN',
     Contributor = 'CONTRIBUTOR',
     Collaborator = 'COLLABORATOR',

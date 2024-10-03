@@ -75,11 +75,17 @@ export interface ProjectSettings {
      */
     maxF1VCPU?: number;
     /**
-     * Service quota limit for SPOT instances
+     * Service quota limit for Spot instances
      * @type {number}
      * @memberof ProjectSettings
      */
     maxSpotVCPU?: number;
+    /**
+     * Service quota limit for GPU Spot instances
+     * @type {number}
+     * @memberof ProjectSettings
+     */
+    maxGPUVCPU?: number;
     /**
      * Days to keep deleted datasets before being permanently erased
      * @type {number}
@@ -154,6 +160,7 @@ export function ProjectSettingsFromJSONTyped(json: any, ignoreDiscriminator: boo
         'enableSftp': !exists(json, 'enableSftp') ? undefined : json['enableSftp'],
         'maxF1VCPU': !exists(json, 'maxF1VCPU') ? undefined : json['maxF1VCPU'],
         'maxSpotVCPU': !exists(json, 'maxSpotVCPU') ? undefined : json['maxSpotVCPU'],
+        'maxGPUVCPU': !exists(json, 'maxGPUVCPU') ? undefined : json['maxGPUVCPU'],
         'retentionPolicyDays': !exists(json, 'retentionPolicyDays') ? undefined : json['retentionPolicyDays'],
         'serviceConnections': !exists(json, 'serviceConnections') ? undefined : json['serviceConnections'],
         'vpcId': !exists(json, 'vpcId') ? undefined : json['vpcId'],
@@ -182,6 +189,7 @@ export function ProjectSettingsToJSON(value?: ProjectSettings | null): any {
         'enableSftp': value.enableSftp,
         'maxF1VCPU': value.maxF1VCPU,
         'maxSpotVCPU': value.maxSpotVCPU,
+        'maxGPUVCPU': value.maxGPUVCPU,
         'retentionPolicyDays': value.retentionPolicyDays,
         'serviceConnections': value.serviceConnections,
         'vpcId': value.vpcId,

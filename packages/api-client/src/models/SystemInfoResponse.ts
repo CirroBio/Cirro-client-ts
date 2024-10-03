@@ -61,6 +61,12 @@ export interface SystemInfoResponse {
      * @type {string}
      * @memberof SystemInfoResponse
      */
+    agentEndpoint: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof SystemInfoResponse
+     */
     region: string;
     /**
      * 
@@ -114,6 +120,7 @@ export function instanceOfSystemInfoResponse(value: object): boolean {
     isInstance = isInstance && "resourcesBucket" in value;
     isInstance = isInstance && "referencesBucket" in value;
     isInstance = isInstance && "liveEndpoint" in value;
+    isInstance = isInstance && "agentEndpoint" in value;
     isInstance = isInstance && "region" in value;
     isInstance = isInstance && "systemMessage" in value;
     isInstance = isInstance && "maintenanceModeEnabled" in value;
@@ -139,6 +146,7 @@ export function SystemInfoResponseFromJSONTyped(json: any, ignoreDiscriminator: 
         'resourcesBucket': json['resourcesBucket'],
         'referencesBucket': json['referencesBucket'],
         'liveEndpoint': json['liveEndpoint'],
+        'agentEndpoint': json['agentEndpoint'],
         'region': json['region'],
         'systemMessage': json['systemMessage'],
         'maintenanceModeEnabled': json['maintenanceModeEnabled'],
@@ -162,6 +170,7 @@ export function SystemInfoResponseToJSON(value?: SystemInfoResponse | null): any
         'resourcesBucket': value.resourcesBucket,
         'referencesBucket': value.referencesBucket,
         'liveEndpoint': value.liveEndpoint,
+        'agentEndpoint': value.agentEndpoint,
         'region': value.region,
         'systemMessage': value.systemMessage,
         'maintenanceModeEnabled': value.maintenanceModeEnabled,

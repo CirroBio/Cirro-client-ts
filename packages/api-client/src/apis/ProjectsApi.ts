@@ -55,6 +55,10 @@ export interface ApproveAccessRequestRequest {
     approveProjectAccessRequest: ApproveProjectAccessRequest;
 }
 
+export interface ArchiveProjectRequest {
+    projectId: string;
+}
+
 export interface CreateAccessRequestRequest {
     projectId: string;
     createProjectAccessRequest: CreateProjectAccessRequest;
@@ -89,6 +93,10 @@ export interface RedeployProjectRequest {
 export interface SetUserProjectRoleOperationRequest {
     projectId: string;
     setUserProjectRoleRequest: SetUserProjectRoleRequest;
+}
+
+export interface UnarchiveProjectRequest {
+    projectId: string;
 }
 
 export interface UpdateProjectRequest {
@@ -154,6 +162,45 @@ export class ProjectsApi extends runtime.BaseAPI {
      */
     async approveAccessRequest(requestParameters: ApproveAccessRequestRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.approveAccessRequestRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Sets the project status to archived
+     * Archive project
+     */
+    async archiveProjectRaw(requestParameters: ArchiveProjectRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
+            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling archiveProject.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/projects/{projectId}:archive`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))),
+            method: 'PUT',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Sets the project status to archived
+     * Archive project
+     */
+    async archiveProject(requestParameters: ArchiveProjectRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.archiveProjectRaw(requestParameters, initOverrides);
     }
 
     /**
@@ -568,6 +615,45 @@ export class ProjectsApi extends runtime.BaseAPI {
      */
     async setUserProjectRole(requestParameters: SetUserProjectRoleOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.setUserProjectRoleRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Sets the project status to active
+     * Unarchive project
+     */
+    async unarchiveProjectRaw(requestParameters: UnarchiveProjectRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
+            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling unarchiveProject.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/projects/{projectId}:unarchive`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))),
+            method: 'PUT',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Sets the project status to active
+     * Unarchive project
+     */
+    async unarchiveProject(requestParameters: UnarchiveProjectRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.unarchiveProjectRaw(requestParameters, initOverrides);
     }
 
     /**

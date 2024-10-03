@@ -53,12 +53,6 @@ export interface ArchiveCustomProcessRequest {
     processId: string;
 }
 
-export interface AuthorizeCustomProcessRequest {
-    processId: string;
-    code: string;
-    state: string;
-}
-
 export interface CalculatePipelineCostRequest {
     processId: string;
     body: object;
@@ -136,61 +130,6 @@ export class ProcessesApi extends runtime.BaseAPI {
      */
     async archiveCustomProcess(requestParameters: ArchiveCustomProcessRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.archiveCustomProcessRaw(requestParameters, initOverrides);
-    }
-
-    /**
-     * Authorizes the GitHub repository connection for the process (only for private repositories)
-     * Authorize custom process
-     */
-    async authorizeCustomProcessRaw(requestParameters: AuthorizeCustomProcessRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.processId === null || requestParameters.processId === undefined) {
-            throw new runtime.RequiredError('processId','Required parameter requestParameters.processId was null or undefined when calling authorizeCustomProcess.');
-        }
-
-        if (requestParameters.code === null || requestParameters.code === undefined) {
-            throw new runtime.RequiredError('code','Required parameter requestParameters.code was null or undefined when calling authorizeCustomProcess.');
-        }
-
-        if (requestParameters.state === null || requestParameters.state === undefined) {
-            throw new runtime.RequiredError('state','Required parameter requestParameters.state was null or undefined when calling authorizeCustomProcess.');
-        }
-
-        const queryParameters: any = {};
-
-        if (requestParameters.code !== undefined) {
-            queryParameters['code'] = requestParameters.code;
-        }
-
-        if (requestParameters.state !== undefined) {
-            queryParameters['state'] = requestParameters.state;
-        }
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("accessToken", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/processes/{processId}:authorize`.replace(`{${"processId"}}`, encodeURIComponent(String(requestParameters.processId))),
-            method: 'PUT',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.VoidApiResponse(response);
-    }
-
-    /**
-     * Authorizes the GitHub repository connection for the process (only for private repositories)
-     * Authorize custom process
-     */
-    async authorizeCustomProcess(requestParameters: AuthorizeCustomProcessRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.authorizeCustomProcessRaw(requestParameters, initOverrides);
     }
 
     /**
