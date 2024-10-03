@@ -13,6 +13,12 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { CloudAccount } from './CloudAccount';
+import {
+    CloudAccountFromJSON,
+    CloudAccountFromJSONTyped,
+    CloudAccountToJSON,
+} from './CloudAccount';
 import type { Contact } from './Contact';
 import {
     ContactFromJSON,
@@ -88,6 +94,12 @@ export interface ProjectDetail {
     settings: ProjectSettings;
     /**
      * 
+     * @type {CloudAccount}
+     * @memberof ProjectDetail
+     */
+    account?: CloudAccount | null;
+    /**
+     * 
      * @type {string}
      * @memberof ProjectDetail
      */
@@ -156,6 +168,7 @@ export function ProjectDetailFromJSONTyped(json: any, ignoreDiscriminator: boole
         'contacts': ((json['contacts'] as Array<any>).map(ContactFromJSON)),
         'status': StatusFromJSON(json['status']),
         'settings': ProjectSettingsFromJSON(json['settings']),
+        'account': !exists(json, 'account') ? undefined : CloudAccountFromJSON(json['account']),
         'statusMessage': json['statusMessage'],
         'tags': ((json['tags'] as Array<any>).map(TagFromJSON)),
         'createdBy': json['createdBy'],
@@ -180,6 +193,7 @@ export function ProjectDetailToJSON(value?: ProjectDetail | null): any {
         'contacts': ((value.contacts as Array<any>).map(ContactToJSON)),
         'status': StatusToJSON(value.status),
         'settings': ProjectSettingsToJSON(value.settings),
+        'account': CloudAccountToJSON(value.account),
         'statusMessage': value.statusMessage,
         'tags': ((value.tags as Array<any>).map(TagToJSON)),
         'createdBy': value.createdBy,
