@@ -31,6 +31,12 @@ export interface FeatureFlags {
      * @memberof FeatureFlags
      */
     governanceEnabled: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof FeatureFlags
+     */
+    projectRequestsEnabled: boolean;
 }
 
 /**
@@ -40,6 +46,7 @@ export function instanceOfFeatureFlags(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "sftpEnabled" in value;
     isInstance = isInstance && "governanceEnabled" in value;
+    isInstance = isInstance && "projectRequestsEnabled" in value;
 
     return isInstance;
 }
@@ -56,6 +63,7 @@ export function FeatureFlagsFromJSONTyped(json: any, ignoreDiscriminator: boolea
         
         'sftpEnabled': json['sftpEnabled'],
         'governanceEnabled': json['governanceEnabled'],
+        'projectRequestsEnabled': json['projectRequestsEnabled'],
     };
 }
 
@@ -70,6 +78,7 @@ export function FeatureFlagsToJSON(value?: FeatureFlags | null): any {
         
         'sftpEnabled': value.sftpEnabled,
         'governanceEnabled': value.governanceEnabled,
+        'projectRequestsEnabled': value.projectRequestsEnabled,
     };
 }
 

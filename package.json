@@ -10,7 +10,7 @@
     "apiCodeGen": "openapi-generator-cli generate --generator-key cirro"
   },
   "devDependencies": {
-    "@openapitools/openapi-generator-cli": "^2.7.0",
+    "@openapitools/openapi-generator-cli": "^2.13.13",
     "typescript": "^4.0"
   }
 }
