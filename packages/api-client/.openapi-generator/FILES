@@ -73,6 +73,7 @@ src/models/Process.ts
 src/models/ProcessDetail.ts
 src/models/Project.ts
 src/models/ProjectAccessRequest.ts
+src/models/ProjectCreateOptions.ts
 src/models/ProjectDetail.ts
 src/models/ProjectMetrics.ts
 src/models/ProjectRequest.ts

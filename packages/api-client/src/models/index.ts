@@ -55,6 +55,7 @@ export * from './Process';
 export * from './ProcessDetail';
 export * from './Project';
 export * from './ProjectAccessRequest';
+export * from './ProjectCreateOptions';
 export * from './ProjectDetail';
 export * from './ProjectMetrics';
 export * from './ProjectRequest';

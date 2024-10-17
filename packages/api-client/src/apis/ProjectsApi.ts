@@ -20,6 +20,7 @@ import type {
   CreateResponse,
   Project,
   ProjectAccessRequest,
+  ProjectCreateOptions,
   ProjectDetail,
   ProjectRequest,
   ProjectUser,
@@ -37,6 +38,8 @@ import {
     ProjectToJSON,
     ProjectAccessRequestFromJSON,
     ProjectAccessRequestToJSON,
+    ProjectCreateOptionsFromJSON,
+    ProjectCreateOptionsToJSON,
     ProjectDetailFromJSON,
     ProjectDetailToJSON,
     ProjectRequestFromJSON,
@@ -453,6 +456,42 @@ export class ProjectsApi extends runtime.BaseAPI {
      */
     async getProject(requestParameters: GetProjectRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ProjectDetail> {
         const response = await this.getProjectRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Get allowed options for creating a project
+     * Get project create options
+     */
+    async getProjectCreateOptionsRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ProjectCreateOptions>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/projects`,
+            method: 'OPTIONS',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => ProjectCreateOptionsFromJSON(jsonValue));
+    }
+
+    /**
+     * Get allowed options for creating a project
+     * Get project create options
+     */
+    async getProjectCreateOptions(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ProjectCreateOptions> {
+        const response = await this.getProjectCreateOptionsRaw(initOverrides);
         return await response.value();
     }
 
