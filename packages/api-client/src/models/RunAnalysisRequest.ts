@@ -14,7 +14,7 @@
 
 import { exists, mapValues } from '../runtime';
 /**
- * 
+ *
  * @export
  * @interface RunAnalysisRequest
  */
@@ -61,6 +61,12 @@ export interface RunAnalysisRequest {
      * @memberof RunAnalysisRequest
      */
     notificationEmails: Array<string>;
+    /**
+     * The compute environment where to run the workflow, if not specified, it will run in AWS
+     * @type {string}
+     * @memberof RunAnalysisRequest
+     */
+    computeEnvironmentId?: string | null;
 }
 
 /**
@@ -86,7 +92,7 @@ export function RunAnalysisRequestFromJSONTyped(json: any, ignoreDiscriminator: 
         return json;
     }
     return {
-        
+
         'name': json['name'],
         'description': !exists(json, 'description') ? undefined : json['description'],
         'processId': json['processId'],
@@ -94,6 +100,7 @@ export function RunAnalysisRequestFromJSONTyped(json: any, ignoreDiscriminator: 
         'resumeDatasetId': !exists(json, 'resumeDatasetId') ? undefined : json['resumeDatasetId'],
         'params': json['params'],
         'notificationEmails': json['notificationEmails'],
+        'computeEnvironmentId': !exists(json, 'computeEnvironmentId') ? undefined : json['computeEnvironmentId'],
     };
 }
 
@@ -105,7 +112,7 @@ export function RunAnalysisRequestToJSON(value?: RunAnalysisRequest | null): any
         return null;
     }
     return {
-        
+
         'name': value.name,
         'description': value.description,
         'processId': value.processId,
@@ -113,6 +120,7 @@ export function RunAnalysisRequestToJSON(value?: RunAnalysisRequest | null): any
         'resumeDatasetId': value.resumeDatasetId,
         'params': value.params,
         'notificationEmails': value.notificationEmails,
+        'computeEnvironmentId': value.computeEnvironmentId,
     };
 }
 

@@ -2,6 +2,7 @@
 /* eslint-disable */
 export * from './AuditApi';
 export * from './BillingApi';
+export * from './ComputeEnvironmentApi';
 export * from './DashboardsApi';
 export * from './DatasetsApi';
 export * from './ExecutionApi';

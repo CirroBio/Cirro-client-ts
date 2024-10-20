@@ -2,6 +2,8 @@
 /* eslint-disable */
 export * from './AWSCredentials';
 export * from './AccessType';
+export * from './Agent';
+export * from './AgentStatus';
 export * from './AllowedDataType';
 export * from './ApproveProjectAccessRequest';
 export * from './AuditEvent';
@@ -13,6 +15,7 @@ export * from './BudgetPeriod';
 export * from './CloudAccount';
 export * from './CloudAccountType';
 export * from './ColumnDefinition';
+export * from './ComputeEnvironmentConfiguration';
 export * from './Contact';
 export * from './CreateNotebookInstanceRequest';
 export * from './CreateProjectAccessRequest';
@@ -26,6 +29,7 @@ export * from './Dataset';
 export * from './DatasetAssetsManifest';
 export * from './DatasetDetail';
 export * from './DatasetViz';
+export * from './EnvironmentType';
 export * from './ErrorMessage';
 export * from './Executor';
 export * from './FeatureFlags';

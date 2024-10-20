@@ -4,6 +4,7 @@ README.md
 package.json
 src/apis/AuditApi.ts
 src/apis/BillingApi.ts
+src/apis/ComputeEnvironmentApi.ts
 src/apis/DashboardsApi.ts
 src/apis/DatasetsApi.ts
 src/apis/ExecutionApi.ts
@@ -20,6 +21,8 @@ src/apis/index.ts
 src/index.ts
 src/models/AWSCredentials.ts
 src/models/AccessType.ts
+src/models/Agent.ts
+src/models/AgentStatus.ts
 src/models/AllowedDataType.ts
 src/models/ApproveProjectAccessRequest.ts
 src/models/AuditEvent.ts
@@ -31,6 +34,7 @@ src/models/BudgetPeriod.ts
 src/models/CloudAccount.ts
 src/models/CloudAccountType.ts
 src/models/ColumnDefinition.ts
+src/models/ComputeEnvironmentConfiguration.ts
 src/models/Contact.ts
 src/models/CreateNotebookInstanceRequest.ts
 src/models/CreateProjectAccessRequest.ts
@@ -44,6 +48,7 @@ src/models/Dataset.ts
 src/models/DatasetAssetsManifest.ts
 src/models/DatasetDetail.ts
 src/models/DatasetViz.ts
+src/models/EnvironmentType.ts
 src/models/ErrorMessage.ts
 src/models/Executor.ts
 src/models/FeatureFlags.ts
