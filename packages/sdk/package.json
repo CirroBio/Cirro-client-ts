@@ -1,11 +1,12 @@
 {
-  "name": "cirro-client",
+  "name": "@cirrobio/sdk",
   "version": "0.0.1",
-  "description": "API client for Cirro",
-  "author": "CirroBio &lt;support@cirro.bio&gt;",
+  "description": "SDK for Cirro",
+  "author": "CirroBio",
   "repository": {
     "type": "git",
-    "url": "https://github.com/CirroBio/Cirro-client-ts.git"
+    "url": "https://github.com/CirroBio/Cirro-client-ts.git",
+    "directory": "packages/sdk"
   },
   "license": "MIT",
   "homepage": "https://cirro.bio",
@@ -19,6 +20,6 @@
     "typescript": "^4.0"
   },
   "dependencies": {
-    "@cirrobio/api-client": "latest"
+    "@cirrobio/api-client": "^0.1"
   }
 }
