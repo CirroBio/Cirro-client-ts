@@ -9,10 +9,12 @@ src/apis/DashboardsApi.ts
 src/apis/DatasetsApi.ts
 src/apis/ExecutionApi.ts
 src/apis/FileApi.ts
+src/apis/GovernanceApi.ts
 src/apis/MetadataApi.ts
 src/apis/MetricsApi.ts
 src/apis/NotebooksApi.ts
 src/apis/ProcessesApi.ts
+src/apis/ProjectRequestsApi.ts
 src/apis/ProjectsApi.ts
 src/apis/ReferencesApi.ts
 src/apis/SystemApi.ts
@@ -31,6 +33,7 @@ src/models/BillingAccount.ts
 src/models/BillingAccountRequest.ts
 src/models/BillingMethod.ts
 src/models/BudgetPeriod.ts
+src/models/ClassificationInput.ts
 src/models/CloudAccount.ts
 src/models/CloudAccountType.ts
 src/models/ColumnDefinition.ts
@@ -60,6 +63,7 @@ src/models/FileRequirements.ts
 src/models/FormSchema.ts
 src/models/GenerateSftpCredentialsRequest.ts
 src/models/GetExecutionLogsResponse.ts
+src/models/GovernanceClassification.ts
 src/models/ImportDataRequest.ts
 src/models/InviteUserRequest.ts
 src/models/InviteUserResponse.ts
@@ -80,6 +84,7 @@ src/models/Project.ts
 src/models/ProjectAccessRequest.ts
 src/models/ProjectCreateOptions.ts
 src/models/ProjectDetail.ts
+src/models/ProjectInput.ts
 src/models/ProjectMetrics.ts
 src/models/ProjectRequest.ts
 src/models/ProjectRole.ts

@@ -13,31 +13,6 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import type { CloudAccount } from './CloudAccount';
-import {
-    CloudAccountFromJSON,
-    CloudAccountFromJSONTyped,
-    CloudAccountToJSON,
-} from './CloudAccount';
-import type { Contact } from './Contact';
-import {
-    ContactFromJSON,
-    ContactFromJSONTyped,
-    ContactToJSON,
-} from './Contact';
-import type { ProjectSettings } from './ProjectSettings';
-import {
-    ProjectSettingsFromJSON,
-    ProjectSettingsFromJSONTyped,
-    ProjectSettingsToJSON,
-} from './ProjectSettings';
-import type { Tag } from './Tag';
-import {
-    TagFromJSON,
-    TagFromJSONTyped,
-    TagToJSON,
-} from './Tag';
-
 /**
  * 
  * @export
@@ -58,34 +33,28 @@ export interface ProjectRequest {
     description: string;
     /**
      * 
+     * @type {Array<string>}
+     * @memberof ProjectRequest
+     */
+    classificationIds: Array<string>;
+    /**
+     * 
      * @type {string}
      * @memberof ProjectRequest
      */
-    billingAccountId: string;
+    billingInfo: string;
     /**
      * 
-     * @type {ProjectSettings}
+     * @type {string}
      * @memberof ProjectRequest
      */
-    settings: ProjectSettings;
+    adminUsername: string;
     /**
      * 
-     * @type {Array<Contact>}
+     * @type {string}
      * @memberof ProjectRequest
      */
-    contacts: Array<Contact>;
-    /**
-     * 
-     * @type {CloudAccount}
-     * @memberof ProjectRequest
-     */
-    account?: CloudAccount | null;
-    /**
-     * 
-     * @type {Array<Tag>}
-     * @memberof ProjectRequest
-     */
-    tags?: Array<Tag> | null;
+    message: string;
 }
 
 /**
@@ -95,9 +64,10 @@ export function instanceOfProjectRequest(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "name" in value;
     isInstance = isInstance && "description" in value;
-    isInstance = isInstance && "billingAccountId" in value;
-    isInstance = isInstance && "settings" in value;
-    isInstance = isInstance && "contacts" in value;
+    isInstance = isInstance && "classificationIds" in value;
+    isInstance = isInstance && "billingInfo" in value;
+    isInstance = isInstance && "adminUsername" in value;
+    isInstance = isInstance && "message" in value;
 
     return isInstance;
 }
@@ -114,11 +84,10 @@ export function ProjectRequestFromJSONTyped(json: any, ignoreDiscriminator: bool
         
         'name': json['name'],
         'description': json['description'],
-        'billingAccountId': json['billingAccountId'],
-        'settings': ProjectSettingsFromJSON(json['settings']),
-        'contacts': ((json['contacts'] as Array<any>).map(ContactFromJSON)),
-        'account': !exists(json, 'account') ? undefined : CloudAccountFromJSON(json['account']),
-        'tags': !exists(json, 'tags') ? undefined : (json['tags'] === null ? null : (json['tags'] as Array<any>).map(TagFromJSON)),
+        'classificationIds': json['classificationIds'],
+        'billingInfo': json['billingInfo'],
+        'adminUsername': json['adminUsername'],
+        'message': json['message'],
     };
 }
 
@@ -133,11 +102,10 @@ export function ProjectRequestToJSON(value?: ProjectRequest | null): any {
         
         'name': value.name,
         'description': value.description,
-        'billingAccountId': value.billingAccountId,
-        'settings': ProjectSettingsToJSON(value.settings),
-        'contacts': ((value.contacts as Array<any>).map(ContactToJSON)),
-        'account': CloudAccountToJSON(value.account),
-        'tags': value.tags === undefined ? undefined : (value.tags === null ? null : (value.tags as Array<any>).map(TagToJSON)),
+        'classificationIds': value.classificationIds,
+        'billingInfo': value.billingInfo,
+        'adminUsername': value.adminUsername,
+        'message': value.message,
     };
 }
 

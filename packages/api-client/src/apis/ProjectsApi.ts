@@ -22,7 +22,7 @@ import type {
   ProjectAccessRequest,
   ProjectCreateOptions,
   ProjectDetail,
-  ProjectRequest,
+  ProjectInput,
   ProjectUser,
   SetUserProjectRoleRequest,
   Tag,
@@ -42,8 +42,8 @@ import {
     ProjectCreateOptionsToJSON,
     ProjectDetailFromJSON,
     ProjectDetailToJSON,
-    ProjectRequestFromJSON,
-    ProjectRequestToJSON,
+    ProjectInputFromJSON,
+    ProjectInputToJSON,
     ProjectUserFromJSON,
     ProjectUserToJSON,
     SetUserProjectRoleRequestFromJSON,
@@ -68,7 +68,7 @@ export interface CreateAccessRequestRequest {
 }
 
 export interface CreateProjectRequest {
-    projectRequest: ProjectRequest;
+    projectInput: ProjectInput;
 }
 
 export interface DenyAccessRequestRequest {
@@ -104,7 +104,7 @@ export interface UnarchiveProjectRequest {
 
 export interface UpdateProjectRequest {
     projectId: string;
-    projectRequest: ProjectRequest;
+    projectInput: ProjectInput;
 }
 
 export interface UpdateProjectTagsRequest {
@@ -258,8 +258,8 @@ export class ProjectsApi extends runtime.BaseAPI {
      * Create project
      */
     async createProjectRaw(requestParameters: CreateProjectRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateResponse>> {
-        if (requestParameters.projectRequest === null || requestParameters.projectRequest === undefined) {
-            throw new runtime.RequiredError('projectRequest','Required parameter requestParameters.projectRequest was null or undefined when calling createProject.');
+        if (requestParameters.projectInput === null || requestParameters.projectInput === undefined) {
+            throw new runtime.RequiredError('projectInput','Required parameter requestParameters.projectInput was null or undefined when calling createProject.');
         }
 
         const queryParameters: any = {};
@@ -281,7 +281,7 @@ export class ProjectsApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: ProjectRequestToJSON(requestParameters.projectRequest),
+            body: ProjectInputToJSON(requestParameters.projectInput),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => CreateResponseFromJSON(jsonValue));
@@ -704,8 +704,8 @@ export class ProjectsApi extends runtime.BaseAPI {
             throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling updateProject.');
         }
 
-        if (requestParameters.projectRequest === null || requestParameters.projectRequest === undefined) {
-            throw new runtime.RequiredError('projectRequest','Required parameter requestParameters.projectRequest was null or undefined when calling updateProject.');
+        if (requestParameters.projectInput === null || requestParameters.projectInput === undefined) {
+            throw new runtime.RequiredError('projectInput','Required parameter requestParameters.projectInput was null or undefined when calling updateProject.');
         }
 
         const queryParameters: any = {};
@@ -727,7 +727,7 @@ export class ProjectsApi extends runtime.BaseAPI {
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: ProjectRequestToJSON(requestParameters.projectRequest),
+            body: ProjectInputToJSON(requestParameters.projectInput),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => ProjectDetailFromJSON(jsonValue));
