@@ -112,6 +112,12 @@ export interface ProjectDetail {
     tags: Array<Tag>;
     /**
      * 
+     * @type {Array<string>}
+     * @memberof ProjectDetail
+     */
+    classificationIds: Array<string>;
+    /**
+     * 
      * @type {string}
      * @memberof ProjectDetail
      */
@@ -144,6 +150,7 @@ export function instanceOfProjectDetail(value: object): boolean {
     isInstance = isInstance && "settings" in value;
     isInstance = isInstance && "statusMessage" in value;
     isInstance = isInstance && "tags" in value;
+    isInstance = isInstance && "classificationIds" in value;
     isInstance = isInstance && "createdBy" in value;
     isInstance = isInstance && "createdAt" in value;
     isInstance = isInstance && "updatedAt" in value;
@@ -171,6 +178,7 @@ export function ProjectDetailFromJSONTyped(json: any, ignoreDiscriminator: boole
         'account': !exists(json, 'account') ? undefined : CloudAccountFromJSON(json['account']),
         'statusMessage': json['statusMessage'],
         'tags': ((json['tags'] as Array<any>).map(TagFromJSON)),
+        'classificationIds': json['classificationIds'],
         'createdBy': json['createdBy'],
         'createdAt': (new Date(json['createdAt'])),
         'updatedAt': (new Date(json['updatedAt'])),
@@ -196,6 +204,7 @@ export function ProjectDetailToJSON(value?: ProjectDetail | null): any {
         'account': CloudAccountToJSON(value.account),
         'statusMessage': value.statusMessage,
         'tags': ((value.tags as Array<any>).map(TagToJSON)),
+        'classificationIds': value.classificationIds,
         'createdBy': value.createdBy,
         'createdAt': (value.createdAt.toISOString()),
         'updatedAt': (value.updatedAt.toISOString()),
