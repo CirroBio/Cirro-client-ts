@@ -14,7 +14,7 @@
 
 import { exists, mapValues } from '../runtime';
 /**
- *
+ * 
  * @export
  * @interface RunAnalysisRequest
  */
@@ -92,7 +92,7 @@ export function RunAnalysisRequestFromJSONTyped(json: any, ignoreDiscriminator: 
         return json;
     }
     return {
-
+        
         'name': json['name'],
         'description': !exists(json, 'description') ? undefined : json['description'],
         'processId': json['processId'],
@@ -112,7 +112,7 @@ export function RunAnalysisRequestToJSON(value?: RunAnalysisRequest | null): any
         return null;
     }
     return {
-
+        
         'name': value.name,
         'description': value.description,
         'processId': value.processId,

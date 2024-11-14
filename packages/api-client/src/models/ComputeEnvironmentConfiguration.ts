@@ -27,7 +27,7 @@ import {
 } from './EnvironmentType';
 
 /**
- *
+ * 
  * @export
  * @interface ComputeEnvironmentConfiguration
  */
@@ -45,19 +45,19 @@ export interface ComputeEnvironmentConfiguration {
      */
     name?: string;
     /**
-     *
-     * @type {any}
+     * Configuration properties passed to the environment
+     * @type {{ [key: string]: string; }}
      * @memberof ComputeEnvironmentConfiguration
      */
-    properties?: any;
+    properties?: { [key: string]: string; };
     /**
-     *
+     * 
      * @type {EnvironmentType}
      * @memberof ComputeEnvironmentConfiguration
      */
     environmentType: EnvironmentType;
     /**
-     * The agent associated with this environment (if applicable)
+     * 
      * @type {Agent}
      * @memberof ComputeEnvironmentConfiguration
      */
@@ -69,13 +69,13 @@ export interface ComputeEnvironmentConfiguration {
      */
     createdBy?: string;
     /**
-     *
+     * 
      * @type {Date}
      * @memberof ComputeEnvironmentConfiguration
      */
     createdAt: Date;
     /**
-     *
+     * 
      * @type {Date}
      * @memberof ComputeEnvironmentConfiguration
      */
@@ -103,7 +103,7 @@ export function ComputeEnvironmentConfigurationFromJSONTyped(json: any, ignoreDi
         return json;
     }
     return {
-
+        
         'id': !exists(json, 'id') ? undefined : json['id'],
         'name': !exists(json, 'name') ? undefined : json['name'],
         'properties': !exists(json, 'properties') ? undefined : json['properties'],
@@ -123,7 +123,7 @@ export function ComputeEnvironmentConfigurationToJSON(value?: ComputeEnvironment
         return null;
     }
     return {
-
+        
         'id': value.id,
         'name': value.name,
         'properties': value.properties,

@@ -67,6 +67,18 @@ export interface Project {
      * @type {string}
      * @memberof Project
      */
+    organization: string;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof Project
+     */
+    classificationIds: Array<string>;
+    /**
+     * 
+     * @type {string}
+     * @memberof Project
+     */
     billingAccountId: string;
 }
 
@@ -80,6 +92,8 @@ export function instanceOfProject(value: object): boolean {
     isInstance = isInstance && "description" in value;
     isInstance = isInstance && "status" in value;
     isInstance = isInstance && "tags" in value;
+    isInstance = isInstance && "organization" in value;
+    isInstance = isInstance && "classificationIds" in value;
     isInstance = isInstance && "billingAccountId" in value;
 
     return isInstance;
@@ -100,6 +114,8 @@ export function ProjectFromJSONTyped(json: any, ignoreDiscriminator: boolean): P
         'description': json['description'],
         'status': StatusFromJSON(json['status']),
         'tags': ((json['tags'] as Array<any>).map(TagFromJSON)),
+        'organization': json['organization'],
+        'classificationIds': json['classificationIds'],
         'billingAccountId': json['billingAccountId'],
     };
 }
@@ -118,6 +134,8 @@ export function ProjectToJSON(value?: Project | null): any {
         'description': value.description,
         'status': StatusToJSON(value.status),
         'tags': ((value.tags as Array<any>).map(TagToJSON)),
+        'organization': value.organization,
+        'classificationIds': value.classificationIds,
         'billingAccountId': value.billingAccountId,
     };
 }

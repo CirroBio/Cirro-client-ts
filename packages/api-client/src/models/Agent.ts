@@ -39,11 +39,11 @@ export interface Agent {
      */
     name?: string;
     /**
-     * 
-     * @type {any}
+     * Tags associated with the agent
+     * @type {{ [key: string]: string; }}
      * @memberof Agent
      */
-    tags?: any;
+    tags?: { [key: string]: string; };
     /**
      * 
      * @type {AgentStatus}
