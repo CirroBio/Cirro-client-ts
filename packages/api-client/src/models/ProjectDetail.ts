@@ -82,6 +82,12 @@ export interface ProjectDetail {
     contacts: Array<Contact>;
     /**
      * 
+     * @type {string}
+     * @memberof ProjectDetail
+     */
+    organization: string;
+    /**
+     * 
      * @type {Status}
      * @memberof ProjectDetail
      */
@@ -146,6 +152,7 @@ export function instanceOfProjectDetail(value: object): boolean {
     isInstance = isInstance && "description" in value;
     isInstance = isInstance && "billingAccountId" in value;
     isInstance = isInstance && "contacts" in value;
+    isInstance = isInstance && "organization" in value;
     isInstance = isInstance && "status" in value;
     isInstance = isInstance && "settings" in value;
     isInstance = isInstance && "statusMessage" in value;
@@ -173,6 +180,7 @@ export function ProjectDetailFromJSONTyped(json: any, ignoreDiscriminator: boole
         'description': json['description'],
         'billingAccountId': json['billingAccountId'],
         'contacts': ((json['contacts'] as Array<any>).map(ContactFromJSON)),
+        'organization': json['organization'],
         'status': StatusFromJSON(json['status']),
         'settings': ProjectSettingsFromJSON(json['settings']),
         'account': !exists(json, 'account') ? undefined : CloudAccountFromJSON(json['account']),
@@ -199,6 +207,7 @@ export function ProjectDetailToJSON(value?: ProjectDetail | null): any {
         'description': value.description,
         'billingAccountId': value.billingAccountId,
         'contacts': ((value.contacts as Array<any>).map(ContactToJSON)),
+        'organization': value.organization,
         'status': StatusToJSON(value.status),
         'settings': ProjectSettingsToJSON(value.settings),
         'account': CloudAccountToJSON(value.account),
