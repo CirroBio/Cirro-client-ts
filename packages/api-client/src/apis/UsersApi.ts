@@ -17,6 +17,7 @@ import * as runtime from '../runtime';
 import type {
   InviteUserRequest,
   InviteUserResponse,
+  PaginatedResponseUserDto,
   UpdateUserRequest,
   User,
   UserDetail,
@@ -26,6 +27,8 @@ import {
     InviteUserRequestToJSON,
     InviteUserResponseFromJSON,
     InviteUserResponseToJSON,
+    PaginatedResponseUserDtoFromJSON,
+    PaginatedResponseUserDtoToJSON,
     UpdateUserRequestFromJSON,
     UpdateUserRequestToJSON,
     UserFromJSON,
@@ -38,12 +41,14 @@ export interface GetUserRequest {
     username: string;
 }
 
-export interface GetUsersRequest {
-    username: string;
-}
-
 export interface InviteUserOperationRequest {
     inviteUserRequest: InviteUserRequest;
+}
+
+export interface ListUsersRequest {
+    username?: string;
+    limit?: number;
+    nextToken?: string;
 }
 
 export interface SignOutUserRequest {
@@ -101,50 +106,6 @@ export class UsersApi extends runtime.BaseAPI {
     }
 
     /**
-     * Gets a list of users matching the username pattern
-     * List users
-     */
-    async getUsersRaw(requestParameters: GetUsersRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<User>>> {
-        if (requestParameters.username === null || requestParameters.username === undefined) {
-            throw new runtime.RequiredError('username','Required parameter requestParameters.username was null or undefined when calling getUsers.');
-        }
-
-        const queryParameters: any = {};
-
-        if (requestParameters.username !== undefined) {
-            queryParameters['username'] = requestParameters.username;
-        }
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("accessToken", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/users`,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(UserFromJSON));
-    }
-
-    /**
-     * Gets a list of users matching the username pattern
-     * List users
-     */
-    async getUsers(requestParameters: GetUsersRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<User>> {
-        const response = await this.getUsersRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
      * Invites a user to the system
      * Invite user
      */
@@ -184,6 +145,54 @@ export class UsersApi extends runtime.BaseAPI {
      */
     async inviteUser(requestParameters: InviteUserOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<InviteUserResponse> {
         const response = await this.inviteUserRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Gets a list of users, matching an optional username pattern
+     * List users
+     */
+    async listUsersRaw(requestParameters: ListUsersRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PaginatedResponseUserDto>> {
+        const queryParameters: any = {};
+
+        if (requestParameters.username !== undefined) {
+            queryParameters['username'] = requestParameters.username;
+        }
+
+        if (requestParameters.limit !== undefined) {
+            queryParameters['limit'] = requestParameters.limit;
+        }
+
+        if (requestParameters.nextToken !== undefined) {
+            queryParameters['nextToken'] = requestParameters.nextToken;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/users`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => PaginatedResponseUserDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Gets a list of users, matching an optional username pattern
+     * List users
+     */
+    async listUsers(requestParameters: ListUsersRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<PaginatedResponseUserDto> {
+        const response = await this.listUsersRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

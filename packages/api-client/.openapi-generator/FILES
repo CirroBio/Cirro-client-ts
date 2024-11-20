@@ -75,6 +75,7 @@ src/models/NotebookInstanceStatusResponse.ts
 src/models/OpenNotebookInstanceResponse.ts
 src/models/PaginatedResponseDatasetListDto.ts
 src/models/PaginatedResponseSampleDto.ts
+src/models/PaginatedResponseUserDto.ts
 src/models/PipelineCode.ts
 src/models/PipelineCost.ts
 src/models/PortalErrorResponse.ts
