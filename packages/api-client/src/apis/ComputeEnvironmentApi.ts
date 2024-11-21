@@ -15,21 +15,161 @@
 
 import * as runtime from '../runtime';
 import type {
+  AgentDetail,
+  AgentInput,
   ComputeEnvironmentConfiguration,
+  CreateResponse,
 } from '../models/index';
 import {
+    AgentDetailFromJSON,
+    AgentDetailToJSON,
+    AgentInputFromJSON,
+    AgentInputToJSON,
     ComputeEnvironmentConfigurationFromJSON,
     ComputeEnvironmentConfigurationToJSON,
+    CreateResponseFromJSON,
+    CreateResponseToJSON,
 } from '../models/index';
+
+export interface CreateAgentRequest {
+    agentInput: AgentInput;
+}
+
+export interface DeleteAgentRequest {
+    agentId: string;
+}
 
 export interface GetComputeEnvironmentsRequest {
     projectId: string;
+}
+
+export interface UpdateAgentRequest {
+    agentId: string;
+    agentInput: AgentInput;
 }
 
 /**
  * 
  */
 export class ComputeEnvironmentApi extends runtime.BaseAPI {
+
+    /**
+     * Create a new agent
+     * Create agent
+     */
+    async createAgentRaw(requestParameters: CreateAgentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateResponse>> {
+        if (requestParameters.agentInput === null || requestParameters.agentInput === undefined) {
+            throw new runtime.RequiredError('agentInput','Required parameter requestParameters.agentInput was null or undefined when calling createAgent.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/agents`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: AgentInputToJSON(requestParameters.agentInput),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => CreateResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Create a new agent
+     * Create agent
+     */
+    async createAgent(requestParameters: CreateAgentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateResponse> {
+        const response = await this.createAgentRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Delete an agent
+     * Delete agent
+     */
+    async deleteAgentRaw(requestParameters: DeleteAgentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.agentId === null || requestParameters.agentId === undefined) {
+            throw new runtime.RequiredError('agentId','Required parameter requestParameters.agentId was null or undefined when calling deleteAgent.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/agents/{agentId}`.replace(`{${"agentId"}}`, encodeURIComponent(String(requestParameters.agentId))),
+            method: 'DELETE',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Delete an agent
+     * Delete agent
+     */
+    async deleteAgent(requestParameters: DeleteAgentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.deleteAgentRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Get a list of agents
+     * Get agents
+     */
+    async getAgentsRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<AgentDetail>>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/agents`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(AgentDetailFromJSON));
+    }
+
+    /**
+     * Get a list of agents
+     * Get agents
+     */
+    async getAgents(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<AgentDetail>> {
+        const response = await this.getAgentsRaw(initOverrides);
+        return await response.value();
+    }
 
     /**
      * Get a list of compute environments for a project
@@ -69,6 +209,52 @@ export class ComputeEnvironmentApi extends runtime.BaseAPI {
     async getComputeEnvironments(requestParameters: GetComputeEnvironmentsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<ComputeEnvironmentConfiguration>> {
         const response = await this.getComputeEnvironmentsRaw(requestParameters, initOverrides);
         return await response.value();
+    }
+
+    /**
+     * Update an agent
+     * Update agent
+     */
+    async updateAgentRaw(requestParameters: UpdateAgentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.agentId === null || requestParameters.agentId === undefined) {
+            throw new runtime.RequiredError('agentId','Required parameter requestParameters.agentId was null or undefined when calling updateAgent.');
+        }
+
+        if (requestParameters.agentInput === null || requestParameters.agentInput === undefined) {
+            throw new runtime.RequiredError('agentInput','Required parameter requestParameters.agentInput was null or undefined when calling updateAgent.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/agents/{agentId}`.replace(`{${"agentId"}}`, encodeURIComponent(String(requestParameters.agentId))),
+            method: 'PUT',
+            headers: headerParameters,
+            query: queryParameters,
+            body: AgentInputToJSON(requestParameters.agentInput),
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Update an agent
+     * Update agent
+     */
+    async updateAgent(requestParameters: UpdateAgentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.updateAgentRaw(requestParameters, initOverrides);
     }
 
 }

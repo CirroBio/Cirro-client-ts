@@ -46,7 +46,7 @@ export interface InviteUserOperationRequest {
 }
 
 export interface ListUsersRequest {
-    username?: string;
+    username?: string | null;
     limit?: number;
     nextToken?: string;
 }
