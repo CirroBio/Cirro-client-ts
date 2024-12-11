@@ -8,7 +8,7 @@ on:
       - main
 
 jobs:
-  build-api-client-and-sdk:
+  build-api-client:
     runs-on: ubuntu-latest
 
     strategy:
@@ -37,6 +37,21 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
+  build-sdk:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [20.x]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          registry-url: 'https://registry.npmjs.org'
       - name: Build SDK
         working-directory: packages/sdk
         run: |
