@@ -1,4 +1,4 @@
-name: Build package
+name: Build packages
 on:
   release:
     types:
@@ -8,7 +8,7 @@ on:
       - main
 
 jobs:
-  build-api-client:
+  build-api-client-and-sdk:
     runs-on: ubuntu-latest
 
     strategy:
@@ -30,9 +30,22 @@ jobs:
           npm install
           npm run build
 
-      - name: Publish to NPM
+      - name: Publish API Client to NPM
         if: github.event_name == 'release'
         working-directory: packages/api-client
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Build SDK
+        working-directory: packages/sdk
+        run: |
+          npm install
+          npm run build
+
+      - name: Publish SDK to NPM
+        if: github.event_name == 'release'
+        working-directory: packages/sdk
         run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
