@@ -20,6 +20,7 @@ export * from './CloudAccount';
 export * from './CloudAccountType';
 export * from './ColumnDefinition';
 export * from './ComputeEnvironmentConfiguration';
+export * from './ComputeEnvironmentConfigurationInput';
 export * from './Contact';
 export * from './CreateNotebookInstanceRequest';
 export * from './CreateProjectAccessRequest';

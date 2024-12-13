@@ -43,7 +43,7 @@ export interface SetUserProjectRoleRequest {
      * @type {boolean}
      * @memberof SetUserProjectRoleRequest
      */
-    supressNotification?: boolean;
+    suppressNotification?: boolean;
 }
 
 /**
@@ -69,7 +69,7 @@ export function SetUserProjectRoleRequestFromJSONTyped(json: any, ignoreDiscrimi
         
         'username': json['username'],
         'role': ProjectRoleFromJSON(json['role']),
-        'supressNotification': !exists(json, 'supressNotification') ? undefined : json['supressNotification'],
+        'suppressNotification': !exists(json, 'suppressNotification') ? undefined : json['suppressNotification'],
     };
 }
 
@@ -84,7 +84,7 @@ export function SetUserProjectRoleRequestToJSON(value?: SetUserProjectRoleReques
         
         'username': value.username,
         'role': ProjectRoleToJSON(value.role),
-        'supressNotification': value.supressNotification,
+        'suppressNotification': value.suppressNotification,
     };
 }
 

@@ -41,6 +41,7 @@ src/models/CloudAccount.ts
 src/models/CloudAccountType.ts
 src/models/ColumnDefinition.ts
 src/models/ComputeEnvironmentConfiguration.ts
+src/models/ComputeEnvironmentConfigurationInput.ts
 src/models/Contact.ts
 src/models/CreateNotebookInstanceRequest.ts
 src/models/CreateProjectAccessRequest.ts

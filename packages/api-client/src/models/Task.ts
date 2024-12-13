@@ -48,6 +48,12 @@ export interface Task {
      * @type {Date}
      * @memberof Task
      */
+    startedAt?: Date;
+    /**
+     * 
+     * @type {Date}
+     * @memberof Task
+     */
     stoppedAt?: Date;
     /**
      * 
@@ -96,6 +102,7 @@ export function TaskFromJSONTyped(json: any, ignoreDiscriminator: boolean): Task
         'nativeJobId': json['nativeJobId'],
         'status': json['status'],
         'requestedAt': (new Date(json['requestedAt'])),
+        'startedAt': !exists(json, 'startedAt') ? undefined : (new Date(json['startedAt'])),
         'stoppedAt': !exists(json, 'stoppedAt') ? undefined : (new Date(json['stoppedAt'])),
         'containerImage': !exists(json, 'containerImage') ? undefined : json['containerImage'],
         'commandLine': !exists(json, 'commandLine') ? undefined : json['commandLine'],
@@ -116,6 +123,7 @@ export function TaskToJSON(value?: Task | null): any {
         'nativeJobId': value.nativeJobId,
         'status': value.status,
         'requestedAt': (value.requestedAt.toISOString()),
+        'startedAt': value.startedAt === undefined ? undefined : (value.startedAt.toISOString()),
         'stoppedAt': value.stoppedAt === undefined ? undefined : (value.stoppedAt.toISOString()),
         'containerImage': value.containerImage,
         'commandLine': value.commandLine,
