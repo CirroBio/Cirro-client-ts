@@ -18,6 +18,7 @@ src/apis/ProjectRequestsApi.ts
 src/apis/ProjectsApi.ts
 src/apis/ReferencesApi.ts
 src/apis/SystemApi.ts
+src/apis/ToolsApi.ts
 src/apis/UsersApi.ts
 src/apis/index.ts
 src/index.ts
@@ -74,6 +75,8 @@ src/models/InviteUserResponse.ts
 src/models/LogEntry.ts
 src/models/LoginProvider.ts
 src/models/MetricRecord.ts
+src/models/MoveDatasetInput.ts
+src/models/MoveDatasetResponse.ts
 src/models/NotebookInstance.ts
 src/models/NotebookInstanceStatusResponse.ts
 src/models/OpenNotebookInstanceResponse.ts

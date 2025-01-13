@@ -53,6 +53,8 @@ export * from './InviteUserResponse';
 export * from './LogEntry';
 export * from './LoginProvider';
 export * from './MetricRecord';
+export * from './MoveDatasetInput';
+export * from './MoveDatasetResponse';
 export * from './NotebookInstance';
 export * from './NotebookInstanceStatusResponse';
 export * from './OpenNotebookInstanceResponse';
