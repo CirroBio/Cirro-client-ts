@@ -17,6 +17,7 @@ src/apis/ProcessesApi.ts
 src/apis/ProjectRequestsApi.ts
 src/apis/ProjectsApi.ts
 src/apis/ReferencesApi.ts
+src/apis/SharingApi.ts
 src/apis/SystemApi.ts
 src/apis/ToolsApi.ts
 src/apis/UsersApi.ts
@@ -54,6 +55,8 @@ src/models/Dashboard.ts
 src/models/DashboardRequest.ts
 src/models/Dataset.ts
 src/models/DatasetAssetsManifest.ts
+src/models/DatasetCondition.ts
+src/models/DatasetConditionField.ts
 src/models/DatasetDetail.ts
 src/models/DatasetViz.ts
 src/models/EnvironmentType.ts
@@ -77,6 +80,7 @@ src/models/LoginProvider.ts
 src/models/MetricRecord.ts
 src/models/MoveDatasetInput.ts
 src/models/MoveDatasetResponse.ts
+src/models/NamedItem.ts
 src/models/NotebookInstance.ts
 src/models/NotebookInstanceStatusResponse.ts
 src/models/OpenNotebookInstanceResponse.ts
@@ -109,6 +113,10 @@ src/models/SampleRequest.ts
 src/models/ServiceConnection.ts
 src/models/SetUserProjectRoleRequest.ts
 src/models/SftpCredentials.ts
+src/models/Share.ts
+src/models/ShareDetail.ts
+src/models/ShareInput.ts
+src/models/ShareType.ts
 src/models/Status.ts
 src/models/StopExecutionResponse.ts
 src/models/SyncStatus.ts

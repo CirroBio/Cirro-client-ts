@@ -128,6 +128,12 @@ export interface ProjectSettings {
      * @memberof ProjectSettings
      */
     isDiscoverable?: boolean | null;
+    /**
+     * Enables the project to be shared with other projects
+     * @type {boolean}
+     * @memberof ProjectSettings
+     */
+    isShareable?: boolean | null;
 }
 
 /**
@@ -168,6 +174,7 @@ export function ProjectSettingsFromJSONTyped(json: any, ignoreDiscriminator: boo
         'sagemakerSubnets': !exists(json, 'sagemakerSubnets') ? undefined : json['sagemakerSubnets'],
         'kmsArn': !exists(json, 'kmsArn') ? undefined : json['kmsArn'],
         'isDiscoverable': !exists(json, 'isDiscoverable') ? undefined : json['isDiscoverable'],
+        'isShareable': !exists(json, 'isShareable') ? undefined : json['isShareable'],
     };
 }
 
@@ -197,6 +204,7 @@ export function ProjectSettingsToJSON(value?: ProjectSettings | null): any {
         'sagemakerSubnets': value.sagemakerSubnets,
         'kmsArn': value.kmsArn,
         'isDiscoverable': value.isDiscoverable,
+        'isShareable': value.isShareable,
     };
 }
 
