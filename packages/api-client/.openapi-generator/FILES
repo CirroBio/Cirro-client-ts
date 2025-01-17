@@ -75,10 +75,8 @@ src/models/GetExecutionLogsResponse.ts
 src/models/GovernanceClassification.ts
 src/models/GovernanceContact.ts
 src/models/GovernanceExpiry.ts
-src/models/GovernanceExpiryDto.ts
 src/models/GovernanceExpiryType.ts
 src/models/GovernanceFile.ts
-src/models/GovernanceFileDto.ts
 src/models/GovernanceFileType.ts
 src/models/GovernanceRequirement.ts
 src/models/GovernanceRequirementFile.ts
