@@ -21,7 +21,9 @@ export enum AccessType {
     DatasetUpload = 'DATASET_UPLOAD',
     SamplesheetUpload = 'SAMPLESHEET_UPLOAD',
     ReferenceUpload = 'REFERENCE_UPLOAD',
-    ProjectDownload = 'PROJECT_DOWNLOAD'
+    ProjectDownload = 'PROJECT_DOWNLOAD',
+    GovernanceUpload = 'GOVERNANCE_UPLOAD',
+    GovernanceDownload = 'GOVERNANCE_DOWNLOAD'
 }
 
 

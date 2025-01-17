@@ -16,30 +16,76 @@
 import * as runtime from '../runtime';
 import type {
   ClassificationInput,
+  ContactInput,
   GovernanceClassification,
+  GovernanceContact,
+  GovernanceRequirement,
+  RequirementInput,
 } from '../models/index';
 import {
     ClassificationInputFromJSON,
     ClassificationInputToJSON,
+    ContactInputFromJSON,
+    ContactInputToJSON,
     GovernanceClassificationFromJSON,
     GovernanceClassificationToJSON,
+    GovernanceContactFromJSON,
+    GovernanceContactToJSON,
+    GovernanceRequirementFromJSON,
+    GovernanceRequirementToJSON,
+    RequirementInputFromJSON,
+    RequirementInputToJSON,
 } from '../models/index';
 
 export interface CreateClassificationRequest {
     classificationInput: ClassificationInput;
 }
 
+export interface CreateContactRequest {
+    contactInput: ContactInput;
+}
+
+export interface CreateRequirementRequest {
+    requirementInput: RequirementInput;
+}
+
 export interface DeleteClassificationRequest {
     classificationId: string;
+}
+
+export interface DeleteContactRequest {
+    contactId: string;
+}
+
+export interface DeleteRequirementRequest {
+    requirementId: string;
 }
 
 export interface GetClassificationRequest {
     classificationId: string;
 }
 
+export interface GetContactRequest {
+    contactId: string;
+}
+
+export interface GetRequirementRequest {
+    requirementId: string;
+}
+
 export interface UpdateClassificationRequest {
     classificationId: string;
     classificationInput: ClassificationInput;
+}
+
+export interface UpdateContactRequest {
+    contactId: string;
+    contactInput: ContactInput;
+}
+
+export interface UpdateRequirementRequest {
+    requirementId: string;
+    requirementInput: RequirementInput;
 }
 
 /**
@@ -72,7 +118,7 @@ export class GovernanceApi extends runtime.BaseAPI {
         }
         const response = await this.request({
             path: `/governance/classifications`,
-            method: 'PUT',
+            method: 'POST',
             headers: headerParameters,
             query: queryParameters,
             body: ClassificationInputToJSON(requestParameters.classificationInput),
@@ -87,6 +133,92 @@ export class GovernanceApi extends runtime.BaseAPI {
      */
     async createClassification(requestParameters: CreateClassificationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GovernanceClassification> {
         const response = await this.createClassificationRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Creates a contact
+     * Create contact
+     */
+    async createContactRaw(requestParameters: CreateContactRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GovernanceContact>> {
+        if (requestParameters.contactInput === null || requestParameters.contactInput === undefined) {
+            throw new runtime.RequiredError('contactInput','Required parameter requestParameters.contactInput was null or undefined when calling createContact.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/governance/contacts`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: ContactInputToJSON(requestParameters.contactInput),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GovernanceContactFromJSON(jsonValue));
+    }
+
+    /**
+     * Creates a contact
+     * Create contact
+     */
+    async createContact(requestParameters: CreateContactRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GovernanceContact> {
+        const response = await this.createContactRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Creates a requirement
+     * Create requirement
+     */
+    async createRequirementRaw(requestParameters: CreateRequirementRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GovernanceRequirement>> {
+        if (requestParameters.requirementInput === null || requestParameters.requirementInput === undefined) {
+            throw new runtime.RequiredError('requirementInput','Required parameter requestParameters.requirementInput was null or undefined when calling createRequirement.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/governance/requirements`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: RequirementInputToJSON(requestParameters.requirementInput),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GovernanceRequirementFromJSON(jsonValue));
+    }
+
+    /**
+     * Creates a requirement
+     * Create requirement
+     */
+    async createRequirement(requestParameters: CreateRequirementRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GovernanceRequirement> {
+        const response = await this.createRequirementRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -127,6 +259,84 @@ export class GovernanceApi extends runtime.BaseAPI {
      */
     async deleteClassification(requestParameters: DeleteClassificationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.deleteClassificationRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Deletes the contact, and removes it from all governance requirements.
+     * Delete a contact
+     */
+    async deleteContactRaw(requestParameters: DeleteContactRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.contactId === null || requestParameters.contactId === undefined) {
+            throw new runtime.RequiredError('contactId','Required parameter requestParameters.contactId was null or undefined when calling deleteContact.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/governance/contacts/{contactId}`.replace(`{${"contactId"}}`, encodeURIComponent(String(requestParameters.contactId))),
+            method: 'DELETE',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Deletes the contact, and removes it from all governance requirements.
+     * Delete a contact
+     */
+    async deleteContact(requestParameters: DeleteContactRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.deleteContactRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Deletes the requirement, and removes it from all governance fulfillments and classifications.
+     * Delete a requirement
+     */
+    async deleteRequirementRaw(requestParameters: DeleteRequirementRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.requirementId === null || requestParameters.requirementId === undefined) {
+            throw new runtime.RequiredError('requirementId','Required parameter requestParameters.requirementId was null or undefined when calling deleteRequirement.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/governance/requirements/{requirementId}`.replace(`{${"requirementId"}}`, encodeURIComponent(String(requestParameters.requirementId))),
+            method: 'DELETE',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Deletes the requirement, and removes it from all governance fulfillments and classifications.
+     * Delete a requirement
+     */
+    async deleteRequirement(requestParameters: DeleteRequirementRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.deleteRequirementRaw(requestParameters, initOverrides);
     }
 
     /**
@@ -206,6 +416,158 @@ export class GovernanceApi extends runtime.BaseAPI {
     }
 
     /**
+     * Retrieve a governance contact
+     * Get a contact
+     */
+    async getContactRaw(requestParameters: GetContactRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GovernanceContact>> {
+        if (requestParameters.contactId === null || requestParameters.contactId === undefined) {
+            throw new runtime.RequiredError('contactId','Required parameter requestParameters.contactId was null or undefined when calling getContact.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/governance/contacts/{contactId}`.replace(`{${"contactId"}}`, encodeURIComponent(String(requestParameters.contactId))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GovernanceContactFromJSON(jsonValue));
+    }
+
+    /**
+     * Retrieve a governance contact
+     * Get a contact
+     */
+    async getContact(requestParameters: GetContactRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GovernanceContact> {
+        const response = await this.getContactRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Retrieve a list of governance contacts
+     * Get contacts
+     */
+    async getContactsRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<GovernanceContact>>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/governance/contacts`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(GovernanceContactFromJSON));
+    }
+
+    /**
+     * Retrieve a list of governance contacts
+     * Get contacts
+     */
+    async getContacts(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<GovernanceContact>> {
+        const response = await this.getContactsRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Retrieve a governance requirement
+     * Get a requirement
+     */
+    async getRequirementRaw(requestParameters: GetRequirementRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GovernanceRequirement>> {
+        if (requestParameters.requirementId === null || requestParameters.requirementId === undefined) {
+            throw new runtime.RequiredError('requirementId','Required parameter requestParameters.requirementId was null or undefined when calling getRequirement.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/governance/requirements/{requirementId}`.replace(`{${"requirementId"}}`, encodeURIComponent(String(requestParameters.requirementId))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GovernanceRequirementFromJSON(jsonValue));
+    }
+
+    /**
+     * Retrieve a governance requirement
+     * Get a requirement
+     */
+    async getRequirement(requestParameters: GetRequirementRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GovernanceRequirement> {
+        const response = await this.getRequirementRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Retrieve a list of governance requirements
+     * Get requirements
+     */
+    async getRequirementsRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<GovernanceRequirement>>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/governance/requirements`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(GovernanceRequirementFromJSON));
+    }
+
+    /**
+     * Retrieve a list of governance requirements
+     * Get requirements
+     */
+    async getRequirements(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<GovernanceRequirement>> {
+        const response = await this.getRequirementsRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
      * Updates a classification
      * Update classification
      */
@@ -249,6 +611,100 @@ export class GovernanceApi extends runtime.BaseAPI {
      */
     async updateClassification(requestParameters: UpdateClassificationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GovernanceClassification> {
         const response = await this.updateClassificationRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Updates a contact
+     * Update contact
+     */
+    async updateContactRaw(requestParameters: UpdateContactRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GovernanceContact>> {
+        if (requestParameters.contactId === null || requestParameters.contactId === undefined) {
+            throw new runtime.RequiredError('contactId','Required parameter requestParameters.contactId was null or undefined when calling updateContact.');
+        }
+
+        if (requestParameters.contactInput === null || requestParameters.contactInput === undefined) {
+            throw new runtime.RequiredError('contactInput','Required parameter requestParameters.contactInput was null or undefined when calling updateContact.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/governance/contacts/{contactId}`.replace(`{${"contactId"}}`, encodeURIComponent(String(requestParameters.contactId))),
+            method: 'PUT',
+            headers: headerParameters,
+            query: queryParameters,
+            body: ContactInputToJSON(requestParameters.contactInput),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GovernanceContactFromJSON(jsonValue));
+    }
+
+    /**
+     * Updates a contact
+     * Update contact
+     */
+    async updateContact(requestParameters: UpdateContactRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GovernanceContact> {
+        const response = await this.updateContactRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Updates a requirement
+     * Update requirement
+     */
+    async updateRequirementRaw(requestParameters: UpdateRequirementRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GovernanceRequirement>> {
+        if (requestParameters.requirementId === null || requestParameters.requirementId === undefined) {
+            throw new runtime.RequiredError('requirementId','Required parameter requestParameters.requirementId was null or undefined when calling updateRequirement.');
+        }
+
+        if (requestParameters.requirementInput === null || requestParameters.requirementInput === undefined) {
+            throw new runtime.RequiredError('requirementInput','Required parameter requestParameters.requirementInput was null or undefined when calling updateRequirement.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/governance/requirements/{requirementId}`.replace(`{${"requirementId"}}`, encodeURIComponent(String(requestParameters.requirementId))),
+            method: 'PUT',
+            headers: headerParameters,
+            query: queryParameters,
+            body: RequirementInputToJSON(requestParameters.requirementInput),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GovernanceRequirementFromJSON(jsonValue));
+    }
+
+    /**
+     * Updates a requirement
+     * Update requirement
+     */
+    async updateRequirement(requestParameters: UpdateRequirementRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GovernanceRequirement> {
+        const response = await this.updateRequirementRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

@@ -31,6 +31,12 @@ export interface ClassificationInput {
      * @memberof ClassificationInput
      */
     description: string;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof ClassificationInput
+     */
+    requirementIds: Array<string>;
 }
 
 /**
@@ -40,6 +46,7 @@ export function instanceOfClassificationInput(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "name" in value;
     isInstance = isInstance && "description" in value;
+    isInstance = isInstance && "requirementIds" in value;
 
     return isInstance;
 }
@@ -56,6 +63,7 @@ export function ClassificationInputFromJSONTyped(json: any, ignoreDiscriminator:
         
         'name': json['name'],
         'description': json['description'],
+        'requirementIds': json['requirementIds'],
     };
 }
 
@@ -70,6 +78,7 @@ export function ClassificationInputToJSON(value?: ClassificationInput | null): a
         
         'name': value.name,
         'description': value.description,
+        'requirementIds': value.requirementIds,
     };
 }
 

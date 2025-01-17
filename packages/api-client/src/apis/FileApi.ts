@@ -31,6 +31,11 @@ import {
     SftpCredentialsToJSON,
 } from '../models/index';
 
+export interface GenerateGovernanceFileAccessTokenRequest {
+    requirementId: string;
+    fileAccessRequest: FileAccessRequest;
+}
+
 export interface GenerateProjectFileAccessTokenRequest {
     projectId: string;
     fileAccessRequest: FileAccessRequest;
@@ -45,6 +50,53 @@ export interface GenerateProjectSftpTokenRequest {
  * 
  */
 export class FileApi extends runtime.BaseAPI {
+
+    /**
+     * Generates credentials used for connecting via S3
+     * Create governance file access token
+     */
+    async generateGovernanceFileAccessTokenRaw(requestParameters: GenerateGovernanceFileAccessTokenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AWSCredentials>> {
+        if (requestParameters.requirementId === null || requestParameters.requirementId === undefined) {
+            throw new runtime.RequiredError('requirementId','Required parameter requestParameters.requirementId was null or undefined when calling generateGovernanceFileAccessToken.');
+        }
+
+        if (requestParameters.fileAccessRequest === null || requestParameters.fileAccessRequest === undefined) {
+            throw new runtime.RequiredError('fileAccessRequest','Required parameter requestParameters.fileAccessRequest was null or undefined when calling generateGovernanceFileAccessToken.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/governance/requirements/{requirementId}/s3-token`.replace(`{${"requirementId"}}`, encodeURIComponent(String(requestParameters.requirementId))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: FileAccessRequestToJSON(requestParameters.fileAccessRequest),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => AWSCredentialsFromJSON(jsonValue));
+    }
+
+    /**
+     * Generates credentials used for connecting via S3
+     * Create governance file access token
+     */
+    async generateGovernanceFileAccessToken(requestParameters: GenerateGovernanceFileAccessTokenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AWSCredentials> {
+        const response = await this.generateGovernanceFileAccessTokenRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
 
     /**
      * Generates credentials used for connecting via S3

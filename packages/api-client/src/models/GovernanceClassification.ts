@@ -39,6 +39,12 @@ export interface GovernanceClassification {
     description: string;
     /**
      * 
+     * @type {Array<string>}
+     * @memberof GovernanceClassification
+     */
+    requirementIds: Array<string>;
+    /**
+     * 
      * @type {string}
      * @memberof GovernanceClassification
      */
@@ -65,6 +71,7 @@ export function instanceOfGovernanceClassification(value: object): boolean {
     isInstance = isInstance && "id" in value;
     isInstance = isInstance && "name" in value;
     isInstance = isInstance && "description" in value;
+    isInstance = isInstance && "requirementIds" in value;
     isInstance = isInstance && "createdBy" in value;
     isInstance = isInstance && "createdAt" in value;
     isInstance = isInstance && "updatedAt" in value;
@@ -85,6 +92,7 @@ export function GovernanceClassificationFromJSONTyped(json: any, ignoreDiscrimin
         'id': json['id'],
         'name': json['name'],
         'description': json['description'],
+        'requirementIds': json['requirementIds'],
         'createdBy': json['createdBy'],
         'createdAt': (new Date(json['createdAt'])),
         'updatedAt': (new Date(json['updatedAt'])),
@@ -103,6 +111,7 @@ export function GovernanceClassificationToJSON(value?: GovernanceClassification 
         'id': value.id,
         'name': value.name,
         'description': value.description,
+        'requirementIds': value.requirementIds,
         'createdBy': value.createdBy,
         'createdAt': (value.createdAt.toISOString()),
         'updatedAt': (value.updatedAt.toISOString()),
