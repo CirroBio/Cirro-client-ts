@@ -79,7 +79,6 @@ src/models/GovernanceExpiryType.ts
 src/models/GovernanceFile.ts
 src/models/GovernanceFileType.ts
 src/models/GovernanceRequirement.ts
-src/models/GovernanceRequirementFile.ts
 src/models/GovernanceScope.ts
 src/models/GovernanceTrainingVerification.ts
 src/models/GovernanceType.ts

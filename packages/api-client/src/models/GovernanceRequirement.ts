@@ -13,24 +13,18 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import type { GovernanceExpiryDto } from './GovernanceExpiryDto';
+import type { GovernanceExpiry } from './GovernanceExpiry';
 import {
-    GovernanceExpiryDtoFromJSON,
-    GovernanceExpiryDtoFromJSONTyped,
-    GovernanceExpiryDtoToJSON,
-} from './GovernanceExpiryDto';
+    GovernanceExpiryFromJSON,
+    GovernanceExpiryFromJSONTyped,
+    GovernanceExpiryToJSON,
+} from './GovernanceExpiry';
 import type { GovernanceFile } from './GovernanceFile';
 import {
     GovernanceFileFromJSON,
     GovernanceFileFromJSONTyped,
     GovernanceFileToJSON,
 } from './GovernanceFile';
-import type { GovernanceRequirementFile } from './GovernanceRequirementFile';
-import {
-    GovernanceRequirementFileFromJSON,
-    GovernanceRequirementFileFromJSONTyped,
-    GovernanceRequirementFileToJSON,
-} from './GovernanceRequirementFile';
 import type { GovernanceScope } from './GovernanceScope';
 import {
     GovernanceScopeFromJSON,
@@ -106,10 +100,10 @@ export interface GovernanceRequirement {
     contactIds?: Array<string> | null;
     /**
      * 
-     * @type {GovernanceExpiryDto}
+     * @type {GovernanceExpiry}
      * @memberof GovernanceRequirement
      */
-    expiration?: GovernanceExpiryDto;
+    expiration: GovernanceExpiry;
     /**
      * Optional files with extra information, e.g. templates for documents, links, etc
      * @type {Array<GovernanceFile>}
@@ -118,10 +112,10 @@ export interface GovernanceRequirement {
     supplementalDocs?: Array<GovernanceFile> | null;
     /**
      * 
-     * @type {GovernanceRequirementFile}
+     * @type {GovernanceFile}
      * @memberof GovernanceRequirement
      */
-    file?: GovernanceRequirementFile | null;
+    file?: GovernanceFile | null;
     /**
      * 
      * @type {GovernanceScope}
@@ -142,6 +136,7 @@ export interface GovernanceRequirement {
 export function instanceOfGovernanceRequirement(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "id" in value;
+    isInstance = isInstance && "expiration" in value;
 
     return isInstance;
 }
@@ -164,9 +159,9 @@ export function GovernanceRequirementFromJSONTyped(json: any, ignoreDiscriminato
         'scope': !exists(json, 'scope') ? undefined : GovernanceScopeFromJSON(json['scope']),
         'acceptance': !exists(json, 'acceptance') ? undefined : GovernanceScopeFromJSON(json['acceptance']),
         'contactIds': !exists(json, 'contactIds') ? undefined : json['contactIds'],
-        'expiration': !exists(json, 'expiration') ? undefined : GovernanceExpiryDtoFromJSON(json['expiration']),
+        'expiration': GovernanceExpiryFromJSON(json['expiration']),
         'supplementalDocs': !exists(json, 'supplementalDocs') ? undefined : (json['supplementalDocs'] === null ? null : (json['supplementalDocs'] as Array<any>).map(GovernanceFileFromJSON)),
-        'file': !exists(json, 'file') ? undefined : GovernanceRequirementFileFromJSON(json['file']),
+        'file': !exists(json, 'file') ? undefined : GovernanceFileFromJSON(json['file']),
         'authorship': !exists(json, 'authorship') ? undefined : GovernanceScopeFromJSON(json['authorship']),
         'verification': !exists(json, 'verification') ? undefined : GovernanceTrainingVerificationFromJSON(json['verification']),
     };
@@ -189,9 +184,9 @@ export function GovernanceRequirementToJSON(value?: GovernanceRequirement | null
         'scope': GovernanceScopeToJSON(value.scope),
         'acceptance': GovernanceScopeToJSON(value.acceptance),
         'contactIds': value.contactIds,
-        'expiration': GovernanceExpiryDtoToJSON(value.expiration),
+        'expiration': GovernanceExpiryToJSON(value.expiration),
         'supplementalDocs': value.supplementalDocs === undefined ? undefined : (value.supplementalDocs === null ? null : (value.supplementalDocs as Array<any>).map(GovernanceFileToJSON)),
-        'file': GovernanceRequirementFileToJSON(value.file),
+        'file': GovernanceFileToJSON(value.file),
         'authorship': GovernanceScopeToJSON(value.authorship),
         'verification': GovernanceTrainingVerificationToJSON(value.verification),
     };
