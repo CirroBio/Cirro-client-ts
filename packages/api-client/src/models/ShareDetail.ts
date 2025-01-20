@@ -79,7 +79,7 @@ export interface ShareDetail {
      * @type {Array<DatasetCondition>}
      * @memberof ShareDetail
      */
-    conditions?: Array<DatasetCondition>;
+    conditions: Array<DatasetCondition>;
     /**
      * 
      * @type {Array<string>}
@@ -129,6 +129,7 @@ export function instanceOfShareDetail(value: object): boolean {
     isInstance = isInstance && "originatingProject" in value;
     isInstance = isInstance && "shareType" in value;
     isInstance = isInstance && "sharedProjects" in value;
+    isInstance = isInstance && "conditions" in value;
     isInstance = isInstance && "keywords" in value;
     isInstance = isInstance && "classificationIds" in value;
     isInstance = isInstance && "isSubscribed" in value;
@@ -155,7 +156,7 @@ export function ShareDetailFromJSONTyped(json: any, ignoreDiscriminator: boolean
         'originatingProject': NamedItemFromJSON(json['originatingProject']),
         'shareType': ShareTypeFromJSON(json['shareType']),
         'sharedProjects': ((json['sharedProjects'] as Array<any>).map(NamedItemFromJSON)),
-        'conditions': !exists(json, 'conditions') ? undefined : ((json['conditions'] as Array<any>).map(DatasetConditionFromJSON)),
+        'conditions': ((json['conditions'] as Array<any>).map(DatasetConditionFromJSON)),
         'keywords': json['keywords'],
         'classificationIds': json['classificationIds'],
         'isSubscribed': json['isSubscribed'],
@@ -180,7 +181,7 @@ export function ShareDetailToJSON(value?: ShareDetail | null): any {
         'originatingProject': NamedItemToJSON(value.originatingProject),
         'shareType': ShareTypeToJSON(value.shareType),
         'sharedProjects': ((value.sharedProjects as Array<any>).map(NamedItemToJSON)),
-        'conditions': value.conditions === undefined ? undefined : ((value.conditions as Array<any>).map(DatasetConditionToJSON)),
+        'conditions': ((value.conditions as Array<any>).map(DatasetConditionToJSON)),
         'keywords': value.keywords,
         'classificationIds': value.classificationIds,
         'isSubscribed': value.isSubscribed,

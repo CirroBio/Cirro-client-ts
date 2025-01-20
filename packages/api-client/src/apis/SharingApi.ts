@@ -16,7 +16,7 @@
 import * as runtime from '../runtime';
 import type {
   CreateResponse,
-  Dataset,
+  PaginatedResponseDatasetListDto,
   Share,
   ShareDetail,
   ShareInput,
@@ -24,8 +24,8 @@ import type {
 import {
     CreateResponseFromJSON,
     CreateResponseToJSON,
-    DatasetFromJSON,
-    DatasetToJSON,
+    PaginatedResponseDatasetListDtoFromJSON,
+    PaginatedResponseDatasetListDtoToJSON,
     ShareFromJSON,
     ShareToJSON,
     ShareDetailFromJSON,
@@ -56,6 +56,8 @@ export interface GetShareRequest {
 export interface GetSharedDatasetsRequest {
     projectId: string;
     shareId: string;
+    limit?: number;
+    nextToken?: string;
 }
 
 export interface GetSharesRequest {
@@ -256,7 +258,7 @@ export class SharingApi extends runtime.BaseAPI {
      * Get dataset listing for a share
      * Get share datasets
      */
-    async getSharedDatasetsRaw(requestParameters: GetSharedDatasetsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<Dataset>>> {
+    async getSharedDatasetsRaw(requestParameters: GetSharedDatasetsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PaginatedResponseDatasetListDto>> {
         if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
             throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling getSharedDatasets.');
         }
@@ -266,6 +268,14 @@ export class SharingApi extends runtime.BaseAPI {
         }
 
         const queryParameters: any = {};
+
+        if (requestParameters.limit !== undefined) {
+            queryParameters['limit'] = requestParameters.limit;
+        }
+
+        if (requestParameters.nextToken !== undefined) {
+            queryParameters['nextToken'] = requestParameters.nextToken;
+        }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
@@ -284,14 +294,14 @@ export class SharingApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(DatasetFromJSON));
+        return new runtime.JSONApiResponse(response, (jsonValue) => PaginatedResponseDatasetListDtoFromJSON(jsonValue));
     }
 
     /**
      * Get dataset listing for a share
      * Get share datasets
      */
-    async getSharedDatasets(requestParameters: GetSharedDatasetsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<Dataset>> {
+    async getSharedDatasets(requestParameters: GetSharedDatasetsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<PaginatedResponseDatasetListDto> {
         const response = await this.getSharedDatasetsRaw(requestParameters, initOverrides);
         return await response.value();
     }
