@@ -79,19 +79,25 @@ export interface RequirementInput {
      * @type {GovernanceScope}
      * @memberof RequirementInput
      */
-    acceptance: GovernanceScope;
+    acceptance?: GovernanceScope | null;
     /**
      * 
      * @type {Array<string>}
      * @memberof RequirementInput
      */
-    contactIds?: Array<string> | null;
+    contactIds: Array<string>;
     /**
      * 
      * @type {GovernanceExpiry}
      * @memberof RequirementInput
      */
     expiration: GovernanceExpiry;
+    /**
+     * 
+     * @type {Date}
+     * @memberof RequirementInput
+     */
+    enactmentDate?: Date | null;
     /**
      * 
      * @type {Array<GovernanceFile>}
@@ -127,7 +133,7 @@ export function instanceOfRequirementInput(value: object): boolean {
     isInstance = isInstance && "description" in value;
     isInstance = isInstance && "type" in value;
     isInstance = isInstance && "scope" in value;
-    isInstance = isInstance && "acceptance" in value;
+    isInstance = isInstance && "contactIds" in value;
     isInstance = isInstance && "expiration" in value;
 
     return isInstance;
@@ -147,9 +153,10 @@ export function RequirementInputFromJSONTyped(json: any, ignoreDiscriminator: bo
         'description': json['description'],
         'type': GovernanceTypeFromJSON(json['type']),
         'scope': GovernanceScopeFromJSON(json['scope']),
-        'acceptance': GovernanceScopeFromJSON(json['acceptance']),
-        'contactIds': !exists(json, 'contactIds') ? undefined : json['contactIds'],
+        'acceptance': !exists(json, 'acceptance') ? undefined : GovernanceScopeFromJSON(json['acceptance']),
+        'contactIds': json['contactIds'],
         'expiration': GovernanceExpiryFromJSON(json['expiration']),
+        'enactmentDate': !exists(json, 'enactmentDate') ? undefined : (json['enactmentDate'] === null ? null : new Date(json['enactmentDate'])),
         'supplementalDocs': !exists(json, 'supplementalDocs') ? undefined : (json['supplementalDocs'] === null ? null : (json['supplementalDocs'] as Array<any>).map(GovernanceFileFromJSON)),
         'file': !exists(json, 'file') ? undefined : GovernanceFileFromJSON(json['file']),
         'authorship': !exists(json, 'authorship') ? undefined : GovernanceScopeFromJSON(json['authorship']),
@@ -173,6 +180,7 @@ export function RequirementInputToJSON(value?: RequirementInput | null): any {
         'acceptance': GovernanceScopeToJSON(value.acceptance),
         'contactIds': value.contactIds,
         'expiration': GovernanceExpiryToJSON(value.expiration),
+        'enactmentDate': value.enactmentDate === undefined ? undefined : (value.enactmentDate === null ? null : value.enactmentDate.toISOString()),
         'supplementalDocs': value.supplementalDocs === undefined ? undefined : (value.supplementalDocs === null ? null : (value.supplementalDocs as Array<any>).map(GovernanceFileToJSON)),
         'file': GovernanceFileToJSON(value.file),
         'authorship': GovernanceScopeToJSON(value.authorship),

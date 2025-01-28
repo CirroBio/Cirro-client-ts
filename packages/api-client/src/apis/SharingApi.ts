@@ -69,6 +69,11 @@ export interface SubscribeShareRequest {
     shareId: string;
 }
 
+export interface UnsubscribeShareRequest {
+    projectId: string;
+    shareId: string;
+}
+
 export interface UpdateShareRequest {
     projectId: string;
     shareId: string;
@@ -387,6 +392,49 @@ export class SharingApi extends runtime.BaseAPI {
      */
     async subscribeShare(requestParameters: SubscribeShareRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.subscribeShareRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Unsubscribe from a share that has been shared with your project
+     * Unsubscribe from share
+     */
+    async unsubscribeShareRaw(requestParameters: UnsubscribeShareRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
+            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling unsubscribeShare.');
+        }
+
+        if (requestParameters.shareId === null || requestParameters.shareId === undefined) {
+            throw new runtime.RequiredError('shareId','Required parameter requestParameters.shareId was null or undefined when calling unsubscribeShare.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/projects/{projectId}/shares/{shareId}:unsubscribe`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))).replace(`{${"shareId"}}`, encodeURIComponent(String(requestParameters.shareId))),
+            method: 'PUT',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Unsubscribe from a share that has been shared with your project
+     * Unsubscribe from share
+     */
+    async unsubscribeShare(requestParameters: UnsubscribeShareRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.unsubscribeShareRaw(requestParameters, initOverrides);
     }
 
     /**

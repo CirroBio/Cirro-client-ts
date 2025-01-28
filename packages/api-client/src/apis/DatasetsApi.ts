@@ -337,7 +337,7 @@ export class DatasetsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Rerun sample ingest (TODO).
+     * Rerun sample ingest.
      * Rerun sample ingest
      */
     async ingestSamplesRaw(requestParameters: IngestSamplesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
@@ -372,7 +372,7 @@ export class DatasetsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Rerun sample ingest (TODO).
+     * Rerun sample ingest.
      * Rerun sample ingest
      */
     async ingestSamples(requestParameters: IngestSamplesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
@@ -380,7 +380,7 @@ export class DatasetsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Regenerate dataset manifest (TODO).
+     * Regenerate dataset file listing.
      * Regenerate dataset manifest
      */
     async regenerateManifestRaw(requestParameters: RegenerateManifestRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
@@ -415,7 +415,7 @@ export class DatasetsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Regenerate dataset manifest (TODO).
+     * Regenerate dataset file listing.
      * Regenerate dataset manifest
      */
     async regenerateManifest(requestParameters: RegenerateManifestRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
@@ -423,7 +423,7 @@ export class DatasetsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Rerun data transforms (TODO).
+     * Rerun data transforms and web optimization.
      * Rerun data transforms
      */
     async rerunTransformRaw(requestParameters: RerunTransformRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
@@ -458,7 +458,7 @@ export class DatasetsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Rerun data transforms (TODO).
+     * Rerun data transforms and web optimization.
      * Rerun data transforms
      */
     async rerunTransform(requestParameters: RerunTransformRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
