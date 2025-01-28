@@ -94,6 +94,12 @@ export interface RequirementInput {
     expiration: GovernanceExpiry;
     /**
      * 
+     * @type {Date}
+     * @memberof RequirementInput
+     */
+    enactmentDate?: Date | null;
+    /**
+     * 
      * @type {Array<GovernanceFile>}
      * @memberof RequirementInput
      */
@@ -150,6 +156,7 @@ export function RequirementInputFromJSONTyped(json: any, ignoreDiscriminator: bo
         'acceptance': !exists(json, 'acceptance') ? undefined : GovernanceScopeFromJSON(json['acceptance']),
         'contactIds': json['contactIds'],
         'expiration': GovernanceExpiryFromJSON(json['expiration']),
+        'enactmentDate': !exists(json, 'enactmentDate') ? undefined : (json['enactmentDate'] === null ? null : new Date(json['enactmentDate'])),
         'supplementalDocs': !exists(json, 'supplementalDocs') ? undefined : (json['supplementalDocs'] === null ? null : (json['supplementalDocs'] as Array<any>).map(GovernanceFileFromJSON)),
         'file': !exists(json, 'file') ? undefined : GovernanceFileFromJSON(json['file']),
         'authorship': !exists(json, 'authorship') ? undefined : GovernanceScopeFromJSON(json['authorship']),
@@ -173,6 +180,7 @@ export function RequirementInputToJSON(value?: RequirementInput | null): any {
         'acceptance': GovernanceScopeToJSON(value.acceptance),
         'contactIds': value.contactIds,
         'expiration': GovernanceExpiryToJSON(value.expiration),
+        'enactmentDate': value.enactmentDate === undefined ? undefined : (value.enactmentDate === null ? null : value.enactmentDate.toISOString()),
         'supplementalDocs': value.supplementalDocs === undefined ? undefined : (value.supplementalDocs === null ? null : (value.supplementalDocs as Array<any>).map(GovernanceFileToJSON)),
         'file': GovernanceFileToJSON(value.file),
         'authorship': GovernanceScopeToJSON(value.authorship),

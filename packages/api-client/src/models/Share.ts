@@ -13,6 +13,12 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { DatasetCondition } from './DatasetCondition';
+import {
+    DatasetConditionFromJSON,
+    DatasetConditionFromJSONTyped,
+    DatasetConditionToJSON,
+} from './DatasetCondition';
 import type { ShareType } from './ShareType';
 import {
     ShareTypeFromJSON,
@@ -58,6 +64,12 @@ export interface Share {
     shareType: ShareType;
     /**
      * 
+     * @type {Array<DatasetCondition>}
+     * @memberof Share
+     */
+    conditions: Array<DatasetCondition>;
+    /**
+     * 
      * @type {Array<string>}
      * @memberof Share
      */
@@ -98,6 +110,7 @@ export function instanceOfShare(value: object): boolean {
     isInstance = isInstance && "description" in value;
     isInstance = isInstance && "originatingProjectId" in value;
     isInstance = isInstance && "shareType" in value;
+    isInstance = isInstance && "conditions" in value;
     isInstance = isInstance && "classificationIds" in value;
     isInstance = isInstance && "keywords" in value;
     isInstance = isInstance && "createdBy" in value;
@@ -122,6 +135,7 @@ export function ShareFromJSONTyped(json: any, ignoreDiscriminator: boolean): Sha
         'description': json['description'],
         'originatingProjectId': json['originatingProjectId'],
         'shareType': ShareTypeFromJSON(json['shareType']),
+        'conditions': ((json['conditions'] as Array<any>).map(DatasetConditionFromJSON)),
         'classificationIds': json['classificationIds'],
         'keywords': json['keywords'],
         'createdBy': json['createdBy'],
@@ -144,6 +158,7 @@ export function ShareToJSON(value?: Share | null): any {
         'description': value.description,
         'originatingProjectId': value.originatingProjectId,
         'shareType': ShareTypeToJSON(value.shareType),
+        'conditions': ((value.conditions as Array<any>).map(DatasetConditionToJSON)),
         'classificationIds': value.classificationIds,
         'keywords': value.keywords,
         'createdBy': value.createdBy,
