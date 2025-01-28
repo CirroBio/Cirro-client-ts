@@ -13,6 +13,12 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { NamedItem } from './NamedItem';
+import {
+    NamedItemFromJSON,
+    NamedItemFromJSONTyped,
+    NamedItemToJSON,
+} from './NamedItem';
 import type { Status } from './Status';
 import {
     StatusFromJSON,
@@ -76,6 +82,12 @@ export interface DatasetDetail {
     sourceDatasetIds: Array<string>;
     /**
      * 
+     * @type {Array<NamedItem>}
+     * @memberof DatasetDetail
+     */
+    sourceDatasets: Array<NamedItem>;
+    /**
+     * 
      * @type {Status}
      * @memberof DatasetDetail
      */
@@ -104,6 +116,12 @@ export interface DatasetDetail {
      * @memberof DatasetDetail
      */
     info: { [key: string]: any; };
+    /**
+     * 
+     * @type {NamedItem}
+     * @memberof DatasetDetail
+     */
+    share?: NamedItem | null;
     /**
      * 
      * @type {string}
@@ -136,6 +154,7 @@ export function instanceOfDatasetDetail(value: object): boolean {
     isInstance = isInstance && "processId" in value;
     isInstance = isInstance && "projectId" in value;
     isInstance = isInstance && "sourceDatasetIds" in value;
+    isInstance = isInstance && "sourceDatasets" in value;
     isInstance = isInstance && "status" in value;
     isInstance = isInstance && "statusMessage" in value;
     isInstance = isInstance && "tags" in value;
@@ -165,11 +184,13 @@ export function DatasetDetailFromJSONTyped(json: any, ignoreDiscriminator: boole
         'processId': json['processId'],
         'projectId': json['projectId'],
         'sourceDatasetIds': json['sourceDatasetIds'],
+        'sourceDatasets': ((json['sourceDatasets'] as Array<any>).map(NamedItemFromJSON)),
         'status': StatusFromJSON(json['status']),
         'statusMessage': json['statusMessage'],
         'tags': ((json['tags'] as Array<any>).map(TagFromJSON)),
         'params': json['params'],
         'info': json['info'],
+        'share': !exists(json, 'share') ? undefined : NamedItemFromJSON(json['share']),
         'createdBy': json['createdBy'],
         'createdAt': (new Date(json['createdAt'])),
         'updatedAt': (new Date(json['updatedAt'])),
@@ -192,11 +213,13 @@ export function DatasetDetailToJSON(value?: DatasetDetail | null): any {
         'processId': value.processId,
         'projectId': value.projectId,
         'sourceDatasetIds': value.sourceDatasetIds,
+        'sourceDatasets': ((value.sourceDatasets as Array<any>).map(NamedItemToJSON)),
         'status': StatusToJSON(value.status),
         'statusMessage': value.statusMessage,
         'tags': ((value.tags as Array<any>).map(TagToJSON)),
         'params': value.params,
         'info': value.info,
+        'share': NamedItemToJSON(value.share),
         'createdBy': value.createdBy,
         'createdAt': (value.createdAt.toISOString()),
         'updatedAt': (value.updatedAt.toISOString()),

@@ -55,6 +55,24 @@ export interface GovernanceContact {
      * @memberof GovernanceContact
      */
     email: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GovernanceContact
+     */
+    createdBy: string;
+    /**
+     * 
+     * @type {Date}
+     * @memberof GovernanceContact
+     */
+    createdAt: Date;
+    /**
+     * 
+     * @type {Date}
+     * @memberof GovernanceContact
+     */
+    updatedAt: Date;
 }
 
 /**
@@ -68,6 +86,9 @@ export function instanceOfGovernanceContact(value: object): boolean {
     isInstance = isInstance && "name" in value;
     isInstance = isInstance && "phone" in value;
     isInstance = isInstance && "email" in value;
+    isInstance = isInstance && "createdBy" in value;
+    isInstance = isInstance && "createdAt" in value;
+    isInstance = isInstance && "updatedAt" in value;
 
     return isInstance;
 }
@@ -88,6 +109,9 @@ export function GovernanceContactFromJSONTyped(json: any, ignoreDiscriminator: b
         'name': json['name'],
         'phone': json['phone'],
         'email': json['email'],
+        'createdBy': json['createdBy'],
+        'createdAt': (new Date(json['createdAt'])),
+        'updatedAt': (new Date(json['updatedAt'])),
     };
 }
 
@@ -106,6 +130,9 @@ export function GovernanceContactToJSON(value?: GovernanceContact | null): any {
         'name': value.name,
         'phone': value.phone,
         'email': value.email,
+        'createdBy': value.createdBy,
+        'createdAt': (value.createdAt.toISOString()),
+        'updatedAt': (value.updatedAt.toISOString()),
     };
 }
 
