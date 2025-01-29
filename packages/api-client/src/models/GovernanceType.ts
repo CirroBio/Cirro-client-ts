@@ -20,9 +20,7 @@
 export enum GovernanceType {
     Document = 'DOCUMENT',
     Agreement = 'AGREEMENT',
-    Training = 'TRAINING',
-    Contact = 'CONTACT',
-    Classification = 'CLASSIFICATION'
+    Training = 'TRAINING'
 }
 
 
