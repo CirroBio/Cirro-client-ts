@@ -43,6 +43,12 @@ export interface CreateNotebookInstanceRequest {
      * @memberof CreateNotebookInstanceRequest
      */
     volumeSizeGB: number;
+    /**
+     * Whether the notebook is shared with the project
+     * @type {boolean}
+     * @memberof CreateNotebookInstanceRequest
+     */
+    isSharedWithProject?: boolean;
 }
 
 /**
@@ -72,6 +78,7 @@ export function CreateNotebookInstanceRequestFromJSONTyped(json: any, ignoreDisc
         'instanceType': json['instanceType'],
         'acceleratorTypes': json['acceleratorTypes'],
         'volumeSizeGB': json['volumeSizeGB'],
+        'isSharedWithProject': !exists(json, 'isSharedWithProject') ? undefined : json['isSharedWithProject'],
     };
 }
 
@@ -88,6 +95,7 @@ export function CreateNotebookInstanceRequestToJSON(value?: CreateNotebookInstan
         'instanceType': value.instanceType,
         'acceleratorTypes': value.acceleratorTypes,
         'volumeSizeGB': value.volumeSizeGB,
+        'isSharedWithProject': value.isSharedWithProject,
     };
 }
 

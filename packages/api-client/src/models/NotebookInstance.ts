@@ -70,6 +70,12 @@ export interface NotebookInstance {
     volumeSizeGB: number;
     /**
      * 
+     * @type {boolean}
+     * @memberof NotebookInstance
+     */
+    isSharedWithProject: boolean;
+    /**
+     * 
      * @type {string}
      * @memberof NotebookInstance
      */
@@ -100,6 +106,7 @@ export function instanceOfNotebookInstance(value: object): boolean {
     isInstance = isInstance && "instanceType" in value;
     isInstance = isInstance && "acceleratorTypes" in value;
     isInstance = isInstance && "volumeSizeGB" in value;
+    isInstance = isInstance && "isSharedWithProject" in value;
     isInstance = isInstance && "createdBy" in value;
     isInstance = isInstance && "createdAt" in value;
     isInstance = isInstance && "updatedAt" in value;
@@ -124,6 +131,7 @@ export function NotebookInstanceFromJSONTyped(json: any, ignoreDiscriminator: bo
         'instanceType': json['instanceType'],
         'acceleratorTypes': json['acceleratorTypes'],
         'volumeSizeGB': json['volumeSizeGB'],
+        'isSharedWithProject': json['isSharedWithProject'],
         'createdBy': json['createdBy'],
         'createdAt': (new Date(json['createdAt'])),
         'updatedAt': (new Date(json['updatedAt'])),
@@ -146,6 +154,7 @@ export function NotebookInstanceToJSON(value?: NotebookInstance | null): any {
         'instanceType': value.instanceType,
         'acceleratorTypes': value.acceleratorTypes,
         'volumeSizeGB': value.volumeSizeGB,
+        'isSharedWithProject': value.isSharedWithProject,
         'createdBy': value.createdBy,
         'createdAt': (value.createdAt.toISOString()),
         'updatedAt': (value.updatedAt.toISOString()),
