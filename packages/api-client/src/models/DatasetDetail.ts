@@ -124,6 +124,12 @@ export interface DatasetDetail {
     share?: NamedItem | null;
     /**
      * 
+     * @type {boolean}
+     * @memberof DatasetDetail
+     */
+    isViewRestricted: boolean;
+    /**
+     * 
      * @type {string}
      * @memberof DatasetDetail
      */
@@ -160,6 +166,7 @@ export function instanceOfDatasetDetail(value: object): boolean {
     isInstance = isInstance && "tags" in value;
     isInstance = isInstance && "params" in value;
     isInstance = isInstance && "info" in value;
+    isInstance = isInstance && "isViewRestricted" in value;
     isInstance = isInstance && "createdBy" in value;
     isInstance = isInstance && "createdAt" in value;
     isInstance = isInstance && "updatedAt" in value;
@@ -191,6 +198,7 @@ export function DatasetDetailFromJSONTyped(json: any, ignoreDiscriminator: boole
         'params': json['params'],
         'info': json['info'],
         'share': !exists(json, 'share') ? undefined : NamedItemFromJSON(json['share']),
+        'isViewRestricted': json['isViewRestricted'],
         'createdBy': json['createdBy'],
         'createdAt': (new Date(json['createdAt'])),
         'updatedAt': (new Date(json['updatedAt'])),
@@ -220,6 +228,7 @@ export function DatasetDetailToJSON(value?: DatasetDetail | null): any {
         'params': value.params,
         'info': value.info,
         'share': NamedItemToJSON(value.share),
+        'isViewRestricted': value.isViewRestricted,
         'createdBy': value.createdBy,
         'createdAt': (value.createdAt.toISOString()),
         'updatedAt': (value.updatedAt.toISOString()),

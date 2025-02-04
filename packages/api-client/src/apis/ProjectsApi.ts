@@ -477,8 +477,8 @@ export class ProjectsApi extends runtime.BaseAPI {
             }
         }
         const response = await this.request({
-            path: `/projects`,
-            method: 'OPTIONS',
+            path: `/projects/options`,
+            method: 'GET',
             headers: headerParameters,
             query: queryParameters,
         }, initOverrides);

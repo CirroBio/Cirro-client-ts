@@ -100,6 +100,12 @@ export interface ShareDetail {
     isSubscribed: boolean;
     /**
      * 
+     * @type {boolean}
+     * @memberof ShareDetail
+     */
+    isViewRestricted: boolean;
+    /**
+     * 
      * @type {string}
      * @memberof ShareDetail
      */
@@ -133,6 +139,7 @@ export function instanceOfShareDetail(value: object): boolean {
     isInstance = isInstance && "keywords" in value;
     isInstance = isInstance && "classificationIds" in value;
     isInstance = isInstance && "isSubscribed" in value;
+    isInstance = isInstance && "isViewRestricted" in value;
     isInstance = isInstance && "createdBy" in value;
     isInstance = isInstance && "createdAt" in value;
     isInstance = isInstance && "updatedAt" in value;
@@ -160,6 +167,7 @@ export function ShareDetailFromJSONTyped(json: any, ignoreDiscriminator: boolean
         'keywords': json['keywords'],
         'classificationIds': json['classificationIds'],
         'isSubscribed': json['isSubscribed'],
+        'isViewRestricted': json['isViewRestricted'],
         'createdBy': json['createdBy'],
         'createdAt': (new Date(json['createdAt'])),
         'updatedAt': (new Date(json['updatedAt'])),
@@ -185,6 +193,7 @@ export function ShareDetailToJSON(value?: ShareDetail | null): any {
         'keywords': value.keywords,
         'classificationIds': value.classificationIds,
         'isSubscribed': value.isSubscribed,
+        'isViewRestricted': value.isViewRestricted,
         'createdBy': value.createdBy,
         'createdAt': (value.createdAt.toISOString()),
         'updatedAt': (value.updatedAt.toISOString()),

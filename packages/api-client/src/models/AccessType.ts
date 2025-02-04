@@ -19,6 +19,7 @@
  */
 export enum AccessType {
     DatasetUpload = 'DATASET_UPLOAD',
+    SharedDatasetDownload = 'SHARED_DATASET_DOWNLOAD',
     SamplesheetUpload = 'SAMPLESHEET_UPLOAD',
     ReferenceUpload = 'REFERENCE_UPLOAD',
     ProjectDownload = 'PROJECT_DOWNLOAD',

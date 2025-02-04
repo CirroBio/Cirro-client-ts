@@ -62,6 +62,12 @@ export interface ShareInput {
      * @memberof ShareInput
      */
     sharedProjectIds?: Array<string>;
+    /**
+     * Whether files within the share are restricted from viewing or downloading
+     * @type {boolean}
+     * @memberof ShareInput
+     */
+    isViewRestricted?: boolean;
 }
 
 /**
@@ -93,6 +99,7 @@ export function ShareInputFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'conditions': ((json['conditions'] as Array<any>).map(DatasetConditionFromJSON)),
         'keywords': !exists(json, 'keywords') ? undefined : json['keywords'],
         'sharedProjectIds': !exists(json, 'sharedProjectIds') ? undefined : json['sharedProjectIds'],
+        'isViewRestricted': !exists(json, 'isViewRestricted') ? undefined : json['isViewRestricted'],
     };
 }
 
@@ -111,6 +118,7 @@ export function ShareInputToJSON(value?: ShareInput | null): any {
         'conditions': ((value.conditions as Array<any>).map(DatasetConditionToJSON)),
         'keywords': value.keywords,
         'sharedProjectIds': value.sharedProjectIds,
+        'isViewRestricted': value.isViewRestricted,
     };
 }
 
