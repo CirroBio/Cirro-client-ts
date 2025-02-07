@@ -1,6 +1,6 @@
 {
   "name": "@cirrobio/sdk",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "description": "SDK for Cirro",
   "author": "CirroBio",
   "repository": {
@@ -29,8 +29,10 @@
     "ts-jest": "^29.1.1",
     "@types/node": "^22.13.1"
   },
+  "peerDependencies": {
+    "@cirrobio/api-client": "*"
+  },
   "dependencies": {
-    "@cirrobio/api-client": "^0.2.4",
     "@aws-sdk/client-s3": "^3.34.0",
     "@aws-sdk/lib-storage": "^3.34.0",
     "@aws-sdk/s3-request-presigner": "^3.34.0"
