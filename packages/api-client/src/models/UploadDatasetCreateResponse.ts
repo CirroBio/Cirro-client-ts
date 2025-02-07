@@ -37,6 +37,12 @@ export interface UploadDatasetCreateResponse {
      * @memberof UploadDatasetCreateResponse
      */
     uploadPath: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UploadDatasetCreateResponse
+     */
+    bucket: string;
 }
 
 /**
@@ -47,6 +53,7 @@ export function instanceOfUploadDatasetCreateResponse(value: object): boolean {
     isInstance = isInstance && "id" in value;
     isInstance = isInstance && "message" in value;
     isInstance = isInstance && "uploadPath" in value;
+    isInstance = isInstance && "bucket" in value;
 
     return isInstance;
 }
@@ -64,6 +71,7 @@ export function UploadDatasetCreateResponseFromJSONTyped(json: any, ignoreDiscri
         'id': json['id'],
         'message': json['message'],
         'uploadPath': json['uploadPath'],
+        'bucket': json['bucket'],
     };
 }
 
@@ -79,6 +87,7 @@ export function UploadDatasetCreateResponseToJSON(value?: UploadDatasetCreateRes
         'id': value.id,
         'message': value.message,
         'uploadPath': value.uploadPath,
+        'bucket': value.bucket,
     };
 }
 
