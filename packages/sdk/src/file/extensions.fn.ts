@@ -2,7 +2,6 @@
 /**
  * An array of file extensions that can be rendered in a genome viewer
  */
-
 export const FILE_TRACK_ANNOTATION = ['bed', 'bed.gz', 'gtf', 'gtf.gz'];
 export const FILE_TRACK_ALIGNMENTS = ['cram', 'cram.gz'];  // TODO: put back bam
 export const FILE_TRACK_VARIANT = ['vcf', 'vcf.gz'];

@@ -1,2 +1,2 @@
-export * from './api'
-export * from './extensions.fn'
+export * from './file';
+export * from './api';
