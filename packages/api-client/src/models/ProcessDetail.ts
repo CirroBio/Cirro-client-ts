@@ -129,6 +129,12 @@ export interface ProcessDetail {
      */
     linkedProjectIds: Array<string>;
     /**
+     * Whether the pipeline is available to all projects in the organization
+     * @type {boolean}
+     * @memberof ProcessDetail
+     */
+    isTenantWide?: boolean;
+    /**
      * Whether the pipeline is allowed to have multiple dataset sources
      * @type {boolean}
      * @memberof ProcessDetail
@@ -194,6 +200,7 @@ export function ProcessDetailFromJSONTyped(json: any, ignoreDiscriminator: boole
         'pipelineCode': !exists(json, 'pipelineCode') ? undefined : PipelineCodeFromJSON(json['pipelineCode']),
         'owner': !exists(json, 'owner') ? undefined : json['owner'],
         'linkedProjectIds': json['linkedProjectIds'],
+        'isTenantWide': !exists(json, 'isTenantWide') ? undefined : json['isTenantWide'],
         'allowMultipleSources': !exists(json, 'allowMultipleSources') ? undefined : json['allowMultipleSources'],
         'customSettings': !exists(json, 'customSettings') ? undefined : CustomPipelineSettingsFromJSON(json['customSettings']),
         'isArchived': !exists(json, 'isArchived') ? undefined : json['isArchived'],
@@ -224,6 +231,7 @@ export function ProcessDetailToJSON(value?: ProcessDetail | null): any {
         'pipelineCode': PipelineCodeToJSON(value.pipelineCode),
         'owner': value.owner,
         'linkedProjectIds': value.linkedProjectIds,
+        'isTenantWide': value.isTenantWide,
         'allowMultipleSources': value.allowMultipleSources,
         'customSettings': CustomPipelineSettingsToJSON(value.customSettings),
         'isArchived': value.isArchived,
