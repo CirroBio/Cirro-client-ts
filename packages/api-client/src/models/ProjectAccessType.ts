@@ -17,26 +17,24 @@
  * @export
  * @enum {string}
  */
-export enum AccessType {
+export enum ProjectAccessType {
     DatasetUpload = 'DATASET_UPLOAD',
     SharedDatasetDownload = 'SHARED_DATASET_DOWNLOAD',
     SamplesheetUpload = 'SAMPLESHEET_UPLOAD',
     ReferenceUpload = 'REFERENCE_UPLOAD',
-    ProjectDownload = 'PROJECT_DOWNLOAD',
-    GovernanceUpload = 'GOVERNANCE_UPLOAD',
-    GovernanceDownload = 'GOVERNANCE_DOWNLOAD'
+    ProjectDownload = 'PROJECT_DOWNLOAD'
 }
 
 
-export function AccessTypeFromJSON(json: any): AccessType {
-    return AccessTypeFromJSONTyped(json, false);
+export function ProjectAccessTypeFromJSON(json: any): ProjectAccessType {
+    return ProjectAccessTypeFromJSONTyped(json, false);
 }
 
-export function AccessTypeFromJSONTyped(json: any, ignoreDiscriminator: boolean): AccessType {
-    return json as AccessType;
+export function ProjectAccessTypeFromJSONTyped(json: any, ignoreDiscriminator: boolean): ProjectAccessType {
+    return json as ProjectAccessType;
 }
 
-export function AccessTypeToJSON(value?: AccessType | null): any {
+export function ProjectAccessTypeToJSON(value?: ProjectAccessType | null): any {
     return value as any;
 }
 

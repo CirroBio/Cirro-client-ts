@@ -121,7 +121,7 @@ export interface RequirementInput {
      * @type {GovernanceTrainingVerification}
      * @memberof RequirementInput
      */
-    verification?: GovernanceTrainingVerification | null;
+    verificationMethod?: GovernanceTrainingVerification | null;
 }
 
 /**
@@ -160,7 +160,7 @@ export function RequirementInputFromJSONTyped(json: any, ignoreDiscriminator: bo
         'supplementalDocs': !exists(json, 'supplementalDocs') ? undefined : (json['supplementalDocs'] === null ? null : (json['supplementalDocs'] as Array<any>).map(GovernanceFileFromJSON)),
         'file': !exists(json, 'file') ? undefined : GovernanceFileFromJSON(json['file']),
         'authorship': !exists(json, 'authorship') ? undefined : GovernanceScopeFromJSON(json['authorship']),
-        'verification': !exists(json, 'verification') ? undefined : GovernanceTrainingVerificationFromJSON(json['verification']),
+        'verificationMethod': !exists(json, 'verificationMethod') ? undefined : GovernanceTrainingVerificationFromJSON(json['verificationMethod']),
     };
 }
 
@@ -184,7 +184,7 @@ export function RequirementInputToJSON(value?: RequirementInput | null): any {
         'supplementalDocs': value.supplementalDocs === undefined ? undefined : (value.supplementalDocs === null ? null : (value.supplementalDocs as Array<any>).map(GovernanceFileToJSON)),
         'file': GovernanceFileToJSON(value.file),
         'authorship': GovernanceScopeToJSON(value.authorship),
-        'verification': GovernanceTrainingVerificationToJSON(value.verification),
+        'verificationMethod': GovernanceTrainingVerificationToJSON(value.verificationMethod),
     };
 }
 

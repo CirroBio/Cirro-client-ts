@@ -1,4 +1,4 @@
-import { AccessType, DatasetDetail, FileAccessRequest, Project } from "@cirrobio/api-client";
+import { ProjectAccessType, DatasetDetail, ProjectFileAccessRequest, Project } from "@cirrobio/api-client";
 
 type ProjectIdentifiable = Pick<Project, 'id'>;
 
@@ -9,18 +9,18 @@ export class ProjectFileAccessContext {
   constructor(
     readonly project: ProjectIdentifiable,
     readonly dataset: DatasetDetail,
-    readonly fileAccessRequest: FileAccessRequest
+    readonly fileAccessRequest: ProjectFileAccessRequest
   ) {
   }
 
   static projectDownload(project: ProjectIdentifiable): ProjectFileAccessContext {
-    const request: FileAccessRequest = { accessType: AccessType.ProjectDownload };
+    const request: ProjectFileAccessRequest = { accessType: ProjectAccessType.ProjectDownload };
     return new ProjectFileAccessContext(project, null, request);
   }
 
   static datasetDownload(project: ProjectIdentifiable, dataset: DatasetDetail): ProjectFileAccessContext {
-    const accessType = dataset.share ? AccessType.SharedDatasetDownload : AccessType.ProjectDownload;
-    const request: FileAccessRequest = { accessType, datasetId: dataset.id };
+    const accessType = dataset.share ? ProjectAccessType.SharedDatasetDownload : ProjectAccessType.ProjectDownload;
+    const request: ProjectFileAccessRequest = { accessType, datasetId: dataset.id };
     return new ProjectFileAccessContext(project, dataset, request);
   }
 }

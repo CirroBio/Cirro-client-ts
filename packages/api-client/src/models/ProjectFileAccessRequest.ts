@@ -13,66 +13,66 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import type { AccessType } from './AccessType';
+import type { ProjectAccessType } from './ProjectAccessType';
 import {
-    AccessTypeFromJSON,
-    AccessTypeFromJSONTyped,
-    AccessTypeToJSON,
-} from './AccessType';
+    ProjectAccessTypeFromJSON,
+    ProjectAccessTypeFromJSONTyped,
+    ProjectAccessTypeToJSON,
+} from './ProjectAccessType';
 
 /**
  * 
  * @export
- * @interface FileAccessRequest
+ * @interface ProjectFileAccessRequest
  */
-export interface FileAccessRequest {
+export interface ProjectFileAccessRequest {
     /**
      * 
-     * @type {AccessType}
-     * @memberof FileAccessRequest
+     * @type {ProjectAccessType}
+     * @memberof ProjectFileAccessRequest
      */
-    accessType: AccessType;
+    accessType: ProjectAccessType;
     /**
      * 
      * @type {string}
-     * @memberof FileAccessRequest
+     * @memberof ProjectFileAccessRequest
      */
     datasetId?: string | null;
     /**
      * 
      * @type {number}
-     * @memberof FileAccessRequest
+     * @memberof ProjectFileAccessRequest
      */
     tokenLifetimeHours?: number | null;
 }
 
 /**
- * Check if a given object implements the FileAccessRequest interface.
+ * Check if a given object implements the ProjectFileAccessRequest interface.
  */
-export function instanceOfFileAccessRequest(value: object): boolean {
+export function instanceOfProjectFileAccessRequest(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "accessType" in value;
 
     return isInstance;
 }
 
-export function FileAccessRequestFromJSON(json: any): FileAccessRequest {
-    return FileAccessRequestFromJSONTyped(json, false);
+export function ProjectFileAccessRequestFromJSON(json: any): ProjectFileAccessRequest {
+    return ProjectFileAccessRequestFromJSONTyped(json, false);
 }
 
-export function FileAccessRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): FileAccessRequest {
+export function ProjectFileAccessRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): ProjectFileAccessRequest {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'accessType': AccessTypeFromJSON(json['accessType']),
+        'accessType': ProjectAccessTypeFromJSON(json['accessType']),
         'datasetId': !exists(json, 'datasetId') ? undefined : json['datasetId'],
         'tokenLifetimeHours': !exists(json, 'tokenLifetimeHours') ? undefined : json['tokenLifetimeHours'],
     };
 }
 
-export function FileAccessRequestToJSON(value?: FileAccessRequest | null): any {
+export function ProjectFileAccessRequestToJSON(value?: ProjectFileAccessRequest | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -81,7 +81,7 @@ export function FileAccessRequestToJSON(value?: FileAccessRequest | null): any {
     }
     return {
         
-        'accessType': AccessTypeToJSON(value.accessType),
+        'accessType': ProjectAccessTypeToJSON(value.accessType),
         'datasetId': value.datasetId,
         'tokenLifetimeHours': value.tokenLifetimeHours,
     };

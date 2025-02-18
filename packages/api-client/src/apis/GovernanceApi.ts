@@ -17,9 +17,12 @@ import * as runtime from '../runtime';
 import type {
   ClassificationInput,
   ContactInput,
+  FulfillmentResponse,
   GovernanceClassification,
   GovernanceContact,
   GovernanceRequirement,
+  ProjectRequirement,
+  RequirementFulfillmentInput,
   RequirementInput,
 } from '../models/index';
 import {
@@ -27,12 +30,18 @@ import {
     ClassificationInputToJSON,
     ContactInputFromJSON,
     ContactInputToJSON,
+    FulfillmentResponseFromJSON,
+    FulfillmentResponseToJSON,
     GovernanceClassificationFromJSON,
     GovernanceClassificationToJSON,
     GovernanceContactFromJSON,
     GovernanceContactToJSON,
     GovernanceRequirementFromJSON,
     GovernanceRequirementToJSON,
+    ProjectRequirementFromJSON,
+    ProjectRequirementToJSON,
+    RequirementFulfillmentInputFromJSON,
+    RequirementFulfillmentInputToJSON,
     RequirementInputFromJSON,
     RequirementInputToJSON,
 } from '../models/index';
@@ -61,6 +70,12 @@ export interface DeleteRequirementRequest {
     requirementId: string;
 }
 
+export interface FulfillRequirementRequest {
+    projectId: string;
+    requirementId: string;
+    requirementFulfillmentInput: RequirementFulfillmentInput;
+}
+
 export interface GetClassificationRequest {
     classificationId: string;
 }
@@ -71,6 +86,10 @@ export interface GetContactRequest {
 
 export interface GetRequirementRequest {
     requirementId: string;
+}
+
+export interface GetRequirementsByProjectRequest {
+    projectId: string;
 }
 
 export interface UpdateClassificationRequest {
@@ -340,6 +359,57 @@ export class GovernanceApi extends runtime.BaseAPI {
     }
 
     /**
+     * Saves a record of the fulfillment of a governance requirement
+     * Fulfill a project\'s requirement
+     */
+    async fulfillRequirementRaw(requestParameters: FulfillRequirementRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FulfillmentResponse>> {
+        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
+            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling fulfillRequirement.');
+        }
+
+        if (requestParameters.requirementId === null || requestParameters.requirementId === undefined) {
+            throw new runtime.RequiredError('requirementId','Required parameter requestParameters.requirementId was null or undefined when calling fulfillRequirement.');
+        }
+
+        if (requestParameters.requirementFulfillmentInput === null || requestParameters.requirementFulfillmentInput === undefined) {
+            throw new runtime.RequiredError('requirementFulfillmentInput','Required parameter requestParameters.requirementFulfillmentInput was null or undefined when calling fulfillRequirement.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/governance/projects/{projectId}/requirements/{requirementId}:fulfill`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))).replace(`{${"requirementId"}}`, encodeURIComponent(String(requestParameters.requirementId))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: RequirementFulfillmentInputToJSON(requestParameters.requirementFulfillmentInput),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => FulfillmentResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Saves a record of the fulfillment of a governance requirement
+     * Fulfill a project\'s requirement
+     */
+    async fulfillRequirement(requestParameters: FulfillRequirementRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<FulfillmentResponse> {
+        const response = await this.fulfillRequirementRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
      * Retrieve a data classification
      * Get a classification
      */
@@ -564,6 +634,46 @@ export class GovernanceApi extends runtime.BaseAPI {
      */
     async getRequirements(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<GovernanceRequirement>> {
         const response = await this.getRequirementsRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Retrieve governance requirements for a project with fulfillment information for the current user
+     * Get project requirements
+     */
+    async getRequirementsByProjectRaw(requestParameters: GetRequirementsByProjectRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<ProjectRequirement>>> {
+        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
+            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling getRequirementsByProject.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/governance/projects/{projectId}/requirements`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(ProjectRequirementFromJSON));
+    }
+
+    /**
+     * Retrieve governance requirements for a project with fulfillment information for the current user
+     * Get project requirements
+     */
+    async getRequirementsByProject(requestParameters: GetRequirementsByProjectRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<ProjectRequirement>> {
+        const response = await this.getRequirementsByProjectRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

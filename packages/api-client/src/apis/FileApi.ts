@@ -16,29 +16,32 @@
 import * as runtime from '../runtime';
 import type {
   AWSCredentials,
-  FileAccessRequest,
   GenerateSftpCredentialsRequest,
+  GovernanceFileAccessRequest,
+  ProjectFileAccessRequest,
   SftpCredentials,
 } from '../models/index';
 import {
     AWSCredentialsFromJSON,
     AWSCredentialsToJSON,
-    FileAccessRequestFromJSON,
-    FileAccessRequestToJSON,
     GenerateSftpCredentialsRequestFromJSON,
     GenerateSftpCredentialsRequestToJSON,
+    GovernanceFileAccessRequestFromJSON,
+    GovernanceFileAccessRequestToJSON,
+    ProjectFileAccessRequestFromJSON,
+    ProjectFileAccessRequestToJSON,
     SftpCredentialsFromJSON,
     SftpCredentialsToJSON,
 } from '../models/index';
 
 export interface GenerateGovernanceFileAccessTokenRequest {
     requirementId: string;
-    fileAccessRequest: FileAccessRequest;
+    governanceFileAccessRequest: GovernanceFileAccessRequest;
 }
 
 export interface GenerateProjectFileAccessTokenRequest {
     projectId: string;
-    fileAccessRequest: FileAccessRequest;
+    projectFileAccessRequest: ProjectFileAccessRequest;
 }
 
 export interface GenerateProjectSftpTokenRequest {
@@ -60,8 +63,8 @@ export class FileApi extends runtime.BaseAPI {
             throw new runtime.RequiredError('requirementId','Required parameter requestParameters.requirementId was null or undefined when calling generateGovernanceFileAccessToken.');
         }
 
-        if (requestParameters.fileAccessRequest === null || requestParameters.fileAccessRequest === undefined) {
-            throw new runtime.RequiredError('fileAccessRequest','Required parameter requestParameters.fileAccessRequest was null or undefined when calling generateGovernanceFileAccessToken.');
+        if (requestParameters.governanceFileAccessRequest === null || requestParameters.governanceFileAccessRequest === undefined) {
+            throw new runtime.RequiredError('governanceFileAccessRequest','Required parameter requestParameters.governanceFileAccessRequest was null or undefined when calling generateGovernanceFileAccessToken.');
         }
 
         const queryParameters: any = {};
@@ -83,7 +86,7 @@ export class FileApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: FileAccessRequestToJSON(requestParameters.fileAccessRequest),
+            body: GovernanceFileAccessRequestToJSON(requestParameters.governanceFileAccessRequest),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => AWSCredentialsFromJSON(jsonValue));
@@ -107,8 +110,8 @@ export class FileApi extends runtime.BaseAPI {
             throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling generateProjectFileAccessToken.');
         }
 
-        if (requestParameters.fileAccessRequest === null || requestParameters.fileAccessRequest === undefined) {
-            throw new runtime.RequiredError('fileAccessRequest','Required parameter requestParameters.fileAccessRequest was null or undefined when calling generateProjectFileAccessToken.');
+        if (requestParameters.projectFileAccessRequest === null || requestParameters.projectFileAccessRequest === undefined) {
+            throw new runtime.RequiredError('projectFileAccessRequest','Required parameter requestParameters.projectFileAccessRequest was null or undefined when calling generateProjectFileAccessToken.');
         }
 
         const queryParameters: any = {};
@@ -130,7 +133,7 @@ export class FileApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: FileAccessRequestToJSON(requestParameters.fileAccessRequest),
+            body: ProjectFileAccessRequestToJSON(requestParameters.projectFileAccessRequest),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => AWSCredentialsFromJSON(jsonValue));

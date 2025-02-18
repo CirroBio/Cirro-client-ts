@@ -13,12 +13,18 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import type { GovernanceExpiry } from './GovernanceExpiry';
+import type { GovernanceContact } from './GovernanceContact';
 import {
-    GovernanceExpiryFromJSON,
-    GovernanceExpiryFromJSONTyped,
-    GovernanceExpiryToJSON,
-} from './GovernanceExpiry';
+    GovernanceContactFromJSON,
+    GovernanceContactFromJSONTyped,
+    GovernanceContactToJSON,
+} from './GovernanceContact';
+import type { GovernanceExpiryType } from './GovernanceExpiryType';
+import {
+    GovernanceExpiryTypeFromJSON,
+    GovernanceExpiryTypeFromJSONTyped,
+    GovernanceExpiryTypeToJSON,
+} from './GovernanceExpiryType';
 import type { GovernanceFile } from './GovernanceFile';
 import {
     GovernanceFileFromJSON,
@@ -47,117 +53,129 @@ import {
 /**
  * 
  * @export
- * @interface GovernanceRequirement
+ * @interface ProjectRequirement
  */
-export interface GovernanceRequirement {
+export interface ProjectRequirement {
     /**
      * The unique identifier for the requirement
      * @type {string}
-     * @memberof GovernanceRequirement
+     * @memberof ProjectRequirement
      */
     id: string;
     /**
-     *  The name of the requirement
+     * The name of the requirement
      * @type {string}
-     * @memberof GovernanceRequirement
+     * @memberof ProjectRequirement
      */
     name: string;
     /**
      * A brief description of the requirement
      * @type {string}
-     * @memberof GovernanceRequirement
+     * @memberof ProjectRequirement
      */
     description: string;
     /**
      * 
      * @type {GovernanceType}
-     * @memberof GovernanceRequirement
+     * @memberof ProjectRequirement
      */
     type: GovernanceType;
     /**
      * S3 prefix where files for the requirement are saved
      * @type {string}
-     * @memberof GovernanceRequirement
+     * @memberof ProjectRequirement
      */
     path: string;
     /**
      * 
      * @type {GovernanceScope}
-     * @memberof GovernanceRequirement
+     * @memberof ProjectRequirement
      */
     scope: GovernanceScope;
     /**
      * 
      * @type {GovernanceScope}
-     * @memberof GovernanceRequirement
+     * @memberof ProjectRequirement
      */
     acceptance?: GovernanceScope | null;
     /**
-     * The IDs of governance contacts assigned to the requirement.
-     * @type {Array<string>}
-     * @memberof GovernanceRequirement
+     * The governance contacts assigned to the requirement.
+     * @type {Array<GovernanceContact>}
+     * @memberof ProjectRequirement
      */
-    contactIds: Array<string>;
+    contacts: Array<GovernanceContact>;
     /**
-     * 
-     * @type {GovernanceExpiry}
-     * @memberof GovernanceRequirement
-     */
-    expiration: GovernanceExpiry;
-    /**
-     * The date of enactment for a requirement
+     * The date of enactment for the requirement
      * @type {Date}
-     * @memberof GovernanceRequirement
+     * @memberof ProjectRequirement
      */
     enactmentDate?: Date | null;
     /**
+     * 
+     * @type {GovernanceExpiryType}
+     * @memberof ProjectRequirement
+     */
+    expirationType?: GovernanceExpiryType;
+    /**
+     * The number of days for a relative to completion expiration
+     * @type {number}
+     * @memberof ProjectRequirement
+     */
+    expirationDaysAfterCompletion?: number | null;
+    /**
+     * The date of expiration for the requirement
+     * @type {Date}
+     * @memberof ProjectRequirement
+     */
+    expirationDate?: Date | null;
+    /**
      * Optional files with extra information, e.g. templates for documents, links, etc
      * @type {Array<GovernanceFile>}
-     * @memberof GovernanceRequirement
+     * @memberof ProjectRequirement
      */
     supplementalDocs?: Array<GovernanceFile> | null;
     /**
      * 
      * @type {GovernanceFile}
-     * @memberof GovernanceRequirement
+     * @memberof ProjectRequirement
      */
     file?: GovernanceFile | null;
     /**
      * 
      * @type {GovernanceScope}
-     * @memberof GovernanceRequirement
+     * @memberof ProjectRequirement
      */
     authorship?: GovernanceScope | null;
     /**
      * 
      * @type {GovernanceTrainingVerification}
-     * @memberof GovernanceRequirement
+     * @memberof ProjectRequirement
      */
     verificationMethod?: GovernanceTrainingVerification | null;
     /**
-     * 
+     * Whether the current user has fulfilled the requirement for this project
+     * @type {boolean}
+     * @memberof ProjectRequirement
+     */
+    isFulfilled: boolean;
+    /**
+     * The date the requirement was fulfilled by the user
+     * @type {Date}
+     * @memberof ProjectRequirement
+     */
+    fulfillmentDate?: Date | null;
+    /**
+     * The optional file uploaded to fulfill the requirement
      * @type {string}
-     * @memberof GovernanceRequirement
+     * @memberof ProjectRequirement
      */
-    createdBy: string;
-    /**
-     * 
-     * @type {Date}
-     * @memberof GovernanceRequirement
-     */
-    createdAt: Date;
-    /**
-     * 
-     * @type {Date}
-     * @memberof GovernanceRequirement
-     */
-    updatedAt: Date;
+    fulfillmentFile?: string | null;
 }
 
 /**
- * Check if a given object implements the GovernanceRequirement interface.
+ * Check if a given object implements the ProjectRequirement interface.
  */
-export function instanceOfGovernanceRequirement(value: object): boolean {
+export function instanceOfProjectRequirement(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "id" in value;
     isInstance = isInstance && "name" in value;
@@ -165,20 +183,17 @@ export function instanceOfGovernanceRequirement(value: object): boolean {
     isInstance = isInstance && "type" in value;
     isInstance = isInstance && "path" in value;
     isInstance = isInstance && "scope" in value;
-    isInstance = isInstance && "contactIds" in value;
-    isInstance = isInstance && "expiration" in value;
-    isInstance = isInstance && "createdBy" in value;
-    isInstance = isInstance && "createdAt" in value;
-    isInstance = isInstance && "updatedAt" in value;
+    isInstance = isInstance && "contacts" in value;
+    isInstance = isInstance && "isFulfilled" in value;
 
     return isInstance;
 }
 
-export function GovernanceRequirementFromJSON(json: any): GovernanceRequirement {
-    return GovernanceRequirementFromJSONTyped(json, false);
+export function ProjectRequirementFromJSON(json: any): ProjectRequirement {
+    return ProjectRequirementFromJSONTyped(json, false);
 }
 
-export function GovernanceRequirementFromJSONTyped(json: any, ignoreDiscriminator: boolean): GovernanceRequirement {
+export function ProjectRequirementFromJSONTyped(json: any, ignoreDiscriminator: boolean): ProjectRequirement {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -191,20 +206,22 @@ export function GovernanceRequirementFromJSONTyped(json: any, ignoreDiscriminato
         'path': json['path'],
         'scope': GovernanceScopeFromJSON(json['scope']),
         'acceptance': !exists(json, 'acceptance') ? undefined : GovernanceScopeFromJSON(json['acceptance']),
-        'contactIds': json['contactIds'],
-        'expiration': GovernanceExpiryFromJSON(json['expiration']),
+        'contacts': ((json['contacts'] as Array<any>).map(GovernanceContactFromJSON)),
         'enactmentDate': !exists(json, 'enactmentDate') ? undefined : (json['enactmentDate'] === null ? null : new Date(json['enactmentDate'])),
+        'expirationType': !exists(json, 'expirationType') ? undefined : GovernanceExpiryTypeFromJSON(json['expirationType']),
+        'expirationDaysAfterCompletion': !exists(json, 'expirationDaysAfterCompletion') ? undefined : json['expirationDaysAfterCompletion'],
+        'expirationDate': !exists(json, 'expirationDate') ? undefined : (json['expirationDate'] === null ? null : new Date(json['expirationDate'])),
         'supplementalDocs': !exists(json, 'supplementalDocs') ? undefined : (json['supplementalDocs'] === null ? null : (json['supplementalDocs'] as Array<any>).map(GovernanceFileFromJSON)),
         'file': !exists(json, 'file') ? undefined : GovernanceFileFromJSON(json['file']),
         'authorship': !exists(json, 'authorship') ? undefined : GovernanceScopeFromJSON(json['authorship']),
         'verificationMethod': !exists(json, 'verificationMethod') ? undefined : GovernanceTrainingVerificationFromJSON(json['verificationMethod']),
-        'createdBy': json['createdBy'],
-        'createdAt': (new Date(json['createdAt'])),
-        'updatedAt': (new Date(json['updatedAt'])),
+        'isFulfilled': json['isFulfilled'],
+        'fulfillmentDate': !exists(json, 'fulfillmentDate') ? undefined : (json['fulfillmentDate'] === null ? null : new Date(json['fulfillmentDate'])),
+        'fulfillmentFile': !exists(json, 'fulfillmentFile') ? undefined : json['fulfillmentFile'],
     };
 }
 
-export function GovernanceRequirementToJSON(value?: GovernanceRequirement | null): any {
+export function ProjectRequirementToJSON(value?: ProjectRequirement | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -220,16 +237,18 @@ export function GovernanceRequirementToJSON(value?: GovernanceRequirement | null
         'path': value.path,
         'scope': GovernanceScopeToJSON(value.scope),
         'acceptance': GovernanceScopeToJSON(value.acceptance),
-        'contactIds': value.contactIds,
-        'expiration': GovernanceExpiryToJSON(value.expiration),
+        'contacts': ((value.contacts as Array<any>).map(GovernanceContactToJSON)),
         'enactmentDate': value.enactmentDate === undefined ? undefined : (value.enactmentDate === null ? null : value.enactmentDate.toISOString()),
+        'expirationType': GovernanceExpiryTypeToJSON(value.expirationType),
+        'expirationDaysAfterCompletion': value.expirationDaysAfterCompletion,
+        'expirationDate': value.expirationDate === undefined ? undefined : (value.expirationDate === null ? null : value.expirationDate.toISOString()),
         'supplementalDocs': value.supplementalDocs === undefined ? undefined : (value.supplementalDocs === null ? null : (value.supplementalDocs as Array<any>).map(GovernanceFileToJSON)),
         'file': GovernanceFileToJSON(value.file),
         'authorship': GovernanceScopeToJSON(value.authorship),
         'verificationMethod': GovernanceTrainingVerificationToJSON(value.verificationMethod),
-        'createdBy': value.createdBy,
-        'createdAt': (value.createdAt.toISOString()),
-        'updatedAt': (value.updatedAt.toISOString()),
+        'isFulfilled': value.isFulfilled,
+        'fulfillmentDate': value.fulfillmentDate === undefined ? undefined : (value.fulfillmentDate === null ? null : value.fulfillmentDate.toISOString()),
+        'fulfillmentFile': value.fulfillmentFile,
     };
 }
 
