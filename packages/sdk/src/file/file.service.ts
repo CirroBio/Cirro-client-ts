@@ -59,7 +59,7 @@ export class FileService {
     if (accessType === ProjectAccessType.ProjectDownload || accessType === ProjectAccessType.SharedDatasetDownload) {
       return this.getProjectReadCredentials(fileAccessContext);
     }
-    return this.fileApi.generateProjectFileAccessToken({ projectId: fileAccessContext.project.id, fileAccessRequest: fileAccessContext.fileAccessRequest });
+    return this.fileApi.generateProjectFileAccessToken({ projectId: fileAccessContext.project.id, projectFileAccessRequest: fileAccessContext.fileAccessRequest });
   }
 
   private async getProjectReadCredentials(fileAccessContext: ProjectFileAccessContext): Promise<AWSCredentials> {
@@ -75,8 +75,8 @@ export class FileService {
       const expirationTime = cachedCredentials ? cachedCredentials?.expiration : null;
       const fetchNewCredentials = !expirationTime || expirationTime < new Date();
       if (fetchNewCredentials) {
-        const fileAccessRequest = fileAccessContext.fileAccessRequest;
-        const credentials = await this.fileApi.generateProjectFileAccessToken({ projectId, fileAccessRequest });
+        const projectFileAccessRequest = fileAccessContext.fileAccessRequest;
+        const credentials = await this.fileApi.generateProjectFileAccessToken({ projectId, projectFileAccessRequest });
         credentialsCache.set(cacheKey, credentials);
         return credentials;
       }
