@@ -1,4 +1,4 @@
-import { AccessType, AWSCredentials, FileApi } from "@cirrobio/api-client";
+import { ProjectAccessType, AWSCredentials, FileApi } from "@cirrobio/api-client";
 import { ProjectFileAccessContext } from "./project-access-context";
 import { DownloadableFile } from "./file-object.model";
 import { credentialsCache, credentialsMutex } from "./util/credentials-mutex.so";
@@ -56,7 +56,7 @@ export class FileService {
   async getProjectAccessCredentials(fileAccessContext: ProjectFileAccessContext): Promise<AWSCredentials> {
     const accessType = fileAccessContext.fileAccessRequest.accessType;
     // Special case for project download, since we can cache the credentials
-    if (accessType === AccessType.ProjectDownload || accessType === AccessType.SharedDatasetDownload) {
+    if (accessType === ProjectAccessType.ProjectDownload || accessType === ProjectAccessType.SharedDatasetDownload) {
       return this.getProjectReadCredentials(fileAccessContext);
     }
     return this.fileApi.generateProjectFileAccessToken({ projectId: fileAccessContext.project.id, fileAccessRequest: fileAccessContext.fileAccessRequest });
@@ -66,7 +66,7 @@ export class FileService {
     const projectId = fileAccessContext.project.id;
     // Append datasetId to cache key for shared dataset downloads since we need to generate a new token for each dataset
     let cacheKey = projectId;
-    if (fileAccessContext.fileAccessRequest.accessType === AccessType.SharedDatasetDownload) {
+    if (fileAccessContext.fileAccessRequest.accessType === ProjectAccessType.SharedDatasetDownload) {
       cacheKey = `${projectId}-${fileAccessContext.fileAccessRequest.datasetId}`;
     }
 
