@@ -40,6 +40,12 @@ export interface GovernanceFileAccessRequest {
     fulfillmentId?: string | null;
     /**
      * 
+     * @type {string}
+     * @memberof GovernanceFileAccessRequest
+     */
+    projectId?: string | null;
+    /**
+     * 
      * @type {number}
      * @memberof GovernanceFileAccessRequest
      */
@@ -68,6 +74,7 @@ export function GovernanceFileAccessRequestFromJSONTyped(json: any, ignoreDiscri
         
         'accessType': GovernanceAccessTypeFromJSON(json['accessType']),
         'fulfillmentId': !exists(json, 'fulfillmentId') ? undefined : json['fulfillmentId'],
+        'projectId': !exists(json, 'projectId') ? undefined : json['projectId'],
         'tokenLifetimeHours': !exists(json, 'tokenLifetimeHours') ? undefined : json['tokenLifetimeHours'],
     };
 }
@@ -83,6 +90,7 @@ export function GovernanceFileAccessRequestToJSON(value?: GovernanceFileAccessRe
         
         'accessType': GovernanceAccessTypeToJSON(value.accessType),
         'fulfillmentId': value.fulfillmentId,
+        'projectId': value.projectId,
         'tokenLifetimeHours': value.tokenLifetimeHours,
     };
 }
