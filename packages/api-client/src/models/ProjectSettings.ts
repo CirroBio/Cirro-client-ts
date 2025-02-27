@@ -93,6 +93,12 @@ export interface ProjectSettings {
      */
     retentionPolicyDays?: number;
     /**
+     * Days to keep temporary storage space (workflow executor cache)
+     * @type {number}
+     * @memberof ProjectSettings
+     */
+    temporaryStorageLifetimeDays?: number;
+    /**
      * List of service connections to enable
      * @type {Array<string>}
      * @memberof ProjectSettings
@@ -168,6 +174,7 @@ export function ProjectSettingsFromJSONTyped(json: any, ignoreDiscriminator: boo
         'maxSpotVCPU': !exists(json, 'maxSpotVCPU') ? undefined : json['maxSpotVCPU'],
         'maxGPUVCPU': !exists(json, 'maxGPUVCPU') ? undefined : json['maxGPUVCPU'],
         'retentionPolicyDays': !exists(json, 'retentionPolicyDays') ? undefined : json['retentionPolicyDays'],
+        'temporaryStorageLifetimeDays': !exists(json, 'temporaryStorageLifetimeDays') ? undefined : json['temporaryStorageLifetimeDays'],
         'serviceConnections': !exists(json, 'serviceConnections') ? undefined : json['serviceConnections'],
         'vpcId': !exists(json, 'vpcId') ? undefined : json['vpcId'],
         'batchSubnets': !exists(json, 'batchSubnets') ? undefined : json['batchSubnets'],
@@ -198,6 +205,7 @@ export function ProjectSettingsToJSON(value?: ProjectSettings | null): any {
         'maxSpotVCPU': value.maxSpotVCPU,
         'maxGPUVCPU': value.maxGPUVCPU,
         'retentionPolicyDays': value.retentionPolicyDays,
+        'temporaryStorageLifetimeDays': value.temporaryStorageLifetimeDays,
         'serviceConnections': value.serviceConnections,
         'vpcId': value.vpcId,
         'batchSubnets': value.batchSubnets,

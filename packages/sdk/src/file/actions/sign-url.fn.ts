@@ -18,6 +18,7 @@ export interface GetSignedUrlOptions {
 
 /**
  * Get a signed URL for a file in S3 given its S3 URI.
+ * Defaults to a 5 minute timeout.
  */
 export function getSignedUrl({ url, credentials, ...params }: GetFileUrlParams): Promise<string> {
   const client = createS3Client(credentials);
