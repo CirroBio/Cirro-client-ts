@@ -13,6 +13,12 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { RepositoryType } from './RepositoryType';
+import {
+    RepositoryTypeFromJSON,
+    RepositoryTypeFromJSONTyped,
+    RepositoryTypeToJSON,
+} from './RepositoryType';
 import type { SyncStatus } from './SyncStatus';
 import {
     SyncStatusFromJSON,
@@ -44,6 +50,12 @@ export interface CustomPipelineSettings {
      * @memberof CustomPipelineSettings
      */
     folder?: string;
+    /**
+     * 
+     * @type {RepositoryType}
+     * @memberof CustomPipelineSettings
+     */
+    repositoryType?: RepositoryType | null;
     /**
      * Time of last sync
      * @type {Date}
@@ -93,6 +105,7 @@ export function CustomPipelineSettingsFromJSONTyped(json: any, ignoreDiscriminat
         'repository': json['repository'],
         'branch': !exists(json, 'branch') ? undefined : json['branch'],
         'folder': !exists(json, 'folder') ? undefined : json['folder'],
+        'repositoryType': !exists(json, 'repositoryType') ? undefined : RepositoryTypeFromJSON(json['repositoryType']),
         'lastSync': !exists(json, 'lastSync') ? undefined : (json['lastSync'] === null ? null : new Date(json['lastSync'])),
         'syncStatus': !exists(json, 'syncStatus') ? undefined : SyncStatusFromJSON(json['syncStatus']),
         'commitHash': !exists(json, 'commitHash') ? undefined : json['commitHash'],
@@ -112,6 +125,7 @@ export function CustomPipelineSettingsToJSON(value?: CustomPipelineSettings | nu
         'repository': value.repository,
         'branch': value.branch,
         'folder': value.folder,
+        'repositoryType': RepositoryTypeToJSON(value.repositoryType),
         'lastSync': value.lastSync === undefined ? undefined : (value.lastSync === null ? null : value.lastSync.toISOString()),
         'syncStatus': SyncStatusToJSON(value.syncStatus),
         'commitHash': value.commitHash,
