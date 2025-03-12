@@ -20,7 +20,8 @@
 export enum DatasetConditionField {
     DatasetId = 'DATASET_ID',
     Tag = 'TAG',
-    ProcessId = 'PROCESS_ID'
+    ProcessId = 'PROCESS_ID',
+    CreatedBy = 'CREATED_BY'
 }
 
 
