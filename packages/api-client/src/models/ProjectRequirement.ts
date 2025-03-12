@@ -159,6 +159,12 @@ export interface ProjectRequirement {
      */
     isFulfilled: boolean;
     /**
+     * The id for the requirement fulfillment
+     * @type {string}
+     * @memberof ProjectRequirement
+     */
+    fulfillmentId?: string | null;
+    /**
      * The date the requirement was fulfilled by the user
      * @type {Date}
      * @memberof ProjectRequirement
@@ -170,6 +176,12 @@ export interface ProjectRequirement {
      * @memberof ProjectRequirement
      */
     fulfillmentFile?: string | null;
+    /**
+     * The path to the optional fulfillment file
+     * @type {string}
+     * @memberof ProjectRequirement
+     */
+    fulfillmentPath?: string | null;
 }
 
 /**
@@ -216,8 +228,10 @@ export function ProjectRequirementFromJSONTyped(json: any, ignoreDiscriminator: 
         'authorship': !exists(json, 'authorship') ? undefined : GovernanceScopeFromJSON(json['authorship']),
         'verificationMethod': !exists(json, 'verificationMethod') ? undefined : GovernanceTrainingVerificationFromJSON(json['verificationMethod']),
         'isFulfilled': json['isFulfilled'],
+        'fulfillmentId': !exists(json, 'fulfillmentId') ? undefined : json['fulfillmentId'],
         'fulfillmentDate': !exists(json, 'fulfillmentDate') ? undefined : (json['fulfillmentDate'] === null ? null : new Date(json['fulfillmentDate'])),
         'fulfillmentFile': !exists(json, 'fulfillmentFile') ? undefined : json['fulfillmentFile'],
+        'fulfillmentPath': !exists(json, 'fulfillmentPath') ? undefined : json['fulfillmentPath'],
     };
 }
 
@@ -247,8 +261,10 @@ export function ProjectRequirementToJSON(value?: ProjectRequirement | null): any
         'authorship': GovernanceScopeToJSON(value.authorship),
         'verificationMethod': GovernanceTrainingVerificationToJSON(value.verificationMethod),
         'isFulfilled': value.isFulfilled,
+        'fulfillmentId': value.fulfillmentId,
         'fulfillmentDate': value.fulfillmentDate === undefined ? undefined : (value.fulfillmentDate === null ? null : value.fulfillmentDate.toISOString()),
         'fulfillmentFile': value.fulfillmentFile,
+        'fulfillmentPath': value.fulfillmentPath,
     };
 }
 
