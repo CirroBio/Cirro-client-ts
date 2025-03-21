@@ -64,6 +64,12 @@ export interface NotebookInstance {
     acceleratorTypes: Array<string>;
     /**
      * 
+     * @type {Array<string>}
+     * @memberof NotebookInstance
+     */
+    gitRepositories: Array<string>;
+    /**
+     * 
      * @type {number}
      * @memberof NotebookInstance
      */
@@ -105,6 +111,7 @@ export function instanceOfNotebookInstance(value: object): boolean {
     isInstance = isInstance && "statusMessage" in value;
     isInstance = isInstance && "instanceType" in value;
     isInstance = isInstance && "acceleratorTypes" in value;
+    isInstance = isInstance && "gitRepositories" in value;
     isInstance = isInstance && "volumeSizeGB" in value;
     isInstance = isInstance && "isSharedWithProject" in value;
     isInstance = isInstance && "createdBy" in value;
@@ -130,6 +137,7 @@ export function NotebookInstanceFromJSONTyped(json: any, ignoreDiscriminator: bo
         'statusMessage': json['statusMessage'],
         'instanceType': json['instanceType'],
         'acceleratorTypes': json['acceleratorTypes'],
+        'gitRepositories': json['gitRepositories'],
         'volumeSizeGB': json['volumeSizeGB'],
         'isSharedWithProject': json['isSharedWithProject'],
         'createdBy': json['createdBy'],
@@ -153,6 +161,7 @@ export function NotebookInstanceToJSON(value?: NotebookInstance | null): any {
         'statusMessage': value.statusMessage,
         'instanceType': value.instanceType,
         'acceleratorTypes': value.acceleratorTypes,
+        'gitRepositories': value.gitRepositories,
         'volumeSizeGB': value.volumeSizeGB,
         'isSharedWithProject': value.isSharedWithProject,
         'createdBy': value.createdBy,

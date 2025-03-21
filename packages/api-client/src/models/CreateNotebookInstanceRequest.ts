@@ -38,6 +38,12 @@ export interface CreateNotebookInstanceRequest {
      */
     acceleratorTypes: Array<string>;
     /**
+     * List of public git repositories to clone into the notebook instance.
+     * @type {Array<string>}
+     * @memberof CreateNotebookInstanceRequest
+     */
+    gitRepositories?: Array<string> | null;
+    /**
      * 
      * @type {number}
      * @memberof CreateNotebookInstanceRequest
@@ -77,6 +83,7 @@ export function CreateNotebookInstanceRequestFromJSONTyped(json: any, ignoreDisc
         'name': json['name'],
         'instanceType': json['instanceType'],
         'acceleratorTypes': json['acceleratorTypes'],
+        'gitRepositories': !exists(json, 'gitRepositories') ? undefined : json['gitRepositories'],
         'volumeSizeGB': json['volumeSizeGB'],
         'isSharedWithProject': !exists(json, 'isSharedWithProject') ? undefined : json['isSharedWithProject'],
     };
@@ -94,6 +101,7 @@ export function CreateNotebookInstanceRequestToJSON(value?: CreateNotebookInstan
         'name': value.name,
         'instanceType': value.instanceType,
         'acceleratorTypes': value.acceleratorTypes,
+        'gitRepositories': value.gitRepositories,
         'volumeSizeGB': value.volumeSizeGB,
         'isSharedWithProject': value.isSharedWithProject,
     };
