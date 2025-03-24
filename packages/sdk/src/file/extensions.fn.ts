@@ -41,7 +41,7 @@ export const FILE_TXT_GENOMICS_EXTENSIONS = ['fasta', 'fna', 'fsa', 'fa', 'fastp
 /**
  * An array of file extensions that are considered TXT files.
  */
-export const FILE_TXT_EXTENSIONS = ['txt', 'log', 'yml', 'cfg', 'xml', 'yaml', ...FILE_DSV_EXTENSIONS, ...FILE_TXT_GENOMICS_EXTENSIONS];
+export const FILE_TXT_EXTENSIONS = ['txt', 'log', 'yml', 'cfg', 'config', 'xml', 'yaml', ...FILE_DSV_EXTENSIONS, ...FILE_TXT_GENOMICS_EXTENSIONS];
 
 
 /**
