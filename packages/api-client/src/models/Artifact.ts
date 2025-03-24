@@ -37,7 +37,7 @@ export interface Artifact {
      * @type {string}
      * @memberof Artifact
      */
-    relativePath: string;
+    path: string;
 }
 
 /**
@@ -46,7 +46,7 @@ export interface Artifact {
 export function instanceOfArtifact(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "type" in value;
-    isInstance = isInstance && "relativePath" in value;
+    isInstance = isInstance && "path" in value;
 
     return isInstance;
 }
@@ -62,7 +62,7 @@ export function ArtifactFromJSONTyped(json: any, ignoreDiscriminator: boolean): 
     return {
         
         'type': ArtifactTypeFromJSON(json['type']),
-        'relativePath': json['relativePath'],
+        'path': json['path'],
     };
 }
 
@@ -76,7 +76,7 @@ export function ArtifactToJSON(value?: Artifact | null): any {
     return {
         
         'type': ArtifactTypeToJSON(value.type),
-        'relativePath': value.relativePath,
+        'path': value.path,
     };
 }
 
