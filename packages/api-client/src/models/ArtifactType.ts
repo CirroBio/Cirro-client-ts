@@ -18,6 +18,7 @@
  * @enum {string}
  */
 export enum ArtifactType {
+    Metadata = 'METADATA',
     IngestManifest = 'INGEST_MANIFEST',
     WorkflowReport = 'WORKFLOW_REPORT',
     WorkflowLogs = 'WORKFLOW_LOGS',
