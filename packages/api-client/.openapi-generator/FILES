@@ -31,6 +31,8 @@ src/models/AgentRegistration.ts
 src/models/AgentStatus.ts
 src/models/AllowedDataType.ts
 src/models/ApproveProjectAccessRequest.ts
+src/models/Artifact.ts
+src/models/ArtifactType.ts
 src/models/AuditEvent.ts
 src/models/AuthInfo.ts
 src/models/BillingAccount.ts

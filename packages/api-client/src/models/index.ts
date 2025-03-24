@@ -8,6 +8,8 @@ export * from './AgentRegistration';
 export * from './AgentStatus';
 export * from './AllowedDataType';
 export * from './ApproveProjectAccessRequest';
+export * from './Artifact';
+export * from './ArtifactType';
 export * from './AuditEvent';
 export * from './AuthInfo';
 export * from './BillingAccount';

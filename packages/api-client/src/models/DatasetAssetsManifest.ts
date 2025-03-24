@@ -13,6 +13,12 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { Artifact } from './Artifact';
+import {
+    ArtifactFromJSON,
+    ArtifactFromJSONTyped,
+    ArtifactToJSON,
+} from './Artifact';
 import type { DatasetViz } from './DatasetViz';
 import {
     DatasetVizFromJSON,
@@ -68,6 +74,12 @@ export interface DatasetAssetsManifest {
      * @memberof DatasetAssetsManifest
      */
     tables?: Array<Table>;
+    /**
+     * Artifacts associated with the dataset
+     * @type {Array<Artifact>}
+     * @memberof DatasetAssetsManifest
+     */
+    artifacts?: Array<Artifact>;
 }
 
 /**
@@ -94,6 +106,7 @@ export function DatasetAssetsManifestFromJSONTyped(json: any, ignoreDiscriminato
         'totalFiles': !exists(json, 'totalFiles') ? undefined : json['totalFiles'],
         'viz': !exists(json, 'viz') ? undefined : ((json['viz'] as Array<any>).map(DatasetVizFromJSON)),
         'tables': !exists(json, 'tables') ? undefined : ((json['tables'] as Array<any>).map(TableFromJSON)),
+        'artifacts': !exists(json, 'artifacts') ? undefined : ((json['artifacts'] as Array<any>).map(ArtifactFromJSON)),
     };
 }
 
@@ -111,6 +124,7 @@ export function DatasetAssetsManifestToJSON(value?: DatasetAssetsManifest | null
         'totalFiles': value.totalFiles,
         'viz': value.viz === undefined ? undefined : ((value.viz as Array<any>).map(DatasetVizToJSON)),
         'tables': value.tables === undefined ? undefined : ((value.tables as Array<any>).map(TableToJSON)),
+        'artifacts': value.artifacts === undefined ? undefined : ((value.artifacts as Array<any>).map(ArtifactToJSON)),
     };
 }
 
