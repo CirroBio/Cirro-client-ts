@@ -25,6 +25,12 @@ export interface RequirementFulfillmentInput {
      * @memberof RequirementFulfillmentInput
      */
     file?: string | null;
+    /**
+     * If not provided, defaults to the current instant
+     * @type {Date}
+     * @memberof RequirementFulfillmentInput
+     */
+    completedOn?: Date | null;
 }
 
 /**
@@ -47,6 +53,7 @@ export function RequirementFulfillmentInputFromJSONTyped(json: any, ignoreDiscri
     return {
         
         'file': !exists(json, 'file') ? undefined : json['file'],
+        'completedOn': !exists(json, 'completedOn') ? undefined : (json['completedOn'] === null ? null : new Date(json['completedOn'])),
     };
 }
 
@@ -60,6 +67,7 @@ export function RequirementFulfillmentInputToJSON(value?: RequirementFulfillment
     return {
         
         'file': value.file,
+        'completedOn': value.completedOn === undefined ? undefined : (value.completedOn === null ? null : value.completedOn.toISOString()),
     };
 }
 
