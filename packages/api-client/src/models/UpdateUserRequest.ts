@@ -13,6 +13,13 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { UserSettings } from './UserSettings';
+import {
+    UserSettingsFromJSON,
+    UserSettingsFromJSONTyped,
+    UserSettingsToJSON,
+} from './UserSettings';
+
 /**
  * 
  * @export
@@ -44,17 +51,23 @@ export interface UpdateUserRequest {
      */
     department?: string;
     /**
+     * Job title or role of the user
+     * @type {string}
+     * @memberof UpdateUserRequest
+     */
+    jobTitle?: string;
+    /**
      * The organization the user belongs to, only editable by administrators
      * @type {string}
      * @memberof UpdateUserRequest
      */
     organization?: string;
     /**
-     * Additional settings for the user
-     * @type {{ [key: string]: any; }}
+     * 
+     * @type {UserSettings}
      * @memberof UpdateUserRequest
      */
-    settings?: { [key: string]: any; };
+    settings?: UserSettings | null;
     /**
      * Groups the user belongs to, only editable by administrators
      * @type {Array<string>}
@@ -88,8 +101,9 @@ export function UpdateUserRequestFromJSONTyped(json: any, ignoreDiscriminator: b
         'email': json['email'],
         'phone': !exists(json, 'phone') ? undefined : json['phone'],
         'department': !exists(json, 'department') ? undefined : json['department'],
+        'jobTitle': !exists(json, 'jobTitle') ? undefined : json['jobTitle'],
         'organization': !exists(json, 'organization') ? undefined : json['organization'],
-        'settings': !exists(json, 'settings') ? undefined : json['settings'],
+        'settings': !exists(json, 'settings') ? undefined : UserSettingsFromJSON(json['settings']),
         'groups': !exists(json, 'groups') ? undefined : json['groups'],
     };
 }
@@ -107,8 +121,9 @@ export function UpdateUserRequestToJSON(value?: UpdateUserRequest | null): any {
         'email': value.email,
         'phone': value.phone,
         'department': value.department,
+        'jobTitle': value.jobTitle,
         'organization': value.organization,
-        'settings': value.settings,
+        'settings': UserSettingsToJSON(value.settings),
         'groups': value.groups,
     };
 }

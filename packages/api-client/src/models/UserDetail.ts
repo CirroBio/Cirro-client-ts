@@ -19,6 +19,12 @@ import {
     UserProjectAssignmentFromJSONTyped,
     UserProjectAssignmentToJSON,
 } from './UserProjectAssignment';
+import type { UserSettings } from './UserSettings';
+import {
+    UserSettingsFromJSON,
+    UserSettingsFromJSONTyped,
+    UserSettingsToJSON,
+} from './UserSettings';
 
 /**
  * 
@@ -61,6 +67,12 @@ export interface UserDetail {
      * @type {string}
      * @memberof UserDetail
      */
+    jobTitle: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserDetail
+     */
     department: string;
     /**
      * 
@@ -86,6 +98,12 @@ export interface UserDetail {
      * @memberof UserDetail
      */
     groups: Array<string>;
+    /**
+     * 
+     * @type {UserSettings}
+     * @memberof UserDetail
+     */
+    settings: UserSettings;
 }
 
 /**
@@ -98,10 +116,12 @@ export function instanceOfUserDetail(value: object): boolean {
     isInstance = isInstance && "phone" in value;
     isInstance = isInstance && "email" in value;
     isInstance = isInstance && "organization" in value;
+    isInstance = isInstance && "jobTitle" in value;
     isInstance = isInstance && "department" in value;
     isInstance = isInstance && "invitedBy" in value;
     isInstance = isInstance && "projectAssignments" in value;
     isInstance = isInstance && "groups" in value;
+    isInstance = isInstance && "settings" in value;
 
     return isInstance;
 }
@@ -121,11 +141,13 @@ export function UserDetailFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'phone': json['phone'],
         'email': json['email'],
         'organization': json['organization'],
+        'jobTitle': json['jobTitle'],
         'department': json['department'],
         'invitedBy': json['invitedBy'],
         'signUpTime': !exists(json, 'signUpTime') ? undefined : (json['signUpTime'] === null ? null : new Date(json['signUpTime'])),
         'projectAssignments': ((json['projectAssignments'] as Array<any>).map(UserProjectAssignmentFromJSON)),
         'groups': json['groups'],
+        'settings': UserSettingsFromJSON(json['settings']),
     };
 }
 
@@ -143,11 +165,13 @@ export function UserDetailToJSON(value?: UserDetail | null): any {
         'phone': value.phone,
         'email': value.email,
         'organization': value.organization,
+        'jobTitle': value.jobTitle,
         'department': value.department,
         'invitedBy': value.invitedBy,
         'signUpTime': value.signUpTime === undefined ? undefined : (value.signUpTime === null ? null : value.signUpTime.toISOString()),
         'projectAssignments': ((value.projectAssignments as Array<any>).map(UserProjectAssignmentToJSON)),
         'groups': value.groups,
+        'settings': UserSettingsToJSON(value.settings),
     };
 }
 
