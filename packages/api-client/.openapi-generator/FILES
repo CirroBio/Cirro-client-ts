@@ -150,6 +150,7 @@ src/models/UploadDatasetRequest.ts
 src/models/User.ts
 src/models/UserDetail.ts
 src/models/UserProjectAssignment.ts
+src/models/UserSettings.ts
 src/models/ValidateFileRequirementsRequest.ts
 src/models/index.ts
 src/runtime.ts
