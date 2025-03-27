@@ -19,6 +19,7 @@ import { exists, mapValues } from '../runtime';
  * @interface UserSettings
  */
 export interface UserSettings {
+    [key: string]: any | any;
     /**
      * 
      * @type {boolean}
@@ -47,6 +48,7 @@ export function UserSettingsFromJSONTyped(json: any, ignoreDiscriminator: boolea
     }
     return {
         
+            ...json,
         'analysisUpdateNotificationsEnabled': json['analysisUpdateNotificationsEnabled'],
     };
 }
@@ -60,6 +62,7 @@ export function UserSettingsToJSON(value?: UserSettings | null): any {
     }
     return {
         
+            ...value,
         'analysisUpdateNotificationsEnabled': value.analysisUpdateNotificationsEnabled,
     };
 }
