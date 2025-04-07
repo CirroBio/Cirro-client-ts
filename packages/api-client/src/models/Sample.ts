@@ -13,6 +13,13 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { DataFile } from './DataFile';
+import {
+    DataFileFromJSON,
+    DataFileFromJSONTyped,
+    DataFileToJSON,
+} from './DataFile';
+
 /**
  * 
  * @export
@@ -37,6 +44,12 @@ export interface Sample {
      * @memberof Sample
      */
     metadata?: { [key: string]: any; } | null;
+    /**
+     * Files associated with this sample
+     * @type {Array<DataFile>}
+     * @memberof Sample
+     */
+    files?: Array<DataFile> | null;
     /**
      * 
      * @type {Array<string>}
@@ -81,6 +94,7 @@ export function SampleFromJSONTyped(json: any, ignoreDiscriminator: boolean): Sa
         'id': json['id'],
         'name': json['name'],
         'metadata': !exists(json, 'metadata') ? undefined : json['metadata'],
+        'files': !exists(json, 'files') ? undefined : (json['files'] === null ? null : (json['files'] as Array<any>).map(DataFileFromJSON)),
         'datasetIds': !exists(json, 'datasetIds') ? undefined : json['datasetIds'],
         'createdAt': !exists(json, 'createdAt') ? undefined : (json['createdAt'] === null ? null : new Date(json['createdAt'])),
         'updatedAt': !exists(json, 'updatedAt') ? undefined : (json['updatedAt'] === null ? null : new Date(json['updatedAt'])),
@@ -99,6 +113,7 @@ export function SampleToJSON(value?: Sample | null): any {
         'id': value.id,
         'name': value.name,
         'metadata': value.metadata,
+        'files': value.files === undefined ? undefined : (value.files === null ? null : (value.files as Array<any>).map(DataFileToJSON)),
         'datasetIds': value.datasetIds,
         'createdAt': value.createdAt === undefined ? undefined : (value.createdAt === null ? null : value.createdAt.toISOString()),
         'updatedAt': value.updatedAt === undefined ? undefined : (value.updatedAt === null ? null : value.updatedAt.toISOString()),

@@ -141,6 +141,12 @@ export interface ProcessDetail {
      */
     allowMultipleSources?: boolean;
     /**
+     * Whether the pipeline uses the Cirro-provided sample sheet
+     * @type {boolean}
+     * @memberof ProcessDetail
+     */
+    usesSampleSheet?: boolean;
+    /**
      * 
      * @type {CustomPipelineSettings}
      * @memberof ProcessDetail
@@ -202,6 +208,7 @@ export function ProcessDetailFromJSONTyped(json: any, ignoreDiscriminator: boole
         'linkedProjectIds': json['linkedProjectIds'],
         'isTenantWide': !exists(json, 'isTenantWide') ? undefined : json['isTenantWide'],
         'allowMultipleSources': !exists(json, 'allowMultipleSources') ? undefined : json['allowMultipleSources'],
+        'usesSampleSheet': !exists(json, 'usesSampleSheet') ? undefined : json['usesSampleSheet'],
         'customSettings': !exists(json, 'customSettings') ? undefined : CustomPipelineSettingsFromJSON(json['customSettings']),
         'isArchived': !exists(json, 'isArchived') ? undefined : json['isArchived'],
         'fileMappingRules': !exists(json, 'fileMappingRules') ? undefined : (json['fileMappingRules'] === null ? null : (json['fileMappingRules'] as Array<any>).map(FileMappingRuleFromJSON)),
@@ -233,6 +240,7 @@ export function ProcessDetailToJSON(value?: ProcessDetail | null): any {
         'linkedProjectIds': value.linkedProjectIds,
         'isTenantWide': value.isTenantWide,
         'allowMultipleSources': value.allowMultipleSources,
+        'usesSampleSheet': value.usesSampleSheet,
         'customSettings': CustomPipelineSettingsToJSON(value.customSettings),
         'isArchived': value.isArchived,
         'fileMappingRules': value.fileMappingRules === undefined ? undefined : (value.fileMappingRules === null ? null : (value.fileMappingRules as Array<any>).map(FileMappingRuleToJSON)),

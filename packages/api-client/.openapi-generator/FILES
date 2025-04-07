@@ -55,6 +55,7 @@ src/models/CustomPipelineSettings.ts
 src/models/CustomerType.ts
 src/models/Dashboard.ts
 src/models/DashboardRequest.ts
+src/models/DataFile.ts
 src/models/Dataset.ts
 src/models/DatasetAssetsManifest.ts
 src/models/DatasetCondition.ts

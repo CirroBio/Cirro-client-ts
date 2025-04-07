@@ -44,6 +44,12 @@ export interface RunAnalysisRequest {
      */
     sourceDatasetIds: Array<string>;
     /**
+     * Samples within the source datasets that will be used as inputs to this workflow. If not specified, all samples will be used.
+     * @type {Array<string>}
+     * @memberof RunAnalysisRequest
+     */
+    sourceSampleIds?: Array<string> | null;
+    /**
      * Used for caching task execution. If the parameters are the same as the dataset specified here, it will re-use the output to minimize duplicate work
      * @type {string}
      * @memberof RunAnalysisRequest
@@ -97,6 +103,7 @@ export function RunAnalysisRequestFromJSONTyped(json: any, ignoreDiscriminator: 
         'description': !exists(json, 'description') ? undefined : json['description'],
         'processId': json['processId'],
         'sourceDatasetIds': json['sourceDatasetIds'],
+        'sourceSampleIds': !exists(json, 'sourceSampleIds') ? undefined : json['sourceSampleIds'],
         'resumeDatasetId': !exists(json, 'resumeDatasetId') ? undefined : json['resumeDatasetId'],
         'params': json['params'],
         'notificationEmails': json['notificationEmails'],
@@ -117,6 +124,7 @@ export function RunAnalysisRequestToJSON(value?: RunAnalysisRequest | null): any
         'description': value.description,
         'processId': value.processId,
         'sourceDatasetIds': value.sourceDatasetIds,
+        'sourceSampleIds': value.sourceSampleIds,
         'resumeDatasetId': value.resumeDatasetId,
         'params': value.params,
         'notificationEmails': value.notificationEmails,
