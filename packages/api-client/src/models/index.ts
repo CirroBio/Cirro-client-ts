@@ -32,6 +32,7 @@ export * from './CustomPipelineSettings';
 export * from './CustomerType';
 export * from './Dashboard';
 export * from './DashboardRequest';
+export * from './DataFile';
 export * from './Dataset';
 export * from './DatasetAssetsManifest';
 export * from './DatasetCondition';

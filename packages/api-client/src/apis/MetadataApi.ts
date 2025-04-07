@@ -31,6 +31,11 @@ import {
     SampleRequestToJSON,
 } from '../models/index';
 
+export interface GetDatasetSamplesRequest {
+    projectId: string;
+    datasetId: string;
+}
+
 export interface GetProjectSamplesRequest {
     projectId: string;
     limit?: number;
@@ -56,6 +61,50 @@ export interface UpdateSampleRequest {
  * 
  */
 export class MetadataApi extends runtime.BaseAPI {
+
+    /**
+     * Retrieves a list of samples associated with a dataset along with their metadata
+     * Get dataset samples
+     */
+    async getDatasetSamplesRaw(requestParameters: GetDatasetSamplesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<Sample>>> {
+        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
+            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling getDatasetSamples.');
+        }
+
+        if (requestParameters.datasetId === null || requestParameters.datasetId === undefined) {
+            throw new runtime.RequiredError('datasetId','Required parameter requestParameters.datasetId was null or undefined when calling getDatasetSamples.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/projects/{projectId}/datasets/{datasetId}/samples`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))).replace(`{${"datasetId"}}`, encodeURIComponent(String(requestParameters.datasetId))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(SampleFromJSON));
+    }
+
+    /**
+     * Retrieves a list of samples associated with a dataset along with their metadata
+     * Get dataset samples
+     */
+    async getDatasetSamples(requestParameters: GetDatasetSamplesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<Sample>> {
+        const response = await this.getDatasetSamplesRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
 
     /**
      * Retrieves a list of samples associated with a project along with their metadata

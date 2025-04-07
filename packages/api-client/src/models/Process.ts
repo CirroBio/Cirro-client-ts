@@ -111,6 +111,12 @@ export interface Process {
      */
     allowMultipleSources?: boolean;
     /**
+     * Whether the pipeline uses the Cirro-provided sample sheet
+     * @type {boolean}
+     * @memberof Process
+     */
+    usesSampleSheet?: boolean;
+    /**
      * Whether the pipeline is marked as archived
      * @type {boolean}
      * @memberof Process
@@ -156,6 +162,7 @@ export function ProcessFromJSONTyped(json: any, ignoreDiscriminator: boolean): P
         'owner': !exists(json, 'owner') ? undefined : json['owner'],
         'linkedProjectIds': !exists(json, 'linkedProjectIds') ? undefined : json['linkedProjectIds'],
         'allowMultipleSources': !exists(json, 'allowMultipleSources') ? undefined : json['allowMultipleSources'],
+        'usesSampleSheet': !exists(json, 'usesSampleSheet') ? undefined : json['usesSampleSheet'],
         'isArchived': !exists(json, 'isArchived') ? undefined : json['isArchived'],
     };
 }
@@ -183,6 +190,7 @@ export function ProcessToJSON(value?: Process | null): any {
         'owner': value.owner,
         'linkedProjectIds': value.linkedProjectIds,
         'allowMultipleSources': value.allowMultipleSources,
+        'usesSampleSheet': value.usesSampleSheet,
         'isArchived': value.isArchived,
     };
 }
