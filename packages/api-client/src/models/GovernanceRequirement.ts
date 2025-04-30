@@ -87,6 +87,12 @@ export interface GovernanceRequirement {
      */
     scope: GovernanceScope;
     /**
+     * The project ID if the requirement is project scope
+     * @type {string}
+     * @memberof GovernanceRequirement
+     */
+    projectId?: string;
+    /**
      * 
      * @type {GovernanceScope}
      * @memberof GovernanceRequirement
@@ -190,6 +196,7 @@ export function GovernanceRequirementFromJSONTyped(json: any, ignoreDiscriminato
         'type': GovernanceTypeFromJSON(json['type']),
         'path': json['path'],
         'scope': GovernanceScopeFromJSON(json['scope']),
+        'projectId': !exists(json, 'projectId') ? undefined : json['projectId'],
         'acceptance': !exists(json, 'acceptance') ? undefined : GovernanceScopeFromJSON(json['acceptance']),
         'contactIds': json['contactIds'],
         'expiration': GovernanceExpiryFromJSON(json['expiration']),
@@ -219,6 +226,7 @@ export function GovernanceRequirementToJSON(value?: GovernanceRequirement | null
         'type': GovernanceTypeToJSON(value.type),
         'path': value.path,
         'scope': GovernanceScopeToJSON(value.scope),
+        'projectId': value.projectId,
         'acceptance': GovernanceScopeToJSON(value.acceptance),
         'contactIds': value.contactIds,
         'expiration': GovernanceExpiryToJSON(value.expiration),

@@ -88,6 +88,10 @@ export interface GetRequirementRequest {
     requirementId: string;
 }
 
+export interface GetRequirementsRequest {
+    projectId?: string;
+}
+
 export interface GetRequirementsByProjectRequest {
     projectId: string;
 }
@@ -605,8 +609,12 @@ export class GovernanceApi extends runtime.BaseAPI {
      * Retrieve a list of governance requirements
      * Get requirements
      */
-    async getRequirementsRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<GovernanceRequirement>>> {
+    async getRequirementsRaw(requestParameters: GetRequirementsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<GovernanceRequirement>>> {
         const queryParameters: any = {};
+
+        if (requestParameters.projectId !== undefined) {
+            queryParameters['projectId'] = requestParameters.projectId;
+        }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
@@ -632,8 +640,8 @@ export class GovernanceApi extends runtime.BaseAPI {
      * Retrieve a list of governance requirements
      * Get requirements
      */
-    async getRequirements(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<GovernanceRequirement>> {
-        const response = await this.getRequirementsRaw(initOverrides);
+    async getRequirements(requestParameters: GetRequirementsRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<GovernanceRequirement>> {
+        const response = await this.getRequirementsRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
