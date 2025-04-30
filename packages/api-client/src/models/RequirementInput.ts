@@ -76,6 +76,12 @@ export interface RequirementInput {
     scope: GovernanceScope;
     /**
      * 
+     * @type {string}
+     * @memberof RequirementInput
+     */
+    projectId?: string | null;
+    /**
+     * 
      * @type {GovernanceScope}
      * @memberof RequirementInput
      */
@@ -153,6 +159,7 @@ export function RequirementInputFromJSONTyped(json: any, ignoreDiscriminator: bo
         'description': json['description'],
         'type': GovernanceTypeFromJSON(json['type']),
         'scope': GovernanceScopeFromJSON(json['scope']),
+        'projectId': !exists(json, 'projectId') ? undefined : json['projectId'],
         'acceptance': !exists(json, 'acceptance') ? undefined : GovernanceScopeFromJSON(json['acceptance']),
         'contactIds': json['contactIds'],
         'expiration': GovernanceExpiryFromJSON(json['expiration']),
@@ -177,6 +184,7 @@ export function RequirementInputToJSON(value?: RequirementInput | null): any {
         'description': value.description,
         'type': GovernanceTypeToJSON(value.type),
         'scope': GovernanceScopeToJSON(value.scope),
+        'projectId': value.projectId,
         'acceptance': GovernanceScopeToJSON(value.acceptance),
         'contactIds': value.contactIds,
         'expiration': GovernanceExpiryToJSON(value.expiration),
