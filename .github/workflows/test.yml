@@ -1,0 +1,74 @@
+name: Run tests
+
+on:
+  push:
+    branches:
+      - main
+  # Run tests for any PRs.
+  pull_request:
+
+jobs:
+  test-api:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [20.x]
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install deps
+        working-directory: packages/api-client
+        run: |
+          npm install
+
+      - name: Build package
+        working-directory: packages/api-client
+        run: |
+          npm run build
+
+  test-sdk:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [20.x]
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install deps
+        working-directory: packages/sdk
+        run: |
+          npm install
+
+      - name: Build package
+        working-directory: packages/sdk
+        run: |
+          npm run build
+
+      - name: Run tests
+        working-directory: packages/sdk
+        run: |
+           npm run test

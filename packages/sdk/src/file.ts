@@ -9,4 +9,5 @@ export { s3UriToParams } from './file/util/s3-utils'
 export { createS3Client } from './file/util/s3-client'
 export { credentialsCache, credentialsMutex } from './file/util/credentials-mutex.so';
 export { getProjectS3Bucket } from './file/shared'
+export { calculateTotalSize } from './file/calculate-size'
 export { Progress, Upload } from '@aws-sdk/lib-storage';
