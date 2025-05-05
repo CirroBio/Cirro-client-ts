@@ -52,6 +52,7 @@ src/models/CreateProjectAccessRequest.ts
 src/models/CreateReferenceRequest.ts
 src/models/CreateResponse.ts
 src/models/CustomPipelineSettings.ts
+src/models/CustomProcessInput.ts
 src/models/CustomerType.ts
 src/models/Dashboard.ts
 src/models/DashboardRequest.ts

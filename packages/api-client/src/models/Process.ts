@@ -21,7 +21,7 @@ import {
 } from './Executor';
 
 /**
- * 
+ * Identifies a data type or pipeline in Cirro
  * @export
  * @interface Process
  */
@@ -39,17 +39,17 @@ export interface Process {
      */
     name: string;
     /**
-     * 
+     * Description of the process
      * @type {string}
      * @memberof Process
      */
-    description?: string;
+    description: string;
     /**
      * Name of the data type this pipeline produces (if it is not defined, use the name)
      * @type {string}
      * @memberof Process
      */
-    dataType?: string | null;
+    dataType: string;
     /**
      * 
      * @type {Executor}
@@ -61,15 +61,15 @@ export interface Process {
      * @type {string}
      * @memberof Process
      */
-    category: string;
+    category?: string;
     /**
      * Type of pipeline
      * @type {string}
      * @memberof Process
      */
-    pipelineType: string;
+    pipelineType?: string;
     /**
-     * Link to pipeline documentation
+     * Link to process documentation
      * @type {string}
      * @memberof Process
      */
@@ -85,43 +85,61 @@ export interface Process {
      * @type {Array<string>}
      * @memberof Process
      */
-    childProcessIds?: Array<string>;
+    childProcessIds: Array<string>;
     /**
-     * IDs of pipelines that can run this pipeline
+     * IDs of processes that can run this pipeline
      * @type {Array<string>}
      * @memberof Process
      */
-    parentProcessIds?: Array<string>;
+    parentProcessIds: Array<string>;
     /**
      * Username of the pipeline creator (blank if Cirro curated)
      * @type {string}
      * @memberof Process
      */
-    owner?: string;
+    owner?: string | null;
     /**
-     * Projects that can run this pipeline
+     * Projects that can run this process
      * @type {Array<string>}
      * @memberof Process
      */
-    linkedProjectIds?: Array<string>;
+    linkedProjectIds: Array<string>;
+    /**
+     * Whether the process is shared with the tenant
+     * @type {boolean}
+     * @memberof Process
+     */
+    isTenantWide: boolean;
     /**
      * Whether the pipeline is allowed to have multiple dataset sources
      * @type {boolean}
      * @memberof Process
      */
-    allowMultipleSources?: boolean;
+    allowMultipleSources: boolean;
     /**
      * Whether the pipeline uses the Cirro-provided sample sheet
      * @type {boolean}
      * @memberof Process
      */
-    usesSampleSheet?: boolean;
+    usesSampleSheet: boolean;
     /**
-     * Whether the pipeline is marked as archived
+     * Whether the process is marked as archived
      * @type {boolean}
      * @memberof Process
      */
-    isArchived?: boolean;
+    isArchived: boolean;
+    /**
+     * When the process was created (does not reflect the pipeline code)
+     * @type {Date}
+     * @memberof Process
+     */
+    createdAt?: Date;
+    /**
+     * When the process was updated (does not reflect the pipeline code)
+     * @type {Date}
+     * @memberof Process
+     */
+    updatedAt?: Date;
 }
 
 /**
@@ -131,9 +149,16 @@ export function instanceOfProcess(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "id" in value;
     isInstance = isInstance && "name" in value;
+    isInstance = isInstance && "description" in value;
+    isInstance = isInstance && "dataType" in value;
     isInstance = isInstance && "executor" in value;
-    isInstance = isInstance && "category" in value;
-    isInstance = isInstance && "pipelineType" in value;
+    isInstance = isInstance && "childProcessIds" in value;
+    isInstance = isInstance && "parentProcessIds" in value;
+    isInstance = isInstance && "linkedProjectIds" in value;
+    isInstance = isInstance && "isTenantWide" in value;
+    isInstance = isInstance && "allowMultipleSources" in value;
+    isInstance = isInstance && "usesSampleSheet" in value;
+    isInstance = isInstance && "isArchived" in value;
 
     return isInstance;
 }
@@ -150,20 +175,23 @@ export function ProcessFromJSONTyped(json: any, ignoreDiscriminator: boolean): P
         
         'id': json['id'],
         'name': json['name'],
-        'description': !exists(json, 'description') ? undefined : json['description'],
-        'dataType': !exists(json, 'dataType') ? undefined : json['dataType'],
+        'description': json['description'],
+        'dataType': json['dataType'],
         'executor': ExecutorFromJSON(json['executor']),
-        'category': json['category'],
-        'pipelineType': json['pipelineType'],
+        'category': !exists(json, 'category') ? undefined : json['category'],
+        'pipelineType': !exists(json, 'pipelineType') ? undefined : json['pipelineType'],
         'documentationUrl': !exists(json, 'documentationUrl') ? undefined : json['documentationUrl'],
         'fileRequirementsMessage': !exists(json, 'fileRequirementsMessage') ? undefined : json['fileRequirementsMessage'],
-        'childProcessIds': !exists(json, 'childProcessIds') ? undefined : json['childProcessIds'],
-        'parentProcessIds': !exists(json, 'parentProcessIds') ? undefined : json['parentProcessIds'],
+        'childProcessIds': json['childProcessIds'],
+        'parentProcessIds': json['parentProcessIds'],
         'owner': !exists(json, 'owner') ? undefined : json['owner'],
-        'linkedProjectIds': !exists(json, 'linkedProjectIds') ? undefined : json['linkedProjectIds'],
-        'allowMultipleSources': !exists(json, 'allowMultipleSources') ? undefined : json['allowMultipleSources'],
-        'usesSampleSheet': !exists(json, 'usesSampleSheet') ? undefined : json['usesSampleSheet'],
-        'isArchived': !exists(json, 'isArchived') ? undefined : json['isArchived'],
+        'linkedProjectIds': json['linkedProjectIds'],
+        'isTenantWide': json['isTenantWide'],
+        'allowMultipleSources': json['allowMultipleSources'],
+        'usesSampleSheet': json['usesSampleSheet'],
+        'isArchived': json['isArchived'],
+        'createdAt': !exists(json, 'createdAt') ? undefined : (new Date(json['createdAt'])),
+        'updatedAt': !exists(json, 'updatedAt') ? undefined : (new Date(json['updatedAt'])),
     };
 }
 
@@ -189,9 +217,12 @@ export function ProcessToJSON(value?: Process | null): any {
         'parentProcessIds': value.parentProcessIds,
         'owner': value.owner,
         'linkedProjectIds': value.linkedProjectIds,
+        'isTenantWide': value.isTenantWide,
         'allowMultipleSources': value.allowMultipleSources,
         'usesSampleSheet': value.usesSampleSheet,
         'isArchived': value.isArchived,
+        'createdAt': value.createdAt === undefined ? undefined : (value.createdAt.toISOString()),
+        'updatedAt': value.updatedAt === undefined ? undefined : (value.updatedAt.toISOString()),
     };
 }
 

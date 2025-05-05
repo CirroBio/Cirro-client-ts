@@ -29,6 +29,7 @@ export * from './CreateProjectAccessRequest';
 export * from './CreateReferenceRequest';
 export * from './CreateResponse';
 export * from './CustomPipelineSettings';
+export * from './CustomProcessInput';
 export * from './CustomerType';
 export * from './Dashboard';
 export * from './DashboardRequest';

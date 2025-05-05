@@ -133,41 +133,6 @@ export class BillingApi extends runtime.BaseAPI {
     }
 
     /**
-     * Generates a billing report xlsx with cost information
-     * Generate billing report
-     */
-    async generateBillingReportRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("accessToken", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/billing-report`,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.VoidApiResponse(response);
-    }
-
-    /**
-     * Generates a billing report xlsx with cost information
-     * Generate billing report
-     */
-    async generateBillingReport(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.generateBillingReportRaw(initOverrides);
-    }
-
-    /**
      * Gets a list of billing accounts the current user has access to
      * List billing accounts
      */
