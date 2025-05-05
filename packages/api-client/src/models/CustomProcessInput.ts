@@ -39,171 +39,136 @@ import {
 } from './PipelineCode';
 
 /**
- * Identifies a data type or pipeline in Cirro
+ * 
  * @export
- * @interface ProcessDetail
+ * @interface CustomProcessInput
  */
-export interface ProcessDetail {
+export interface CustomProcessInput {
     /**
      * Unique ID of the Process
      * @type {string}
-     * @memberof ProcessDetail
+     * @memberof CustomProcessInput
      */
     id: string;
     /**
      * Friendly name for the process
      * @type {string}
-     * @memberof ProcessDetail
+     * @memberof CustomProcessInput
      */
     name: string;
     /**
      * Description of the process
      * @type {string}
-     * @memberof ProcessDetail
+     * @memberof CustomProcessInput
      */
     description: string;
     /**
      * Name of the data type this pipeline produces (if it is not defined, use the name)
      * @type {string}
-     * @memberof ProcessDetail
+     * @memberof CustomProcessInput
      */
-    dataType: string;
+    dataType?: string | null;
     /**
      * 
      * @type {Executor}
-     * @memberof ProcessDetail
+     * @memberof CustomProcessInput
      */
     executor: Executor;
     /**
      * Category of the process
      * @type {string}
-     * @memberof ProcessDetail
+     * @memberof CustomProcessInput
      */
     category?: string;
     /**
-     * Type of pipeline
-     * @type {string}
-     * @memberof ProcessDetail
-     */
-    pipelineType?: string;
-    /**
      * IDs of pipelines that can be run downstream
      * @type {Array<string>}
-     * @memberof ProcessDetail
+     * @memberof CustomProcessInput
      */
     childProcessIds: Array<string>;
     /**
      * IDs of processes that can run this pipeline
      * @type {Array<string>}
-     * @memberof ProcessDetail
+     * @memberof CustomProcessInput
      */
     parentProcessIds: Array<string>;
     /**
      * Link to process documentation
      * @type {string}
-     * @memberof ProcessDetail
+     * @memberof CustomProcessInput
      */
-    documentationUrl?: string;
+    documentationUrl?: string | null;
     /**
      * Description of the files to be uploaded (optional)
      * @type {string}
-     * @memberof ProcessDetail
+     * @memberof CustomProcessInput
      */
-    fileRequirementsMessage?: string;
+    fileRequirementsMessage?: string | null;
     /**
      * 
      * @type {PipelineCode}
-     * @memberof ProcessDetail
+     * @memberof CustomProcessInput
      */
     pipelineCode?: PipelineCode | null;
     /**
-     * Username of the pipeline creator (blank if Cirro curated)
-     * @type {string}
-     * @memberof ProcessDetail
-     */
-    owner?: string | null;
-    /**
      * Projects that can run this process
      * @type {Array<string>}
-     * @memberof ProcessDetail
+     * @memberof CustomProcessInput
      */
     linkedProjectIds: Array<string>;
     /**
      * Whether the process is shared with the tenant
      * @type {boolean}
-     * @memberof ProcessDetail
+     * @memberof CustomProcessInput
      */
-    isTenantWide: boolean;
+    isTenantWide?: boolean;
     /**
      * Whether the pipeline is allowed to have multiple dataset sources
      * @type {boolean}
-     * @memberof ProcessDetail
+     * @memberof CustomProcessInput
      */
-    allowMultipleSources: boolean;
+    allowMultipleSources?: boolean;
     /**
      * Whether the pipeline uses the Cirro-provided sample sheet
      * @type {boolean}
-     * @memberof ProcessDetail
+     * @memberof CustomProcessInput
      */
-    usesSampleSheet: boolean;
-    /**
-     * Whether the process is marked as archived
-     * @type {boolean}
-     * @memberof ProcessDetail
-     */
-    isArchived: boolean;
+    usesSampleSheet?: boolean;
     /**
      * 
      * @type {CustomPipelineSettings}
-     * @memberof ProcessDetail
+     * @memberof CustomProcessInput
      */
     customSettings?: CustomPipelineSettings | null;
     /**
      * 
      * @type {Array<FileMappingRule>}
-     * @memberof ProcessDetail
+     * @memberof CustomProcessInput
      */
     fileMappingRules?: Array<FileMappingRule> | null;
-    /**
-     * When the process was created (does not reflect the pipeline code)
-     * @type {Date}
-     * @memberof ProcessDetail
-     */
-    createdAt?: Date;
-    /**
-     * When the process was updated (does not reflect the pipeline code)
-     * @type {Date}
-     * @memberof ProcessDetail
-     */
-    updatedAt?: Date;
 }
 
 /**
- * Check if a given object implements the ProcessDetail interface.
+ * Check if a given object implements the CustomProcessInput interface.
  */
-export function instanceOfProcessDetail(value: object): boolean {
+export function instanceOfCustomProcessInput(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "id" in value;
     isInstance = isInstance && "name" in value;
     isInstance = isInstance && "description" in value;
-    isInstance = isInstance && "dataType" in value;
     isInstance = isInstance && "executor" in value;
     isInstance = isInstance && "childProcessIds" in value;
     isInstance = isInstance && "parentProcessIds" in value;
     isInstance = isInstance && "linkedProjectIds" in value;
-    isInstance = isInstance && "isTenantWide" in value;
-    isInstance = isInstance && "allowMultipleSources" in value;
-    isInstance = isInstance && "usesSampleSheet" in value;
-    isInstance = isInstance && "isArchived" in value;
 
     return isInstance;
 }
 
-export function ProcessDetailFromJSON(json: any): ProcessDetail {
-    return ProcessDetailFromJSONTyped(json, false);
+export function CustomProcessInputFromJSON(json: any): CustomProcessInput {
+    return CustomProcessInputFromJSONTyped(json, false);
 }
 
-export function ProcessDetailFromJSONTyped(json: any, ignoreDiscriminator: boolean): ProcessDetail {
+export function CustomProcessInputFromJSONTyped(json: any, ignoreDiscriminator: boolean): CustomProcessInput {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -212,29 +177,24 @@ export function ProcessDetailFromJSONTyped(json: any, ignoreDiscriminator: boole
         'id': json['id'],
         'name': json['name'],
         'description': json['description'],
-        'dataType': json['dataType'],
+        'dataType': !exists(json, 'dataType') ? undefined : json['dataType'],
         'executor': ExecutorFromJSON(json['executor']),
         'category': !exists(json, 'category') ? undefined : json['category'],
-        'pipelineType': !exists(json, 'pipelineType') ? undefined : json['pipelineType'],
         'childProcessIds': json['childProcessIds'],
         'parentProcessIds': json['parentProcessIds'],
         'documentationUrl': !exists(json, 'documentationUrl') ? undefined : json['documentationUrl'],
         'fileRequirementsMessage': !exists(json, 'fileRequirementsMessage') ? undefined : json['fileRequirementsMessage'],
         'pipelineCode': !exists(json, 'pipelineCode') ? undefined : PipelineCodeFromJSON(json['pipelineCode']),
-        'owner': !exists(json, 'owner') ? undefined : json['owner'],
         'linkedProjectIds': json['linkedProjectIds'],
-        'isTenantWide': json['isTenantWide'],
-        'allowMultipleSources': json['allowMultipleSources'],
-        'usesSampleSheet': json['usesSampleSheet'],
-        'isArchived': json['isArchived'],
+        'isTenantWide': !exists(json, 'isTenantWide') ? undefined : json['isTenantWide'],
+        'allowMultipleSources': !exists(json, 'allowMultipleSources') ? undefined : json['allowMultipleSources'],
+        'usesSampleSheet': !exists(json, 'usesSampleSheet') ? undefined : json['usesSampleSheet'],
         'customSettings': !exists(json, 'customSettings') ? undefined : CustomPipelineSettingsFromJSON(json['customSettings']),
         'fileMappingRules': !exists(json, 'fileMappingRules') ? undefined : (json['fileMappingRules'] === null ? null : (json['fileMappingRules'] as Array<any>).map(FileMappingRuleFromJSON)),
-        'createdAt': !exists(json, 'createdAt') ? undefined : (new Date(json['createdAt'])),
-        'updatedAt': !exists(json, 'updatedAt') ? undefined : (new Date(json['updatedAt'])),
     };
 }
 
-export function ProcessDetailToJSON(value?: ProcessDetail | null): any {
+export function CustomProcessInputToJSON(value?: CustomProcessInput | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -249,22 +209,17 @@ export function ProcessDetailToJSON(value?: ProcessDetail | null): any {
         'dataType': value.dataType,
         'executor': ExecutorToJSON(value.executor),
         'category': value.category,
-        'pipelineType': value.pipelineType,
         'childProcessIds': value.childProcessIds,
         'parentProcessIds': value.parentProcessIds,
         'documentationUrl': value.documentationUrl,
         'fileRequirementsMessage': value.fileRequirementsMessage,
         'pipelineCode': PipelineCodeToJSON(value.pipelineCode),
-        'owner': value.owner,
         'linkedProjectIds': value.linkedProjectIds,
         'isTenantWide': value.isTenantWide,
         'allowMultipleSources': value.allowMultipleSources,
         'usesSampleSheet': value.usesSampleSheet,
-        'isArchived': value.isArchived,
         'customSettings': CustomPipelineSettingsToJSON(value.customSettings),
         'fileMappingRules': value.fileMappingRules === undefined ? undefined : (value.fileMappingRules === null ? null : (value.fileMappingRules as Array<any>).map(FileMappingRuleToJSON)),
-        'createdAt': value.createdAt === undefined ? undefined : (value.createdAt.toISOString()),
-        'updatedAt': value.updatedAt === undefined ? undefined : (value.updatedAt.toISOString()),
     };
 }
 

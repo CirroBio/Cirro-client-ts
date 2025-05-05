@@ -17,6 +17,7 @@ import * as runtime from '../runtime';
 import type {
   CreateResponse,
   CustomPipelineSettings,
+  CustomProcessInput,
   ErrorMessage,
   FileRequirements,
   FormSchema,
@@ -31,6 +32,8 @@ import {
     CreateResponseToJSON,
     CustomPipelineSettingsFromJSON,
     CustomPipelineSettingsToJSON,
+    CustomProcessInputFromJSON,
+    CustomProcessInputToJSON,
     ErrorMessageFromJSON,
     ErrorMessageToJSON,
     FileRequirementsFromJSON,
@@ -59,7 +62,7 @@ export interface CalculatePipelineCostRequest {
 }
 
 export interface CreateCustomProcessRequest {
-    processDetail: ProcessDetail;
+    customProcessInput: CustomProcessInput;
 }
 
 export interface GetProcessRequest {
@@ -80,7 +83,7 @@ export interface SyncCustomProcessRequest {
 
 export interface UpdateCustomProcessRequest {
     processId: string;
-    processDetail: ProcessDetail;
+    customProcessInput: CustomProcessInput;
 }
 
 export interface ValidateFileRequirementsOperationRequest {
@@ -184,8 +187,8 @@ export class ProcessesApi extends runtime.BaseAPI {
      * Create custom process
      */
     async createCustomProcessRaw(requestParameters: CreateCustomProcessRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateResponse>> {
-        if (requestParameters.processDetail === null || requestParameters.processDetail === undefined) {
-            throw new runtime.RequiredError('processDetail','Required parameter requestParameters.processDetail was null or undefined when calling createCustomProcess.');
+        if (requestParameters.customProcessInput === null || requestParameters.customProcessInput === undefined) {
+            throw new runtime.RequiredError('customProcessInput','Required parameter requestParameters.customProcessInput was null or undefined when calling createCustomProcess.');
         }
 
         const queryParameters: any = {};
@@ -207,7 +210,7 @@ export class ProcessesApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: ProcessDetailToJSON(requestParameters.processDetail),
+            body: CustomProcessInputToJSON(requestParameters.customProcessInput),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => CreateResponseFromJSON(jsonValue));
@@ -391,8 +394,8 @@ export class ProcessesApi extends runtime.BaseAPI {
             throw new runtime.RequiredError('processId','Required parameter requestParameters.processId was null or undefined when calling updateCustomProcess.');
         }
 
-        if (requestParameters.processDetail === null || requestParameters.processDetail === undefined) {
-            throw new runtime.RequiredError('processDetail','Required parameter requestParameters.processDetail was null or undefined when calling updateCustomProcess.');
+        if (requestParameters.customProcessInput === null || requestParameters.customProcessInput === undefined) {
+            throw new runtime.RequiredError('customProcessInput','Required parameter requestParameters.customProcessInput was null or undefined when calling updateCustomProcess.');
         }
 
         const queryParameters: any = {};
@@ -414,7 +417,7 @@ export class ProcessesApi extends runtime.BaseAPI {
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: ProcessDetailToJSON(requestParameters.processDetail),
+            body: CustomProcessInputToJSON(requestParameters.customProcessInput),
         }, initOverrides);
 
         return new runtime.VoidApiResponse(response);
