@@ -2,9 +2,14 @@
 ![Cirro Header](https://static.cirro.bio/Cirro_Logo_Horizontal_Navy.png)
 
 Packages:
+
 - API client for Cirro `@cirrobio/api-client`
+
+  [![API Client Version](https://img.shields.io/npm/v/@cirrobio/api-client?color=blue&label=@cirrobio/api-client)](https://www.npmjs.com/package/@cirrobio/api-client)
+
 - SDK for Cirro `@cirrobio/sdk` 
 
+  [![SDK Version](https://img.shields.io/npm/v/@cirrobio/sdk?color=blue&label=@cirrobio/sdk)](https://www.npmjs.com/package/@cirrobio/sdk)
 
 ## Development
 

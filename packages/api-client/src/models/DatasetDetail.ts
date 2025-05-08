@@ -88,6 +88,12 @@ export interface DatasetDetail {
     sourceDatasets: Array<NamedItem>;
     /**
      * 
+     * @type {Array<string>}
+     * @memberof DatasetDetail
+     */
+    sourceSampleIds: Array<string>;
+    /**
+     * 
      * @type {Status}
      * @memberof DatasetDetail
      */
@@ -161,6 +167,7 @@ export function instanceOfDatasetDetail(value: object): boolean {
     isInstance = isInstance && "projectId" in value;
     isInstance = isInstance && "sourceDatasetIds" in value;
     isInstance = isInstance && "sourceDatasets" in value;
+    isInstance = isInstance && "sourceSampleIds" in value;
     isInstance = isInstance && "status" in value;
     isInstance = isInstance && "statusMessage" in value;
     isInstance = isInstance && "tags" in value;
@@ -192,6 +199,7 @@ export function DatasetDetailFromJSONTyped(json: any, ignoreDiscriminator: boole
         'projectId': json['projectId'],
         'sourceDatasetIds': json['sourceDatasetIds'],
         'sourceDatasets': ((json['sourceDatasets'] as Array<any>).map(NamedItemFromJSON)),
+        'sourceSampleIds': json['sourceSampleIds'],
         'status': StatusFromJSON(json['status']),
         'statusMessage': json['statusMessage'],
         'tags': ((json['tags'] as Array<any>).map(TagFromJSON)),
@@ -222,6 +230,7 @@ export function DatasetDetailToJSON(value?: DatasetDetail | null): any {
         'projectId': value.projectId,
         'sourceDatasetIds': value.sourceDatasetIds,
         'sourceDatasets': ((value.sourceDatasets as Array<any>).map(NamedItemToJSON)),
+        'sourceSampleIds': value.sourceSampleIds,
         'status': StatusToJSON(value.status),
         'statusMessage': value.statusMessage,
         'tags': ((value.tags as Array<any>).map(TagToJSON)),
