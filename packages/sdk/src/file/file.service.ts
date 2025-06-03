@@ -1,9 +1,9 @@
 import { ProjectAccessType, AWSCredentials, FileApi } from "@cirrobio/api-client";
 import { ProjectFileAccessContext } from "./project-access-context";
-import { DownloadableFile } from "./file-object.model";
 import { credentialsCache, credentialsMutex } from "./util/credentials-mutex.so";
 import { GetFileUrlParams, getSignedUrl, GetSignedUrlOptions } from "./actions/sign-url.fn";
 import { getProjectS3Bucket } from "./shared";
+import { DownloadableFile } from "./models/file-object.model";
 
 /**
  * Service for viewing files in Cirro

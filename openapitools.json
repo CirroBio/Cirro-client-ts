@@ -18,7 +18,8 @@
           "npmName": "@cirrobio/api-client",
           "npmVersion": "0.4.1",
           "author": "CirroBio",
-          "stringEnums": true
+          "stringEnums": true,
+          "supportsES6": true
         }
       }
     }

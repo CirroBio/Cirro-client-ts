@@ -1,13 +1,5 @@
 import { Middleware, ResponseContext } from "@cirrobio/api-client";
-
-export class ApiError extends Error {
-  errors: string[];
-
-  constructor(message: string, errors: string[]) {
-    super(message);
-    this.errors = errors;
-  }
-}
+import { ApiError } from "./error";
 
 export class PortalErrorHandler implements Middleware {
   async post(context: ResponseContext): Promise<Response | void> {

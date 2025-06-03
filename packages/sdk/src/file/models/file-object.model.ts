@@ -1,4 +1,4 @@
-import { ProjectFileAccessContext } from "./project-access-context";
+import { ProjectFileAccessContext } from "../project-access-context";
 
 export enum FileSystemObjectType {
   FILE = 'file',

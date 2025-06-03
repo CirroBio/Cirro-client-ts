@@ -2,7 +2,7 @@
   "compilerOptions": {
     "declaration": true,
     "target": "es2018",
-    "module": "commonjs",
+    "module": "esnext",
     "moduleResolution": "node",
     "outDir": "dist",
     "lib": [
@@ -10,7 +10,7 @@
       "dom"
     ],
     "typeRoots": [
-      "node_modules/@types"
+      "../../node_modules/@types"
     ]
   },
   "exclude": [

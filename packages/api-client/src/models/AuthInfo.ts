@@ -42,6 +42,12 @@ export interface AuthInfo {
      * @type {string}
      * @memberof AuthInfo
      */
+    driveAppId: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof AuthInfo
+     */
     endpoint: string;
 }
 
@@ -53,6 +59,7 @@ export function instanceOfAuthInfo(value: object): boolean {
     isInstance = isInstance && "userPoolId" in value;
     isInstance = isInstance && "sdkAppId" in value;
     isInstance = isInstance && "uiAppId" in value;
+    isInstance = isInstance && "driveAppId" in value;
     isInstance = isInstance && "endpoint" in value;
 
     return isInstance;
@@ -71,6 +78,7 @@ export function AuthInfoFromJSONTyped(json: any, ignoreDiscriminator: boolean): 
         'userPoolId': json['userPoolId'],
         'sdkAppId': json['sdkAppId'],
         'uiAppId': json['uiAppId'],
+        'driveAppId': json['driveAppId'],
         'endpoint': json['endpoint'],
     };
 }
@@ -87,6 +95,7 @@ export function AuthInfoToJSON(value?: AuthInfo | null): any {
         'userPoolId': value.userPoolId,
         'sdkAppId': value.sdkAppId,
         'uiAppId': value.uiAppId,
+        'driveAppId': value.driveAppId,
         'endpoint': value.endpoint,
     };
 }
