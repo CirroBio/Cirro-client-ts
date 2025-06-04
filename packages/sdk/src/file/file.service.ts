@@ -1,9 +1,13 @@
-import { ProjectAccessType, AWSCredentials, FileApi } from "@cirrobio/api-client";
+import { ProjectAccessType, AWSCredentials, FileApi, ProjectFileAccessRequest } from "@cirrobio/api-client";
 import { ProjectFileAccessContext } from "./project-access-context";
 import { credentialsCache, credentialsMutex } from "./util/credentials-mutex.so";
 import { GetFileUrlParams, getSignedUrl, GetSignedUrlOptions } from "./actions/sign-url.fn";
 import { getProjectS3Bucket } from "./shared";
 import { DownloadableFile } from "./models/file-object.model";
+
+export interface IFileCredentialsApi {
+  generateProjectFileAccessToken: (params: { projectId: string; projectFileAccessRequest: ProjectFileAccessRequest }) => Promise<AWSCredentials>;
+}
 
 /**
  * Service for viewing files in Cirro
@@ -11,7 +15,7 @@ import { DownloadableFile } from "./models/file-object.model";
  */
 export class FileService {
   constructor(
-    private readonly fileApi: FileApi
+    private readonly fileCredsApi: IFileCredentialsApi
   ) {}
 
   /**
@@ -39,7 +43,7 @@ export class FileService {
   /**
    * Get a signed URL for a file given a path
    */
-  async getSignedUrlFromProjectPath(fileAccessContext: ProjectFileAccessContext, path: string, params?: GetFileUrlParams): Promise<string> {
+  async getSignedUrlFromProjectPath(fileAccessContext: ProjectFileAccessContext, path: string, params?: GetSignedUrlOptions): Promise<string> {
     const credentials = await this.getProjectAccessCredentials(fileAccessContext);
     const _params: GetFileUrlParams = {
       ...params,
@@ -59,7 +63,7 @@ export class FileService {
     if (accessType === ProjectAccessType.ProjectDownload || accessType === ProjectAccessType.SharedDatasetDownload) {
       return this.getProjectReadCredentials(fileAccessContext);
     }
-    return this.fileApi.generateProjectFileAccessToken({ projectId: fileAccessContext.project.id, projectFileAccessRequest: fileAccessContext.fileAccessRequest });
+    return this.fileCredsApi.generateProjectFileAccessToken({ projectId: fileAccessContext.project.id, projectFileAccessRequest: fileAccessContext.fileAccessRequest });
   }
 
   private async getProjectReadCredentials(fileAccessContext: ProjectFileAccessContext): Promise<AWSCredentials> {
@@ -76,7 +80,7 @@ export class FileService {
       const fetchNewCredentials = !expirationTime || expirationTime < new Date();
       if (fetchNewCredentials) {
         const projectFileAccessRequest = fileAccessContext.fileAccessRequest;
-        const credentials = await this.fileApi.generateProjectFileAccessToken({ projectId, projectFileAccessRequest });
+        const credentials = await this.fileCredsApi.generateProjectFileAccessToken({ projectId, projectFileAccessRequest });
         credentialsCache.set(cacheKey, credentials);
         return credentials;
       }

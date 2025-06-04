@@ -1,5 +1,5 @@
 export * from './file/extensions.fn'
-export { FileService } from './file/file.service'
+export { FileService, IFileCredentialsApi } from './file/file.service'
 export { deleteFile, DeleteFileParams } from './file/actions/delete.fn'
 export { getSignedUrl, GetSignedUrlOptions } from './file/actions/sign-url.fn'
 export { uploadFile, UploadFileParams } from './file/actions/upload.fn'
@@ -12,3 +12,4 @@ export { getProjectS3Bucket } from './file/shared'
 export { calculateTotalSize } from './file/calculate-size'
 export { Progress, Upload } from '@aws-sdk/lib-storage';
 export { Assets } from './file/models/assets';
+export { ManifestParser } from './file/manifest-parser';

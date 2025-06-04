@@ -1,0 +1,21 @@
+{
+  "name": "@cirrobio/react-ui-core",
+  "version": "0.0.1",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/types/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "rollup --config",
+    "prepare": "npm run build",
+    "test": "jest --coverage --silent"
+  },
+  "dependencies": {
+    "@cirrobio/sdk": "^0.4.2"
+  },
+  "peerDependencies": {
+    "react": "^16.14 || ^17 || ^18 || ^19"
+  }
+}

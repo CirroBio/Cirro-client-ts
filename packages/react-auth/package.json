@@ -1,0 +1,25 @@
+{
+  "name": "@cirrobio/react-auth",
+  "description": "Provides authentication configuration and components for React applications using Cirro.",
+  "version": "0.0.1",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/types/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "rollup --config",
+    "prepare": "npm run build",
+    "test": "jest --coverage --silent"
+  },
+  "dependencies": {
+    "@cirrobio/api-client": "^0.4.1",
+    "@cirrobio/react-ui-core": "^0.0.1",
+    "@cirrobio/sdk": "^0.4.2",
+    "aws-amplify": "^6.15.0"
+  },
+  "peerDependencies": {
+    "react": "^16.14 || ^17 || ^18 || ^19"
+  }
+}

@@ -20,6 +20,11 @@ import {
 } from "@cirrobio/api-client";
 import { generateApiConfig } from "../api/config";
 
+interface DataServiceParams {
+  tokenGetter: () => Promise<string>;
+  basePath?: string;
+}
+
 export class DataService {
   private readonly apiConfig: Configuration;
 
@@ -41,7 +46,7 @@ export class DataService {
   private readonly _toolsApi: ToolsApi;
   private readonly _usersApi: UsersApi;
 
-  constructor(tokenGetter: () => Promise<string>, basePath: string) {
+  constructor({ tokenGetter, basePath = "/api" }: DataServiceParams) {
     this.apiConfig = generateApiConfig({ basePath, tokenGetter });
 
     this._auditApi = new AuditApi(this.apiConfig);

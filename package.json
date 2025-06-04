@@ -1,6 +1,7 @@
 {
-  "name": "cirro-client-ts",
+  "private": true,
   "name": "@cirrobio/ts-monorepo",
+  "description": "Monorepo for Cirro's TypeScript packages",
   "repository": {
     "type": "git",
     "url": "https://github.com/CirroBio/Cirro-client-ts.git"
