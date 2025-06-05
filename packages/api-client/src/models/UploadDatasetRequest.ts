@@ -13,6 +13,13 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { Tag } from './Tag';
+import {
+    TagFromJSON,
+    TagFromJSONTyped,
+    TagToJSON,
+} from './Tag';
+
 /**
  * 
  * @export
@@ -43,6 +50,12 @@ export interface UploadDatasetRequest {
      * @memberof UploadDatasetRequest
      */
     expectedFiles: Array<string>;
+    /**
+     * List of tags to apply to the dataset
+     * @type {Array<Tag>}
+     * @memberof UploadDatasetRequest
+     */
+    tags?: Array<Tag> | null;
 }
 
 /**
@@ -71,6 +84,7 @@ export function UploadDatasetRequestFromJSONTyped(json: any, ignoreDiscriminator
         'description': !exists(json, 'description') ? undefined : json['description'],
         'processId': json['processId'],
         'expectedFiles': json['expectedFiles'],
+        'tags': !exists(json, 'tags') ? undefined : (json['tags'] === null ? null : (json['tags'] as Array<any>).map(TagFromJSON)),
     };
 }
 
@@ -87,6 +101,7 @@ export function UploadDatasetRequestToJSON(value?: UploadDatasetRequest | null):
         'description': value.description,
         'processId': value.processId,
         'expectedFiles': value.expectedFiles,
+        'tags': value.tags === undefined ? undefined : (value.tags === null ? null : (value.tags as Array<any>).map(TagToJSON)),
     };
 }
 

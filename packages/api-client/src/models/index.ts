@@ -59,6 +59,7 @@ export * from './GovernanceExpiry';
 export * from './GovernanceExpiryType';
 export * from './GovernanceFile';
 export * from './GovernanceFileAccessRequest';
+export * from './GovernanceFileInput';
 export * from './GovernanceFileType';
 export * from './GovernanceRequirement';
 export * from './GovernanceScope';

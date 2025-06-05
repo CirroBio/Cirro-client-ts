@@ -13,6 +13,13 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { Tag } from './Tag';
+import {
+    TagFromJSON,
+    TagFromJSONTyped,
+    TagToJSON,
+} from './Tag';
+
 /**
  * 
  * @export
@@ -37,6 +44,12 @@ export interface ImportDataRequest {
      * @memberof ImportDataRequest
      */
     publicIds: Array<string>;
+    /**
+     * List of tags to apply to the dataset
+     * @type {Array<Tag>}
+     * @memberof ImportDataRequest
+     */
+    tags?: Array<Tag> | null;
 }
 
 /**
@@ -63,6 +76,7 @@ export function ImportDataRequestFromJSONTyped(json: any, ignoreDiscriminator: b
         'name': json['name'],
         'description': !exists(json, 'description') ? undefined : json['description'],
         'publicIds': json['publicIds'],
+        'tags': !exists(json, 'tags') ? undefined : (json['tags'] === null ? null : (json['tags'] as Array<any>).map(TagFromJSON)),
     };
 }
 
@@ -78,6 +92,7 @@ export function ImportDataRequestToJSON(value?: ImportDataRequest | null): any {
         'name': value.name,
         'description': value.description,
         'publicIds': value.publicIds,
+        'tags': value.tags === undefined ? undefined : (value.tags === null ? null : (value.tags as Array<any>).map(TagToJSON)),
     };
 }
 

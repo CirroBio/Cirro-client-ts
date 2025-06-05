@@ -20,23 +20,24 @@ import { exists, mapValues } from '../runtime';
  */
 export interface Tag {
     /**
+     * Whether the tag value is editable
+     * @type {boolean}
+     * @memberof Tag
+     */
+    editable?: boolean;
+    /**
      * 
      * @type {string}
      * @memberof Tag
+     * @deprecated
      */
-    key: string;
+    key?: string | null;
     /**
-     * 
+     * The value of the tag
      * @type {string}
      * @memberof Tag
      */
     value: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof Tag
-     */
-    editable: boolean;
 }
 
 /**
@@ -44,9 +45,7 @@ export interface Tag {
  */
 export function instanceOfTag(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "key" in value;
     isInstance = isInstance && "value" in value;
-    isInstance = isInstance && "editable" in value;
 
     return isInstance;
 }
@@ -61,9 +60,9 @@ export function TagFromJSONTyped(json: any, ignoreDiscriminator: boolean): Tag {
     }
     return {
         
-        'key': json['key'],
+        'editable': !exists(json, 'editable') ? undefined : json['editable'],
+        'key': !exists(json, 'key') ? undefined : json['key'],
         'value': json['value'],
-        'editable': json['editable'],
     };
 }
 
@@ -76,9 +75,9 @@ export function TagToJSON(value?: Tag | null): any {
     }
     return {
         
+        'editable': value.editable,
         'key': value.key,
         'value': value.value,
-        'editable': value.editable,
     };
 }
 
