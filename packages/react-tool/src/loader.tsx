@@ -1,5 +1,5 @@
 import { useAppConfig } from "@cirrobio/react-ui-core";
-import { useViewerStateInternal } from "./viewer-state/useViewerStateInternal";
+import { useViewerState } from "./viewer-state/useViewerState";
 import React from "react";
 
 interface LoaderProps {
@@ -8,7 +8,7 @@ interface LoaderProps {
 
 export function Loader({ children }: LoaderProps) {
   const { loadState } = useAppConfig();
-  const { status } = useViewerStateInternal();
+  const { status } = useViewerState();
 
   if (loadState === 'LOADING' || status === 'LOADING' ) {
     return <div>Loading...</div>;

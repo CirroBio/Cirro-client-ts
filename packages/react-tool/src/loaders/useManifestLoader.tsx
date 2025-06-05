@@ -4,11 +4,14 @@ import { ViewerConfigPayload } from "../models/message";
 import { useEffect, useState } from "react";
 
 export function useManifestLoader(viewerConfig: ViewerConfigPayload, dataService: DataService): DatasetAssetsManifest {
-  const projectId = viewerConfig.project.id;
-  const datasetId = viewerConfig.dataset.id;
+  const projectId = viewerConfig?.project?.id;
+  const datasetId = viewerConfig?.dataset?.id;
   const [manifest, setManifest] = useState<DatasetAssetsManifest>(null);
 
   useEffect(() => {
+    if (!projectId || !datasetId) {
+      return;
+    }
     const loadManifest = async () => {
       if (viewerConfig.manifest) {
         setManifest(viewerConfig.manifest);

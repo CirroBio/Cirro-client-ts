@@ -1,4 +1,4 @@
-import { ProjectAccessType, AWSCredentials, FileApi, ProjectFileAccessRequest } from "@cirrobio/api-client";
+import { AWSCredentials, GenerateProjectFileAccessTokenRequest, ProjectAccessType } from "@cirrobio/api-client";
 import { ProjectFileAccessContext } from "./project-access-context";
 import { credentialsCache, credentialsMutex } from "./util/credentials-mutex.so";
 import { GetFileUrlParams, getSignedUrl, GetSignedUrlOptions } from "./actions/sign-url.fn";
@@ -6,7 +6,7 @@ import { getProjectS3Bucket } from "./shared";
 import { DownloadableFile } from "./models/file-object.model";
 
 export interface IFileCredentialsApi {
-  generateProjectFileAccessToken: (params: { projectId: string; projectFileAccessRequest: ProjectFileAccessRequest }) => Promise<AWSCredentials>;
+  generateProjectFileAccessToken: (params: GenerateProjectFileAccessTokenRequest) => Promise<AWSCredentials>;
 }
 
 /**

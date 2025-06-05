@@ -1,14 +1,17 @@
 import { DataService, handlePromiseError } from "@cirrobio/sdk";
 import { ViewerConfigPayload } from "../models/message";
-import { Dataset, DatasetDetail } from "@cirrobio/api-client";
+import { DatasetDetail } from "@cirrobio/api-client";
 import { useEffect, useState } from "react";
 
 export function useDatasetLoader(viewerConfig: ViewerConfigPayload, dataService: DataService): DatasetDetail {
-  const projectId = viewerConfig.project.id;
-  const datasetId = viewerConfig.dataset.id;
+  const projectId = viewerConfig?.project?.id;
+  const datasetId = viewerConfig?.dataset?.id;
   const [dataset, setDataset] = useState<DatasetDetail>(null);
 
   useEffect(() => {
+    if (!projectId || !datasetId) {
+      return;
+    }
     const loadDataset = async () => {
       if (viewerConfig.dataset.name) {
         setDataset(viewerConfig.dataset as DatasetDetail);

@@ -60,14 +60,6 @@ export const ViewerStateProvider = ({ children, mode, patchFetch }: ViewerStateP
     status: viewerStatus, config: viewerConfig, s3Credentials, updateConfig
   }), [viewerStatus, viewerConfig]);
 
-  if (viewerStatus === 'LOADING') {
-    return <p>Loading...</p>;
-  }
-
-  if (viewerStatus === 'ERROR') {
-    return <p>Error loading tool context</p>;
-  }
-
   return (
     <ViewerStateContext.Provider value={value}>
       {children}

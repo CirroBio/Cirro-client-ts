@@ -25,7 +25,7 @@ export function AppConfigProvider({ children, apiBasePath, authProvider }: IAppC
       console.error(e);
       setLoadState('ERROR');
     });
-  }, []);
+  }, [apiBasePath, authProvider]);
 
   useEffect(() => {
     refresh();

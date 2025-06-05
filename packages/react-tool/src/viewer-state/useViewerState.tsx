@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { ViewerStateContext, ViewerStateContextType } from "./viewer-state-context";
 
-export function useViewerStateInternal(): ViewerStateContextType {
+export function useViewerState(): ViewerStateContextType {
   const state = useContext(ViewerStateContext);
 
   if (!state) {

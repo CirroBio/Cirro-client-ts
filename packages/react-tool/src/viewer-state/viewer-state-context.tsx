@@ -6,8 +6,9 @@ export type ViewerStatus = 'LOADING' | 'READY' | 'ERROR';
 
 export interface ViewerStateContextType {
   status: ViewerStatus;
-  config: ViewerConfigPayload;
-  s3Credentials: AWSCredentials;
+  config: ViewerConfigPayload | null;
+  s3Credentials: AWSCredentials | null;
+  updateConfig: (config: ViewerConfigPayload) => void;
 }
 
 export const ViewerStateContext = createContext<ViewerStateContextType | undefined>(undefined);

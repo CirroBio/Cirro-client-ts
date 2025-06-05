@@ -4,10 +4,19 @@ import { getViewerMode, ViewerMode } from "./helpers/viewer-mode";
 import { AppConfigProvider } from "@cirrobio/react-ui-core";
 import { AmplifyAuthProvider } from "@cirrobio/react-auth";
 import { Loader } from "./loader";
+import { ViewerContextProvider } from "./viewer-context/viewer-context-provider";
 
 export interface ViewerProviderProps {
   children: React.ReactNode;
+  /*
+  *  If true, patch the default fetch function to sign S3 URLs
+  *  This is a workaround for when we don't control the fetch calls in the viewer
+  */
   patchFetch?: boolean;
+  /*
+  *  The base API path when calling the Cirro API.
+  *  Will be overridden by the ViewerProvider if running in embedded mode.
+  */
   apiBasePath?: string;
 }
 
@@ -21,7 +30,9 @@ export function ViewerProvider({ children, apiBasePath, patchFetch = false }: Vi
     <AppConfigProvider apiBasePath={_apiBasePath} authProvider={authProvider}>
       <ViewerStateProvider mode={viewerMode} patchFetch={patchFetch}>
         <Loader>
-          {children}
+          <ViewerContextProvider>
+            {children}
+          </ViewerContextProvider>
         </Loader>
       </ViewerStateProvider>
     </AppConfigProvider>

@@ -1,8 +1,8 @@
 import { Assets } from "@cirrobio/sdk";
 import { Artifact, DatasetAssetsManifest, DatasetDetail, DatasetViz, ProjectDetail, Table } from "@cirrobio/api-client";
-import { ViewerState } from "./viewer-state/viewer-state";
+import { ViewerState } from "./viewer-state";
 
-export class ToolViewerContext implements ViewerState {
+export class ToolViewerState implements ViewerState {
   constructor(
     readonly project: ProjectDetail,
     readonly dataset: DatasetDetail,
