@@ -4,14 +4,20 @@ import { DownloadableFile, FILE_IMAGE_EXTENSIONS, matchesExtension } from "@cirr
 import { useWindowSize } from "@cirrobio/react-ui-core";
 import { useViewerServices, useViewerState } from "@cirrobio/react-tool";
 
+interface ViewerState {
+  asset: DownloadableFile | null;
+  url: string | null;
+}
+
 export function Viewer() {
   const { selectedFile, files } = useViewerState();
   const { fileService } = useViewerServices();
 
   const viewSize = useWindowSize();
 
-  const [state, setState] = useState<{ asset: DownloadableFile | null, url: string | null }>({ asset: null, url: null });
+  const [state, setState] = useState<ViewerState>({ asset: null, url: null });
 
+  // Filter and sort images from the files
   const images = useMemo(() => {
     return files
       .filter((file) => matchesExtension(file.name, FILE_IMAGE_EXTENSIONS))

@@ -17,6 +17,7 @@ import { useDatasetLoader } from "../loaders/useDatasetLoader";
 import { useManifestLoader } from "../loaders/useManifestLoader";
 import { ViewerState } from "./viewer-state";
 import { ToolViewerState } from "./tool-viewer-state";
+import { ViewerServices } from "./viewer-services";
 
 export function ViewerContextProvider({ children }): ReactElement {
   const viewerState = useViewerState();
@@ -44,19 +45,22 @@ export function ViewerContextProvider({ children }): ReactElement {
   const project = useProjectLoader(viewerState.config, dataService);
   const dataset = useDatasetLoader(viewerState.config, dataService);
   const manifest = useManifestLoader(viewerState.config, dataService);
+  const fileAccessContext = useMemo(() => {
+    return ProjectFileAccessContext.datasetDownload(project, dataset);
+  }, [project, dataset]);
+
   const assets = useMemo(() => {
     if (!manifest || !project || !dataset) {
       return new Assets();
     }
-    const accessContext = ProjectFileAccessContext.datasetDownload(project, dataset);
-    return new ManifestParser(manifest, accessContext).generateAssets(false);
+    return new ManifestParser(manifest, fileAccessContext).generateAssets(false);
   }, [manifest, project, dataset]);
 
   const state: ViewerState = useMemo(() => {
     return new ToolViewerState(project, dataset, manifest, assets, viewerState.config?.file)
   }, [dataService, project, dataset, manifest, viewerState.config?.file]);
 
-  const services = { dataService, fileService };
+  const services: ViewerServices = { dataService, fileService };
 
   return (
     <ViewerContext.Provider value={{ state, services }}>

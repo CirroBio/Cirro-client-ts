@@ -13,3 +13,4 @@ export { calculateTotalSize } from './file/calculate-size'
 export { Progress, Upload } from '@aws-sdk/lib-storage';
 export { Assets } from './file/models/assets';
 export { ManifestParser } from './file/manifest-parser';
+export { getParentPath } from './file/util/get-parent.fn';
