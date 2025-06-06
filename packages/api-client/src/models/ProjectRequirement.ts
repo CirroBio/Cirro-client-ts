@@ -81,11 +81,17 @@ export interface ProjectRequirement {
      */
     type: GovernanceType;
     /**
-     * S3 prefix where files for the requirement are saved
+     * S3 prefix where the main file for the requirement is saved
      * @type {string}
      * @memberof ProjectRequirement
      */
     path: string;
+    /**
+     * S3 prefix where supplemental files for the requirement are saved
+     * @type {string}
+     * @memberof ProjectRequirement
+     */
+    supplementalPath: string;
     /**
      * 
      * @type {GovernanceScope}
@@ -194,6 +200,7 @@ export function instanceOfProjectRequirement(value: object): boolean {
     isInstance = isInstance && "description" in value;
     isInstance = isInstance && "type" in value;
     isInstance = isInstance && "path" in value;
+    isInstance = isInstance && "supplementalPath" in value;
     isInstance = isInstance && "scope" in value;
     isInstance = isInstance && "contacts" in value;
     isInstance = isInstance && "isFulfilled" in value;
@@ -216,6 +223,7 @@ export function ProjectRequirementFromJSONTyped(json: any, ignoreDiscriminator: 
         'description': json['description'],
         'type': GovernanceTypeFromJSON(json['type']),
         'path': json['path'],
+        'supplementalPath': json['supplementalPath'],
         'scope': GovernanceScopeFromJSON(json['scope']),
         'acceptance': !exists(json, 'acceptance') ? undefined : GovernanceScopeFromJSON(json['acceptance']),
         'contacts': ((json['contacts'] as Array<any>).map(GovernanceContactFromJSON)),
@@ -249,6 +257,7 @@ export function ProjectRequirementToJSON(value?: ProjectRequirement | null): any
         'description': value.description,
         'type': GovernanceTypeToJSON(value.type),
         'path': value.path,
+        'supplementalPath': value.supplementalPath,
         'scope': GovernanceScopeToJSON(value.scope),
         'acceptance': GovernanceScopeToJSON(value.acceptance),
         'contacts': ((value.contacts as Array<any>).map(GovernanceContactToJSON)),
