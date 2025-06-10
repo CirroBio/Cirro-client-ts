@@ -66,6 +66,11 @@ jobs:
         run: |
           yarn install
 
+      - name: Build api
+        working-directory: packages/api-client
+        run: |
+          npm run build
+
       - name: Build package
         working-directory: packages/sdk
         run: |
