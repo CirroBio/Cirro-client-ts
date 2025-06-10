@@ -1807,7 +1807,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@cirrobio/api-client@npm:^0.4.1, @cirrobio/api-client@workspace:packages/api-client":
+"@cirrobio/api-client@npm:^0.4.3, @cirrobio/api-client@workspace:packages/api-client":
   version: 0.0.0-use.local
   resolution: "@cirrobio/api-client@workspace:packages/api-client"
   dependencies:
@@ -1819,9 +1819,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@cirrobio/react-auth@workspace:packages/react-auth"
   dependencies:
-    "@cirrobio/api-client": "npm:^0.4.1"
+    "@cirrobio/api-client": "npm:^0.4.3"
     "@cirrobio/react-ui-core": "npm:^0.0.1"
-    "@cirrobio/sdk": "npm:^0.4.2"
+    "@cirrobio/sdk": "npm:^0.4.3"
     "@mui/icons-material": "npm:^5.17.1"
     "@mui/lab": "npm:^5.0.0-alpha.176"
     "@mui/material": "npm:^5.17.1"
@@ -1836,10 +1836,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@cirrobio/react-tool@workspace:packages/react-tool"
   dependencies:
-    "@cirrobio/api-client": "npm:^0.4.1"
+    "@cirrobio/api-client": "npm:^0.4.3"
     "@cirrobio/react-auth": "npm:^0.0.1"
     "@cirrobio/react-ui-core": "npm:^0.0.1"
-    "@cirrobio/sdk": "npm:^0.4.2"
+    "@cirrobio/sdk": "npm:^0.4.3"
   peerDependencies:
     react: ^16.14 || ^17 || ^18 || ^19
     react-dom: ^16.14 || ^17 || ^18 || ^19
@@ -1850,20 +1850,20 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@cirrobio/react-ui-core@workspace:packages/react-ui-core"
   dependencies:
-    "@cirrobio/sdk": "npm:^0.4.2"
+    "@cirrobio/sdk": "npm:^0.4.3"
   peerDependencies:
     react: ^16.14 || ^17 || ^18 || ^19
   languageName: unknown
   linkType: soft
 
-"@cirrobio/sdk@npm:^0.4.2, @cirrobio/sdk@workspace:*, @cirrobio/sdk@workspace:packages/sdk":
+"@cirrobio/sdk@npm:^0.4.3, @cirrobio/sdk@workspace:*, @cirrobio/sdk@workspace:packages/sdk":
   version: 0.0.0-use.local
   resolution: "@cirrobio/sdk@workspace:packages/sdk"
   dependencies:
     "@aws-sdk/client-s3": "npm:^3.34.0"
     "@aws-sdk/lib-storage": "npm:^3.34.0"
     "@aws-sdk/s3-request-presigner": "npm:^3.34.0"
-    "@cirrobio/api-client": "npm:^0.4.1"
+    "@cirrobio/api-client": "npm:^0.4.3"
     "@types/jest": "npm:^29.5.5"
     "@types/node": "npm:^22.13.1"
     jest: "npm:^29.7.0"

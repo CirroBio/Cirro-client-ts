@@ -45,9 +45,10 @@ export function ViewerContextProvider({ children }): ReactElement {
   }, [dataService, project, dataset, manifest, viewerState.config?.file]);
 
   const services: ViewerServices = { dataService, fileService };
+  const value = useMemo(() => ({ state, services }), [state, services]);
 
   return (
-    <ViewerContext.Provider value={{ state, services }}>
+    <ViewerContext.Provider value={value}>
       {children}
     </ViewerContext.Provider>
   );
