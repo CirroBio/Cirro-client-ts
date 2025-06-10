@@ -13,10 +13,10 @@
     "test": "jest --coverage --silent"
   },
   "dependencies": {
-    "@cirrobio/api-client": "^0.4.3",
+    "@cirrobio/api-client": "^0.4.4",
     "@cirrobio/react-auth": "^0.0.1",
     "@cirrobio/react-core": "^0.0.1",
-    "@cirrobio/sdk": "^0.4.3"
+    "@cirrobio/sdk": "^0.4.4"
   },
   "peerDependencies": {
     "react": "^16.14 || ^17 || ^18 || ^19",
