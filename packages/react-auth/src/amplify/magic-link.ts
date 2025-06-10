@@ -1,5 +1,5 @@
 import { confirmSignIn, signIn } from 'aws-amplify/auth';
-import { IRedeemSignInLink, ISignInLinkRequest } from "@cirrobio/react-ui-core";
+import { IRedeemSignInLink, ISignInLinkRequest } from "@cirrobio/react-core";
 
 export const COGNITO_PROVIDER_ID = 'COGNITO';
 export const LOGIN_SENT_SUCCESS_MSG = 'Check your email for the login link. If you don’t have an account, the link won’t be sent.';

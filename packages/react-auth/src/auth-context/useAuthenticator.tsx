@@ -1,6 +1,6 @@
 import { useCallback, useContext } from 'react';
 import { AuthenticatorContext, AuthenticatorContextType } from './authentication-context';
-import { useAppConfig } from "@cirrobio/react-ui-core";
+import { useAppConfig } from "@cirrobio/react-core";
 
 type UseAuthenticator = AuthenticatorContextType & {
   isLoggedIn: boolean;

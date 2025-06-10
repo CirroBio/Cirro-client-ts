@@ -1,5 +1,5 @@
 import { StaticTokenAuthProvider } from "@cirrobio/sdk";
-import { InteractiveAuthenticationProvider } from "@cirrobio/react-ui-core";
+import { InteractiveAuthenticationProvider } from "@cirrobio/react-core";
 
 
 /**

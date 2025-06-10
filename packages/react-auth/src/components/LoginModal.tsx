@@ -3,7 +3,7 @@ import React, { ReactElement, useCallback, useEffect, useMemo, useState } from '
 import { LoginOptions } from './LoginOptions';
 import { LoginProvider } from '@cirrobio/api-client';
 import { handlePromiseError } from "@cirrobio/sdk";
-import { useAppConfig } from "@cirrobio/react-ui-core";
+import { useAppConfig } from "@cirrobio/react-core";
 import { CloseOutlined } from '@mui/icons-material';
 import { COGNITO_PROVIDER_ID, LOGIN_SENT_SUCCESS_MSG } from "../amplify/magic-link";
 

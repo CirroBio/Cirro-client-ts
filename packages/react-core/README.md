@@ -1,6 +1,6 @@
-# @cirrobio/react-ui-core
+# @cirrobio/react-core
 
-[![React UI Core](https://img.shields.io/npm/v/@cirrobio/react-ui-core?color=blue&label=@cirrobio/react-ui-core)](https://www.npmjs.com/package/@cirrobio/react-ui-core)
+[![React Core](https://img.shields.io/npm/v/@cirrobio/react-core?color=blue&label=@cirrobio/react-core)](https://www.npmjs.com/package/@cirrobio/react-core)
 
 Shared React components and utilities for Cirro-based applications.
 

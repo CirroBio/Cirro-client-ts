@@ -1,4 +1,4 @@
-import { useAppConfig } from "@cirrobio/react-ui-core";
+import { useAppConfig } from "@cirrobio/react-core";
 import * as React from "react";
 import { ReactElement, useMemo } from "react";
 import { Assets, FileService, IFileCredentialsApi, ManifestParser, ProjectFileAccessContext } from "@cirrobio/sdk";

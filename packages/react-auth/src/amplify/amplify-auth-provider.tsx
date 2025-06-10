@@ -7,7 +7,7 @@ import {
   IRedeemSignInLink,
   ISignInLinkRequest,
   AuthEventHandlerOptions
-} from "@cirrobio/react-ui-core";
+} from "@cirrobio/react-core";
 import { signInWithRedirect } from "aws-amplify/auth";
 import { redeemSignInLink, requestSignInLink } from "./magic-link";
 import { Hub } from "aws-amplify/utils";

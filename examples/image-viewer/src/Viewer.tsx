@@ -1,7 +1,7 @@
 import { Box, Tooltip, Typography } from '@mui/material';
 import React, { useEffect, useMemo, useState } from 'react';
 import { DownloadableFile, FILE_IMAGE_EXTENSIONS, matchesExtension } from "@cirrobio/sdk";
-import { useWindowSize } from "@cirrobio/react-ui-core";
+import { useWindowSize } from "@cirrobio/react-core";
 import { useViewerServices, useViewerState } from "@cirrobio/react-tool";
 
 interface ViewerState {

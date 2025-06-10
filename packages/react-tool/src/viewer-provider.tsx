@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { ViewerStateProvider } from "./viewer-state/viewer-state-provider";
 import { getViewerMode, ViewerMode } from "./helpers/viewer-mode";
-import { AppConfigProvider, InteractiveAuthenticationProvider } from "@cirrobio/react-ui-core";
+import { AppConfigProvider, InteractiveAuthenticationProvider } from "@cirrobio/react-core";
 import { AmplifyAuthProvider, AuthenticationContextProvider, LoginWrapper } from "@cirrobio/react-auth";
 import { Loader } from "./loader";
 import { ViewerContextProvider } from "./viewer-context/viewer-context-provider";

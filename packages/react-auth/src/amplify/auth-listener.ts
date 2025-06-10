@@ -1,5 +1,5 @@
 import { AuthHubEventData } from "@aws-amplify/core/src/Hub/types/AuthTypes";
-import { AuthEventHandlerOptions } from "@cirrobio/react-ui-core";
+import { AuthEventHandlerOptions } from "@cirrobio/react-core";
 
 export const amplifyAuthEventHandler = ({ payload }, options: AuthEventHandlerOptions): void => {
   const { event }: AuthHubEventData = payload;

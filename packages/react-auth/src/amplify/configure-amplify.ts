@@ -1,5 +1,5 @@
 import { Amplify } from "aws-amplify";
-import { AppConfig } from "@cirrobio/react-ui-core";
+import { AppConfig } from "@cirrobio/react-core";
 
 export function configureAmplify(config: AppConfig, clientIdOverride?: string): void {
   Amplify.configure({

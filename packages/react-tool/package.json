@@ -15,7 +15,7 @@
   "dependencies": {
     "@cirrobio/api-client": "^0.4.3",
     "@cirrobio/react-auth": "^0.0.1",
-    "@cirrobio/react-ui-core": "^0.0.1",
+    "@cirrobio/react-core": "^0.0.1",
     "@cirrobio/sdk": "^0.4.3"
   },
   "peerDependencies": {

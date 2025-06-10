@@ -3,7 +3,7 @@ import { ReactElement, useCallback, useEffect, useMemo, useState } from "react";
 import { AuthenticatorContext, AuthenticatorContextType } from './authentication-context';
 import { AuthStatus } from "../models/auth-status";
 import { UserDetail } from "@cirrobio/api-client";
-import { useAppConfig } from "@cirrobio/react-ui-core";
+import { useAppConfig } from "@cirrobio/react-core";
 import { CurrentUser } from "@cirrobio/sdk";
 
 export type AuthenticationProviderProps = {

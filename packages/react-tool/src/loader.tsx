@@ -1,4 +1,4 @@
-import { useAppConfig } from "@cirrobio/react-ui-core";
+import { useAppConfig } from "@cirrobio/react-core";
 import { useViewerState } from "./viewer-state/useViewerState";
 import React from "react";
 

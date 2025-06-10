@@ -11,6 +11,21 @@ Packages:
 
   [![SDK Version](https://img.shields.io/npm/v/@cirrobio/sdk?color=blue&label=@cirrobio/sdk)](https://www.npmjs.com/package/@cirrobio/sdk)
 
+React Libraries:
+
+- Core `@cirrobio/react-core`
+
+  [![React Core Version](https://img.shields.io/npm/v/@cirrobio/react-core?color=blue&label=@cirrobio/react-core)](https://www.npmjs.com/package/@cirrobio/react-core)
+
+- Authentication `@cirrobio/react-auth`
+
+  [![React Auth Version](https://img.shields.io/npm/v/@cirrobio/react-auth?color=blue&label=@cirrobio/react-auth)](https://www.npmjs.com/package/@cirrobio/react-auth)
+
+- Tool development `@cirrobio/react-tool`
+
+  [![React Tool Version](https://img.shields.io/npm/v/@cirrobio/react-tool?color=blue&label=@cirrobio/react-tool)](https://www.npmjs.com/package/@cirrobio/react-tool)
+
+
 ## Development
 
 Any updates to the API or SDK should bump the version number for both. 
