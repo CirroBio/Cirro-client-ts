@@ -36,18 +36,18 @@ export function ViewerProvider({ children, apiBasePath, authProvider, patchFetch
     authProvider || new DefaultAuthProvider(), [authProvider]);
 
   return (
-    <AppConfigProvider apiBasePath={_apiBasePath} authProvider={authProviderToUse}>
-      <ViewerStateProvider mode={viewerMode} patchFetch={patchFetch}>
-        <Loader>
-          <AuthenticationContextProvider fetchUserInfo={false}>
-            <LoginWrapper>
-              <ViewerContextProvider>
-                {children}
-              </ViewerContextProvider>
-            </LoginWrapper>
-          </AuthenticationContextProvider>
-        </Loader>
-      </ViewerStateProvider>
-    </AppConfigProvider>
+    <ViewerStateProvider mode={viewerMode} patchFetch={patchFetch}>
+      <AppConfigProvider apiBasePath={_apiBasePath} authProvider={authProviderToUse}>
+          <Loader>
+            <AuthenticationContextProvider fetchUserInfo={false}>
+              <LoginWrapper>
+                <ViewerContextProvider>
+                  {children}
+                </ViewerContextProvider>
+              </LoginWrapper>
+            </AuthenticationContextProvider>
+          </Loader>
+      </AppConfigProvider>
+    </ViewerStateProvider>
   );
 }

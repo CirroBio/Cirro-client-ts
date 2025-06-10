@@ -40,7 +40,6 @@ export function Viewer() {
   if (!files?.length) {
     return <Typography variant="body2">No Files</Typography>
   }
-  if (state.url === null) { return null; }
   return (
     <div style={{
       marginLeft: 0, paddingLeft: 0,
