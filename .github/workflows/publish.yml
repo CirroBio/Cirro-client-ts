@@ -31,7 +31,7 @@ jobs:
       - name: Build package
         working-directory: packages/api-client
         run: |
-          npm install
+          yarn install
           npm run build
 
       - name: Publish API Client to NPM
@@ -59,7 +59,7 @@ jobs:
       - name: Build SDK
         working-directory: packages/sdk
         run: |
-          npm install
+          yarn install
           npm run build
 
       - name: Publish SDK to NPM
