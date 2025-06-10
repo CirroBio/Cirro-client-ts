@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import { ViewerStateProvider } from "./viewer-state/viewer-state-provider";
 import { getViewerMode, ViewerMode } from "./helpers/viewer-mode";
 import { AppConfigProvider, InteractiveAuthenticationProvider } from "@cirrobio/react-ui-core";
-import { AmplifyAuthProvider, AuthenticationProvider, LoginWrapper } from "@cirrobio/react-auth";
+import { AmplifyAuthProvider, AuthenticationContextProvider, LoginWrapper } from "@cirrobio/react-auth";
 import { Loader } from "./loader";
 import { ViewerContextProvider } from "./viewer-context/viewer-context-provider";
 
@@ -39,13 +39,13 @@ export function ViewerProvider({ children, apiBasePath, authProvider, patchFetch
     <AppConfigProvider apiBasePath={_apiBasePath} authProvider={authProviderToUse}>
       <ViewerStateProvider mode={viewerMode} patchFetch={patchFetch}>
         <Loader>
-          <AuthenticationProvider fetchUserInfo={false}>
+          <AuthenticationContextProvider fetchUserInfo={false}>
             <LoginWrapper>
               <ViewerContextProvider>
                 {children}
               </ViewerContextProvider>
             </LoginWrapper>
-          </AuthenticationProvider>
+          </AuthenticationContextProvider>
         </Loader>
       </ViewerStateProvider>
     </AppConfigProvider>

@@ -11,7 +11,7 @@ export type AuthenticationProviderProps = {
   fetchUserInfo?: boolean;
 }
 
-export function AuthenticationProvider({ children, fetchUserInfo }: AuthenticationProviderProps): ReactElement {
+export function AuthenticationContextProvider({ children, fetchUserInfo }: AuthenticationProviderProps): ReactElement {
   const [authStatus, setAuthStatus] = useState<AuthStatus>('configuring');
   const [authInfo, setAuthInfo] = useState<CurrentUser>(null);
   const [userInfo, setUserInfo] = useState<UserDetail>(null);

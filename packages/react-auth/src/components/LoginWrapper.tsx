@@ -1,6 +1,6 @@
-
 import React from "react";
-import { LoginModal, useAuthenticator } from "@cirrobio/react-auth";
+import { useAuthenticator } from "../auth-context/useAuthenticator";
+import { LoginModal } from "./LoginModal";
 
 interface IProps {
   children?: React.ReactNode;
