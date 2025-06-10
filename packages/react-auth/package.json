@@ -17,6 +17,9 @@
     "@cirrobio/api-client": "^0.4.1",
     "@cirrobio/react-ui-core": "^0.0.1",
     "@cirrobio/sdk": "^0.4.2",
+    "@mui/icons-material": "^5.17.1",
+    "@mui/lab": "^5.0.0-alpha.176",
+    "@mui/material": "^5.17.1",
     "aws-amplify": "^6.15.0"
   },
   "peerDependencies": {

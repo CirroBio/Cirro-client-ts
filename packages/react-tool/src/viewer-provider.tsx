@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { ViewerStateProvider } from "./viewer-state/viewer-state-provider";
 import { getViewerMode, ViewerMode } from "./helpers/viewer-mode";
-import { AppConfigProvider } from "@cirrobio/react-ui-core";
-import { AmplifyAuthProvider } from "@cirrobio/react-auth";
+import { AppConfigProvider, InteractiveAuthenticationProvider } from "@cirrobio/react-ui-core";
+import { AmplifyAuthProvider, AuthenticationProvider, LoginWrapper } from "@cirrobio/react-auth";
 import { Loader } from "./loader";
 import { ViewerContextProvider } from "./viewer-context/viewer-context-provider";
 
@@ -18,21 +18,34 @@ export interface ViewerProviderProps {
   *  Will be overridden by the ViewerProvider if running in embedded mode.
   */
   apiBasePath?: string;
+  /**
+   * Authentication provider for the viewer.
+   * Defaults to AmplifyAuthProvider.
+   */
+  authProvider?: InteractiveAuthenticationProvider;
 }
 
-const authProvider = new AmplifyAuthProvider();
+const DefaultAuthProvider = AmplifyAuthProvider;
 
-export function ViewerProvider({ children, apiBasePath, patchFetch = false }: ViewerProviderProps) {
+
+export function ViewerProvider({ children, apiBasePath, authProvider, patchFetch = false }: ViewerProviderProps) {
   const viewerMode = getViewerMode();
   const _apiBasePath = viewerMode === ViewerMode.EMBEDDED ? '/api' : apiBasePath;
 
+  const authProviderToUse = useMemo(() =>
+    authProvider || new DefaultAuthProvider(), [authProvider]);
+
   return (
-    <AppConfigProvider apiBasePath={_apiBasePath} authProvider={authProvider}>
+    <AppConfigProvider apiBasePath={_apiBasePath} authProvider={authProviderToUse}>
       <ViewerStateProvider mode={viewerMode} patchFetch={patchFetch}>
         <Loader>
-          <ViewerContextProvider>
-            {children}
-          </ViewerContextProvider>
+          <AuthenticationProvider fetchUserInfo={false}>
+            <LoginWrapper>
+              <ViewerContextProvider>
+                {children}
+              </ViewerContextProvider>
+            </LoginWrapper>
+          </AuthenticationProvider>
         </Loader>
       </ViewerStateProvider>
     </AppConfigProvider>

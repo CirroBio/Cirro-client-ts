@@ -1,14 +1,7 @@
 import { useAppConfig } from "@cirrobio/react-ui-core";
 import * as React from "react";
 import { ReactElement, useMemo } from "react";
-import {
-  Assets,
-  DataService,
-  FileService,
-  IFileCredentialsApi,
-  ManifestParser,
-  ProjectFileAccessContext
-} from "@cirrobio/sdk";
+import { Assets, FileService, IFileCredentialsApi, ManifestParser, ProjectFileAccessContext } from "@cirrobio/sdk";
 import { GenerateProjectFileAccessTokenRequest } from "@cirrobio/api-client";
 import { ViewerContext } from "./viewer-context";
 import { useViewerState } from "../viewer-state/useViewerState";
@@ -21,14 +14,7 @@ import { ViewerServices } from "./viewer-services";
 
 export function ViewerContextProvider({ children }): ReactElement {
   const viewerState = useViewerState();
-  const { apiBasePath, authProvider } = useAppConfig();
-
-  const dataService = useMemo(() => {
-    return new DataService({
-      tokenGetter: authProvider.getAccessToken,
-      basePath: apiBasePath
-    })
-  }, [apiBasePath]);
+  const { dataService } = useAppConfig();
 
   const fileService = useMemo(() => {
     const fileApi: IFileCredentialsApi = {
@@ -45,14 +31,12 @@ export function ViewerContextProvider({ children }): ReactElement {
   const project = useProjectLoader(viewerState.config, dataService);
   const dataset = useDatasetLoader(viewerState.config, dataService);
   const manifest = useManifestLoader(viewerState.config, dataService);
-  const fileAccessContext = useMemo(() => {
-    return ProjectFileAccessContext.datasetDownload(project, dataset);
-  }, [project, dataset]);
 
   const assets = useMemo(() => {
     if (!manifest || !project || !dataset) {
       return new Assets();
     }
+    const fileAccessContext = ProjectFileAccessContext.datasetDownload(project, dataset);
     return new ManifestParser(manifest, fileAccessContext).generateAssets(false);
   }, [manifest, project, dataset]);
 

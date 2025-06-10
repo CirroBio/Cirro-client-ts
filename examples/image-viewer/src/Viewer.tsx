@@ -1,4 +1,4 @@
-import { Box, Tooltip } from '@mui/material';
+import { Box, Tooltip, Typography } from '@mui/material';
 import React, { useEffect, useMemo, useState } from 'react';
 import { DownloadableFile, FILE_IMAGE_EXTENSIONS, matchesExtension } from "@cirrobio/sdk";
 import { useWindowSize } from "@cirrobio/react-ui-core";
@@ -37,6 +37,9 @@ export function Viewer() {
     })();
   }, [asset, fileService]);
 
+  if (!files?.length) {
+    return <Typography variant="body2">No Files</Typography>
+  }
   if (state.url === null) { return null; }
   return (
     <div style={{

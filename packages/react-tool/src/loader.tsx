@@ -10,10 +10,9 @@ export function Loader({ children }: LoaderProps) {
   const { loadState } = useAppConfig();
   const { status } = useViewerState();
 
-  if (loadState === 'LOADING' || status === 'LOADING' ) {
+  if (loadState === 'LOADING' || status === 'LOADING') {
     return <div>Loading...</div>;
   }
-
   if (loadState === 'ERROR' || status === 'ERROR') {
     return <div>Error loading viewer state</div>;
   }

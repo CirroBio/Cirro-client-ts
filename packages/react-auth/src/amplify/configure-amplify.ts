@@ -1,7 +1,7 @@
-import { SystemInfoResponse } from "@cirrobio/api-client";
 import { Amplify } from "aws-amplify";
+import { AppConfig } from "@cirrobio/react-ui-core";
 
-export function configureAmplify(config: SystemInfoResponse, clientIdOverride?: string): void {
+export function configureAmplify(config: AppConfig, clientIdOverride?: string): void {
   Amplify.configure({
     Auth: {
       Cognito: {
