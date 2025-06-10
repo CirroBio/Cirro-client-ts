@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
 
+/**
+ * Custom hook to get the current window size, scaled by the provided factors.
+ */
 export function useWindowSize(scaleWidth = 1, scaleHeight = 1) {
   function getSize() {
     return {

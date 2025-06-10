@@ -10,6 +10,6 @@ export default (): UserConfig => {
     server: {
       port: 8001,
     },
-    base:  process.env.NODE_ENV === 'development' ? "" : "/tools/image",
+    base: "/tools/image",
   });
 }

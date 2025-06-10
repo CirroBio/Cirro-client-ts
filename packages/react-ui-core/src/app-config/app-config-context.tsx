@@ -7,11 +7,25 @@ export type LoadState = 'LOADING' | 'LOADED' | 'ERROR' | 'MAINTENANCE_MODE';
 export type AppConfig = SystemInfoResponse;
 
 export type AppConfigContextType = {
+  /**
+   * The current application configuration.
+   */
   appConfig: AppConfig;
+  /**
+   * Refresh the application configuration.
+   */
   refresh: () => void;
+  /**
+   * The current load state of the application configuration.
+   */
   loadState: LoadState;
-  apiBasePath: string;
+  /**
+   * Authentication provider used for user authentication.
+   */
   authProvider: InteractiveAuthenticationProvider;
+  /**
+   * Service for accessing data from the Cirro API.
+   */
   dataService: DataService;
 }
 

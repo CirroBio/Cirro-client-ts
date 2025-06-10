@@ -7,10 +7,19 @@ import { InteractiveAuthenticationProvider } from "../auth-provider/interactive-
 
 interface IAppConfigProviderProps {
   children: React.ReactNode;
+  /**
+   * The base path for the Cirro API.
+   */
   apiBasePath: string;
-  authProvider?: InteractiveAuthenticationProvider;
+  /**
+   * Authentication provider for the application.
+   */
+  authProvider: InteractiveAuthenticationProvider;
 }
 
+/**
+ * React context provider for the Cirro application configuration.
+ */
 export function AppConfigProvider({ children, apiBasePath, authProvider }: IAppConfigProviderProps): ReactElement {
   const [loadState, setLoadState] = useState<LoadState>('LOADING');
   const [appConfig, setAppConfig] = useState<SystemInfoResponse>(null);
@@ -35,12 +44,13 @@ export function AppConfigProvider({ children, apiBasePath, authProvider }: IAppC
     });
   }, [apiBasePath, authProvider]);
 
+  // Refresh app config on initial load
   useEffect(() => {
     refresh();
   }, [refresh]);
 
   const value = useMemo(() =>
-    ({ appConfig, refresh, loadState, apiBasePath, authProvider, dataService }), [appConfig, refresh]);
+    ({ appConfig, refresh, loadState, authProvider, dataService }), [appConfig, refresh, loadState, authProvider, dataService]);
 
   return (
     <AppConfigContext.Provider value={value}>
