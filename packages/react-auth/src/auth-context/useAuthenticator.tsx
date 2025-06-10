@@ -7,6 +7,9 @@ type UseAuthenticator = AuthenticatorContextType & {
   signOut: () => void;
 };
 
+/**
+ * Custom hook to access authentication context
+ */
 export function useAuthenticator(): UseAuthenticator {
   const context = useContext(AuthenticatorContext);
   const { authProvider } = useAppConfig();

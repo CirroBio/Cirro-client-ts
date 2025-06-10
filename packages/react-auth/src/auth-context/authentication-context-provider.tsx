@@ -11,6 +11,11 @@ export type AuthenticationProviderProps = {
   fetchUserInfo?: boolean;
 }
 
+/**
+ * Manages the authentication state of the application.
+ * @param children - The child components to render within the provider.
+ * @param fetchUserInfo - If true, fetches detailed user information after authentication.
+ */
 export function AuthenticationContextProvider({ children, fetchUserInfo }: AuthenticationProviderProps): ReactElement {
   const [authStatus, setAuthStatus] = useState<AuthStatus>('configuring');
   const [authInfo, setAuthInfo] = useState<CurrentUser>(null);

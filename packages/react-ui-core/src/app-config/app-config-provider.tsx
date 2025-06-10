@@ -17,7 +17,7 @@ export function AppConfigProvider({ children, apiBasePath, authProvider }: IAppC
 
   const dataService = useMemo(() => {
     return new DataService({
-      tokenGetter: authProvider.getAccessToken,
+      tokenGetter: () => authProvider.getAccessToken(),
       basePath: apiBasePath
     })
   }, [apiBasePath]);

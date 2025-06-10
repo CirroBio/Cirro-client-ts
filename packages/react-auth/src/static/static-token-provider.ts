@@ -2,6 +2,10 @@ import { StaticTokenAuthProvider } from "@cirrobio/sdk";
 import { InteractiveAuthenticationProvider } from "@cirrobio/react-ui-core";
 
 
+/**
+ * StaticInteractiveAuthTokenProvider is a simple implementation of the InteractiveAuthenticationProvider
+ * that uses a static token for authentication. This is useful for testing or when you have a known token.
+ */
 export class StaticInteractiveAuthTokenProvider
   extends StaticTokenAuthProvider
   implements InteractiveAuthenticationProvider {
@@ -18,11 +22,11 @@ export class StaticInteractiveAuthTokenProvider
     return Promise.resolve();
   }
 
-  loginEmail(ignore): Promise<void> {
+  loginEmail(_): Promise<void> {
     return Promise.resolve();
   }
 
-  finishLoginEmail(ignore): Promise<void> {
+  finishLoginEmail(_): Promise<void> {
     return Promise.resolve();
   }
 
@@ -34,7 +38,7 @@ export class StaticInteractiveAuthTokenProvider
     return [];
   }
 
-  registerAuthEventHandler(ignore): void {
+  registerAuthEventHandler(_): void {
     // No-op for static token provider
   }
 }

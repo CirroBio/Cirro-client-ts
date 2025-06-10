@@ -6,6 +6,10 @@ interface IProps {
   children?: React.ReactNode;
 }
 
+/**
+ * LoginWrapper component is used to conditionally render children based on the authentication status
+ * or display a login modal if the user is unauthenticated.
+ */
 export function LoginWrapper({ children }: IProps) {
   const { authStatus } = useAuthenticator();
 
