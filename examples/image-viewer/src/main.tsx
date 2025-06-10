@@ -10,7 +10,7 @@ const patchFetch = false;
 // The base API path for the viewer. Will be overridden by the ViewerProvider if running in embedded mode.
 const apiBasePath = 'https://dev.cirro.bio/api';
 
-createRoot(document.getElementById('root')!).render(
+createRoot(document.getElementById('root')).render(
   <StrictMode>
     <ViewerProvider patchFetch={patchFetch} apiBasePath={apiBasePath}>
       <Viewer />

@@ -10,26 +10,31 @@ interface ViewerState {
 }
 
 export function Viewer() {
+  // Grab the selectedFile and files from the viewer state
   const { selectedFile, files } = useViewerState();
+  // Grab an instance of the fileService from the viewer services to fetch signed URLs
   const { fileService } = useViewerServices();
 
   const viewSize = useWindowSize();
 
+  // State to hold the current asset and its signed URL
   const [state, setState] = useState<ViewerState>({ asset: null, url: null });
 
-  // Filter and sort images from the files
+  // Filter out images from the available files, sort by name
   const images = useMemo(() => {
     return files
       .filter((file) => matchesExtension(file.name, FILE_IMAGE_EXTENSIONS))
       .sort((a, b) => a.name.localeCompare(b.name));
   }, [files]);
 
-  // Find selected file or select the first image
+  // Find selected file in the available files,
+  //   or select the first image if no file is selected
   const asset: DownloadableFile = useMemo(() => {
     const matchedFile = images.find(f => f.url === selectedFile);
     return matchedFile ?? images[0];
   }, [selectedFile, images]);
 
+  // Get the signed URL for the selected asset when it changes
   useEffect(() => {
     (async () => {
       if (!asset) return;
@@ -37,9 +42,12 @@ export function Viewer() {
     })();
   }, [asset, fileService]);
 
-  if (!files?.length) {
+  // Detect if there are no files to display
+  if (!images?.length) {
     return <Typography variant="body2">No Files</Typography>
   }
+
+  // Render the viewer with the selected image
   return (
     <div style={{
       marginLeft: 0, paddingLeft: 0,

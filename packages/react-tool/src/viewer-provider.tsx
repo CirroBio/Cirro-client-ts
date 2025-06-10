@@ -28,12 +28,12 @@ export interface ViewerProviderProps {
 const DefaultAuthProvider = AmplifyAuthProvider;
 
 
-export function ViewerProvider({ children, apiBasePath, authProvider, patchFetch = false }: ViewerProviderProps) {
+export function ViewerProvider({ children, apiBasePath, authProvider, patchFetch = false }: Readonly<ViewerProviderProps>) {
   const viewerMode = getViewerMode();
   const _apiBasePath = viewerMode === ViewerMode.EMBEDDED ? '/api' : apiBasePath;
 
   const authProviderToUse = useMemo(() =>
-    authProvider || new DefaultAuthProvider(), [authProvider]);
+    authProvider ?? new DefaultAuthProvider(), [authProvider]);
 
   return (
     <ViewerStateProvider mode={viewerMode} patchFetch={patchFetch}>

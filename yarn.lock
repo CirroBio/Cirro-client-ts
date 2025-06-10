@@ -1828,6 +1828,7 @@ __metadata:
     aws-amplify: "npm:^6.15.0"
   peerDependencies:
     react: ^16.14 || ^17 || ^18 || ^19
+    react-dom: ^16.14 || ^17 || ^18 || ^19
   languageName: unknown
   linkType: soft
 
@@ -1841,6 +1842,7 @@ __metadata:
     "@cirrobio/sdk": "npm:^0.4.2"
   peerDependencies:
     react: ^16.14 || ^17 || ^18 || ^19
+    react-dom: ^16.14 || ^17 || ^18 || ^19
   languageName: unknown
   linkType: soft
 
