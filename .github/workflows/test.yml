@@ -64,7 +64,7 @@ jobs:
       - name: Install deps
         working-directory: packages/sdk
         run: |
-          npm install
+          yarn install
 
       - name: Build package
         working-directory: packages/sdk
