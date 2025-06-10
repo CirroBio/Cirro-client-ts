@@ -1,6 +1,6 @@
 {
   "name": "@cirrobio/api-client",
-  "version": "0.4.1",
+  "version": "0.4.3",
   "description": "API client for Cirro",
   "author": "CirroBio",
   "repository": {

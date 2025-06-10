@@ -135,6 +135,12 @@ export interface GovernanceRequirement {
      */
     authorship?: GovernanceScope | null;
     /**
+     * Files supplied by each project when authorship is project
+     * @type {{ [key: string]: GovernanceFile; }}
+     * @memberof GovernanceRequirement
+     */
+    projectFileMap?: { [key: string]: GovernanceFile; } | null;
+    /**
      * 
      * @type {GovernanceTrainingVerification}
      * @memberof GovernanceRequirement
@@ -204,6 +210,7 @@ export function GovernanceRequirementFromJSONTyped(json: any, ignoreDiscriminato
         'supplementalDocs': !exists(json, 'supplementalDocs') ? undefined : (json['supplementalDocs'] === null ? null : (json['supplementalDocs'] as Array<any>).map(GovernanceFileFromJSON)),
         'file': !exists(json, 'file') ? undefined : GovernanceFileFromJSON(json['file']),
         'authorship': !exists(json, 'authorship') ? undefined : GovernanceScopeFromJSON(json['authorship']),
+        'projectFileMap': !exists(json, 'projectFileMap') ? undefined : (json['projectFileMap'] === null ? null : mapValues(json['projectFileMap'], GovernanceFileFromJSON)),
         'verificationMethod': !exists(json, 'verificationMethod') ? undefined : GovernanceTrainingVerificationFromJSON(json['verificationMethod']),
         'createdBy': json['createdBy'],
         'createdAt': (new Date(json['createdAt'])),
@@ -234,6 +241,7 @@ export function GovernanceRequirementToJSON(value?: GovernanceRequirement | null
         'supplementalDocs': value.supplementalDocs === undefined ? undefined : (value.supplementalDocs === null ? null : (value.supplementalDocs as Array<any>).map(GovernanceFileToJSON)),
         'file': GovernanceFileToJSON(value.file),
         'authorship': GovernanceScopeToJSON(value.authorship),
+        'projectFileMap': value.projectFileMap === undefined ? undefined : (value.projectFileMap === null ? null : mapValues(value.projectFileMap, GovernanceFileToJSON)),
         'verificationMethod': GovernanceTrainingVerificationToJSON(value.verificationMethod),
         'createdBy': value.createdBy,
         'createdAt': (value.createdAt.toISOString()),

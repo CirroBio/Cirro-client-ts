@@ -20,6 +20,12 @@ import { exists, mapValues } from '../runtime';
  */
 export interface DatasetViz {
     /**
+     * Path to viz configuration, if applicable
+     * @type {string}
+     * @memberof DatasetViz
+     */
+    path?: string;
+    /**
      * Name of viz
      * @type {string}
      * @memberof DatasetViz
@@ -64,6 +70,7 @@ export function DatasetVizFromJSONTyped(json: any, ignoreDiscriminator: boolean)
     }
     return {
         
+        'path': !exists(json, 'path') ? undefined : json['path'],
         'name': !exists(json, 'name') ? undefined : json['name'],
         'desc': !exists(json, 'desc') ? undefined : json['desc'],
         'type': !exists(json, 'type') ? undefined : json['type'],
@@ -80,6 +87,7 @@ export function DatasetVizToJSON(value?: DatasetViz | null): any {
     }
     return {
         
+        'path': value.path,
         'name': value.name,
         'desc': value.desc,
         'type': value.type,

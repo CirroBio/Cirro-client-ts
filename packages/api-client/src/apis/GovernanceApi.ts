@@ -20,6 +20,7 @@ import type {
   FulfillmentResponse,
   GovernanceClassification,
   GovernanceContact,
+  GovernanceFileInput,
   GovernanceRequirement,
   ProjectRequirement,
   RequirementFulfillmentInput,
@@ -36,6 +37,8 @@ import {
     GovernanceClassificationToJSON,
     GovernanceContactFromJSON,
     GovernanceContactToJSON,
+    GovernanceFileInputFromJSON,
+    GovernanceFileInputToJSON,
     GovernanceRequirementFromJSON,
     GovernanceRequirementToJSON,
     ProjectRequirementFromJSON,
@@ -109,6 +112,12 @@ export interface UpdateContactRequest {
 export interface UpdateRequirementRequest {
     requirementId: string;
     requirementInput: RequirementInput;
+}
+
+export interface UpdateRequirementFileForProjectRequest {
+    requirementId: string;
+    projectId: string;
+    governanceFileInput: GovernanceFileInput;
 }
 
 /**
@@ -824,6 +833,56 @@ export class GovernanceApi extends runtime.BaseAPI {
     async updateRequirement(requestParameters: UpdateRequirementRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GovernanceRequirement> {
         const response = await this.updateRequirementRaw(requestParameters, initOverrides);
         return await response.value();
+    }
+
+    /**
+     * Updates the project-specific file for a requirement
+     * Update the project file for a requirement
+     */
+    async updateRequirementFileForProjectRaw(requestParameters: UpdateRequirementFileForProjectRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.requirementId === null || requestParameters.requirementId === undefined) {
+            throw new runtime.RequiredError('requirementId','Required parameter requestParameters.requirementId was null or undefined when calling updateRequirementFileForProject.');
+        }
+
+        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
+            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling updateRequirementFileForProject.');
+        }
+
+        if (requestParameters.governanceFileInput === null || requestParameters.governanceFileInput === undefined) {
+            throw new runtime.RequiredError('governanceFileInput','Required parameter requestParameters.governanceFileInput was null or undefined when calling updateRequirementFileForProject.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/governance/requirements/{requirementId}/projects/{projectId}`.replace(`{${"requirementId"}}`, encodeURIComponent(String(requestParameters.requirementId))).replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))),
+            method: 'PUT',
+            headers: headerParameters,
+            query: queryParameters,
+            body: GovernanceFileInputToJSON(requestParameters.governanceFileInput),
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Updates the project-specific file for a requirement
+     * Update the project file for a requirement
+     */
+    async updateRequirementFileForProject(requestParameters: UpdateRequirementFileForProjectRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.updateRequirementFileForProjectRaw(requestParameters, initOverrides);
     }
 
 }
