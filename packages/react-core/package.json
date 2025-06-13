@@ -1,0 +1,24 @@
+{
+  "name": "@cirrobio/react-core",
+  "description": "Core providers and functions for Cirro React applications",
+  "version": "0.0.1",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/types/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "npx rollup --config",
+    "build:clean": "rm -rf dist && npm run build",
+    "type-check": "tsc --noEmit",
+    "prepare": "npm run build",
+    "test": "jest --coverage --silent --passWithNoTests"
+  },
+  "dependencies": {
+    "@cirrobio/sdk": "^0.4.4"
+  },
+  "peerDependencies": {
+    "react": "^16.14 || ^17 || ^18 || ^19"
+  }
+}

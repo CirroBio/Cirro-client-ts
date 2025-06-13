@@ -9,5 +9,5 @@ const money = new Intl.NumberFormat('en-US', {
  * @param value Input number or bigint value.
  */
 export function toMoney(value: number | bigint): string {
-  return money.format(value);
+  return money.format(value as number);
 }

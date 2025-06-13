@@ -1,0 +1,34 @@
+{
+  "name": "@cirrobio/react-auth",
+  "description": "Provides authentication configuration and components for React applications using Cirro.",
+  "version": "0.0.1",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/types/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "npx rollup --config",
+    "build:clean": "rm -rf dist && npm run build",
+    "type-check": "tsc --noEmit",
+    "prepare": "npm run build",
+    "test": "jest --coverage --silent --passWithNoTests"
+  },
+  "dependencies": {
+    "@cirrobio/api-client": "^0.4.4",
+    "@cirrobio/react-core": "^0.0.1",
+    "@cirrobio/sdk": "^0.4.4",
+    "@mui/icons-material": "^5.17.1",
+    "@mui/lab": "^5.0.0-alpha.176",
+    "@mui/material": "^5.15.10",
+    "aws-amplify": "^6.15.0"
+  },
+  "peerDependencies": {
+    "@emotion/react": "^11.11.3",
+    "@emotion/styled": "^11.11.0",
+    "@mui/material": "^5.15.10",
+    "react": "^16.14 || ^17 || ^18 || ^19",
+    "react-dom": "^16.14 || ^17 || ^18 || ^19"
+  }
+}

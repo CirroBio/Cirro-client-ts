@@ -1,6 +1,6 @@
 {
   "name": "@cirrobio/sdk",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "description": "SDK for Cirro",
   "author": "CirroBio",
   "repository": {
@@ -11,11 +11,17 @@
   "license": "MIT",
   "homepage": "https://cirro.bio",
   "main": "./dist/index.js",
-  "typings": "./dist/index.d.ts",
+  "module": "./dist/index.esm.js",
+  "typings": "./dist/types/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "build": "tsc",
+    "build": "npx rollup --config",
+    "build:clean": "rm -rf dist && npm run build",
+    "type-check": "tsc --noEmit",
     "prepare": "npm run build",
-    "test": "jest --coverage --silent"
+    "test": "jest --coverage --silent --passWithNoTests"
   },
   "jest": {
     "coverageReporters": [
@@ -23,19 +29,18 @@
     ],
     "preset": "ts-jest"
   },
-  "devDependencies": {
-    "typescript": "^4.0",
-    "@types/jest": "^29.5.5",
-    "jest": "^29.7.0",
-    "ts-jest": "^29.1.1",
-    "@types/node": "^22.13.1"
-  },
-  "peerDependencies": {
-    "@cirrobio/api-client": "*"
-  },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.34.0",
     "@aws-sdk/lib-storage": "^3.34.0",
-    "@aws-sdk/s3-request-presigner": "^3.34.0"
+    "@aws-sdk/s3-request-presigner": "^3.34.0",
+    "@cirrobio/api-client": "^0.4.4",
+    "uuid": "^11.1.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.5",
+    "@types/node": "^22.13.1",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.1",
+    "typescript": "^5.8.3"
   }
 }

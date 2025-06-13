@@ -1,0 +1,27 @@
+{
+  "name": "@cirrobio/react-ui-core",
+  "description": "Core UI components & theming for Cirro React applications",
+  "version": "0.0.1",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/types/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "npx rollup --config",
+    "build:clean": "rm -rf dist && npm run build",
+    "type-check": "tsc --noEmit",
+    "prepare": "npm run build",
+    "test": "jest --coverage --silent --passWithNoTests"
+  },
+  "dependencies": {
+    "@cirrobio/sdk": "^0.4.4"
+  },
+  "peerDependencies": {
+    "@emotion/react": "^11.11.3",
+    "@emotion/styled": "^11.11.0",
+    "@mui/material": "^5.15.10",
+    "react": "^16.14 || ^17 || ^18 || ^19"
+  }
+}

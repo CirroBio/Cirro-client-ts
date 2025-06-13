@@ -1,4 +1,4 @@
-import { FileSystemObject } from "./file-object.model";
+import { FileSystemObject } from "./models/file-object.model";
 
 /**
  * Calculate the total size of all files in a directory.
