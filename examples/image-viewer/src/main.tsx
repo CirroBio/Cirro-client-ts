@@ -4,7 +4,7 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import { Viewer } from "./Viewer";
 import { ViewerProvider } from "@cirrobio/react-tool";
-import { ThemeProvider } from "@cirrobio/react-core";
+import { ThemeProvider } from "@cirrobio/react-ui-core";
 
 // This viewer can use getSignedUrl directly so we don't need to patch fetch.
 const patchFetch = false;
