@@ -1,24 +1,8 @@
-import { defineConfig } from 'rollup';
-import typescript from '@rollup/plugin-typescript';
+import { createRollupConfig } from '../shared/rollup.config.base.mjs';
+import { dirname, resolve } from 'path';
+import { fileURLToPath } from 'url';
 
-const config = defineConfig([
-    {
-        input: 'src/index.ts',
-        output: [
-            {
-                file: 'dist/index.js',
-                format: 'cjs',
-                sourcemap: true
-            },
-            {
-                file: 'dist/index.esm.js',
-                format: 'esm',
-                sourcemap: true
-            },
-        ],
-        plugins: [typescript({ declarationDir: 'dist/types' })],
-        external: ['react', 'react-dom'],
-    }
-]);
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const packagePath = resolve(__dirname);
 
-export default config;
+export default createRollupConfig(packagePath);

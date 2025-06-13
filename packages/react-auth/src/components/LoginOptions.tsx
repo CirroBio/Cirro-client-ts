@@ -35,7 +35,7 @@ export function LoginOptions({ loginProviders, onSelect, busy, success }: Readon
       {cognitoEnabled && (
         <form style={{ width: '100%' }}>
           <Stack alignItems="center" gap={3} direction="column">
-            {ssoProviders.length > 0 && (<Divider textAlign="center" flexItem>OR</Divider>)}
+            {ssoProviders.length > 0 && (<Divider textAlign="center" color="secondary" flexItem>OR</Divider>)}
             <TextField
               label="Email"
               size="medium"
@@ -43,11 +43,13 @@ export function LoginOptions({ loginProviders, onSelect, busy, success }: Readon
               variant="outlined"
               autoComplete="off"
               type="email"
+              fullWidth={true}
               required
               onChange={(e) => setEmail(e.target.value)}
             />
             <LoadingButton
               type="submit"
+              sx={{ p: 2, width: '100%' }}
               loading={busy}
               disabled={!email?.trim() || success}
               variant="contained"

@@ -47,7 +47,7 @@ export function LoginModal({ onClose, open }: Readonly<IProps>): ReactElement {
         setBusy(false);
         setMessage(LOGIN_SENT_SUCCESS_MSG);
       } catch (e) {
-        setError(e.message);
+        setError(e instanceof Error ? e.message : 'An error occurred');
         setBusy(false);
       }
     } else {
@@ -68,8 +68,8 @@ export function LoginModal({ onClose, open }: Readonly<IProps>): ReactElement {
     <Dialog
       open={open}
       onClose={onClose}
-      PaperProps={{ sx: { p: 0, background: "#FFF" } }}
-      fullWidth
+      PaperProps={{ sx: { p: 3, background: "#FFF", width: '480px' } }}
+      
       aria-label="login dialog"
     >
       <Stack alignItems="left" justifyContent="space-between" gap={1} direction={{ xs: 'row' }}>
@@ -94,7 +94,7 @@ export function LoginModal({ onClose, open }: Readonly<IProps>): ReactElement {
           </Stack>
         }
       </Stack>
-      <Stack sx={{ p: 4, pt: 0 }}>
+      <Stack sx={{  pt: 0 }}>
         <LoginOptions loginProviders={loginProviders} onSelect={handleLogin} busy={busy} success={!!message} />
         {error && (
           <Alert severity="error" sx={{ mt: 4 }}>{error}</Alert>

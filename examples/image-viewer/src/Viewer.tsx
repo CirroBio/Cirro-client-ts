@@ -1,8 +1,9 @@
-import { Box, Tooltip, Typography } from '@mui/material';
+import { AppBar, Box, Button, Card, CardContent, Chip, Container, Divider, IconButton, Stack, Toolbar, Tooltip, Typography } from '@mui/material';
 import React, { useEffect, useMemo, useState } from 'react';
 import { DownloadableFile, FILE_IMAGE_EXTENSIONS, matchesExtension } from "@cirrobio/sdk";
 import { useWindowSize } from "@cirrobio/react-core";
 import { useViewerServices, useViewerState } from "@cirrobio/react-tool";
+import { DownloadOutlined, InfoOutlined } from '@mui/icons-material';
 
 interface ViewerState {
   asset: DownloadableFile | null;
@@ -44,22 +45,89 @@ export function Viewer() {
 
   // Detect if there are no files to display
   if (!images?.length) {
-    return <Typography variant="body2">No Files</Typography>
+    return (
+      <Container>
+        <Card>
+          <CardContent>
+            <Typography variant="h3" color="secondary">No Files Available</Typography>
+            <Typography variant="body2" color="text.secondary">Please select a dataset with image files.</Typography>
+          </CardContent>
+        </Card>
+      </Container>
+    );
   }
 
   // Render the viewer with the selected image
   return (
-    <div style={{
-      marginLeft: 0, paddingLeft: 0,
-      height: "100vh", width: viewSize.width, display: 'flex', flexDirection: 'column',
-    }}>
-      <Box sx={{
-        height: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'space-between', p: 2,
-      }}>
-        <Tooltip title={state.asset?.name}>
-          <img alt={state.asset?.name} src={state.url} style={{ maxHeight: '100%', maxWidth: '90%' }} />
-        </Tooltip>
-      </Box>
-    </div>
+    <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+      <AppBar position="static">
+        <Toolbar>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            Cirro Image Viewer
+          </Typography>
+          <Stack direction="row" spacing={1}>
+            <Chip 
+              label={`${images.length} Images`} 
+              color="primary" 
+              variant="filled"
+            />
+            <Tooltip title="Download Image">
+              <IconButton color="inherit" onClick={() => window.open(state.url, '_blank')}>
+                <DownloadOutlined />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Image Info">
+              <IconButton color="inherit">
+                <InfoOutlined />
+              </IconButton>
+            </Tooltip>
+          </Stack>
+        </Toolbar>
+      </AppBar>
+
+      <Container sx={{ flexGrow: 1, py: 3 }}>
+        <Card>
+          <CardContent>
+            <Stack spacing={2}>
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <Typography variant="h4" color="secondary">
+                  {state.asset?.name}
+                </Typography>
+                <Button 
+                  variant="contained" 
+                  color="primary"
+                  startIcon={<DownloadOutlined />}
+                  onClick={() => window.open(state.url, '_blank')}
+                >
+                  Download
+                </Button>
+              </Box>
+              <Divider />
+              <Box sx={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                justifyContent: 'center',
+                minHeight: '60vh',
+                bgcolor: 'background.default',
+                borderRadius: 1,
+                p: 2
+              }}>
+                <Tooltip title={state.asset?.name}>
+                  <img 
+                    alt={state.asset?.name} 
+                    src={state.url} 
+                    style={{ 
+                      maxHeight: '100%', 
+                      maxWidth: '100%',
+                      objectFit: 'contain'
+                    }} 
+                  />
+                </Tooltip>
+              </Box>
+            </Stack>
+          </CardContent>
+        </Card>
+      </Container>
+    </Box>
   );
 }

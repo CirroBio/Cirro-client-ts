@@ -17,9 +17,10 @@
     "dist"
   ],
   "scripts": {
-    "build": "rollup -c",
-    "prepare": "npm run build",
-    "test": "jest --coverage --silent"
+    "build": "npx rollup --config",
+    "build:clean": "rm -rf dist && npm run build",
+    "type-check": "tsc --noEmit",
+    "prepare": "npm run build"
   },
   "jest": {
     "coverageReporters": [

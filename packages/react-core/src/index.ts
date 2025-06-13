@@ -1,5 +1,5 @@
 export * from './hooks';
-
+export * from './theme';
 // App Config
 export { useAppConfig } from './app-config/useAppConfig';
 export { AppConfigProvider } from './app-config/app-config-provider';

@@ -35,3 +35,24 @@ To update the API client, bump the version in  `openapitools.json` under `npmVer
 To update the SDK, bump the version in `packages/sdk/package.json` under `version`. 
 
 You must have Java installed to use the openapi-generator-cli.
+
+
+
+## Getting Started
+
+To run the example project (image-viewer) locally, follow these steps:
+
+1. Install dependencies (from the root of the monorepo):
+   ```sh
+   yarn install
+   ```
+2. Build all packages (from the root):
+   ```sh
+   yarn build
+   ```
+3. Launch the example app (from the example directory):
+   ```sh
+   cd examples/image-viewer
+   yarn dev
+   ```
+   This starts the Vite dev server (typically at http://localhost:8000/tools/image).

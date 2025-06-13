@@ -1,6 +1,7 @@
 {
   "name": "@cirrobio/react-tool",
   "version": "0.0.1",
+  "description": "React components and utilities for developing Cirro tools",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "types": "dist/types/index.d.ts",
@@ -8,9 +9,9 @@
     "dist"
   ],
   "scripts": {
-    "build": "rollup --config",
+    "build": "npx rollup --config",
     "prepare": "npm run build",
-    "test": "jest --coverage --silent"
+    "test": "jest --coverage --silent --passWithNoTests"
   },
   "dependencies": {
     "@cirrobio/api-client": "^0.4.4",
@@ -19,6 +20,9 @@
     "@cirrobio/sdk": "^0.4.4"
   },
   "peerDependencies": {
+    "@emotion/react": "^11.11.3",
+    "@emotion/styled": "^11.11.0",
+    "@mui/material": "^5.15.10",
     "react": "^16.14 || ^17 || ^18 || ^19",
     "react-dom": "^16.14 || ^17 || ^18 || ^19"
   }
