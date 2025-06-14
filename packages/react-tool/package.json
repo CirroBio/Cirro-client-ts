@@ -2,6 +2,14 @@
   "name": "@cirrobio/react-tool",
   "version": "0.0.1",
   "description": "React components and utilities for developing Cirro tools",
+  "author": "CirroBio",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/CirroBio/Cirro-client-ts.git",
+    "directory": "packages/react-tool"
+  },
+  "license": "MIT",
+  "homepage": "https://cirro.bio",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "types": "dist/types/index.d.ts",

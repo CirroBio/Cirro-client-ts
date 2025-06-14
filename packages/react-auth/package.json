@@ -1,7 +1,15 @@
 {
   "name": "@cirrobio/react-auth",
-  "description": "Provides authentication configuration and components for React applications using Cirro.",
   "version": "0.0.1",
+  "description": "Provides authentication configuration and components for React applications using Cirro.",
+  "author": "CirroBio",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/CirroBio/Cirro-client-ts.git",
+    "directory": "packages/react-auth"
+  },
+  "license": "MIT",
+  "homepage": "https://cirro.bio",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "types": "dist/types/index.d.ts",

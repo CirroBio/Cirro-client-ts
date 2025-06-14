@@ -16,7 +16,8 @@
   "homepage": "https://cirro.bio",
   "scripts": {
     "build": "turbo run build --filter='./packages/*'",
-    "test": "turbo run test --filter='./packages/*' --filter='!@cirrobio/sdk'",
+    "test": "turbo run test --filter='./packages/*'",
+    "build:clean": "turbo run build:clean --filter='./packages/*'",
     "apiCodeGen": "openapi-generator-cli generate --generator-key cirro"
   },
   "packageManager": "yarn@4.1.1",
