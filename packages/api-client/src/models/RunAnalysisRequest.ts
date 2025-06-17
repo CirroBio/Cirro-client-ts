@@ -50,6 +50,12 @@ export interface RunAnalysisRequest {
      */
     sourceSampleIds?: Array<string> | null;
     /**
+     * Files containing samples used to define source data input to this workflow. If not specified, all files will be used. Keys are sampleIds, and the lists are file paths to include.
+     * @type {{ [key: string]: Array<string>; }}
+     * @memberof RunAnalysisRequest
+     */
+    sourceSampleFilesMap?: { [key: string]: Array<string>; } | null;
+    /**
      * Used for caching task execution. If the parameters are the same as the dataset specified here, it will re-use the output to minimize duplicate work
      * @type {string}
      * @memberof RunAnalysisRequest
@@ -104,6 +110,7 @@ export function RunAnalysisRequestFromJSONTyped(json: any, ignoreDiscriminator: 
         'processId': json['processId'],
         'sourceDatasetIds': json['sourceDatasetIds'],
         'sourceSampleIds': !exists(json, 'sourceSampleIds') ? undefined : json['sourceSampleIds'],
+        'sourceSampleFilesMap': !exists(json, 'sourceSampleFilesMap') ? undefined : json['sourceSampleFilesMap'],
         'resumeDatasetId': !exists(json, 'resumeDatasetId') ? undefined : json['resumeDatasetId'],
         'params': json['params'],
         'notificationEmails': json['notificationEmails'],
@@ -125,6 +132,7 @@ export function RunAnalysisRequestToJSON(value?: RunAnalysisRequest | null): any
         'processId': value.processId,
         'sourceDatasetIds': value.sourceDatasetIds,
         'sourceSampleIds': value.sourceSampleIds,
+        'sourceSampleFilesMap': value.sourceSampleFilesMap,
         'resumeDatasetId': value.resumeDatasetId,
         'params': value.params,
         'notificationEmails': value.notificationEmails,

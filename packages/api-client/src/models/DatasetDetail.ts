@@ -93,6 +93,12 @@ export interface DatasetDetail {
      */
     sourceSampleIds: Array<string>;
     /**
+     * Keys are sampleIds, and the lists are file paths to include.
+     * @type {{ [key: string]: Array<string>; }}
+     * @memberof DatasetDetail
+     */
+    sourceSampleFilesMap: { [key: string]: Array<string>; };
+    /**
      * 
      * @type {Status}
      * @memberof DatasetDetail
@@ -168,6 +174,7 @@ export function instanceOfDatasetDetail(value: object): boolean {
     isInstance = isInstance && "sourceDatasetIds" in value;
     isInstance = isInstance && "sourceDatasets" in value;
     isInstance = isInstance && "sourceSampleIds" in value;
+    isInstance = isInstance && "sourceSampleFilesMap" in value;
     isInstance = isInstance && "status" in value;
     isInstance = isInstance && "statusMessage" in value;
     isInstance = isInstance && "tags" in value;
@@ -200,6 +207,7 @@ export function DatasetDetailFromJSONTyped(json: any, ignoreDiscriminator: boole
         'sourceDatasetIds': json['sourceDatasetIds'],
         'sourceDatasets': ((json['sourceDatasets'] as Array<any>).map(NamedItemFromJSON)),
         'sourceSampleIds': json['sourceSampleIds'],
+        'sourceSampleFilesMap': json['sourceSampleFilesMap'],
         'status': StatusFromJSON(json['status']),
         'statusMessage': json['statusMessage'],
         'tags': ((json['tags'] as Array<any>).map(TagFromJSON)),
@@ -231,6 +239,7 @@ export function DatasetDetailToJSON(value?: DatasetDetail | null): any {
         'sourceDatasetIds': value.sourceDatasetIds,
         'sourceDatasets': ((value.sourceDatasets as Array<any>).map(NamedItemToJSON)),
         'sourceSampleIds': value.sourceSampleIds,
+        'sourceSampleFilesMap': value.sourceSampleFilesMap,
         'status': StatusToJSON(value.status),
         'statusMessage': value.statusMessage,
         'tags': ((value.tags as Array<any>).map(TagToJSON)),

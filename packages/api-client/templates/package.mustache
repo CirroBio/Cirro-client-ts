@@ -19,6 +19,9 @@
 {{#supportsES6}}
   "module": "./dist/esm/index.js",
   "sideEffects": false,
+  "files": [
+    "dist"
+  ],
 {{/supportsES6}}
   "scripts": {
     "build": "tsc{{#supportsES6}} && tsc -p tsconfig.esm.json{{/supportsES6}}"{{^sagasAndRecords}},
