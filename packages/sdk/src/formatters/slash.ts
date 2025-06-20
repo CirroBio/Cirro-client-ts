@@ -3,7 +3,10 @@
  * @param path Input path
  */
 export function removeStartingSlash(path: string): string {
-  return path?.startsWith('/') ? path.substring(1) : path;
+  if (!path) return path;
+  if (path.startsWith('./')) return path.substring(2);
+  if (path.startsWith('/')) return path.substring(1);
+  return path;
 }
 
 /**
