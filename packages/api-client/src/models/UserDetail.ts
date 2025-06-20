@@ -88,6 +88,12 @@ export interface UserDetail {
     signUpTime?: Date | null;
     /**
      * 
+     * @type {Date}
+     * @memberof UserDetail
+     */
+    lastSignedIn?: Date | null;
+    /**
+     * 
      * @type {Array<UserProjectAssignment>}
      * @memberof UserDetail
      */
@@ -145,6 +151,7 @@ export function UserDetailFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'department': json['department'],
         'invitedBy': json['invitedBy'],
         'signUpTime': !exists(json, 'signUpTime') ? undefined : (json['signUpTime'] === null ? null : new Date(json['signUpTime'])),
+        'lastSignedIn': !exists(json, 'lastSignedIn') ? undefined : (json['lastSignedIn'] === null ? null : new Date(json['lastSignedIn'])),
         'projectAssignments': ((json['projectAssignments'] as Array<any>).map(UserProjectAssignmentFromJSON)),
         'groups': json['groups'],
         'settings': UserSettingsFromJSON(json['settings']),
@@ -169,6 +176,7 @@ export function UserDetailToJSON(value?: UserDetail | null): any {
         'department': value.department,
         'invitedBy': value.invitedBy,
         'signUpTime': value.signUpTime === undefined ? undefined : (value.signUpTime === null ? null : value.signUpTime.toISOString()),
+        'lastSignedIn': value.lastSignedIn === undefined ? undefined : (value.lastSignedIn === null ? null : value.lastSignedIn.toISOString()),
         'projectAssignments': ((value.projectAssignments as Array<any>).map(UserProjectAssignmentToJSON)),
         'groups': value.groups,
         'settings': UserSettingsToJSON(value.settings),

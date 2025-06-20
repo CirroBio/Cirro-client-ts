@@ -32,6 +32,7 @@ describe('normalizeDate', () => {
 describe('removeStartingSlash', () => {
   it('should remove the starting slash from a string', () => {
     expect(removeStartingSlash('/example/path/')).toBe('example/path/');
+    expect(removeStartingSlash('./example/path/')).toBe('example/path/');
   });
 });
 
