@@ -97,6 +97,7 @@ export interface GetRequirementsRequest {
 
 export interface GetRequirementsByProjectRequest {
     projectId: string;
+    username?: string;
 }
 
 export interface UpdateClassificationRequest {
@@ -664,6 +665,10 @@ export class GovernanceApi extends runtime.BaseAPI {
         }
 
         const queryParameters: any = {};
+
+        if (requestParameters.username !== undefined) {
+            queryParameters['username'] = requestParameters.username;
+        }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
