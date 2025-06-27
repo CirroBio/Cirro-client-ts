@@ -135,6 +135,12 @@ export interface ProjectRequirement {
      */
     expirationDate?: Date | null;
     /**
+     * Whether the requirement is past the enactment date
+     * @type {boolean}
+     * @memberof ProjectRequirement
+     */
+    isEnacted: boolean;
+    /**
      * Optional files with extra information, e.g. templates for documents, links, etc
      * @type {Array<GovernanceFile>}
      * @memberof ProjectRequirement
@@ -152,6 +158,12 @@ export interface ProjectRequirement {
      * @memberof ProjectRequirement
      */
     authorship?: GovernanceScope | null;
+    /**
+     * A requirement is project configured if it was created by the tenant but needs a file uploaded by the project
+     * @type {boolean}
+     * @memberof ProjectRequirement
+     */
+    isProjectConfigured: boolean;
     /**
      * 
      * @type {GovernanceTrainingVerification}
@@ -203,6 +215,8 @@ export function instanceOfProjectRequirement(value: object): boolean {
     isInstance = isInstance && "supplementalPath" in value;
     isInstance = isInstance && "scope" in value;
     isInstance = isInstance && "contacts" in value;
+    isInstance = isInstance && "isEnacted" in value;
+    isInstance = isInstance && "isProjectConfigured" in value;
     isInstance = isInstance && "isFulfilled" in value;
 
     return isInstance;
@@ -231,9 +245,11 @@ export function ProjectRequirementFromJSONTyped(json: any, ignoreDiscriminator: 
         'expirationType': !exists(json, 'expirationType') ? undefined : GovernanceExpiryTypeFromJSON(json['expirationType']),
         'expirationDaysAfterCompletion': !exists(json, 'expirationDaysAfterCompletion') ? undefined : json['expirationDaysAfterCompletion'],
         'expirationDate': !exists(json, 'expirationDate') ? undefined : (json['expirationDate'] === null ? null : new Date(json['expirationDate'])),
+        'isEnacted': json['isEnacted'],
         'supplementalDocs': !exists(json, 'supplementalDocs') ? undefined : (json['supplementalDocs'] === null ? null : (json['supplementalDocs'] as Array<any>).map(GovernanceFileFromJSON)),
         'file': !exists(json, 'file') ? undefined : GovernanceFileFromJSON(json['file']),
         'authorship': !exists(json, 'authorship') ? undefined : GovernanceScopeFromJSON(json['authorship']),
+        'isProjectConfigured': json['isProjectConfigured'],
         'verificationMethod': !exists(json, 'verificationMethod') ? undefined : GovernanceTrainingVerificationFromJSON(json['verificationMethod']),
         'isFulfilled': json['isFulfilled'],
         'fulfillmentId': !exists(json, 'fulfillmentId') ? undefined : json['fulfillmentId'],
@@ -265,9 +281,11 @@ export function ProjectRequirementToJSON(value?: ProjectRequirement | null): any
         'expirationType': GovernanceExpiryTypeToJSON(value.expirationType),
         'expirationDaysAfterCompletion': value.expirationDaysAfterCompletion,
         'expirationDate': value.expirationDate === undefined ? undefined : (value.expirationDate === null ? null : value.expirationDate.toISOString()),
+        'isEnacted': value.isEnacted,
         'supplementalDocs': value.supplementalDocs === undefined ? undefined : (value.supplementalDocs === null ? null : (value.supplementalDocs as Array<any>).map(GovernanceFileToJSON)),
         'file': GovernanceFileToJSON(value.file),
         'authorship': GovernanceScopeToJSON(value.authorship),
+        'isProjectConfigured': value.isProjectConfigured,
         'verificationMethod': GovernanceTrainingVerificationToJSON(value.verificationMethod),
         'isFulfilled': value.isFulfilled,
         'fulfillmentId': value.fulfillmentId,
