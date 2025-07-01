@@ -1,6 +1,6 @@
 {
   "name": "@cirrobio/react-tool",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "React components and utilities for developing Cirro tools",
   "author": "CirroBio",
   "repository": {

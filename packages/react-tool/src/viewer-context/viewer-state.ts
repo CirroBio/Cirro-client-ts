@@ -1,5 +1,5 @@
 import { Artifact, DatasetDetail, DatasetViz, ProjectDetail, Table } from "@cirrobio/api-client";
-import { Assets } from "@cirrobio/sdk";
+import { Assets, DownloadableFile, ProjectFileAccessContext } from "@cirrobio/sdk";
 
 /**
  * Represents the state of the viewer, including data about the currently selected "item".
@@ -23,7 +23,7 @@ export interface ViewerState {
   /**
    * The file path of the currently selected file.
    */
-  selectedFile?: string | null;
+  selectedFile?: DownloadableFile;
 
   /**
    * The files associated with the dataset.
@@ -41,4 +41,8 @@ export interface ViewerState {
    * The artifacts associated with the dataset.
    */
   artifacts: Artifact[] | null;
+  /**
+   * File access context, used to get any arbitrary file from the project.
+   */
+  fileAccessContext: ProjectFileAccessContext;
 }
