@@ -32,16 +32,22 @@ export function ViewerContextProvider({ children }): ReactElement {
   const dataset = useDatasetLoader(viewerState.config, dataService);
   const manifest = useManifestLoader(viewerState.config, dataService);
 
+  const fileAccessContext = useMemo(() => {
+    if (!project || !dataset) {
+      return null;
+    }
+    return ProjectFileAccessContext.datasetDownload(project, dataset);
+  }, [project, dataset]);
+
   const assets = useMemo(() => {
-    if (!manifest || !project || !dataset) {
+    if (!manifest || !fileAccessContext) {
       return new Assets();
     }
-    const fileAccessContext = ProjectFileAccessContext.datasetDownload(project, dataset);
     return new ManifestParser(manifest, fileAccessContext).generateAssets(false);
-  }, [manifest, project, dataset]);
+  }, [manifest, fileAccessContext]);
 
   const state: ViewerState = useMemo(() => {
-    return new ToolViewerState(project, dataset, manifest, assets, viewerState.config?.file)
+    return new ToolViewerState(project, dataset, manifest, assets, fileAccessContext, viewerState.config?.file)
   }, [dataService, project, dataset, manifest, viewerState.config?.file]);
 
   const services: ViewerServices = { dataService, fileService };
