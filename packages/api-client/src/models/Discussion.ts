@@ -67,6 +67,12 @@ export interface Discussion {
      * @type {Date}
      * @memberof Discussion
      */
+    lastMessageTime: Date;
+    /**
+     * 
+     * @type {Date}
+     * @memberof Discussion
+     */
     createdAt: Date;
     /**
      * 
@@ -87,6 +93,7 @@ export function instanceOfDiscussion(value: object): boolean {
     isInstance = isInstance && "entity" in value;
     isInstance = isInstance && "projectId" in value;
     isInstance = isInstance && "createdBy" in value;
+    isInstance = isInstance && "lastMessageTime" in value;
     isInstance = isInstance && "createdAt" in value;
     isInstance = isInstance && "updatedAt" in value;
 
@@ -109,6 +116,7 @@ export function DiscussionFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'entity': EntityFromJSON(json['entity']),
         'projectId': json['projectId'],
         'createdBy': json['createdBy'],
+        'lastMessageTime': (new Date(json['lastMessageTime'])),
         'createdAt': (new Date(json['createdAt'])),
         'updatedAt': (new Date(json['updatedAt'])),
     };
@@ -129,6 +137,7 @@ export function DiscussionToJSON(value?: Discussion | null): any {
         'entity': EntityToJSON(value.entity),
         'projectId': value.projectId,
         'createdBy': value.createdBy,
+        'lastMessageTime': (value.lastMessageTime.toISOString()),
         'createdAt': (value.createdAt.toISOString()),
         'updatedAt': (value.updatedAt.toISOString()),
     };
