@@ -8,6 +8,7 @@ src/apis/ComputeEnvironmentApi.ts
 src/apis/DashboardsApi.ts
 src/apis/DatasetsApi.ts
 src/apis/ExecutionApi.ts
+src/apis/FeedApi.ts
 src/apis/FileApi.ts
 src/apis/GovernanceApi.ts
 src/apis/MetadataApi.ts
@@ -63,6 +64,10 @@ src/models/DatasetCondition.ts
 src/models/DatasetConditionField.ts
 src/models/DatasetDetail.ts
 src/models/DatasetViz.ts
+src/models/Discussion.ts
+src/models/DiscussionInput.ts
+src/models/Entity.ts
+src/models/EntityType.ts
 src/models/EnvironmentType.ts
 src/models/ErrorMessage.ts
 src/models/Executor.ts
@@ -93,6 +98,9 @@ src/models/InviteUserRequest.ts
 src/models/InviteUserResponse.ts
 src/models/LogEntry.ts
 src/models/LoginProvider.ts
+src/models/Message.ts
+src/models/MessageInput.ts
+src/models/MessageType.ts
 src/models/MetricRecord.ts
 src/models/MoveDatasetInput.ts
 src/models/MoveDatasetResponse.ts
@@ -101,6 +109,8 @@ src/models/NotebookInstance.ts
 src/models/NotebookInstanceStatusResponse.ts
 src/models/OpenNotebookInstanceResponse.ts
 src/models/PaginatedResponseDatasetListDto.ts
+src/models/PaginatedResponseDiscussion.ts
+src/models/PaginatedResponseMessage.ts
 src/models/PaginatedResponseSampleDto.ts
 src/models/PaginatedResponseUserDto.ts
 src/models/PipelineCode.ts
@@ -138,6 +148,7 @@ src/models/Share.ts
 src/models/ShareDetail.ts
 src/models/ShareInput.ts
 src/models/ShareType.ts
+src/models/SortOrder.ts
 src/models/Status.ts
 src/models/StopExecutionResponse.ts
 src/models/SyncStatus.ts
