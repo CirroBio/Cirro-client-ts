@@ -40,11 +40,6 @@ import {
     SortOrderToJSON,
 } from '../models/index';
 
-export interface AddMessageRequest {
-    discussionId: string;
-    messageInput: MessageInput;
-}
-
 export interface CreateDiscussionRequest {
     discussionInput: DiscussionInput;
 }
@@ -78,6 +73,11 @@ export interface GetMessagesForDiscussionRequest {
     order?: SortOrder | null;
 }
 
+export interface PostMessageRequest {
+    discussionId: string;
+    messageInput: MessageInput;
+}
+
 export interface UpdateDiscussionRequest {
     discussionId: string;
     discussionInput: DiscussionInput;
@@ -93,52 +93,6 @@ export interface UpdateMessageRequest {
  * 
  */
 export class FeedApi extends runtime.BaseAPI {
-
-    /**
-     * Retrieves all messages associated with a specific discussion
-     * Get messages for a discussion
-     */
-    async addMessageRaw(requestParameters: AddMessageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.discussionId === null || requestParameters.discussionId === undefined) {
-            throw new runtime.RequiredError('discussionId','Required parameter requestParameters.discussionId was null or undefined when calling addMessage.');
-        }
-
-        if (requestParameters.messageInput === null || requestParameters.messageInput === undefined) {
-            throw new runtime.RequiredError('messageInput','Required parameter requestParameters.messageInput was null or undefined when calling addMessage.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("accessToken", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/discussions/{discussionId}/messages`.replace(`{${"discussionId"}}`, encodeURIComponent(String(requestParameters.discussionId))),
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-            body: MessageInputToJSON(requestParameters.messageInput),
-        }, initOverrides);
-
-        return new runtime.VoidApiResponse(response);
-    }
-
-    /**
-     * Retrieves all messages associated with a specific discussion
-     * Get messages for a discussion
-     */
-    async addMessage(requestParameters: AddMessageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.addMessageRaw(requestParameters, initOverrides);
-    }
 
     /**
      * Creates a new discussion for an entity
@@ -423,6 +377,52 @@ export class FeedApi extends runtime.BaseAPI {
     async getMessagesForDiscussion(requestParameters: GetMessagesForDiscussionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<PaginatedResponseMessage> {
         const response = await this.getMessagesForDiscussionRaw(requestParameters, initOverrides);
         return await response.value();
+    }
+
+    /**
+     * Posts a new message to a discussion
+     * Post a message
+     */
+    async postMessageRaw(requestParameters: PostMessageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.discussionId === null || requestParameters.discussionId === undefined) {
+            throw new runtime.RequiredError('discussionId','Required parameter requestParameters.discussionId was null or undefined when calling postMessage.');
+        }
+
+        if (requestParameters.messageInput === null || requestParameters.messageInput === undefined) {
+            throw new runtime.RequiredError('messageInput','Required parameter requestParameters.messageInput was null or undefined when calling postMessage.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/discussions/{discussionId}/messages`.replace(`{${"discussionId"}}`, encodeURIComponent(String(requestParameters.discussionId))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: MessageInputToJSON(requestParameters.messageInput),
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Posts a new message to a discussion
+     * Post a message
+     */
+    async postMessage(requestParameters: PostMessageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.postMessageRaw(requestParameters, initOverrides);
     }
 
     /**
