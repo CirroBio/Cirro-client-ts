@@ -64,6 +64,12 @@ export interface Message {
     links: Array<Entity>;
     /**
      * 
+     * @type {boolean}
+     * @memberof Message
+     */
+    hasReplies: boolean;
+    /**
+     * 
      * @type {string}
      * @memberof Message
      */
@@ -91,6 +97,7 @@ export function instanceOfMessage(value: object): boolean {
     isInstance = isInstance && "id" in value;
     isInstance = isInstance && "message" in value;
     isInstance = isInstance && "links" in value;
+    isInstance = isInstance && "hasReplies" in value;
     isInstance = isInstance && "createdBy" in value;
     isInstance = isInstance && "createdAt" in value;
     isInstance = isInstance && "updatedAt" in value;
@@ -113,6 +120,7 @@ export function MessageFromJSONTyped(json: any, ignoreDiscriminator: boolean): M
         'message': json['message'],
         'parentMessageId': !exists(json, 'parentMessageId') ? undefined : json['parentMessageId'],
         'links': ((json['links'] as Array<any>).map(EntityFromJSON)),
+        'hasReplies': json['hasReplies'],
         'createdBy': json['createdBy'],
         'createdAt': (new Date(json['createdAt'])),
         'updatedAt': (new Date(json['updatedAt'])),
@@ -133,6 +141,7 @@ export function MessageToJSON(value?: Message | null): any {
         'message': value.message,
         'parentMessageId': value.parentMessageId,
         'links': ((value.links as Array<any>).map(EntityToJSON)),
+        'hasReplies': value.hasReplies,
         'createdBy': value.createdBy,
         'createdAt': (value.createdAt.toISOString()),
         'updatedAt': (value.updatedAt.toISOString()),
