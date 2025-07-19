@@ -1821,13 +1821,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@cirrobio/api-client@npm:^0.9.0, @cirrobio/api-client@npm:^0.9.1, @cirrobio/api-client@workspace:packages/api-client":
+"@cirrobio/api-client@npm:^0.10.0, @cirrobio/api-client@workspace:packages/api-client":
   version: 0.0.0-use.local
   resolution: "@cirrobio/api-client@workspace:packages/api-client"
   dependencies:
     typescript: "npm:^4.0"
   languageName: unknown
   linkType: soft
+
+"@cirrobio/api-client@npm:^0.9.0, @cirrobio/api-client@npm:^0.9.1":
+  version: 0.9.4
+  resolution: "@cirrobio/api-client@npm:0.9.4"
+  checksum: 10c0/64fad370edb2b3b84d98e83958c9f5a37139dfe600c9b2bb6e6968644fe6391ba13502ae76988b933bf9013502c0f6e14760790b9b8aa2a54a9c488fbfd14bd9
+  languageName: node
+  linkType: hard
 
 "@cirrobio/react-auth@npm:^0.0.1, @cirrobio/react-auth@workspace:packages/react-auth":
   version: 0.0.0-use.local
@@ -1889,14 +1896,27 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@cirrobio/sdk@npm:^0.9.0, @cirrobio/sdk@workspace:*, @cirrobio/sdk@workspace:packages/sdk":
+"@cirrobio/sdk@npm:^0.9.0":
+  version: 0.9.4
+  resolution: "@cirrobio/sdk@npm:0.9.4"
+  dependencies:
+    "@aws-sdk/client-s3": "npm:^3.34.0"
+    "@aws-sdk/lib-storage": "npm:^3.34.0"
+    "@aws-sdk/s3-request-presigner": "npm:^3.34.0"
+    "@cirrobio/api-client": "npm:^0.9.1"
+    uuid: "npm:^11.1.0"
+  checksum: 10c0/066d427a606084aaa8370661f7b93b62b23df2c7a1dd65668608d6773f0aaa477e1ee0ec08839f5c00a489bd76d010160a674e00e5d88180fdeb216d54c74ff0
+  languageName: node
+  linkType: hard
+
+"@cirrobio/sdk@workspace:*, @cirrobio/sdk@workspace:packages/sdk":
   version: 0.0.0-use.local
   resolution: "@cirrobio/sdk@workspace:packages/sdk"
   dependencies:
     "@aws-sdk/client-s3": "npm:^3.34.0"
     "@aws-sdk/lib-storage": "npm:^3.34.0"
     "@aws-sdk/s3-request-presigner": "npm:^3.34.0"
-    "@cirrobio/api-client": "npm:^0.9.1"
+    "@cirrobio/api-client": "npm:^0.10.0"
     "@types/jest": "npm:^29.5.5"
     "@types/node": "npm:^22.13.1"
     jest: "npm:^29.7.0"
