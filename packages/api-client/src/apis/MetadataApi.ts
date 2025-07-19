@@ -46,6 +46,11 @@ export interface GetProjectSchemaRequest {
     projectId: string;
 }
 
+export interface GetSampleByIdRequest {
+    projectId: string;
+    sampleId: string;
+}
+
 export interface UpdateProjectSchemaRequest {
     projectId: string;
     formSchema: FormSchema;
@@ -189,6 +194,50 @@ export class MetadataApi extends runtime.BaseAPI {
      */
     async getProjectSchema(requestParameters: GetProjectSchemaRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<FormSchema> {
         const response = await this.getProjectSchemaRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Retrieves a sample by its ID along with its metadata
+     * Get sample by ID
+     */
+    async getSampleByIdRaw(requestParameters: GetSampleByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Sample>> {
+        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
+            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling getSampleById.');
+        }
+
+        if (requestParameters.sampleId === null || requestParameters.sampleId === undefined) {
+            throw new runtime.RequiredError('sampleId','Required parameter requestParameters.sampleId was null or undefined when calling getSampleById.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/projects/{projectId}/samples/{sampleId}`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))).replace(`{${"sampleId"}}`, encodeURIComponent(String(requestParameters.sampleId))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SampleFromJSON(jsonValue));
+    }
+
+    /**
+     * Retrieves a sample by its ID along with its metadata
+     * Get sample by ID
+     */
+    async getSampleById(requestParameters: GetSampleByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Sample> {
+        const response = await this.getSampleByIdRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

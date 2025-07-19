@@ -6,6 +6,7 @@ export * from './ComputeEnvironmentApi';
 export * from './DashboardsApi';
 export * from './DatasetsApi';
 export * from './ExecutionApi';
+export * from './FeedApi';
 export * from './FileApi';
 export * from './GovernanceApi';
 export * from './MetadataApi';
