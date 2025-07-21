@@ -13,6 +13,12 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { DiscussionType } from './DiscussionType';
+import {
+    DiscussionTypeFromJSON,
+    DiscussionTypeFromJSONTyped,
+    DiscussionTypeToJSON,
+} from './DiscussionType';
 import type { Entity } from './Entity';
 import {
     EntityFromJSON,
@@ -50,6 +56,12 @@ export interface Discussion {
      * @memberof Discussion
      */
     entity: Entity;
+    /**
+     * 
+     * @type {DiscussionType}
+     * @memberof Discussion
+     */
+    type: DiscussionType;
     /**
      * 
      * @type {string}
@@ -91,6 +103,7 @@ export function instanceOfDiscussion(value: object): boolean {
     isInstance = isInstance && "name" in value;
     isInstance = isInstance && "description" in value;
     isInstance = isInstance && "entity" in value;
+    isInstance = isInstance && "type" in value;
     isInstance = isInstance && "projectId" in value;
     isInstance = isInstance && "createdBy" in value;
     isInstance = isInstance && "lastMessageTime" in value;
@@ -114,6 +127,7 @@ export function DiscussionFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'name': json['name'],
         'description': json['description'],
         'entity': EntityFromJSON(json['entity']),
+        'type': DiscussionTypeFromJSON(json['type']),
         'projectId': json['projectId'],
         'createdBy': json['createdBy'],
         'lastMessageTime': (new Date(json['lastMessageTime'])),
@@ -135,6 +149,7 @@ export function DiscussionToJSON(value?: Discussion | null): any {
         'name': value.name,
         'description': value.description,
         'entity': EntityToJSON(value.entity),
+        'type': DiscussionTypeToJSON(value.type),
         'projectId': value.projectId,
         'createdBy': value.createdBy,
         'lastMessageTime': (value.lastMessageTime.toISOString()),
