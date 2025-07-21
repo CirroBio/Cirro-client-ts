@@ -27,6 +27,7 @@ export enum EntityType {
     Notebook = 'NOTEBOOK',
     Sample = 'SAMPLE',
     Share = 'SHARE',
+    Tag = 'TAG',
     Unknown = 'UNKNOWN'
 }
 

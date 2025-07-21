@@ -66,6 +66,7 @@ src/models/DatasetDetail.ts
 src/models/DatasetViz.ts
 src/models/Discussion.ts
 src/models/DiscussionInput.ts
+src/models/DiscussionType.ts
 src/models/Entity.ts
 src/models/EntityType.ts
 src/models/EnvironmentType.ts

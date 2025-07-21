@@ -42,6 +42,7 @@ export * from './DatasetDetail';
 export * from './DatasetViz';
 export * from './Discussion';
 export * from './DiscussionInput';
+export * from './DiscussionType';
 export * from './Entity';
 export * from './EntityType';
 export * from './EnvironmentType';
