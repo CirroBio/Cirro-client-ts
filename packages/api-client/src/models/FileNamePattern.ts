@@ -30,7 +30,7 @@ export interface FileNamePattern {
      * @type {string}
      * @memberof FileNamePattern
      */
-    description: string;
+    description?: string | null;
     /**
      * File name pattern, formatted as a valid regex, to extract sample name and other metadata.
      * @type {string}
@@ -45,7 +45,6 @@ export interface FileNamePattern {
 export function instanceOfFileNamePattern(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "exampleName" in value;
-    isInstance = isInstance && "description" in value;
     isInstance = isInstance && "sampleMatchingPattern" in value;
 
     return isInstance;
@@ -62,7 +61,7 @@ export function FileNamePatternFromJSONTyped(json: any, ignoreDiscriminator: boo
     return {
         
         'exampleName': json['exampleName'],
-        'description': json['description'],
+        'description': !exists(json, 'description') ? undefined : json['description'],
         'sampleMatchingPattern': json['sampleMatchingPattern'],
     };
 }
