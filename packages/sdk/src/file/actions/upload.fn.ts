@@ -2,7 +2,6 @@ import { Upload } from "@aws-sdk/lib-storage";
 import { AWSCredentials } from '@cirrobio/api-client';
 import { createS3Client } from "../util/s3-client";
 import { PutObjectCommandInput } from "@aws-sdk/client-s3";
-import "@aws-sdk/crc64-nvme-crt";
 
 export interface UploadFileParams {
   bucket: string;
@@ -21,8 +20,7 @@ export function uploadFile({ bucket, path, file, credentials, metadata }: Upload
     Key: path,
     Body: file,
     ContentType: file.type,
-    Metadata: metadata,
-    ChecksumAlgorithm: 'CRC64NVME'
+    Metadata: metadata
   };
   return new Upload({
     client: createS3Client(credentials),
