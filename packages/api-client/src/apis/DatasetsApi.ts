@@ -20,6 +20,7 @@ import type {
   DatasetDetail,
   ImportDataRequest,
   PaginatedResponseDatasetListDto,
+  SampleSheets,
   UpdateDatasetRequest,
   UploadDatasetCreateResponse,
   UploadDatasetRequest,
@@ -35,6 +36,8 @@ import {
     ImportDataRequestToJSON,
     PaginatedResponseDatasetListDtoFromJSON,
     PaginatedResponseDatasetListDtoToJSON,
+    SampleSheetsFromJSON,
+    SampleSheetsToJSON,
     UpdateDatasetRequestFromJSON,
     UpdateDatasetRequestToJSON,
     UploadDatasetCreateResponseFromJSON,
@@ -64,6 +67,11 @@ export interface GetDatasetsRequest {
     projectId: string;
     limit?: number;
     nextToken?: string;
+}
+
+export interface GetSampleSheetsRequest {
+    projectId: string;
+    datasetId: string;
 }
 
 export interface ImportPublicDatasetRequest {
@@ -286,6 +294,50 @@ export class DatasetsApi extends runtime.BaseAPI {
      */
     async getDatasets(requestParameters: GetDatasetsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<PaginatedResponseDatasetListDto> {
         const response = await this.getDatasetsRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Generates the sample sheet output for this dataset, useful for debugging the preprocess script.
+     * Generate sample sheets
+     */
+    async getSampleSheetsRaw(requestParameters: GetSampleSheetsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SampleSheets>> {
+        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
+            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling getSampleSheets.');
+        }
+
+        if (requestParameters.datasetId === null || requestParameters.datasetId === undefined) {
+            throw new runtime.RequiredError('datasetId','Required parameter requestParameters.datasetId was null or undefined when calling getSampleSheets.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/projects/{projectId}/datasets/{datasetId}/samplesheet`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))).replace(`{${"datasetId"}}`, encodeURIComponent(String(requestParameters.datasetId))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SampleSheetsFromJSON(jsonValue));
+    }
+
+    /**
+     * Generates the sample sheet output for this dataset, useful for debugging the preprocess script.
+     * Generate sample sheets
+     */
+    async getSampleSheets(requestParameters: GetSampleSheetsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SampleSheets> {
+        const response = await this.getSampleSheetsRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

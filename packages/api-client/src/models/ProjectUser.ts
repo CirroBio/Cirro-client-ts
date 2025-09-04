@@ -58,6 +58,12 @@ export interface ProjectUser {
     email: string;
     /**
      * 
+     * @type {string}
+     * @memberof ProjectUser
+     */
+    jobTitle: string;
+    /**
+     * 
      * @type {ProjectRole}
      * @memberof ProjectUser
      */
@@ -74,6 +80,7 @@ export function instanceOfProjectUser(value: object): boolean {
     isInstance = isInstance && "organization" in value;
     isInstance = isInstance && "department" in value;
     isInstance = isInstance && "email" in value;
+    isInstance = isInstance && "jobTitle" in value;
     isInstance = isInstance && "role" in value;
 
     return isInstance;
@@ -94,6 +101,7 @@ export function ProjectUserFromJSONTyped(json: any, ignoreDiscriminator: boolean
         'organization': json['organization'],
         'department': json['department'],
         'email': json['email'],
+        'jobTitle': json['jobTitle'],
         'role': ProjectRoleFromJSON(json['role']),
     };
 }
@@ -112,6 +120,7 @@ export function ProjectUserToJSON(value?: ProjectUser | null): any {
         'organization': value.organization,
         'department': value.department,
         'email': value.email,
+        'jobTitle': value.jobTitle,
         'role': ProjectRoleToJSON(value.role),
     };
 }

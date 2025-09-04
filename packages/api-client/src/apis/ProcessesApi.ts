@@ -19,12 +19,14 @@ import type {
   CustomPipelineSettings,
   CustomProcessInput,
   ErrorMessage,
+  FileNameMatch,
   FileRequirements,
   FormSchema,
   PipelineCost,
   PortalErrorResponse,
   Process,
   ProcessDetail,
+  ValidateFileNamePatternsRequest,
   ValidateFileRequirementsRequest,
 } from '../models/index';
 import {
@@ -36,6 +38,8 @@ import {
     CustomProcessInputToJSON,
     ErrorMessageFromJSON,
     ErrorMessageToJSON,
+    FileNameMatchFromJSON,
+    FileNameMatchToJSON,
     FileRequirementsFromJSON,
     FileRequirementsToJSON,
     FormSchemaFromJSON,
@@ -48,6 +52,8 @@ import {
     ProcessToJSON,
     ProcessDetailFromJSON,
     ProcessDetailToJSON,
+    ValidateFileNamePatternsRequestFromJSON,
+    ValidateFileNamePatternsRequestToJSON,
     ValidateFileRequirementsRequestFromJSON,
     ValidateFileRequirementsRequestToJSON,
 } from '../models/index';
@@ -84,6 +90,11 @@ export interface SyncCustomProcessRequest {
 export interface UpdateCustomProcessRequest {
     processId: string;
     customProcessInput: CustomProcessInput;
+}
+
+export interface ValidateFileNamePatternsOperationRequest {
+    processId: string;
+    validateFileNamePatternsRequest: ValidateFileNamePatternsRequest;
 }
 
 export interface ValidateFileRequirementsOperationRequest {
@@ -429,6 +440,53 @@ export class ProcessesApi extends runtime.BaseAPI {
      */
     async updateCustomProcess(requestParameters: UpdateCustomProcessRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.updateCustomProcessRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Checks the input file names with the patterns for testing regex matching
+     * Validate file name patterns
+     */
+    async validateFileNamePatternsRaw(requestParameters: ValidateFileNamePatternsOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<FileNameMatch>>> {
+        if (requestParameters.processId === null || requestParameters.processId === undefined) {
+            throw new runtime.RequiredError('processId','Required parameter requestParameters.processId was null or undefined when calling validateFileNamePatterns.');
+        }
+
+        if (requestParameters.validateFileNamePatternsRequest === null || requestParameters.validateFileNamePatternsRequest === undefined) {
+            throw new runtime.RequiredError('validateFileNamePatternsRequest','Required parameter requestParameters.validateFileNamePatternsRequest was null or undefined when calling validateFileNamePatterns.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/processes/{processId}/validate-files:test`.replace(`{${"processId"}}`, encodeURIComponent(String(requestParameters.processId))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: ValidateFileNamePatternsRequestToJSON(requestParameters.validateFileNamePatternsRequest),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(FileNameMatchFromJSON));
+    }
+
+    /**
+     * Checks the input file names with the patterns for testing regex matching
+     * Validate file name patterns
+     */
+    async validateFileNamePatterns(requestParameters: ValidateFileNamePatternsOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<FileNameMatch>> {
+        const response = await this.validateFileNamePatternsRaw(requestParameters, initOverrides);
+        return await response.value();
     }
 
     /**

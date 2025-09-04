@@ -75,6 +75,12 @@ export interface DatasetDetail {
      */
     projectId: string;
     /**
+     * The originating project ID might be different if the dataset was shared from another project.
+     * @type {string}
+     * @memberof DatasetDetail
+     */
+    originatingProjectId?: string;
+    /**
      * 
      * @type {Array<string>}
      * @memberof DatasetDetail
@@ -204,6 +210,7 @@ export function DatasetDetailFromJSONTyped(json: any, ignoreDiscriminator: boole
         's3': json['s3'],
         'processId': json['processId'],
         'projectId': json['projectId'],
+        'originatingProjectId': !exists(json, 'originatingProjectId') ? undefined : json['originatingProjectId'],
         'sourceDatasetIds': json['sourceDatasetIds'],
         'sourceDatasets': ((json['sourceDatasets'] as Array<any>).map(NamedItemFromJSON)),
         'sourceSampleIds': json['sourceSampleIds'],
@@ -236,6 +243,7 @@ export function DatasetDetailToJSON(value?: DatasetDetail | null): any {
         's3': value.s3,
         'processId': value.processId,
         'projectId': value.projectId,
+        'originatingProjectId': value.originatingProjectId,
         'sourceDatasetIds': value.sourceDatasetIds,
         'sourceDatasets': ((value.sourceDatasets as Array<any>).map(NamedItemToJSON)),
         'sourceSampleIds': value.sourceSampleIds,
