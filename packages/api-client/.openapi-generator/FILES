@@ -75,6 +75,7 @@ src/models/Executor.ts
 src/models/FeatureFlags.ts
 src/models/FileEntry.ts
 src/models/FileMappingRule.ts
+src/models/FileNameMatch.ts
 src/models/FileNamePattern.ts
 src/models/FileRequirements.ts
 src/models/FormSchema.ts
@@ -142,6 +143,7 @@ src/models/ResourcesInfo.ts
 src/models/RunAnalysisRequest.ts
 src/models/Sample.ts
 src/models/SampleRequest.ts
+src/models/SampleSheets.ts
 src/models/ServiceConnection.ts
 src/models/SetUserProjectRoleRequest.ts
 src/models/SftpCredentials.ts
@@ -166,6 +168,7 @@ src/models/User.ts
 src/models/UserDetail.ts
 src/models/UserProjectAssignment.ts
 src/models/UserSettings.ts
+src/models/ValidateFileNamePatternsRequest.ts
 src/models/ValidateFileRequirementsRequest.ts
 src/models/index.ts
 src/runtime.ts

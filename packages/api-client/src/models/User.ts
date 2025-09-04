@@ -43,6 +43,12 @@ export interface User {
      * @memberof User
      */
     department: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof User
+     */
+    jobTitle: string;
 }
 
 /**
@@ -54,6 +60,7 @@ export function instanceOfUser(value: object): boolean {
     isInstance = isInstance && "username" in value;
     isInstance = isInstance && "organization" in value;
     isInstance = isInstance && "department" in value;
+    isInstance = isInstance && "jobTitle" in value;
 
     return isInstance;
 }
@@ -72,6 +79,7 @@ export function UserFromJSONTyped(json: any, ignoreDiscriminator: boolean): User
         'username': json['username'],
         'organization': json['organization'],
         'department': json['department'],
+        'jobTitle': json['jobTitle'],
     };
 }
 
@@ -88,6 +96,7 @@ export function UserToJSON(value?: User | null): any {
         'username': value.username,
         'organization': value.organization,
         'department': value.department,
+        'jobTitle': value.jobTitle,
     };
 }
 
