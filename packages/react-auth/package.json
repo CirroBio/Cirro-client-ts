@@ -24,9 +24,9 @@
     "test": "jest --coverage --silent --passWithNoTests"
   },
   "dependencies": {
-    "@cirrobio/api-client": "^0.9.0",
+    "@cirrobio/api-client": "^0.10.0",
     "@cirrobio/react-core": "^0.0.1",
-    "@cirrobio/sdk": "^0.9.0",
+    "@cirrobio/sdk": "^0.10.0",
     "@mui/icons-material": "^5.17.1",
     "@mui/lab": "^5.0.0-alpha.176",
     "@mui/material": "^5.15.10",

@@ -2,6 +2,7 @@ import { Upload } from "@aws-sdk/lib-storage";
 import { AWSCredentials } from '@cirrobio/api-client';
 import { createS3Client } from "../util/s3-client";
 import { PutObjectCommandInput } from "@aws-sdk/client-s3";
+import { CreateMultipartUploadRequest } from "@aws-sdk/client-s3/dist-types/models/models_0";
 
 export interface UploadFileParams {
   bucket: string;
@@ -15,12 +16,13 @@ export interface UploadFileParams {
  * Upload a file to S3
  */
 export function uploadFile({ bucket, path, file, credentials, metadata }: UploadFileParams): Upload {
-  const params: PutObjectCommandInput = {
+  const params: PutObjectCommandInput & CreateMultipartUploadRequest = {
     Bucket: bucket,
     Key: path,
     Body: file,
     ContentType: file.type,
-    Metadata: metadata
+    Metadata: metadata,
+    ChecksumType: "FULL_OBJECT"
   };
   return new Upload({
     client: createS3Client(credentials),
