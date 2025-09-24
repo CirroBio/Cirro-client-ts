@@ -97,12 +97,6 @@ export interface ShareDetail {
      * @type {boolean}
      * @memberof ShareDetail
      */
-    isSubscribed: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof ShareDetail
-     */
     isViewRestricted: boolean;
     /**
      * 
@@ -138,7 +132,6 @@ export function instanceOfShareDetail(value: object): boolean {
     isInstance = isInstance && "conditions" in value;
     isInstance = isInstance && "keywords" in value;
     isInstance = isInstance && "classificationIds" in value;
-    isInstance = isInstance && "isSubscribed" in value;
     isInstance = isInstance && "isViewRestricted" in value;
     isInstance = isInstance && "createdBy" in value;
     isInstance = isInstance && "createdAt" in value;
@@ -166,7 +159,6 @@ export function ShareDetailFromJSONTyped(json: any, ignoreDiscriminator: boolean
         'conditions': ((json['conditions'] as Array<any>).map(DatasetConditionFromJSON)),
         'keywords': json['keywords'],
         'classificationIds': json['classificationIds'],
-        'isSubscribed': json['isSubscribed'],
         'isViewRestricted': json['isViewRestricted'],
         'createdBy': json['createdBy'],
         'createdAt': (new Date(json['createdAt'])),
@@ -192,7 +184,6 @@ export function ShareDetailToJSON(value?: ShareDetail | null): any {
         'conditions': ((value.conditions as Array<any>).map(DatasetConditionToJSON)),
         'keywords': value.keywords,
         'classificationIds': value.classificationIds,
-        'isSubscribed': value.isSubscribed,
         'isViewRestricted': value.isViewRestricted,
         'createdBy': value.createdBy,
         'createdAt': (value.createdAt.toISOString()),
