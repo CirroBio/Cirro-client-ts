@@ -48,13 +48,13 @@ export interface Dashboard {
      * @type {{ [key: string]: any; }}
      * @memberof Dashboard
      */
-    dashboardData: { [key: string]: any; };
+    dashboardData?: { [key: string]: any; };
     /**
      * 
      * @type {{ [key: string]: any; }}
      * @memberof Dashboard
      */
-    info: { [key: string]: any; };
+    info?: { [key: string]: any; };
     /**
      * 
      * @type {string}
@@ -84,8 +84,6 @@ export function instanceOfDashboard(value: object): boolean {
     isInstance = isInstance && "name" in value;
     isInstance = isInstance && "description" in value;
     isInstance = isInstance && "processIds" in value;
-    isInstance = isInstance && "dashboardData" in value;
-    isInstance = isInstance && "info" in value;
     isInstance = isInstance && "createdBy" in value;
     isInstance = isInstance && "createdAt" in value;
     isInstance = isInstance && "updatedAt" in value;
@@ -107,8 +105,8 @@ export function DashboardFromJSONTyped(json: any, ignoreDiscriminator: boolean):
         'name': json['name'],
         'description': json['description'],
         'processIds': json['processIds'],
-        'dashboardData': json['dashboardData'],
-        'info': json['info'],
+        'dashboardData': !exists(json, 'dashboardData') ? undefined : json['dashboardData'],
+        'info': !exists(json, 'info') ? undefined : json['info'],
         'createdBy': json['createdBy'],
         'createdAt': (new Date(json['createdAt'])),
         'updatedAt': (new Date(json['updatedAt'])),

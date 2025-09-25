@@ -38,7 +38,7 @@ export interface AgentInput {
      */
     agentRoleArn: string;
     /**
-     * The configuration options available for the agent 
+     * The configuration options available for the agent
      * @type {{ [key: string]: any; }}
      * @memberof AgentInput
      */

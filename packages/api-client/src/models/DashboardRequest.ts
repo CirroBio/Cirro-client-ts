@@ -42,13 +42,13 @@ export interface DashboardRequest {
      * @type {{ [key: string]: any; }}
      * @memberof DashboardRequest
      */
-    dashboardData: { [key: string]: any; };
+    dashboardData?: { [key: string]: any; };
     /**
      * 
      * @type {{ [key: string]: any; }}
      * @memberof DashboardRequest
      */
-    info: { [key: string]: any; };
+    info?: { [key: string]: any; };
 }
 
 /**
@@ -59,8 +59,6 @@ export function instanceOfDashboardRequest(value: object): boolean {
     isInstance = isInstance && "name" in value;
     isInstance = isInstance && "description" in value;
     isInstance = isInstance && "processIds" in value;
-    isInstance = isInstance && "dashboardData" in value;
-    isInstance = isInstance && "info" in value;
 
     return isInstance;
 }
@@ -78,8 +76,8 @@ export function DashboardRequestFromJSONTyped(json: any, ignoreDiscriminator: bo
         'name': json['name'],
         'description': json['description'],
         'processIds': json['processIds'],
-        'dashboardData': json['dashboardData'],
-        'info': json['info'],
+        'dashboardData': !exists(json, 'dashboardData') ? undefined : json['dashboardData'],
+        'info': !exists(json, 'info') ? undefined : json['info'],
     };
 }
 
