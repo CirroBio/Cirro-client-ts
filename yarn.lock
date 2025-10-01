@@ -1832,7 +1832,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@cirrobio/api-client@npm:^0.10.0, @cirrobio/api-client@npm:^0.10.2, @cirrobio/api-client@workspace:packages/api-client":
+"@cirrobio/api-client@npm:^0.10.0, @cirrobio/api-client@npm:^0.10.2":
+  version: 0.10.6
+  resolution: "@cirrobio/api-client@npm:0.10.6"
+  checksum: 10c0/cbc19f38185477a749d58b1c5a1bb0bc1794fd7b179310971f7417725ded44ba7d4e0de6b20601b1293fc0522440e2bc3c9dd0ef2640f683889a275960a56e02
+  languageName: node
+  linkType: hard
+
+"@cirrobio/api-client@workspace:packages/api-client":
   version: 0.0.0-use.local
   resolution: "@cirrobio/api-client@workspace:packages/api-client"
   dependencies:

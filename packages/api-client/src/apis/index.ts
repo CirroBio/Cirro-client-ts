@@ -20,3 +20,4 @@ export * from './SharingApi';
 export * from './SystemApi';
 export * from './ToolsApi';
 export * from './UsersApi';
+export * from './WorkspacesApi';
