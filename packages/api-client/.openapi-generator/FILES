@@ -22,6 +22,7 @@ src/apis/SharingApi.ts
 src/apis/SystemApi.ts
 src/apis/ToolsApi.ts
 src/apis/UsersApi.ts
+src/apis/WorkspacesApi.ts
 src/apis/index.ts
 src/index.ts
 src/models/AWSCredentials.ts
@@ -104,6 +105,7 @@ src/models/Message.ts
 src/models/MessageInput.ts
 src/models/MessageType.ts
 src/models/MetricRecord.ts
+src/models/MountedDataset.ts
 src/models/MoveDatasetInput.ts
 src/models/MoveDatasetResponse.ts
 src/models/NamedItem.ts
@@ -151,6 +153,7 @@ src/models/Share.ts
 src/models/ShareDetail.ts
 src/models/ShareInput.ts
 src/models/ShareType.ts
+src/models/SharingType.ts
 src/models/SortOrder.ts
 src/models/Status.ts
 src/models/StopExecutionResponse.ts
@@ -170,6 +173,11 @@ src/models/UserProjectAssignment.ts
 src/models/UserSettings.ts
 src/models/ValidateFileNamePatternsRequest.ts
 src/models/ValidateFileRequirementsRequest.ts
+src/models/Workspace.ts
+src/models/WorkspaceComputeConfig.ts
+src/models/WorkspaceConnectionResponse.ts
+src/models/WorkspaceInput.ts
+src/models/WorkspaceSession.ts
 src/models/index.ts
 src/runtime.ts
 tsconfig.esm.json
