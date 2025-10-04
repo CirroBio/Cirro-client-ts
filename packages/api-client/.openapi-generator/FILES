@@ -49,6 +49,7 @@ src/models/ComputeEnvironmentConfiguration.ts
 src/models/ComputeEnvironmentConfigurationInput.ts
 src/models/Contact.ts
 src/models/ContactInput.ts
+src/models/CostResponse.ts
 src/models/CreateNotebookInstanceRequest.ts
 src/models/CreateProjectAccessRequest.ts
 src/models/CreateReferenceRequest.ts
@@ -96,6 +97,7 @@ src/models/GovernanceRequirement.ts
 src/models/GovernanceScope.ts
 src/models/GovernanceTrainingVerification.ts
 src/models/GovernanceType.ts
+src/models/GroupCost.ts
 src/models/ImportDataRequest.ts
 src/models/InviteUserRequest.ts
 src/models/InviteUserResponse.ts
@@ -162,6 +164,7 @@ src/models/SystemInfoResponse.ts
 src/models/Table.ts
 src/models/Tag.ts
 src/models/Task.ts
+src/models/TaskCost.ts
 src/models/TenantInfo.ts
 src/models/UpdateDatasetRequest.ts
 src/models/UpdateUserRequest.ts

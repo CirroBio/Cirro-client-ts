@@ -15,6 +15,7 @@
 
 import * as runtime from '../runtime';
 import type {
+  CostResponse,
   CreateResponse,
   GetExecutionLogsResponse,
   RunAnalysisRequest,
@@ -22,6 +23,8 @@ import type {
   Task,
 } from '../models/index';
 import {
+    CostResponseFromJSON,
+    CostResponseToJSON,
     CreateResponseFromJSON,
     CreateResponseToJSON,
     GetExecutionLogsResponseFromJSON,
@@ -33,6 +36,11 @@ import {
     TaskFromJSON,
     TaskToJSON,
 } from '../models/index';
+
+export interface CalculateCostRequest {
+    projectId: string;
+    datasetId: string;
+}
 
 export interface GetExecutionLogsRequest {
     datasetId: string;
@@ -72,6 +80,50 @@ export interface StopAnalysisRequest {
  * 
  */
 export class ExecutionApi extends runtime.BaseAPI {
+
+    /**
+     * Calculate cost of an execution run
+     * Calculate cost
+     */
+    async calculateCostRaw(requestParameters: CalculateCostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CostResponse>> {
+        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
+            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling calculateCost.');
+        }
+
+        if (requestParameters.datasetId === null || requestParameters.datasetId === undefined) {
+            throw new runtime.RequiredError('datasetId','Required parameter requestParameters.datasetId was null or undefined when calling calculateCost.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/projects/{projectId}/execution/{datasetId}/cost`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))).replace(`{${"datasetId"}}`, encodeURIComponent(String(requestParameters.datasetId))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => CostResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Calculate cost of an execution run
+     * Calculate cost
+     */
+    async calculateCost(requestParameters: CalculateCostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CostResponse> {
+        const response = await this.calculateCostRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
 
     /**
      * Gets live logs from main execution task
