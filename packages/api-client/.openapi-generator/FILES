@@ -179,6 +179,7 @@ src/models/ValidateFileRequirementsRequest.ts
 src/models/Workspace.ts
 src/models/WorkspaceComputeConfig.ts
 src/models/WorkspaceConnectionResponse.ts
+src/models/WorkspaceEnvironment.ts
 src/models/WorkspaceInput.ts
 src/models/WorkspaceSession.ts
 src/models/index.ts

@@ -154,5 +154,6 @@ export * from './ValidateFileRequirementsRequest';
 export * from './Workspace';
 export * from './WorkspaceComputeConfig';
 export * from './WorkspaceConnectionResponse';
+export * from './WorkspaceEnvironment';
 export * from './WorkspaceInput';
 export * from './WorkspaceSession';

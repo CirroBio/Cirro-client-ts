@@ -18,6 +18,7 @@ import type {
   CreateResponse,
   Workspace,
   WorkspaceConnectionResponse,
+  WorkspaceEnvironment,
   WorkspaceInput,
 } from '../models/index';
 import {
@@ -27,6 +28,8 @@ import {
     WorkspaceToJSON,
     WorkspaceConnectionResponseFromJSON,
     WorkspaceConnectionResponseToJSON,
+    WorkspaceEnvironmentFromJSON,
+    WorkspaceEnvironmentToJSON,
     WorkspaceInputFromJSON,
     WorkspaceInputToJSON,
 } from '../models/index';
@@ -308,6 +311,42 @@ export class WorkspacesApi extends runtime.BaseAPI {
      */
     async getWorkspace(requestParameters: GetWorkspaceRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Workspace> {
         const response = await this.getWorkspaceRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Retrieves a list of pre-defined workspace environments available to use
+     * Get workspace environments
+     */
+    async getWorkspaceEnvironmentsRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<WorkspaceEnvironment>>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/workspace-environments`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(WorkspaceEnvironmentFromJSON));
+    }
+
+    /**
+     * Retrieves a list of pre-defined workspace environments available to use
+     * Get workspace environments
+     */
+    async getWorkspaceEnvironments(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<WorkspaceEnvironment>> {
+        const response = await this.getWorkspaceEnvironmentsRaw(initOverrides);
         return await response.value();
     }
 
