@@ -57,6 +57,12 @@ export interface WorkspaceInput {
      */
     mountedDatasets: Array<MountedDataset>;
     /**
+     * ID of the predefined workspace environment to use.
+     * @type {string}
+     * @memberof WorkspaceInput
+     */
+    environmentId?: string | null;
+    /**
      * 
      * @type {WorkspaceComputeConfig}
      * @memberof WorkspaceInput
@@ -96,6 +102,7 @@ export function WorkspaceInputFromJSONTyped(json: any, ignoreDiscriminator: bool
         'name': json['name'],
         'description': !exists(json, 'description') ? undefined : json['description'],
         'mountedDatasets': ((json['mountedDatasets'] as Array<any>).map(MountedDatasetFromJSON)),
+        'environmentId': !exists(json, 'environmentId') ? undefined : json['environmentId'],
         'computeConfig': WorkspaceComputeConfigFromJSON(json['computeConfig']),
         'sharingType': SharingTypeFromJSON(json['sharingType']),
     };
@@ -113,6 +120,7 @@ export function WorkspaceInputToJSON(value?: WorkspaceInput | null): any {
         'name': value.name,
         'description': value.description,
         'mountedDatasets': ((value.mountedDatasets as Array<any>).map(MountedDatasetToJSON)),
+        'environmentId': value.environmentId,
         'computeConfig': WorkspaceComputeConfigToJSON(value.computeConfig),
         'sharingType': SharingTypeToJSON(value.sharingType),
     };

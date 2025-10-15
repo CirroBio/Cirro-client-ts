@@ -124,6 +124,12 @@ export interface ProjectDetail {
     classificationIds: Array<string>;
     /**
      * 
+     * @type {Date}
+     * @memberof ProjectDetail
+     */
+    deployedAt?: Date | null;
+    /**
+     * 
      * @type {string}
      * @memberof ProjectDetail
      */
@@ -188,6 +194,7 @@ export function ProjectDetailFromJSONTyped(json: any, ignoreDiscriminator: boole
         'statusMessage': json['statusMessage'],
         'tags': ((json['tags'] as Array<any>).map(TagFromJSON)),
         'classificationIds': json['classificationIds'],
+        'deployedAt': !exists(json, 'deployedAt') ? undefined : (json['deployedAt'] === null ? null : new Date(json['deployedAt'])),
         'createdBy': json['createdBy'],
         'createdAt': (new Date(json['createdAt'])),
         'updatedAt': (new Date(json['updatedAt'])),
@@ -215,6 +222,7 @@ export function ProjectDetailToJSON(value?: ProjectDetail | null): any {
         'statusMessage': value.statusMessage,
         'tags': ((value.tags as Array<any>).map(TagToJSON)),
         'classificationIds': value.classificationIds,
+        'deployedAt': value.deployedAt === undefined ? undefined : (value.deployedAt === null ? null : value.deployedAt.toISOString()),
         'createdBy': value.createdBy,
         'createdAt': (value.createdAt.toISOString()),
         'updatedAt': (value.updatedAt.toISOString()),

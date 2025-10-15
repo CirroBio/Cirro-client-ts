@@ -82,6 +82,12 @@ export interface Workspace {
     statusMessage: string;
     /**
      * 
+     * @type {string}
+     * @memberof Workspace
+     */
+    environmentId: string;
+    /**
+     * 
      * @type {Array<MountedDataset>}
      * @memberof Workspace
      */
@@ -140,6 +146,7 @@ export function instanceOfWorkspace(value: object): boolean {
     isInstance = isInstance && "description" in value;
     isInstance = isInstance && "status" in value;
     isInstance = isInstance && "statusMessage" in value;
+    isInstance = isInstance && "environmentId" in value;
     isInstance = isInstance && "mountedDatasets" in value;
     isInstance = isInstance && "computeConfig" in value;
     isInstance = isInstance && "sharingType" in value;
@@ -166,6 +173,7 @@ export function WorkspaceFromJSONTyped(json: any, ignoreDiscriminator: boolean):
         'description': json['description'],
         'status': StatusFromJSON(json['status']),
         'statusMessage': json['statusMessage'],
+        'environmentId': json['environmentId'],
         'mountedDatasets': ((json['mountedDatasets'] as Array<any>).map(MountedDatasetFromJSON)),
         'computeConfig': WorkspaceComputeConfigFromJSON(json['computeConfig']),
         'sharingType': SharingTypeFromJSON(json['sharingType']),
@@ -191,6 +199,7 @@ export function WorkspaceToJSON(value?: Workspace | null): any {
         'description': value.description,
         'status': StatusToJSON(value.status),
         'statusMessage': value.statusMessage,
+        'environmentId': value.environmentId,
         'mountedDatasets': ((value.mountedDatasets as Array<any>).map(MountedDatasetToJSON)),
         'computeConfig': WorkspaceComputeConfigToJSON(value.computeConfig),
         'sharingType': SharingTypeToJSON(value.sharingType),
