@@ -36,13 +36,13 @@ export interface WorkspaceComputeConfig {
      * @type {number}
      * @memberof WorkspaceComputeConfig
      */
-    memoryGib?: number;
+    memoryGiB?: number;
     /**
      * Persistent storage volume size allocated to the workspace in GiB.
      * @type {number}
      * @memberof WorkspaceComputeConfig
      */
-    volumeSizeGib?: number;
+    volumeSizeGiB?: number;
     /**
      * Map of environment variables injected into the container at runtime. Keys must be non-blank.
      * @type {{ [key: string]: string; }}
@@ -79,8 +79,8 @@ export function WorkspaceComputeConfigFromJSONTyped(json: any, ignoreDiscriminat
         
         'containerImageUri': json['containerImageUri'],
         'cpu': !exists(json, 'cpu') ? undefined : json['cpu'],
-        'memoryGib': !exists(json, 'memoryGib') ? undefined : json['memoryGib'],
-        'volumeSizeGib': !exists(json, 'volumeSizeGib') ? undefined : json['volumeSizeGib'],
+        'memoryGiB': !exists(json, 'memoryGiB') ? undefined : json['memoryGiB'],
+        'volumeSizeGiB': !exists(json, 'volumeSizeGiB') ? undefined : json['volumeSizeGiB'],
         'environmentVariables': !exists(json, 'environmentVariables') ? undefined : json['environmentVariables'],
         'localPort': !exists(json, 'localPort') ? undefined : json['localPort'],
     };
@@ -97,8 +97,8 @@ export function WorkspaceComputeConfigToJSON(value?: WorkspaceComputeConfig | nu
         
         'containerImageUri': value.containerImageUri,
         'cpu': value.cpu,
-        'memoryGib': value.memoryGib,
-        'volumeSizeGib': value.volumeSizeGib,
+        'memoryGiB': value.memoryGiB,
+        'volumeSizeGiB': value.volumeSizeGiB,
         'environmentVariables': value.environmentVariables,
         'localPort': value.localPort,
     };
