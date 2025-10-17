@@ -151,6 +151,7 @@ export * from './UserProjectAssignment';
 export * from './UserSettings';
 export * from './ValidateFileNamePatternsRequest';
 export * from './ValidateFileRequirementsRequest';
+export * from './VersionSpecification';
 export * from './Workspace';
 export * from './WorkspaceComputeConfig';
 export * from './WorkspaceConnectionResponse';
