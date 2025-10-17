@@ -176,6 +176,7 @@ src/models/UserProjectAssignment.ts
 src/models/UserSettings.ts
 src/models/ValidateFileNamePatternsRequest.ts
 src/models/ValidateFileRequirementsRequest.ts
+src/models/VersionSpecification.ts
 src/models/Workspace.ts
 src/models/WorkspaceComputeConfig.ts
 src/models/WorkspaceConnectionResponse.ts
