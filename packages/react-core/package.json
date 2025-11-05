@@ -1,6 +1,6 @@
 {
   "name": "@cirrobio/react-core",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Core providers and functions for Cirro React applications",
   "author": "CirroBio",
   "repository": {
@@ -23,10 +23,8 @@
     "prepare": "npm run build",
     "test": "jest --coverage --silent --passWithNoTests"
   },
-  "dependencies": {
-    "@cirrobio/sdk": "^0.10.0"
-  },
   "peerDependencies": {
+    "@cirrobio/sdk": "^1.0.0",
     "react": "^16.14 || ^17 || ^18 || ^19"
   }
 }
