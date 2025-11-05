@@ -43,6 +43,12 @@ export interface FeatureFlags {
      * @memberof FeatureFlags
      */
     workspacesEnabled: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof FeatureFlags
+     */
+    driveEnabled: boolean;
 }
 
 /**
@@ -54,6 +60,7 @@ export function instanceOfFeatureFlags(value: object): boolean {
     isInstance = isInstance && "governanceEnabled" in value;
     isInstance = isInstance && "projectRequestsEnabled" in value;
     isInstance = isInstance && "workspacesEnabled" in value;
+    isInstance = isInstance && "driveEnabled" in value;
 
     return isInstance;
 }
@@ -72,6 +79,7 @@ export function FeatureFlagsFromJSONTyped(json: any, ignoreDiscriminator: boolea
         'governanceEnabled': json['governanceEnabled'],
         'projectRequestsEnabled': json['projectRequestsEnabled'],
         'workspacesEnabled': json['workspacesEnabled'],
+        'driveEnabled': json['driveEnabled'],
     };
 }
 
@@ -88,6 +96,7 @@ export function FeatureFlagsToJSON(value?: FeatureFlags | null): any {
         'governanceEnabled': value.governanceEnabled,
         'projectRequestsEnabled': value.projectRequestsEnabled,
         'workspacesEnabled': value.workspacesEnabled,
+        'driveEnabled': value.driveEnabled,
     };
 }
 
