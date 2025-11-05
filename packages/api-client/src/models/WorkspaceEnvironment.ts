@@ -13,6 +13,12 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { VersionSpecification } from './VersionSpecification';
+import {
+    VersionSpecificationFromJSON,
+    VersionSpecificationFromJSONTyped,
+    VersionSpecificationToJSON,
+} from './VersionSpecification';
 import type { WorkspaceComputeConfig } from './WorkspaceComputeConfig';
 import {
     WorkspaceComputeConfigFromJSON,
@@ -58,6 +64,12 @@ export interface WorkspaceEnvironment {
     defaultComputeConfig: WorkspaceComputeConfig;
     /**
      * 
+     * @type {Array<VersionSpecification>}
+     * @memberof WorkspaceEnvironment
+     */
+    versions: Array<VersionSpecification>;
+    /**
+     * 
      * @type {string}
      * @memberof WorkspaceEnvironment
      */
@@ -74,6 +86,7 @@ export function instanceOfWorkspaceEnvironment(value: object): boolean {
     isInstance = isInstance && "description" in value;
     isInstance = isInstance && "category" in value;
     isInstance = isInstance && "defaultComputeConfig" in value;
+    isInstance = isInstance && "versions" in value;
     isInstance = isInstance && "owner" in value;
 
     return isInstance;
@@ -94,6 +107,7 @@ export function WorkspaceEnvironmentFromJSONTyped(json: any, ignoreDiscriminator
         'description': json['description'],
         'category': json['category'],
         'defaultComputeConfig': WorkspaceComputeConfigFromJSON(json['defaultComputeConfig']),
+        'versions': ((json['versions'] as Array<any>).map(VersionSpecificationFromJSON)),
         'owner': json['owner'],
     };
 }
@@ -112,6 +126,7 @@ export function WorkspaceEnvironmentToJSON(value?: WorkspaceEnvironment | null):
         'description': value.description,
         'category': value.category,
         'defaultComputeConfig': WorkspaceComputeConfigToJSON(value.defaultComputeConfig),
+        'versions': ((value.versions as Array<any>).map(VersionSpecificationToJSON)),
         'owner': value.owner,
     };
 }
