@@ -23,9 +23,6 @@
     "prepare": "npm run build",
     "test": "jest --coverage --silent --passWithNoTests"
   },
-  "dependencies": {
-    "@cirrobio/sdk": "^0.10.0"
-  },
   "peerDependencies": {
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
