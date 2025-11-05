@@ -1,6 +1,7 @@
 import { FileSystemObject, FileSystemObjectType } from "./file-object.model";
 import { ProjectFileAccessContext } from "../project-access-context";
 import { v4 as uuidv4 } from 'uuid';
+import { getDisplayPath } from "./utils";
 
 export class File implements FileSystemObject {
   readonly id: string;
@@ -18,6 +19,10 @@ export class File implements FileSystemObject {
   get kind() {
     return this.path.slice(this.
     path.lastIndexOf('.') + 1);
+  }
+
+  get displayPath() {
+    return getDisplayPath(this);
   }
 
   constructor(domain: string, file: string, size: number, metadata: Record<string, any>, accessContext: ProjectFileAccessContext) {
