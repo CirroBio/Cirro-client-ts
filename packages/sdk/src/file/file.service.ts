@@ -21,8 +21,8 @@ export class FileService {
   /**
    * Get contents of a file
    */
-  async getProjectFile(file: DownloadableFile): Promise<Response> {
-    const url = await this.getSignedUrlFromProjectFile(file);
+  async getProjectFile(file: DownloadableFile, params?: GetSignedUrlOptions): Promise<Response> {
+    const url = await this.getSignedUrlFromProjectFile(file, params);
     return fetch(url);
   }
 
