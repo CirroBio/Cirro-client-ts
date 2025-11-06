@@ -30,6 +30,8 @@
     "react": "^16.14 || ^17 || ^18 || ^19"
   },
   "devDependencies": {
-    "@mui/x-data-grid-premium": "^7.0.0"
+    "@mui/system": "^5.15.10",
+    "@mui/x-data-grid-premium": "^7.0.0",
+    "react-dom": "^16.14 || ^17 || ^18 || ^19"
   }
 }
