@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import { FileSystemObject, FileSystemObjectType } from "./file-object.model";
-import { getDisplayPath } from "./utils";
+import { getDisplayPath } from "../util/get-display.fn";
 
 export class Folder implements FileSystemObject {
   readonly id: string;
