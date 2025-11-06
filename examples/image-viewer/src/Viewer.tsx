@@ -1,7 +1,7 @@
 import { AppBar, Box, Button, Card, CardContent, Chip, Container, Divider, IconButton, Stack, Toolbar, Tooltip, Typography } from '@mui/material';
 import React, { useEffect, useMemo, useState } from 'react';
 import { DownloadableFile, FILE_IMAGE_EXTENSIONS, matchesExtension } from "@cirrobio/sdk";
-import { useWindowSize } from "@cirrobio/react-core";
+import { useWindowSize } from "@cirrobio/react-ui-core";
 import { useViewerServices, useViewerState } from "@cirrobio/react-tool";
 import { DownloadOutlined, InfoOutlined } from '@mui/icons-material';
 
@@ -31,7 +31,7 @@ export function Viewer() {
   // Find selected file in the available files,
   //   or select the first image if no file is selected
   const asset: DownloadableFile = useMemo(() => {
-    const matchedFile = images.find(f => f.url === selectedFile);
+    const matchedFile = images.find(f => f === selectedFile);
     return matchedFile ?? images[0];
   }, [selectedFile, images]);
 
@@ -66,9 +66,9 @@ export function Viewer() {
             Cirro Image Viewer
           </Typography>
           <Stack direction="row" spacing={1}>
-            <Chip 
-              label={`${images.length} Images`} 
-              color="primary" 
+            <Chip
+              label={`${images.length} Images`}
+              color="primary"
               variant="filled"
             />
             <Tooltip title="Download Image">
@@ -93,8 +93,8 @@ export function Viewer() {
                 <Typography variant="h4" color="secondary">
                   {state.asset?.name}
                 </Typography>
-                <Button 
-                  variant="contained" 
+                <Button
+                  variant="contained"
                   color="primary"
                   startIcon={<DownloadOutlined />}
                   onClick={() => window.open(state.url, '_blank')}
@@ -103,9 +103,9 @@ export function Viewer() {
                 </Button>
               </Box>
               <Divider />
-              <Box sx={{ 
-                display: 'flex', 
-                alignItems: 'center', 
+              <Box sx={{
+                display: 'flex',
+                alignItems: 'center',
                 justifyContent: 'center',
                 minHeight: '60vh',
                 bgcolor: 'background.default',
@@ -113,14 +113,14 @@ export function Viewer() {
                 p: 2
               }}>
                 <Tooltip title={state.asset?.name}>
-                  <img 
-                    alt={state.asset?.name} 
-                    src={state.url} 
-                    style={{ 
-                      maxHeight: '100%', 
+                  <img
+                    alt={state.asset?.name}
+                    src={state.url}
+                    style={{
+                      maxHeight: '100%',
                       maxWidth: '100%',
                       objectFit: 'contain'
-                    }} 
+                    }}
                   />
                 </Tooltip>
               </Box>
