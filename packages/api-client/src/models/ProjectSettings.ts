@@ -39,24 +39,6 @@ export interface ProjectSettings {
      */
     budgetPeriod: BudgetPeriod;
     /**
-     * AMI ID for the DRAGEN compute environment (if enabled)
-     * @type {string}
-     * @memberof ProjectSettings
-     */
-    dragenAmi?: string | null;
-    /**
-     * Enables the default compute environment
-     * @type {boolean}
-     * @memberof ProjectSettings
-     */
-    enableCompute?: boolean;
-    /**
-     * Enables the DRAGEN compute environment
-     * @type {boolean}
-     * @memberof ProjectSettings
-     */
-    enableDragen?: boolean;
-    /**
      * Enables the AWS Backup service for S3
      * @type {boolean}
      * @memberof ProjectSettings
@@ -69,23 +51,17 @@ export interface ProjectSettings {
      */
     enableSftp?: boolean;
     /**
-     * Service quota limit for On Demand F1 instances
-     * @type {number}
+     * List of service connections to enable
+     * @type {Array<string>}
      * @memberof ProjectSettings
      */
-    maxF1VCPU?: number;
+    serviceConnections?: Array<string>;
     /**
-     * Service quota limit for Spot instances
-     * @type {number}
+     * KMS Key ARN to encrypt S3 objects, if not provided, default bucket encryption will be used
+     * @type {string}
      * @memberof ProjectSettings
      */
-    maxSpotVCPU?: number;
-    /**
-     * Service quota limit for GPU Spot instances
-     * @type {number}
-     * @memberof ProjectSettings
-     */
-    maxGPUVCPU?: number;
+    kmsArn?: string | null;
     /**
      * Days to keep deleted datasets before being permanently erased
      * @type {number}
@@ -99,19 +75,13 @@ export interface ProjectSettings {
      */
     temporaryStorageLifetimeDays?: number;
     /**
-     * List of service connections to enable
-     * @type {Array<string>}
-     * @memberof ProjectSettings
-     */
-    serviceConnections?: Array<string>;
-    /**
      * VPC that the compute environment will use
      * @type {string}
      * @memberof ProjectSettings
      */
     vpcId?: string | null;
     /**
-     * List of subnets that the compute environment will use
+     * List of subnets that the pipeline compute environment will use
      * @type {Array<string>}
      * @memberof ProjectSettings
      */
@@ -120,14 +90,63 @@ export interface ProjectSettings {
      * List of subnets that the sagemaker instances will use
      * @type {Array<string>}
      * @memberof ProjectSettings
+     * @deprecated
      */
     sagemakerSubnets?: Array<string> | null;
     /**
-     * KMS Key ARN to encrypt S3 objects, if not provided, default bucket encryption will be used
+     * List of subnets that workspace instances will use
+     * @type {Array<string>}
+     * @memberof ProjectSettings
+     */
+    workspaceSubnets?: Array<string> | null;
+    /**
+     * vCPU service quota limit for standard spot instances (pipelines)
+     * @type {number}
+     * @memberof ProjectSettings
+     */
+    maxSpotVCPU?: number;
+    /**
+     * vCPU service quota limit for FPGA-enabled instances (pipelines)
+     * @type {number}
+     * @memberof ProjectSettings
+     */
+    maxFPGAVCPU?: number;
+    /**
+     * vCPU service quota limit for GPU-enabled spot instances (pipelines)
+     * @type {number}
+     * @memberof ProjectSettings
+     */
+    maxGPUVCPU?: number;
+    /**
+     * Enables the DRAGEN compute environment (pipelines)
+     * @type {boolean}
+     * @memberof ProjectSettings
+     */
+    enableDragen?: boolean;
+    /**
+     * AMI ID for the DRAGEN compute environment, if enabled (pipelines)
      * @type {string}
      * @memberof ProjectSettings
      */
-    kmsArn?: string | null;
+    dragenAmi?: string | null;
+    /**
+     * vCPU service quota limit for standard instances (workspaces)
+     * @type {number}
+     * @memberof ProjectSettings
+     */
+    maxWorkspacesVCPU?: number;
+    /**
+     * vCPU service quota limit for GPU-enabled instances (workspaces)
+     * @type {number}
+     * @memberof ProjectSettings
+     */
+    maxWorkspacesGPUVCPU?: number;
+    /**
+     * Maximum number of workspaces per user (workspaces)
+     * @type {number}
+     * @memberof ProjectSettings
+     */
+    maxWorkspacesPerUser?: number;
     /**
      * Enables the project to be discoverable by other users
      * @type {boolean}
@@ -140,6 +159,18 @@ export interface ProjectSettings {
      * @memberof ProjectSettings
      */
     isShareable?: boolean | null;
+    /**
+     * (Read-only) Whether this project has pipelines enabled
+     * @type {boolean}
+     * @memberof ProjectSettings
+     */
+    hasPipelinesEnabled?: boolean | null;
+    /**
+     * (Read-only) Whether this project has workspaces enabled
+     * @type {boolean}
+     * @memberof ProjectSettings
+     */
+    hasWorkspacesEnabled?: boolean | null;
 }
 
 /**
@@ -165,23 +196,28 @@ export function ProjectSettingsFromJSONTyped(json: any, ignoreDiscriminator: boo
         
         'budgetAmount': json['budgetAmount'],
         'budgetPeriod': BudgetPeriodFromJSON(json['budgetPeriod']),
-        'dragenAmi': !exists(json, 'dragenAmi') ? undefined : json['dragenAmi'],
-        'enableCompute': !exists(json, 'enableCompute') ? undefined : json['enableCompute'],
-        'enableDragen': !exists(json, 'enableDragen') ? undefined : json['enableDragen'],
         'enableBackup': !exists(json, 'enableBackup') ? undefined : json['enableBackup'],
         'enableSftp': !exists(json, 'enableSftp') ? undefined : json['enableSftp'],
-        'maxF1VCPU': !exists(json, 'maxF1VCPU') ? undefined : json['maxF1VCPU'],
-        'maxSpotVCPU': !exists(json, 'maxSpotVCPU') ? undefined : json['maxSpotVCPU'],
-        'maxGPUVCPU': !exists(json, 'maxGPUVCPU') ? undefined : json['maxGPUVCPU'],
+        'serviceConnections': !exists(json, 'serviceConnections') ? undefined : json['serviceConnections'],
+        'kmsArn': !exists(json, 'kmsArn') ? undefined : json['kmsArn'],
         'retentionPolicyDays': !exists(json, 'retentionPolicyDays') ? undefined : json['retentionPolicyDays'],
         'temporaryStorageLifetimeDays': !exists(json, 'temporaryStorageLifetimeDays') ? undefined : json['temporaryStorageLifetimeDays'],
-        'serviceConnections': !exists(json, 'serviceConnections') ? undefined : json['serviceConnections'],
         'vpcId': !exists(json, 'vpcId') ? undefined : json['vpcId'],
         'batchSubnets': !exists(json, 'batchSubnets') ? undefined : json['batchSubnets'],
         'sagemakerSubnets': !exists(json, 'sagemakerSubnets') ? undefined : json['sagemakerSubnets'],
-        'kmsArn': !exists(json, 'kmsArn') ? undefined : json['kmsArn'],
+        'workspaceSubnets': !exists(json, 'workspaceSubnets') ? undefined : json['workspaceSubnets'],
+        'maxSpotVCPU': !exists(json, 'maxSpotVCPU') ? undefined : json['maxSpotVCPU'],
+        'maxFPGAVCPU': !exists(json, 'maxFPGAVCPU') ? undefined : json['maxFPGAVCPU'],
+        'maxGPUVCPU': !exists(json, 'maxGPUVCPU') ? undefined : json['maxGPUVCPU'],
+        'enableDragen': !exists(json, 'enableDragen') ? undefined : json['enableDragen'],
+        'dragenAmi': !exists(json, 'dragenAmi') ? undefined : json['dragenAmi'],
+        'maxWorkspacesVCPU': !exists(json, 'maxWorkspacesVCPU') ? undefined : json['maxWorkspacesVCPU'],
+        'maxWorkspacesGPUVCPU': !exists(json, 'maxWorkspacesGPUVCPU') ? undefined : json['maxWorkspacesGPUVCPU'],
+        'maxWorkspacesPerUser': !exists(json, 'maxWorkspacesPerUser') ? undefined : json['maxWorkspacesPerUser'],
         'isDiscoverable': !exists(json, 'isDiscoverable') ? undefined : json['isDiscoverable'],
         'isShareable': !exists(json, 'isShareable') ? undefined : json['isShareable'],
+        'hasPipelinesEnabled': !exists(json, 'hasPipelinesEnabled') ? undefined : json['hasPipelinesEnabled'],
+        'hasWorkspacesEnabled': !exists(json, 'hasWorkspacesEnabled') ? undefined : json['hasWorkspacesEnabled'],
     };
 }
 
@@ -196,23 +232,28 @@ export function ProjectSettingsToJSON(value?: ProjectSettings | null): any {
         
         'budgetAmount': value.budgetAmount,
         'budgetPeriod': BudgetPeriodToJSON(value.budgetPeriod),
-        'dragenAmi': value.dragenAmi,
-        'enableCompute': value.enableCompute,
-        'enableDragen': value.enableDragen,
         'enableBackup': value.enableBackup,
         'enableSftp': value.enableSftp,
-        'maxF1VCPU': value.maxF1VCPU,
-        'maxSpotVCPU': value.maxSpotVCPU,
-        'maxGPUVCPU': value.maxGPUVCPU,
+        'serviceConnections': value.serviceConnections,
+        'kmsArn': value.kmsArn,
         'retentionPolicyDays': value.retentionPolicyDays,
         'temporaryStorageLifetimeDays': value.temporaryStorageLifetimeDays,
-        'serviceConnections': value.serviceConnections,
         'vpcId': value.vpcId,
         'batchSubnets': value.batchSubnets,
         'sagemakerSubnets': value.sagemakerSubnets,
-        'kmsArn': value.kmsArn,
+        'workspaceSubnets': value.workspaceSubnets,
+        'maxSpotVCPU': value.maxSpotVCPU,
+        'maxFPGAVCPU': value.maxFPGAVCPU,
+        'maxGPUVCPU': value.maxGPUVCPU,
+        'enableDragen': value.enableDragen,
+        'dragenAmi': value.dragenAmi,
+        'maxWorkspacesVCPU': value.maxWorkspacesVCPU,
+        'maxWorkspacesGPUVCPU': value.maxWorkspacesGPUVCPU,
+        'maxWorkspacesPerUser': value.maxWorkspacesPerUser,
         'isDiscoverable': value.isDiscoverable,
         'isShareable': value.isShareable,
+        'hasPipelinesEnabled': value.hasPipelinesEnabled,
+        'hasWorkspacesEnabled': value.hasWorkspacesEnabled,
     };
 }
 
