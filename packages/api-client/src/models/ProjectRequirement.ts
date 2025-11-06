@@ -200,6 +200,12 @@ export interface ProjectRequirement {
      * @memberof ProjectRequirement
      */
     fulfillmentPath?: string | null;
+    /**
+     * Whether this requirement requires the user to fulfill (it is active, requires fulfillment, and user has not fulfilled
+     * @type {boolean}
+     * @memberof ProjectRequirement
+     */
+    requiresUserFulfillment?: boolean;
 }
 
 /**
@@ -256,6 +262,7 @@ export function ProjectRequirementFromJSONTyped(json: any, ignoreDiscriminator: 
         'fulfillmentDate': !exists(json, 'fulfillmentDate') ? undefined : (json['fulfillmentDate'] === null ? null : new Date(json['fulfillmentDate'])),
         'fulfillmentFile': !exists(json, 'fulfillmentFile') ? undefined : json['fulfillmentFile'],
         'fulfillmentPath': !exists(json, 'fulfillmentPath') ? undefined : json['fulfillmentPath'],
+        'requiresUserFulfillment': !exists(json, 'requiresUserFulfillment') ? undefined : json['requiresUserFulfillment'],
     };
 }
 
@@ -292,6 +299,7 @@ export function ProjectRequirementToJSON(value?: ProjectRequirement | null): any
         'fulfillmentDate': value.fulfillmentDate === undefined ? undefined : (value.fulfillmentDate === null ? null : value.fulfillmentDate.toISOString()),
         'fulfillmentFile': value.fulfillmentFile,
         'fulfillmentPath': value.fulfillmentPath,
+        'requiresUserFulfillment': value.requiresUserFulfillment,
     };
 }
 
