@@ -3,6 +3,7 @@ import { GetObjectCommand, GetObjectCommandInput } from "@aws-sdk/client-s3";
 import { getSignedUrl as getSignedUrlInternal } from "@aws-sdk/s3-request-presigner";
 import { createS3Client } from "../util/s3-client";
 import { s3UriToParams } from "../util/s3-utils";
+import { S3ClientConfigType } from "@aws-sdk/client-s3/dist-types/S3Client";
 
 export interface GetFileUrlParams extends GetSignedUrlOptions {
   url: string;
@@ -38,7 +39,11 @@ export interface GetSignedUrlOptions {
  * Get a signed URL for a file in S3 given its S3 URI.
  */
 export function getSignedUrl({ url, credentials, ...params }: GetFileUrlParams): Promise<string> {
-  const client = createS3Client(credentials, { region: params.region });
+  const clientParams: S3ClientConfigType = {};
+  if (params.region) {
+    clientParams.region = params.region;
+  }
+  const client = createS3Client(credentials, clientParams);
   const { Bucket, Key } = s3UriToParams(url);
   const args: GetObjectCommandInput = { Bucket, Key };
   if (params?.download) {
