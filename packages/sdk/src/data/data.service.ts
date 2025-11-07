@@ -16,7 +16,8 @@ import {
   SharingApi,
   SystemApi,
   ToolsApi,
-  UsersApi
+  UsersApi,
+  WorkspacesApi
 } from "@cirrobio/api-client";
 import { generateApiConfig } from "../api/config";
 
@@ -45,6 +46,7 @@ export class DataService {
   private readonly _systemApi: SystemApi;
   private readonly _toolsApi: ToolsApi;
   private readonly _usersApi: UsersApi;
+  private readonly _workspacesApi: WorkspacesApi;
 
   constructor({ tokenGetter, basePath = "/api" }: DataServiceParams) {
     this.apiConfig = generateApiConfig({ basePath, tokenGetter });
@@ -66,6 +68,7 @@ export class DataService {
     this._systemApi = new SystemApi(this.apiConfig);
     this._toolsApi = new ToolsApi(this.apiConfig);
     this._usersApi = new UsersApi(this.apiConfig);
+    this._workspacesApi = new WorkspacesApi(this.apiConfig);
   }
 
   get audit(): AuditApi {
@@ -118,5 +121,8 @@ export class DataService {
   }
   get users(): UsersApi {
     return this._usersApi;
+  }
+  get workspaces(): WorkspacesApi {
+    return this._workspacesApi;
   }
 }

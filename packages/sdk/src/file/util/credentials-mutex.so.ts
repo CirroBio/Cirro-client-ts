@@ -1,6 +1,6 @@
 import { AWSCredentials } from '@cirrobio/api-client';
 
-class Mutex<T> {
+export class Mutex<T> {
   private mutex = Promise.resolve();
 
   lock(): PromiseLike<() => void> {

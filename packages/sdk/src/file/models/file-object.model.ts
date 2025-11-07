@@ -31,6 +31,10 @@ export interface FileSystemObject extends DownloadableFile {
    */
   path: string;
   /**
+   * Object Display Path
+   */
+  displayPath: string;
+  /**
    * Object Name
    */
   name: string;

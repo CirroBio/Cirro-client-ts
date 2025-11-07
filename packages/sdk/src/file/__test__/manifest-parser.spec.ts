@@ -15,13 +15,13 @@ describe("manifestParser", () => {
         }
       },
       {
-        path: 'folder1/folder2/file2.txt',
+        path: 'data/folder1/folder2/file2.txt',
         size: 1234,
         metadata: {
         }
       },
       {
-        path: 'folder1/folder2/file3.txt',
+        path: 'data/folder1/folder2/file3.txt',
         size: 1234,
         metadata: {
         }
@@ -36,11 +36,16 @@ describe("manifestParser", () => {
     expect(assets[0].url).toBe('s3://example-bucket/datasets/file1.txt');
     expect(assets[0].size).toBe(testManifest.files[0].size);
     expect(assets[0].name).toBe('file1.txt');
+    expect(assets[0].path).toBe('');
+    expect(assets[0].displayPath).toBe('file1.txt');
     expect(assets[0].id).toBeTruthy();
-    expect(assets[1].url).toBe('s3://example-bucket/datasets/folder1/folder2/file2.txt');
+    expect(assets[0].kind).toBe('txt');
+    expect(Object.keys(assets[0].metadata).length).toBe(1);
+    expect(assets[1].url).toBe('s3://example-bucket/datasets/data/folder1/folder2/file2.txt');
     expect(assets[1].size).toBe(testManifest.files[0].size);
     expect(assets[1].name).toBe('file2.txt');
-    expect(assets[1].path).toBe('folder1/folder2');
+    expect(assets[1].path).toBe('data/folder1/folder2');
+    expect(assets[1].displayPath).toBe('folder1/folder2/file2.txt');
     // calculate check
     expect(assets.totalSizeBytes).toBe(3702);
     expect(assets.totalSize).toBe("3.6 KiB");
@@ -51,9 +56,11 @@ describe("manifestParser", () => {
     const parser = new ManifestParser(testManifest);
     const assets = parser.generateAssets(true);
     const folders = assets.filter(a => a.type === FileSystemObjectType.FOLDER);
-    expect(folders.length).toBe(2);
-    expect(folders[0].name).toBe('folder1');
-    expect(folders[1].name).toBe('folder2');
+    expect(folders.length).toBe(3);
+    expect(folders[0].name).toBe('data');
+    expect(folders[1].name).toBe('folder1');
+    expect(folders[2].name).toBe('folder2');
+    expect(folders[2].displayPath).toBe('folder1/folder2');
     const files = assets.filter(a => a.type === FileSystemObjectType.FILE);
     expect(files.length).toBe(3);
   });
