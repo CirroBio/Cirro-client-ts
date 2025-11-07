@@ -24,7 +24,7 @@
     "test": "jest --coverage --silent --passWithNoTests"
   },
   "dependencies": {
-    "@cirrobio/sdk": "^1.0.0"
+    "@cirrobio/sdk": "^0.12.0"
   },
   "peerDependencies": {
     "react": "^16.14 || ^17 || ^18 || ^19"
