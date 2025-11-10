@@ -36,10 +36,6 @@ export const ViewerStateProvider = ({ children, mode, patchFetch }: ViewerStateP
       const config = event.data.config;
       setS3Credentials(credentials);
       setViewerConfig(config);
-
-      if (viewerStatus === 'LOADING' && patchFetch) {
-         doPatchFetch(credentials);
-      }
       setViewerStatus('READY');
     };
     window.addEventListener('message', handleMessage);
@@ -57,7 +53,7 @@ export const ViewerStateProvider = ({ children, mode, patchFetch }: ViewerStateP
   }
 
   const value = useMemo(() => ({
-    status: viewerStatus, config: viewerConfig, s3Credentials, updateConfig
+    status: viewerStatus, config: viewerConfig, s3Credentials, updateConfig, patchFetch
   }), [viewerStatus, viewerConfig]);
 
   return (
