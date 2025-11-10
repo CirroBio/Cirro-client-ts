@@ -1,6 +1,6 @@
 {
   "name": "@cirrobio/react-tool",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "React components and utilities for developing Cirro tools",
   "author": "CirroBio",
   "repository": {
@@ -14,7 +14,8 @@
   "module": "dist/index.esm.js",
   "types": "dist/types/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "src"
   ],
   "scripts": {
     "build": "npx rollup --config",
