@@ -24,23 +24,29 @@ export const ViewerStateProvider = ({ children, mode, patchFetch }: ViewerStateP
     if (mode === ViewerMode.STANDALONE) {
       const params = new URLSearchParams(window.location.search);
       setViewerStatus('READY');
-      setViewerConfig({
+      const config = {
         project: { id: params.get('projectId')},
         dataset: { id: params.get('datasetId')},
         file: params.get('file')
-      });
+      };
+      console.debug("Loaded config: ", config);
+      setViewerConfig(config);
       return;
     }
     const handleMessage = async (event: MessageEvent<MessagePayload>) => {
       const credentials = event.data.credentials;
       const config = event.data.config;
+      console.debug("Received config: ", config);
       setS3Credentials(credentials);
       setViewerConfig(config);
       setViewerStatus('READY');
     };
     window.addEventListener('message', handleMessage);
+    window.parent.postMessage("READY");
+    console.debug("Registered message handler");
     return () => {
       window.removeEventListener('message', handleMessage);
+      console.debug("Deregistered message handler");
     };
   }, [mode]);
 
