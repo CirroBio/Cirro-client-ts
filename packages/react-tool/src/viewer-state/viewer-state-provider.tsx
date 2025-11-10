@@ -1,9 +1,8 @@
 import * as React from "react";
 import { ReactElement, useEffect, useMemo, useState } from "react";
 import { MessagePayload, ViewerConfigPayload } from "../models/message";
-import { ViewerStatus, ViewerStateContext } from "./viewer-state-context";
+import { ViewerStateContext, ViewerStatus } from "./viewer-state-context";
 import { ViewerMode } from "../helpers/viewer-mode";
-import { doPatchFetch } from "../helpers/patch-fetch";
 import { AWSCredentials } from "@cirrobio/api-client";
 
 interface ViewerStateProviderProps {
