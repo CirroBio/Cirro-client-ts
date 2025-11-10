@@ -3,6 +3,8 @@ import { Artifact, DatasetAssetsManifest, DatasetDetail, DatasetViz, ProjectDeta
 import { ViewerState } from "./viewer-state";
 
 export class ToolViewerState implements ViewerState {
+  public readonly selectedFile: DownloadableFile;
+
   constructor(
     readonly project: ProjectDetail,
     readonly dataset: DatasetDetail,
@@ -11,16 +13,14 @@ export class ToolViewerState implements ViewerState {
     readonly fileAccessContext: ProjectFileAccessContext,
     readonly _selectedFile?: string | null,
   ) {
-  }
-
-  get selectedFile(): DownloadableFile {
-    if (!this._selectedFile || !this.manifest) {
-      return null;
-    }
-    return {
-      name: this._selectedFile.substring(this._selectedFile.lastIndexOf('/') + 1),
-      url: `${this.manifest.domain}/${this._selectedFile}`,
-      fileAccessContext: this.fileAccessContext,
+    if (_selectedFile && manifest) {
+      this.selectedFile = {
+        name: _selectedFile.substring(_selectedFile.lastIndexOf('/') + 1),
+        url: `${this.manifest.domain}/${_selectedFile}`,
+        fileAccessContext: this.fileAccessContext,
+      };
+    } else {
+      this.selectedFile = null
     }
   }
 
