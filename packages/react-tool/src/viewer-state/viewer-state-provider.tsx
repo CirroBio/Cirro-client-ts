@@ -41,7 +41,7 @@ export const ViewerStateProvider = ({ children, mode, patchFetch }: ViewerStateP
       setViewerStatus('READY');
     };
     window.addEventListener('message', handleMessage);
-    window.parent.postMessage("READY");
+    window.parent.postMessage({ source: 'cirro-tool', payload: { status: 'READY' } });
     console.debug("Registered message handler");
     return () => {
       window.removeEventListener('message', handleMessage);
