@@ -9,6 +9,7 @@ export interface ViewerStateContextType {
   config: ViewerConfigPayload | null;
   s3Credentials: AWSCredentials | null;
   updateConfig: (config: ViewerConfigPayload) => void;
+  patchFetch: boolean;
 }
 
 export const ViewerStateContext = createContext<ViewerStateContextType | undefined>(undefined);

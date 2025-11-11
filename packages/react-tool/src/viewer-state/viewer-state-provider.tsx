@@ -1,9 +1,8 @@
 import * as React from "react";
 import { ReactElement, useEffect, useMemo, useState } from "react";
 import { MessagePayload, ViewerConfigPayload } from "../models/message";
-import { ViewerStatus, ViewerStateContext } from "./viewer-state-context";
+import { ViewerStateContext, ViewerStatus } from "./viewer-state-context";
 import { ViewerMode } from "../helpers/viewer-mode";
-import { doPatchFetch } from "../helpers/patch-fetch";
 import { AWSCredentials } from "@cirrobio/api-client";
 
 interface ViewerStateProviderProps {
@@ -24,27 +23,29 @@ export const ViewerStateProvider = ({ children, mode, patchFetch }: ViewerStateP
     if (mode === ViewerMode.STANDALONE) {
       const params = new URLSearchParams(window.location.search);
       setViewerStatus('READY');
-      setViewerConfig({
+      const config = {
         project: { id: params.get('projectId')},
         dataset: { id: params.get('datasetId')},
         file: params.get('file')
-      });
+      };
+      console.debug("Loaded config: ", config);
+      setViewerConfig(config);
       return;
     }
     const handleMessage = async (event: MessageEvent<MessagePayload>) => {
       const credentials = event.data.credentials;
       const config = event.data.config;
+      console.debug("Received config: ", config);
       setS3Credentials(credentials);
       setViewerConfig(config);
-
-      if (viewerStatus === 'LOADING' && patchFetch) {
-         doPatchFetch(credentials);
-      }
       setViewerStatus('READY');
     };
     window.addEventListener('message', handleMessage);
+    window.parent.postMessage("READY");
+    console.debug("Registered message handler");
     return () => {
       window.removeEventListener('message', handleMessage);
+      console.debug("Deregistered message handler");
     };
   }, [mode]);
 
@@ -57,7 +58,7 @@ export const ViewerStateProvider = ({ children, mode, patchFetch }: ViewerStateP
   }
 
   const value = useMemo(() => ({
-    status: viewerStatus, config: viewerConfig, s3Credentials, updateConfig
+    status: viewerStatus, config: viewerConfig, s3Credentials, updateConfig, patchFetch
   }), [viewerStatus, viewerConfig]);
 
   return (

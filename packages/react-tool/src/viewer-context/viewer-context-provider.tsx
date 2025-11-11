@@ -1,6 +1,6 @@
 import { useAppConfig } from "@cirrobio/react-core";
 import * as React from "react";
-import { ReactElement, useMemo } from "react";
+import { ReactElement, useEffect, useMemo, useState } from "react";
 import { Assets, FileService, IFileCredentialsApi, ManifestParser, ProjectFileAccessContext } from "@cirrobio/sdk";
 import { GenerateProjectFileAccessTokenRequest } from "@cirrobio/api-client";
 import { ViewerContext } from "./viewer-context";
@@ -11,10 +11,12 @@ import { useManifestLoader } from "../loaders/useManifestLoader";
 import { ViewerState } from "./viewer-state";
 import { ToolViewerState } from "./tool-viewer-state";
 import { ViewerServices } from "./viewer-services";
+import { doPatchFetch } from "../helpers/patch-fetch";
 
 export function ViewerContextProvider({ children }): ReactElement {
   const viewerState = useViewerState();
   const { dataService } = useAppConfig();
+  const [fetchIsPatched, setFetchIsPatched] = useState(false);
 
   const fileService = useMemo(() => {
     const fileApi: IFileCredentialsApi = {
@@ -38,6 +40,15 @@ export function ViewerContextProvider({ children }): ReactElement {
     }
     return ProjectFileAccessContext.datasetDownload(project, dataset);
   }, [project, dataset]);
+
+  useEffect(() => {
+    // Patch fetch not enabled
+    if (!viewerState.patchFetch) return;
+    // Patch fetch not ready or already patched
+    if (!fileService || !fileAccessContext || fetchIsPatched) return;
+    doPatchFetch(() => fileService.getProjectAccessCredentials(fileAccessContext));
+    setFetchIsPatched(true);
+  }, [fileService, fileAccessContext, fetchIsPatched]);
 
   const assets = useMemo(() => {
     if (!manifest || !fileAccessContext) {
