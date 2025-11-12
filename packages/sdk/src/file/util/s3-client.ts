@@ -29,7 +29,7 @@ function createS3ClientInternal(credentials: AWSCredentials, clientOverrides: S3
  */
 export function createS3Client(credentials: AWSCredentials, clientOverrides: S3ClientConfigType = {}): S3Client {
   // Bypass cache when creating s3 client with overrides, since these values may be changed.
-  if (Object.keys(clientOverrides).length > 0) {
+  if (clientOverrides && Object.keys(clientOverrides).length > 0) {
     return createS3ClientInternal(credentials, clientOverrides);
   }
   const cacheKey = `${credentials.accessKeyId}-${credentials.region}`;
