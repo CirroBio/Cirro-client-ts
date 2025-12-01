@@ -50,7 +50,30 @@ export interface ImportDataRequest {
      * @memberof ImportDataRequest
      */
     tags?: Array<Tag> | null;
+    /**
+     * Method to download FastQ files
+     * @type {string}
+     * @memberof ImportDataRequest
+     */
+    downloadMethod?: ImportDataRequestDownloadMethodEnum;
+    /**
+     * dbGaP repository key (used to access protected data on SRA)
+     * @type {string}
+     * @memberof ImportDataRequest
+     */
+    dbgapKey?: string | null;
 }
+
+/**
+* @export
+* @enum {string}
+*/
+export enum ImportDataRequestDownloadMethodEnum {
+    Sratools = 'sratools',
+    Ftp = 'ftp',
+    Aspera = 'aspera'
+}
+
 
 /**
  * Check if a given object implements the ImportDataRequest interface.
@@ -77,6 +100,8 @@ export function ImportDataRequestFromJSONTyped(json: any, ignoreDiscriminator: b
         'description': !exists(json, 'description') ? undefined : json['description'],
         'publicIds': json['publicIds'],
         'tags': !exists(json, 'tags') ? undefined : (json['tags'] === null ? null : (json['tags'] as Array<any>).map(TagFromJSON)),
+        'downloadMethod': !exists(json, 'downloadMethod') ? undefined : json['downloadMethod'],
+        'dbgapKey': !exists(json, 'dbgapKey') ? undefined : json['dbgapKey'],
     };
 }
 
@@ -93,6 +118,8 @@ export function ImportDataRequestToJSON(value?: ImportDataRequest | null): any {
         'description': value.description,
         'publicIds': value.publicIds,
         'tags': value.tags === undefined ? undefined : (value.tags === null ? null : (value.tags as Array<any>).map(TagToJSON)),
+        'downloadMethod': value.downloadMethod,
+        'dbgapKey': value.dbgapKey,
     };
 }
 
