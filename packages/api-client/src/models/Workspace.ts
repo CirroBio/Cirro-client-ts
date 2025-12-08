@@ -127,7 +127,7 @@ export interface Workspace {
      * @type {Date}
      * @memberof Workspace
      */
-    startedAt: Date;
+    startedAt?: Date | null;
     /**
      * 
      * @type {Date}
@@ -152,7 +152,6 @@ export function instanceOfWorkspace(value: object): boolean {
     isInstance = isInstance && "sharingType" in value;
     isInstance = isInstance && "createdBy" in value;
     isInstance = isInstance && "createdAt" in value;
-    isInstance = isInstance && "startedAt" in value;
     isInstance = isInstance && "updatedAt" in value;
 
     return isInstance;
@@ -180,7 +179,7 @@ export function WorkspaceFromJSONTyped(json: any, ignoreDiscriminator: boolean):
         'sessions': !exists(json, 'sessions') ? undefined : (json['sessions'] === null ? null : (json['sessions'] as Array<any>).map(WorkspaceSessionFromJSON)),
         'createdBy': json['createdBy'],
         'createdAt': (new Date(json['createdAt'])),
-        'startedAt': (new Date(json['startedAt'])),
+        'startedAt': !exists(json, 'startedAt') ? undefined : (json['startedAt'] === null ? null : new Date(json['startedAt'])),
         'updatedAt': (new Date(json['updatedAt'])),
     };
 }
@@ -206,7 +205,7 @@ export function WorkspaceToJSON(value?: Workspace | null): any {
         'sessions': value.sessions === undefined ? undefined : (value.sessions === null ? null : (value.sessions as Array<any>).map(WorkspaceSessionToJSON)),
         'createdBy': value.createdBy,
         'createdAt': (value.createdAt.toISOString()),
-        'startedAt': (value.startedAt.toISOString()),
+        'startedAt': value.startedAt === undefined ? undefined : (value.startedAt === null ? null : value.startedAt.toISOString()),
         'updatedAt': (value.updatedAt.toISOString()),
     };
 }
