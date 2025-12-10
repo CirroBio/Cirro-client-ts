@@ -34,7 +34,7 @@ jobs:
       - name: Install deps
         working-directory: packages/api-client
         run: |
-          yarn install
+          yarn install --frozen-lockfile
 
       - name: Build package
         working-directory: packages/api-client
@@ -64,7 +64,7 @@ jobs:
       - name: Install deps
         working-directory: packages/sdk
         run: |
-          yarn install
+          yarn install --frozen-lockfile
 
       - name: Build api
         working-directory: packages/api-client
