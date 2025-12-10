@@ -11,7 +11,7 @@ describe("s3-utils", () => {
 
     it("should throw an error for an invalid URI", () => {
       const uri = "invalid-uri";
-      expect(() => s3UriToParams(uri)).toThrowError(`Received invalid uri: '${uri}'`);
+      expect(() => s3UriToParams(uri)).toThrow(`Received invalid uri: '${uri}'`);
     });
   });
 })
