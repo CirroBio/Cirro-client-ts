@@ -74,6 +74,12 @@ export interface WorkspaceInput {
      * @memberof WorkspaceInput
      */
     sharingType: SharingType;
+    /**
+     * Time period (in hours) to automatically stop the workspace if running
+     * @type {number}
+     * @memberof WorkspaceInput
+     */
+    autoStopTimeout?: number | null;
 }
 
 /**
@@ -105,6 +111,7 @@ export function WorkspaceInputFromJSONTyped(json: any, ignoreDiscriminator: bool
         'environmentId': !exists(json, 'environmentId') ? undefined : json['environmentId'],
         'computeConfig': WorkspaceComputeConfigFromJSON(json['computeConfig']),
         'sharingType': SharingTypeFromJSON(json['sharingType']),
+        'autoStopTimeout': !exists(json, 'autoStopTimeout') ? undefined : json['autoStopTimeout'],
     };
 }
 
@@ -123,6 +130,7 @@ export function WorkspaceInputToJSON(value?: WorkspaceInput | null): any {
         'environmentId': value.environmentId,
         'computeConfig': WorkspaceComputeConfigToJSON(value.computeConfig),
         'sharingType': SharingTypeToJSON(value.sharingType),
+        'autoStopTimeout': value.autoStopTimeout,
     };
 }
 

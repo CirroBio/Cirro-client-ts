@@ -25,6 +25,7 @@ export enum EntityType {
     Process = 'PROCESS',
     Reference = 'REFERENCE',
     Notebook = 'NOTEBOOK',
+    Workspace = 'WORKSPACE',
     Sample = 'SAMPLE',
     Share = 'SHARE',
     Tag = 'TAG',
