@@ -106,6 +106,12 @@ export interface Workspace {
     sharingType: SharingType;
     /**
      * 
+     * @type {number}
+     * @memberof Workspace
+     */
+    autoStopTimeout?: number | null;
+    /**
+     * 
      * @type {Array<WorkspaceSession>}
      * @memberof Workspace
      */
@@ -176,6 +182,7 @@ export function WorkspaceFromJSONTyped(json: any, ignoreDiscriminator: boolean):
         'mountedDatasets': ((json['mountedDatasets'] as Array<any>).map(MountedDatasetFromJSON)),
         'computeConfig': WorkspaceComputeConfigFromJSON(json['computeConfig']),
         'sharingType': SharingTypeFromJSON(json['sharingType']),
+        'autoStopTimeout': !exists(json, 'autoStopTimeout') ? undefined : json['autoStopTimeout'],
         'sessions': !exists(json, 'sessions') ? undefined : (json['sessions'] === null ? null : (json['sessions'] as Array<any>).map(WorkspaceSessionFromJSON)),
         'createdBy': json['createdBy'],
         'createdAt': (new Date(json['createdAt'])),
@@ -202,6 +209,7 @@ export function WorkspaceToJSON(value?: Workspace | null): any {
         'mountedDatasets': ((value.mountedDatasets as Array<any>).map(MountedDatasetToJSON)),
         'computeConfig': WorkspaceComputeConfigToJSON(value.computeConfig),
         'sharingType': SharingTypeToJSON(value.sharingType),
+        'autoStopTimeout': value.autoStopTimeout,
         'sessions': value.sessions === undefined ? undefined : (value.sessions === null ? null : (value.sessions as Array<any>).map(WorkspaceSessionToJSON)),
         'createdBy': value.createdBy,
         'createdAt': (value.createdAt.toISOString()),
