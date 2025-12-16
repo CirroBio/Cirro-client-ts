@@ -139,6 +139,12 @@ export interface Workspace {
      * @type {Date}
      * @memberof Workspace
      */
+    autoStopTime?: Date | null;
+    /**
+     * 
+     * @type {Date}
+     * @memberof Workspace
+     */
     updatedAt: Date;
 }
 
@@ -187,6 +193,7 @@ export function WorkspaceFromJSONTyped(json: any, ignoreDiscriminator: boolean):
         'createdBy': json['createdBy'],
         'createdAt': (new Date(json['createdAt'])),
         'startedAt': !exists(json, 'startedAt') ? undefined : (json['startedAt'] === null ? null : new Date(json['startedAt'])),
+        'autoStopTime': !exists(json, 'autoStopTime') ? undefined : (json['autoStopTime'] === null ? null : new Date(json['autoStopTime'])),
         'updatedAt': (new Date(json['updatedAt'])),
     };
 }
@@ -214,6 +221,7 @@ export function WorkspaceToJSON(value?: Workspace | null): any {
         'createdBy': value.createdBy,
         'createdAt': (value.createdAt.toISOString()),
         'startedAt': value.startedAt === undefined ? undefined : (value.startedAt === null ? null : value.startedAt.toISOString()),
+        'autoStopTime': value.autoStopTime === undefined ? undefined : (value.autoStopTime === null ? null : value.autoStopTime.toISOString()),
         'updatedAt': (value.updatedAt.toISOString()),
     };
 }
