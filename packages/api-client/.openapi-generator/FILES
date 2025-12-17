@@ -122,6 +122,7 @@ src/models/PaginatedResponseUserDto.ts
 src/models/PipelineCode.ts
 src/models/PipelineCost.ts
 src/models/PortalErrorResponse.ts
+src/models/PostponeWorkspaceAutostopInput.ts
 src/models/Process.ts
 src/models/ProcessDetail.ts
 src/models/Project.ts

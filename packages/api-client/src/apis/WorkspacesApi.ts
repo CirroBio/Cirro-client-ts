@@ -16,6 +16,7 @@
 import * as runtime from '../runtime';
 import type {
   CreateResponse,
+  PostponeWorkspaceAutostopInput,
   Workspace,
   WorkspaceConnectionResponse,
   WorkspaceEnvironment,
@@ -24,6 +25,8 @@ import type {
 import {
     CreateResponseFromJSON,
     CreateResponseToJSON,
+    PostponeWorkspaceAutostopInputFromJSON,
+    PostponeWorkspaceAutostopInputToJSON,
     WorkspaceFromJSON,
     WorkspaceToJSON,
     WorkspaceConnectionResponseFromJSON,
@@ -62,6 +65,12 @@ export interface GetWorkspaceRequest {
 
 export interface GetWorkspacesRequest {
     projectId: string;
+}
+
+export interface PostponeAutoStopRequest {
+    projectId: string;
+    workspaceId: string;
+    postponeWorkspaceAutostopInput: PostponeWorkspaceAutostopInput;
 }
 
 export interface StartWorkspaceRequest {
@@ -387,6 +396,57 @@ export class WorkspacesApi extends runtime.BaseAPI {
      */
     async getWorkspaces(requestParameters: GetWorkspacesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<Workspace>> {
         const response = await this.getWorkspacesRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Postpone autostop for the given workspace
+     * Postpone workspace autostop
+     */
+    async postponeAutoStopRaw(requestParameters: PostponeAutoStopRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Workspace>> {
+        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
+            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling postponeAutoStop.');
+        }
+
+        if (requestParameters.workspaceId === null || requestParameters.workspaceId === undefined) {
+            throw new runtime.RequiredError('workspaceId','Required parameter requestParameters.workspaceId was null or undefined when calling postponeAutoStop.');
+        }
+
+        if (requestParameters.postponeWorkspaceAutostopInput === null || requestParameters.postponeWorkspaceAutostopInput === undefined) {
+            throw new runtime.RequiredError('postponeWorkspaceAutostopInput','Required parameter requestParameters.postponeWorkspaceAutostopInput was null or undefined when calling postponeAutoStop.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/projects/{projectId}/workspaces/{workspaceId}:postpone-auto-stop`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))).replace(`{${"workspaceId"}}`, encodeURIComponent(String(requestParameters.workspaceId))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: PostponeWorkspaceAutostopInputToJSON(requestParameters.postponeWorkspaceAutostopInput),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => WorkspaceFromJSON(jsonValue));
+    }
+
+    /**
+     * Postpone autostop for the given workspace
+     * Postpone workspace autostop
+     */
+    async postponeAutoStop(requestParameters: PostponeAutoStopRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Workspace> {
+        const response = await this.postponeAutoStopRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
