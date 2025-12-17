@@ -97,6 +97,7 @@ export * from './PaginatedResponseUserDto';
 export * from './PipelineCode';
 export * from './PipelineCost';
 export * from './PortalErrorResponse';
+export * from './PostponeWorkspaceAutostopInput';
 export * from './Process';
 export * from './ProcessDetail';
 export * from './Project';
