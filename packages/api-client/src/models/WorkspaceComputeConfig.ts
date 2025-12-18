@@ -44,6 +44,12 @@ export interface WorkspaceComputeConfig {
      */
     volumeSizeGiB?: number;
     /**
+     * Number of GPUs allocated to the workspace
+     * @type {number}
+     * @memberof WorkspaceComputeConfig
+     */
+    gpu?: number;
+    /**
      * Map of environment variables injected into the container at runtime. Keys must be non-blank.
      * @type {{ [key: string]: string; }}
      * @memberof WorkspaceComputeConfig
@@ -81,6 +87,7 @@ export function WorkspaceComputeConfigFromJSONTyped(json: any, ignoreDiscriminat
         'cpu': !exists(json, 'cpu') ? undefined : json['cpu'],
         'memoryGiB': !exists(json, 'memoryGiB') ? undefined : json['memoryGiB'],
         'volumeSizeGiB': !exists(json, 'volumeSizeGiB') ? undefined : json['volumeSizeGiB'],
+        'gpu': !exists(json, 'gpu') ? undefined : json['gpu'],
         'environmentVariables': !exists(json, 'environmentVariables') ? undefined : json['environmentVariables'],
         'localPort': !exists(json, 'localPort') ? undefined : json['localPort'],
     };
@@ -99,6 +106,7 @@ export function WorkspaceComputeConfigToJSON(value?: WorkspaceComputeConfig | nu
         'cpu': value.cpu,
         'memoryGiB': value.memoryGiB,
         'volumeSizeGiB': value.volumeSizeGiB,
+        'gpu': value.gpu,
         'environmentVariables': value.environmentVariables,
         'localPort': value.localPort,
     };
