@@ -70,6 +70,12 @@ export interface Workspace {
     description: string;
     /**
      * 
+     * @type {string}
+     * @memberof Workspace
+     */
+    projectId: string;
+    /**
+     * 
      * @type {Status}
      * @memberof Workspace
      */
@@ -156,6 +162,7 @@ export function instanceOfWorkspace(value: object): boolean {
     isInstance = isInstance && "id" in value;
     isInstance = isInstance && "name" in value;
     isInstance = isInstance && "description" in value;
+    isInstance = isInstance && "projectId" in value;
     isInstance = isInstance && "status" in value;
     isInstance = isInstance && "statusMessage" in value;
     isInstance = isInstance && "environmentId" in value;
@@ -182,6 +189,7 @@ export function WorkspaceFromJSONTyped(json: any, ignoreDiscriminator: boolean):
         'id': json['id'],
         'name': json['name'],
         'description': json['description'],
+        'projectId': json['projectId'],
         'status': StatusFromJSON(json['status']),
         'statusMessage': json['statusMessage'],
         'environmentId': json['environmentId'],
@@ -210,6 +218,7 @@ export function WorkspaceToJSON(value?: Workspace | null): any {
         'id': value.id,
         'name': value.name,
         'description': value.description,
+        'projectId': value.projectId,
         'status': StatusToJSON(value.status),
         'statusMessage': value.statusMessage,
         'environmentId': value.environmentId,
