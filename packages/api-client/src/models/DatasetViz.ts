@@ -45,10 +45,10 @@ export interface DatasetViz {
     type?: string;
     /**
      * Config or path to config used to render viz
-     * @type {any}
+     * @type {object}
      * @memberof DatasetViz
      */
-    config?: any | null;
+    config?: object;
 }
 
 /**
