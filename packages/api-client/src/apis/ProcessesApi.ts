@@ -26,6 +26,7 @@ import type {
   PortalErrorResponse,
   Process,
   ProcessDetail,
+  ProcessDocumentation,
   ValidateFileNamePatternsRequest,
   ValidateFileRequirementsRequest,
 } from '../models/index';
@@ -52,6 +53,8 @@ import {
     ProcessToJSON,
     ProcessDetailFromJSON,
     ProcessDetailToJSON,
+    ProcessDocumentationFromJSON,
+    ProcessDocumentationToJSON,
     ValidateFileNamePatternsRequestFromJSON,
     ValidateFileNamePatternsRequestToJSON,
     ValidateFileRequirementsRequestFromJSON,
@@ -72,6 +75,10 @@ export interface CreateCustomProcessRequest {
 }
 
 export interface GetProcessRequest {
+    processId: string;
+}
+
+export interface GetProcessDocumentationRequest {
     processId: string;
 }
 
@@ -273,6 +280,46 @@ export class ProcessesApi extends runtime.BaseAPI {
      */
     async getProcess(requestParameters: GetProcessRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ProcessDetail> {
         const response = await this.getProcessRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Retrieves documentation for a given pipeline or data type (if available).
+     * Get process documentation
+     */
+    async getProcessDocumentationRaw(requestParameters: GetProcessDocumentationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ProcessDocumentation>> {
+        if (requestParameters.processId === null || requestParameters.processId === undefined) {
+            throw new runtime.RequiredError('processId','Required parameter requestParameters.processId was null or undefined when calling getProcessDocumentation.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/processes/{processId}/documentation`.replace(`{${"processId"}}`, encodeURIComponent(String(requestParameters.processId))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => ProcessDocumentationFromJSON(jsonValue));
+    }
+
+    /**
+     * Retrieves documentation for a given pipeline or data type (if available).
+     * Get process documentation
+     */
+    async getProcessDocumentation(requestParameters: GetProcessDocumentationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ProcessDocumentation> {
+        const response = await this.getProcessDocumentationRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

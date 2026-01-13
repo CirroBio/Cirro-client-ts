@@ -19,7 +19,8 @@
  */
 export enum SharingType {
     Private = 'PRIVATE',
-    ReadWrite = 'READ_WRITE'
+    ReadWrite = 'READ_WRITE',
+    ReadWriteControl = 'READ_WRITE_CONTROL'
 }
 
 

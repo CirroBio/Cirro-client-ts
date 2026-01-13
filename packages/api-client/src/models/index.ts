@@ -100,6 +100,7 @@ export * from './PortalErrorResponse';
 export * from './PostponeWorkspaceAutostopInput';
 export * from './Process';
 export * from './ProcessDetail';
+export * from './ProcessDocumentation';
 export * from './Project';
 export * from './ProjectAccessRequest';
 export * from './ProjectAccessType';

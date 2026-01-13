@@ -79,7 +79,7 @@ export interface Discussion {
      * @type {Date}
      * @memberof Discussion
      */
-    lastMessageTime: Date;
+    lastMessageTime?: Date | null;
     /**
      * 
      * @type {Date}
@@ -106,7 +106,6 @@ export function instanceOfDiscussion(value: object): boolean {
     isInstance = isInstance && "type" in value;
     isInstance = isInstance && "projectId" in value;
     isInstance = isInstance && "createdBy" in value;
-    isInstance = isInstance && "lastMessageTime" in value;
     isInstance = isInstance && "createdAt" in value;
     isInstance = isInstance && "updatedAt" in value;
 
@@ -130,7 +129,7 @@ export function DiscussionFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'type': DiscussionTypeFromJSON(json['type']),
         'projectId': json['projectId'],
         'createdBy': json['createdBy'],
-        'lastMessageTime': (new Date(json['lastMessageTime'])),
+        'lastMessageTime': !exists(json, 'lastMessageTime') ? undefined : (json['lastMessageTime'] === null ? null : new Date(json['lastMessageTime'])),
         'createdAt': (new Date(json['createdAt'])),
         'updatedAt': (new Date(json['updatedAt'])),
     };
@@ -152,7 +151,7 @@ export function DiscussionToJSON(value?: Discussion | null): any {
         'type': DiscussionTypeToJSON(value.type),
         'projectId': value.projectId,
         'createdBy': value.createdBy,
-        'lastMessageTime': (value.lastMessageTime.toISOString()),
+        'lastMessageTime': value.lastMessageTime === undefined ? undefined : (value.lastMessageTime === null ? null : value.lastMessageTime.toISOString()),
         'createdAt': (value.createdAt.toISOString()),
         'updatedAt': (value.updatedAt.toISOString()),
     };

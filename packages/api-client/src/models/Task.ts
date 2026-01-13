@@ -26,11 +26,11 @@ export interface Task {
      */
     name: string;
     /**
-     * 
+     * Job ID on the underlying execution environment (i.e. AWS Batch ID)
      * @type {string}
      * @memberof Task
      */
-    nativeJobId: string;
+    nativeJobId?: string | null;
     /**
      * 
      * @type {string}
@@ -42,37 +42,37 @@ export interface Task {
      * @type {Date}
      * @memberof Task
      */
-    requestedAt: Date;
+    requestedAt?: Date | null;
     /**
      * 
      * @type {Date}
      * @memberof Task
      */
-    startedAt?: Date;
+    startedAt?: Date | null;
     /**
      * 
      * @type {Date}
      * @memberof Task
      */
-    stoppedAt?: Date;
+    stoppedAt?: Date | null;
     /**
      * 
      * @type {string}
      * @memberof Task
      */
-    containerImage?: string;
+    containerImage?: string | null;
     /**
      * 
      * @type {string}
      * @memberof Task
      */
-    commandLine?: string;
+    commandLine?: string | null;
     /**
      * 
      * @type {string}
      * @memberof Task
      */
-    logLocation?: string;
+    logLocation?: string | null;
 }
 
 /**
@@ -81,9 +81,7 @@ export interface Task {
 export function instanceOfTask(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "nativeJobId" in value;
     isInstance = isInstance && "status" in value;
-    isInstance = isInstance && "requestedAt" in value;
 
     return isInstance;
 }
@@ -99,11 +97,11 @@ export function TaskFromJSONTyped(json: any, ignoreDiscriminator: boolean): Task
     return {
         
         'name': json['name'],
-        'nativeJobId': json['nativeJobId'],
+        'nativeJobId': !exists(json, 'nativeJobId') ? undefined : json['nativeJobId'],
         'status': json['status'],
-        'requestedAt': (new Date(json['requestedAt'])),
-        'startedAt': !exists(json, 'startedAt') ? undefined : (new Date(json['startedAt'])),
-        'stoppedAt': !exists(json, 'stoppedAt') ? undefined : (new Date(json['stoppedAt'])),
+        'requestedAt': !exists(json, 'requestedAt') ? undefined : (json['requestedAt'] === null ? null : new Date(json['requestedAt'])),
+        'startedAt': !exists(json, 'startedAt') ? undefined : (json['startedAt'] === null ? null : new Date(json['startedAt'])),
+        'stoppedAt': !exists(json, 'stoppedAt') ? undefined : (json['stoppedAt'] === null ? null : new Date(json['stoppedAt'])),
         'containerImage': !exists(json, 'containerImage') ? undefined : json['containerImage'],
         'commandLine': !exists(json, 'commandLine') ? undefined : json['commandLine'],
         'logLocation': !exists(json, 'logLocation') ? undefined : json['logLocation'],
@@ -122,9 +120,9 @@ export function TaskToJSON(value?: Task | null): any {
         'name': value.name,
         'nativeJobId': value.nativeJobId,
         'status': value.status,
-        'requestedAt': (value.requestedAt.toISOString()),
-        'startedAt': value.startedAt === undefined ? undefined : (value.startedAt.toISOString()),
-        'stoppedAt': value.stoppedAt === undefined ? undefined : (value.stoppedAt.toISOString()),
+        'requestedAt': value.requestedAt === undefined ? undefined : (value.requestedAt === null ? null : value.requestedAt.toISOString()),
+        'startedAt': value.startedAt === undefined ? undefined : (value.startedAt === null ? null : value.startedAt.toISOString()),
+        'stoppedAt': value.stoppedAt === undefined ? undefined : (value.stoppedAt === null ? null : value.stoppedAt.toISOString()),
         'containerImage': value.containerImage,
         'commandLine': value.commandLine,
         'logLocation': value.logLocation,
