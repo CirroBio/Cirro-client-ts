@@ -25,6 +25,8 @@ export enum Status {
     Deleted = 'DELETED',
     Deleting = 'DELETING',
     Suspended = 'SUSPENDED',
+    Stopping = 'STOPPING',
+    Starting = 'STARTING',
     Delete = 'DELETE',
     Failed = 'FAILED',
     Unknown = 'UNKNOWN'
