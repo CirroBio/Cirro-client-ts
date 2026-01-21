@@ -1,6 +1,6 @@
 {
   "name": "@cirrobio/react-auth",
-  "version": "0.0.5",
+  "version": "0.0.4",
   "description": "Provides authentication configuration and components for React applications using Cirro.",
   "author": "CirroBio",
   "repository": {
