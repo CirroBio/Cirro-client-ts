@@ -1,7 +1,6 @@
-import React, { Children, ReactElement, useMemo, useState } from 'react';
+import React, { ReactElement, useMemo, useState } from 'react';
 import { Button, Divider, Stack, TextField } from '@mui/material';
 import { LoginProvider } from '@cirrobio/api-client';
-import { LoadingButton } from '@mui/lab';
 import { COGNITO_PROVIDER_ID } from "../amplify/magic-link";
 
 interface IProps {
@@ -22,16 +21,17 @@ export function LoginOptions({ loginProviders, onSelect, busy, success }: Readon
 
   return (
     <Stack alignItems="center" gap={3} direction="column" sx={{ pt: 2 }}>
-      {Children.toArray(ssoProviders.map(provider => {
-        return (<Button
+      {ssoProviders.map(provider => (
+        <Button
+          key={provider.id}
           sx={{ p: 2, width: '100%' }}
           variant="contained"
           color="secondary"
           fullWidth={true}
           startIcon={<img style={{ maxHeight: '17px' }} alt={provider.name} src={provider.logoUrl} />}
           onClick={() => onSelect(provider.id)}
-        >{provider.name}</Button>)
-      }))}
+        >{provider.name}</Button>
+      ))}
       {cognitoEnabled && (
         <form style={{ width: '100%' }}>
           <Stack alignItems="center" gap={3} direction="column">
@@ -47,7 +47,7 @@ export function LoginOptions({ loginProviders, onSelect, busy, success }: Readon
               required
               onChange={(e) => setEmail(e.target.value)}
             />
-            <LoadingButton
+            <Button
               type="submit"
               sx={{ p: 2, width: '100%' }}
               loading={busy}
@@ -58,7 +58,7 @@ export function LoginOptions({ loginProviders, onSelect, busy, success }: Readon
               onClick={() => onSelect(COGNITO_PROVIDER_ID, email)}
             >
               Sign in with email
-            </LoadingButton>
+            </Button>
           </Stack>
         </form>
       )}

@@ -1,6 +1,6 @@
 {
   "name": "@cirrobio/react-ui-core",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Core UI components & theming for Cirro React applications",
   "author": "CirroBio",
   "repository": {
@@ -26,7 +26,7 @@
   "peerDependencies": {
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
-    "@mui/material": "^5.15.10",
+    "@mui/material": "^7.3.7",
     "react": "^16.14 || ^17 || ^18 || ^19"
   },
   "devDependencies": {

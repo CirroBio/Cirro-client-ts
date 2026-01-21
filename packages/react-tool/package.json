@@ -1,6 +1,6 @@
 {
   "name": "@cirrobio/react-tool",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "React components and utilities for developing Cirro tools",
   "author": "CirroBio",
   "repository": {
@@ -24,14 +24,15 @@
   },
   "dependencies": {
     "@cirrobio/api-client": "^0.12.0",
-    "@cirrobio/react-auth": "^0.0.2",
+    "@cirrobio/react-auth": "^0.0.4",
     "@cirrobio/react-core": "^0.0.2",
     "@cirrobio/sdk": "^0.12.0"
   },
   "peerDependencies": {
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
-    "@mui/material": "^5.15.10",
+    "@mui/icons-material": "^7.3.7",
+    "@mui/material": "^7.3.7",
     "react": "^16.14 || ^17 || ^18 || ^19",
     "react-dom": "^16.14 || ^17 || ^18 || ^19"
   }
