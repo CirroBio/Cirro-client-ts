@@ -26,11 +26,17 @@ export interface MountedDataset {
      */
     name: string;
     /**
-     * Full S3 prefix to the data
+     * ID of the dataset to mount
      * @type {string}
      * @memberof MountedDataset
      */
-    uri: string;
+    datasetId?: string | null;
+    /**
+     * Full S3 URI to mounted data (if mounting custom path)
+     * @type {string}
+     * @memberof MountedDataset
+     */
+    customUri?: string | null;
 }
 
 /**
@@ -39,7 +45,6 @@ export interface MountedDataset {
 export function instanceOfMountedDataset(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "uri" in value;
 
     return isInstance;
 }
@@ -55,7 +60,8 @@ export function MountedDatasetFromJSONTyped(json: any, ignoreDiscriminator: bool
     return {
         
         'name': json['name'],
-        'uri': json['uri'],
+        'datasetId': !exists(json, 'datasetId') ? undefined : json['datasetId'],
+        'customUri': !exists(json, 'customUri') ? undefined : json['customUri'],
     };
 }
 
@@ -69,7 +75,8 @@ export function MountedDatasetToJSON(value?: MountedDataset | null): any {
     return {
         
         'name': value.name,
-        'uri': value.uri,
+        'datasetId': value.datasetId,
+        'customUri': value.customUri,
     };
 }
 
