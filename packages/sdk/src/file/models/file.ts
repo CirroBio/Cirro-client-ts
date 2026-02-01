@@ -2,6 +2,7 @@ import { FileSystemObject, FileSystemObjectType } from "./file-object.model";
 import { ProjectFileAccessContext } from "../project-access-context";
 import { v4 as uuidv4 } from 'uuid';
 import { getDisplayPath } from "../util/get-display.fn";
+import { removeStartingSlash } from "../../formatters/slash";
 
 export class File implements FileSystemObject {
   readonly id: string;
@@ -22,6 +23,10 @@ export class File implements FileSystemObject {
 
   get displayPath() {
     return getDisplayPath(this);
+  }
+
+  get relativePath() {
+    return removeStartingSlash(`${this.path}/${this.name}`);
   }
 
   constructor(domain: string, file: string, size: number, metadata: Record<string, any>, accessContext: ProjectFileAccessContext) {
