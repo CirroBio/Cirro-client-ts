@@ -1915,8 +1915,9 @@ __metadata:
     "@aws-sdk/client-s3": "npm:^3.925.0"
     "@aws-sdk/lib-storage": "npm:^3.925.0"
     "@aws-sdk/s3-request-presigner": "npm:^3.925.0"
-    "@cirrobio/api-client": "npm:^0.12.0"
     uuid: "npm:^11.1.0"
+  peerDependencies:
+    "@cirrobio/api-client": ^0.12.0
   languageName: unknown
   linkType: soft
 

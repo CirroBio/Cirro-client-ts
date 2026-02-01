@@ -1,6 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import { FileSystemObject, FileSystemObjectType } from "./file-object.model";
 import { getDisplayPath } from "../util/get-display.fn";
+import { removeStartingSlash } from "../../formatters/slash";
 
 export class Folder implements FileSystemObject {
   readonly id: string;
@@ -15,6 +16,10 @@ export class Folder implements FileSystemObject {
 
   get displayPath() {
     return getDisplayPath(this);
+  }
+
+  get relativePath() {
+    return removeStartingSlash(`${this.path}/${this.name}`);
   }
 
   constructor(url: string, name: string, path: string, domain: string) {
