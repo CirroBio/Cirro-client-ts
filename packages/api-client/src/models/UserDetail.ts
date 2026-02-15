@@ -103,7 +103,14 @@ export interface UserDetail {
      * @type {Array<string>}
      * @memberof UserDetail
      */
-    groups: Array<string>;
+    globalRoles: Array<string>;
+    /**
+     * Replaced by globalRoles.
+     * @type {Array<string>}
+     * @memberof UserDetail
+     * @deprecated
+     */
+    groups?: Array<string>;
     /**
      * 
      * @type {UserSettings}
@@ -126,7 +133,7 @@ export function instanceOfUserDetail(value: object): boolean {
     isInstance = isInstance && "department" in value;
     isInstance = isInstance && "invitedBy" in value;
     isInstance = isInstance && "projectAssignments" in value;
-    isInstance = isInstance && "groups" in value;
+    isInstance = isInstance && "globalRoles" in value;
     isInstance = isInstance && "settings" in value;
 
     return isInstance;
@@ -153,7 +160,8 @@ export function UserDetailFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'signUpTime': !exists(json, 'signUpTime') ? undefined : (json['signUpTime'] === null ? null : new Date(json['signUpTime'])),
         'lastSignedIn': !exists(json, 'lastSignedIn') ? undefined : (json['lastSignedIn'] === null ? null : new Date(json['lastSignedIn'])),
         'projectAssignments': ((json['projectAssignments'] as Array<any>).map(UserProjectAssignmentFromJSON)),
-        'groups': json['groups'],
+        'globalRoles': json['globalRoles'],
+        'groups': !exists(json, 'groups') ? undefined : json['groups'],
         'settings': UserSettingsFromJSON(json['settings']),
     };
 }
@@ -178,6 +186,7 @@ export function UserDetailToJSON(value?: UserDetail | null): any {
         'signUpTime': value.signUpTime === undefined ? undefined : (value.signUpTime === null ? null : value.signUpTime.toISOString()),
         'lastSignedIn': value.lastSignedIn === undefined ? undefined : (value.lastSignedIn === null ? null : value.lastSignedIn.toISOString()),
         'projectAssignments': ((value.projectAssignments as Array<any>).map(UserProjectAssignmentToJSON)),
+        'globalRoles': value.globalRoles,
         'groups': value.groups,
         'settings': UserSettingsToJSON(value.settings),
     };

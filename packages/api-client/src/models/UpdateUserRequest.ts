@@ -69,11 +69,18 @@ export interface UpdateUserRequest {
      */
     settings?: UserSettings | null;
     /**
-     * Groups the user belongs to, only editable by administrators
+     * Global roles the user belongs to, only editable by administrators
      * @type {Array<string>}
      * @memberof UpdateUserRequest
      */
-    groups?: Array<string>;
+    globalRoles?: Array<string> | null;
+    /**
+     * Groups the user belongs to, only editable by administrators. Replaced by global roles
+     * @type {Array<string>}
+     * @memberof UpdateUserRequest
+     * @deprecated
+     */
+    groups?: Array<string> | null;
 }
 
 /**
@@ -104,6 +111,7 @@ export function UpdateUserRequestFromJSONTyped(json: any, ignoreDiscriminator: b
         'jobTitle': !exists(json, 'jobTitle') ? undefined : json['jobTitle'],
         'organization': !exists(json, 'organization') ? undefined : json['organization'],
         'settings': !exists(json, 'settings') ? undefined : UserSettingsFromJSON(json['settings']),
+        'globalRoles': !exists(json, 'globalRoles') ? undefined : json['globalRoles'],
         'groups': !exists(json, 'groups') ? undefined : json['groups'],
     };
 }
@@ -124,6 +132,7 @@ export function UpdateUserRequestToJSON(value?: UpdateUserRequest | null): any {
         'jobTitle': value.jobTitle,
         'organization': value.organization,
         'settings': UserSettingsToJSON(value.settings),
+        'globalRoles': value.globalRoles,
         'groups': value.groups,
     };
 }
