@@ -49,6 +49,12 @@ export interface User {
      * @memberof User
      */
     jobTitle: string;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof User
+     */
+    globalRoles: Array<string>;
 }
 
 /**
@@ -61,6 +67,7 @@ export function instanceOfUser(value: object): boolean {
     isInstance = isInstance && "organization" in value;
     isInstance = isInstance && "department" in value;
     isInstance = isInstance && "jobTitle" in value;
+    isInstance = isInstance && "globalRoles" in value;
 
     return isInstance;
 }
@@ -80,6 +87,7 @@ export function UserFromJSONTyped(json: any, ignoreDiscriminator: boolean): User
         'organization': json['organization'],
         'department': json['department'],
         'jobTitle': json['jobTitle'],
+        'globalRoles': json['globalRoles'],
     };
 }
 
@@ -97,6 +105,7 @@ export function UserToJSON(value?: User | null): any {
         'organization': value.organization,
         'department': value.department,
         'jobTitle': value.jobTitle,
+        'globalRoles': value.globalRoles,
     };
 }
 
