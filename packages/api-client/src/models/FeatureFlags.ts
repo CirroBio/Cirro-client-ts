@@ -49,6 +49,12 @@ export interface FeatureFlags {
      * @memberof FeatureFlags
      */
     driveEnabled: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof FeatureFlags
+     */
+    appRegistrationsEnabled: boolean;
 }
 
 /**
@@ -61,6 +67,7 @@ export function instanceOfFeatureFlags(value: object): boolean {
     isInstance = isInstance && "projectRequestsEnabled" in value;
     isInstance = isInstance && "workspacesEnabled" in value;
     isInstance = isInstance && "driveEnabled" in value;
+    isInstance = isInstance && "appRegistrationsEnabled" in value;
 
     return isInstance;
 }
@@ -80,6 +87,7 @@ export function FeatureFlagsFromJSONTyped(json: any, ignoreDiscriminator: boolea
         'projectRequestsEnabled': json['projectRequestsEnabled'],
         'workspacesEnabled': json['workspacesEnabled'],
         'driveEnabled': json['driveEnabled'],
+        'appRegistrationsEnabled': json['appRegistrationsEnabled'],
     };
 }
 
@@ -97,6 +105,7 @@ export function FeatureFlagsToJSON(value?: FeatureFlags | null): any {
         'projectRequestsEnabled': value.projectRequestsEnabled,
         'workspacesEnabled': value.workspacesEnabled,
         'driveEnabled': value.driveEnabled,
+        'appRegistrationsEnabled': value.appRegistrationsEnabled,
     };
 }
 

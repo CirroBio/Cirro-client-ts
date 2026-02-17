@@ -2,6 +2,7 @@
 .npmignore
 README.md
 package.json
+src/apis/AppRegistrationsApi.ts
 src/apis/AuditApi.ts
 src/apis/BillingApi.ts
 src/apis/ComputeEnvironmentApi.ts
@@ -32,6 +33,11 @@ src/models/AgentInput.ts
 src/models/AgentRegistration.ts
 src/models/AgentStatus.ts
 src/models/AllowedDataType.ts
+src/models/AppRegistration.ts
+src/models/AppRegistrationDetail.ts
+src/models/AppRegistrationInput.ts
+src/models/AppRegistrationSecretResponse.ts
+src/models/AppType.ts
 src/models/ApproveProjectAccessRequest.ts
 src/models/Artifact.ts
 src/models/ArtifactType.ts
@@ -114,15 +120,18 @@ src/models/NamedItem.ts
 src/models/NotebookInstance.ts
 src/models/NotebookInstanceStatusResponse.ts
 src/models/OpenNotebookInstanceResponse.ts
+src/models/PaginatedResponseAppRegistrationDto.ts
 src/models/PaginatedResponseDatasetListDto.ts
 src/models/PaginatedResponseDiscussion.ts
 src/models/PaginatedResponseMessage.ts
 src/models/PaginatedResponseSampleDto.ts
 src/models/PaginatedResponseUserDto.ts
+src/models/Permission.ts
 src/models/PipelineCode.ts
 src/models/PipelineCost.ts
 src/models/PortalErrorResponse.ts
 src/models/PostponeWorkspaceAutostopInput.ts
+src/models/PrincipalType.ts
 src/models/Process.ts
 src/models/ProcessDetail.ts
 src/models/ProcessDocumentation.ts
@@ -134,6 +143,7 @@ src/models/ProjectDetail.ts
 src/models/ProjectFileAccessRequest.ts
 src/models/ProjectInput.ts
 src/models/ProjectMetrics.ts
+src/models/ProjectPermissionSet.ts
 src/models/ProjectRequest.ts
 src/models/ProjectRequirement.ts
 src/models/ProjectRole.ts
