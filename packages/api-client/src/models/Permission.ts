@@ -72,7 +72,10 @@ export enum Permission {
     ViewWorkspaceEnvironments = 'VIEW_WORKSPACE_ENVIRONMENTS',
     CreateBillingAccount = 'CREATE_BILLING_ACCOUNT',
     ManageBillingAccounts = 'MANAGE_BILLING_ACCOUNTS',
-    ViewAuditEvents = 'VIEW_AUDIT_EVENTS'
+    ViewAuditEvents = 'VIEW_AUDIT_EVENTS',
+    ViewMetrics = 'VIEW_METRICS',
+    SysAdminOperations = 'SYS_ADMIN_OPERATIONS',
+    ViewAllData = 'VIEW_ALL_DATA'
 }
 
 

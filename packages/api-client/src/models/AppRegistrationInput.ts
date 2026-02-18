@@ -69,7 +69,7 @@ export interface AppRegistrationInput {
      */
     type: AppType;
     /**
-     * These IP address ranges are allowed to use this app.
+     * These IP address ranges are allowed to use this app (will be used later)
      * @type {Array<string>}
      * @memberof AppRegistrationInput
      */
