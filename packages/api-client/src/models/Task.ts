@@ -39,6 +39,12 @@ export interface Task {
     status: string;
     /**
      * 
+     * @type {string}
+     * @memberof Task
+     */
+    statusMessage?: string | null;
+    /**
+     * 
      * @type {Date}
      * @memberof Task
      */
@@ -99,6 +105,7 @@ export function TaskFromJSONTyped(json: any, ignoreDiscriminator: boolean): Task
         'name': json['name'],
         'nativeJobId': !exists(json, 'nativeJobId') ? undefined : json['nativeJobId'],
         'status': json['status'],
+        'statusMessage': !exists(json, 'statusMessage') ? undefined : json['statusMessage'],
         'requestedAt': !exists(json, 'requestedAt') ? undefined : (json['requestedAt'] === null ? null : new Date(json['requestedAt'])),
         'startedAt': !exists(json, 'startedAt') ? undefined : (json['startedAt'] === null ? null : new Date(json['startedAt'])),
         'stoppedAt': !exists(json, 'stoppedAt') ? undefined : (json['stoppedAt'] === null ? null : new Date(json['stoppedAt'])),
@@ -120,6 +127,7 @@ export function TaskToJSON(value?: Task | null): any {
         'name': value.name,
         'nativeJobId': value.nativeJobId,
         'status': value.status,
+        'statusMessage': value.statusMessage,
         'requestedAt': value.requestedAt === undefined ? undefined : (value.requestedAt === null ? null : value.requestedAt.toISOString()),
         'startedAt': value.startedAt === undefined ? undefined : (value.startedAt === null ? null : value.startedAt.toISOString()),
         'stoppedAt': value.stoppedAt === undefined ? undefined : (value.stoppedAt === null ? null : value.stoppedAt.toISOString()),
