@@ -53,6 +53,13 @@ export interface GetProjectSummaryRequest {
     numberOfDays?: number;
 }
 
+export interface GetTaskRequest {
+    datasetId: string;
+    projectId: string;
+    taskId: string;
+    forceLive?: boolean;
+}
+
 export interface GetTaskLogsRequest {
     datasetId: string;
     projectId: string;
@@ -214,6 +221,58 @@ export class ExecutionApi extends runtime.BaseAPI {
      */
     async getProjectSummary(requestParameters: GetProjectSummaryRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<{ [key: string]: Array<Task>; }> {
         const response = await this.getProjectSummaryRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Gets detailed information on the individual task
+     * Get task
+     */
+    async getTaskRaw(requestParameters: GetTaskRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Task>> {
+        if (requestParameters.datasetId === null || requestParameters.datasetId === undefined) {
+            throw new runtime.RequiredError('datasetId','Required parameter requestParameters.datasetId was null or undefined when calling getTask.');
+        }
+
+        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
+            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling getTask.');
+        }
+
+        if (requestParameters.taskId === null || requestParameters.taskId === undefined) {
+            throw new runtime.RequiredError('taskId','Required parameter requestParameters.taskId was null or undefined when calling getTask.');
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters.forceLive !== undefined) {
+            queryParameters['forceLive'] = requestParameters.forceLive;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/projects/{projectId}/execution/{datasetId}/tasks/{taskId}`.replace(`{${"datasetId"}}`, encodeURIComponent(String(requestParameters.datasetId))).replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))).replace(`{${"taskId"}}`, encodeURIComponent(String(requestParameters.taskId))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => TaskFromJSON(jsonValue));
+    }
+
+    /**
+     * Gets detailed information on the individual task
+     * Get task
+     */
+    async getTask(requestParameters: GetTaskRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Task> {
+        const response = await this.getTaskRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
