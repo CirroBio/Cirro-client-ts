@@ -37,6 +37,10 @@
   "resolutions": {
     "glob@^10.2.2": "^10.5.0",
     "glob@^11.0.0": "^11.1.0",
-    "js-yaml": "4.1.1"
+    "js-yaml": "4.1.1",
+    "@isaacs/brace-expansion": "^5.0.1",
+    "axios": "^1.13.5",
+    "tar": "^7.5.8",
+    "minimatch@^10.1.1": "^10.2.1"
   }
 }
