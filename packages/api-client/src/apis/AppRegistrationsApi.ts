@@ -47,8 +47,8 @@ export interface GetAppRegistrationRequest {
 }
 
 export interface ListAppRegistrationsRequest {
-    limit: number;
-    nextToken: string;
+    limit?: number;
+    nextToken?: string;
 }
 
 export interface RegenerateSecretRequest {
@@ -192,14 +192,6 @@ export class AppRegistrationsApi extends runtime.BaseAPI {
      * List app registrations
      */
     async listAppRegistrationsRaw(requestParameters: ListAppRegistrationsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PaginatedResponseAppRegistrationDto>> {
-        if (requestParameters.limit === null || requestParameters.limit === undefined) {
-            throw new runtime.RequiredError('limit','Required parameter requestParameters.limit was null or undefined when calling listAppRegistrations.');
-        }
-
-        if (requestParameters.nextToken === null || requestParameters.nextToken === undefined) {
-            throw new runtime.RequiredError('nextToken','Required parameter requestParameters.nextToken was null or undefined when calling listAppRegistrations.');
-        }
-
         const queryParameters: any = {};
 
         if (requestParameters.limit !== undefined) {
@@ -234,7 +226,7 @@ export class AppRegistrationsApi extends runtime.BaseAPI {
      * Lists all app registrations in the system.
      * List app registrations
      */
-    async listAppRegistrations(requestParameters: ListAppRegistrationsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<PaginatedResponseAppRegistrationDto> {
+    async listAppRegistrations(requestParameters: ListAppRegistrationsRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<PaginatedResponseAppRegistrationDto> {
         const response = await this.listAppRegistrationsRaw(requestParameters, initOverrides);
         return await response.value();
     }
