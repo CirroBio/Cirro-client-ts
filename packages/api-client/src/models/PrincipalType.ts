@@ -18,6 +18,7 @@
  * @enum {string}
  */
 export enum PrincipalType {
+    Delegated = 'DELEGATED',
     User = 'USER',
     System = 'SYSTEM'
 }

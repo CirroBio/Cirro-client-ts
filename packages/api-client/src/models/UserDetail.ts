@@ -110,7 +110,7 @@ export interface UserDetail {
      * @memberof UserDetail
      * @deprecated
      */
-    groups?: Array<string>;
+    groups?: Array<string> | null;
     /**
      * 
      * @type {UserSettings}

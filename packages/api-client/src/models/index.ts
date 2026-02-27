@@ -7,6 +7,7 @@ export * from './AgentInput';
 export * from './AgentRegistration';
 export * from './AgentStatus';
 export * from './AllowedDataType';
+export * from './AppClientType';
 export * from './AppRegistration';
 export * from './AppRegistrationDetail';
 export * from './AppRegistrationInput';

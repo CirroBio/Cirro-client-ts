@@ -13,12 +13,12 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import type { AppType } from './AppType';
+import type { AppClientType } from './AppClientType';
 import {
-    AppTypeFromJSON,
-    AppTypeFromJSONTyped,
-    AppTypeToJSON,
-} from './AppType';
+    AppClientTypeFromJSON,
+    AppClientTypeFromJSONTyped,
+    AppClientTypeToJSON,
+} from './AppClientType';
 import type { Permission } from './Permission';
 import {
     PermissionFromJSON,
@@ -64,16 +64,22 @@ export interface AppRegistrationInput {
     principalType: PrincipalType;
     /**
      * 
-     * @type {AppType}
+     * @type {AppClientType}
      * @memberof AppRegistrationInput
      */
-    type: AppType;
+    clientType: AppClientType;
     /**
      * These IP address ranges are allowed to use this app (will be used later)
      * @type {Array<string>}
      * @memberof AppRegistrationInput
      */
     allowedIps: Array<string>;
+    /**
+     * A list of allowed redirect URIs for authentication. HTTPS is required except for localhost and app callback URLs are supported
+     * @type {Array<string>}
+     * @memberof AppRegistrationInput
+     */
+    redirectUris: Array<string>;
     /**
      * Optional expiry date of secret
      * @type {Date}
@@ -102,8 +108,9 @@ export function instanceOfAppRegistrationInput(value: object): boolean {
     isInstance = isInstance && "name" in value;
     isInstance = isInstance && "description" in value;
     isInstance = isInstance && "principalType" in value;
-    isInstance = isInstance && "type" in value;
+    isInstance = isInstance && "clientType" in value;
     isInstance = isInstance && "allowedIps" in value;
+    isInstance = isInstance && "redirectUris" in value;
     isInstance = isInstance && "projectPermissions" in value;
     isInstance = isInstance && "globalPermissions" in value;
 
@@ -123,8 +130,9 @@ export function AppRegistrationInputFromJSONTyped(json: any, ignoreDiscriminator
         'name': json['name'],
         'description': json['description'],
         'principalType': PrincipalTypeFromJSON(json['principalType']),
-        'type': AppTypeFromJSON(json['type']),
+        'clientType': AppClientTypeFromJSON(json['clientType']),
         'allowedIps': json['allowedIps'],
+        'redirectUris': json['redirectUris'],
         'secretExpiresAt': !exists(json, 'secretExpiresAt') ? undefined : (json['secretExpiresAt'] === null ? null : new Date(json['secretExpiresAt'])),
         'projectPermissions': ((json['projectPermissions'] as Array<any>).map(ProjectPermissionSetFromJSON)),
         'globalPermissions': ((json['globalPermissions'] as Array<any>).map(PermissionFromJSON)),
@@ -143,8 +151,9 @@ export function AppRegistrationInputToJSON(value?: AppRegistrationInput | null):
         'name': value.name,
         'description': value.description,
         'principalType': PrincipalTypeToJSON(value.principalType),
-        'type': AppTypeToJSON(value.type),
+        'clientType': AppClientTypeToJSON(value.clientType),
         'allowedIps': value.allowedIps,
+        'redirectUris': value.redirectUris,
         'secretExpiresAt': value.secretExpiresAt === undefined ? undefined : (value.secretExpiresAt === null ? null : value.secretExpiresAt.toISOString()),
         'projectPermissions': ((value.projectPermissions as Array<any>).map(ProjectPermissionSetToJSON)),
         'globalPermissions': ((value.globalPermissions as Array<any>).map(PermissionToJSON)),
