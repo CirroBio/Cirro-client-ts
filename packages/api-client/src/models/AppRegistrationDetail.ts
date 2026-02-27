@@ -100,6 +100,12 @@ export interface AppRegistrationDetail {
     allowedIps?: Array<string> | null;
     /**
      * 
+     * @type {Array<string>}
+     * @memberof AppRegistrationDetail
+     */
+    redirectUris?: Array<string> | null;
+    /**
+     * 
      * @type {Date}
      * @memberof AppRegistrationDetail
      */
@@ -140,6 +146,18 @@ export interface AppRegistrationDetail {
      * @memberof AppRegistrationDetail
      */
     requiresAdminConsent: boolean;
+    /**
+     * 
+     * @type {Date}
+     * @memberof AppRegistrationDetail
+     */
+    approvedAt?: Date | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof AppRegistrationDetail
+     */
+    approvedBy?: string | null;
     /**
      * 
      * @type {Date}
@@ -201,6 +219,7 @@ export function AppRegistrationDetailFromJSONTyped(json: any, ignoreDiscriminato
         'type': AppTypeFromJSON(json['type']),
         'clientType': AppClientTypeFromJSON(json['clientType']),
         'allowedIps': !exists(json, 'allowedIps') ? undefined : json['allowedIps'],
+        'redirectUris': !exists(json, 'redirectUris') ? undefined : json['redirectUris'],
         'secretExpiresAt': !exists(json, 'secretExpiresAt') ? undefined : (json['secretExpiresAt'] === null ? null : new Date(json['secretExpiresAt'])),
         'secretGeneratedAt': !exists(json, 'secretGeneratedAt') ? undefined : (json['secretGeneratedAt'] === null ? null : new Date(json['secretGeneratedAt'])),
         'secretGeneratedBy': !exists(json, 'secretGeneratedBy') ? undefined : json['secretGeneratedBy'],
@@ -208,6 +227,8 @@ export function AppRegistrationDetailFromJSONTyped(json: any, ignoreDiscriminato
         'globalPermissions': ((json['globalPermissions'] as Array<any>).map(PermissionFromJSON)),
         'isArchived': json['isArchived'],
         'requiresAdminConsent': json['requiresAdminConsent'],
+        'approvedAt': !exists(json, 'approvedAt') ? undefined : (json['approvedAt'] === null ? null : new Date(json['approvedAt'])),
+        'approvedBy': !exists(json, 'approvedBy') ? undefined : json['approvedBy'],
         'createdAt': (new Date(json['createdAt'])),
         'updatedAt': (new Date(json['updatedAt'])),
         'createdBy': json['createdBy'],
@@ -231,6 +252,7 @@ export function AppRegistrationDetailToJSON(value?: AppRegistrationDetail | null
         'type': AppTypeToJSON(value.type),
         'clientType': AppClientTypeToJSON(value.clientType),
         'allowedIps': value.allowedIps,
+        'redirectUris': value.redirectUris,
         'secretExpiresAt': value.secretExpiresAt === undefined ? undefined : (value.secretExpiresAt === null ? null : value.secretExpiresAt.toISOString()),
         'secretGeneratedAt': value.secretGeneratedAt === undefined ? undefined : (value.secretGeneratedAt === null ? null : value.secretGeneratedAt.toISOString()),
         'secretGeneratedBy': value.secretGeneratedBy,
@@ -238,6 +260,8 @@ export function AppRegistrationDetailToJSON(value?: AppRegistrationDetail | null
         'globalPermissions': ((value.globalPermissions as Array<any>).map(PermissionToJSON)),
         'isArchived': value.isArchived,
         'requiresAdminConsent': value.requiresAdminConsent,
+        'approvedAt': value.approvedAt === undefined ? undefined : (value.approvedAt === null ? null : value.approvedAt.toISOString()),
+        'approvedBy': value.approvedBy,
         'createdAt': (value.createdAt.toISOString()),
         'updatedAt': (value.updatedAt.toISOString()),
         'createdBy': value.createdBy,
