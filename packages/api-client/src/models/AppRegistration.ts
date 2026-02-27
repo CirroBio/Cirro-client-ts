@@ -13,6 +13,12 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { AppClientType } from './AppClientType';
+import {
+    AppClientTypeFromJSON,
+    AppClientTypeFromJSONTyped,
+    AppClientTypeToJSON,
+} from './AppClientType';
 import type { AppType } from './AppType';
 import {
     AppTypeFromJSON,
@@ -70,6 +76,12 @@ export interface AppRegistration {
     type: AppType;
     /**
      * 
+     * @type {AppClientType}
+     * @memberof AppRegistration
+     */
+    clientType: AppClientType;
+    /**
+     * 
      * @type {Date}
      * @memberof AppRegistration
      */
@@ -117,6 +129,7 @@ export function instanceOfAppRegistration(value: object): boolean {
     isInstance = isInstance && "description" in value;
     isInstance = isInstance && "principalType" in value;
     isInstance = isInstance && "type" in value;
+    isInstance = isInstance && "clientType" in value;
     isInstance = isInstance && "isArchived" in value;
     isInstance = isInstance && "requiresAdminConsent" in value;
     isInstance = isInstance && "updatedAt" in value;
@@ -142,6 +155,7 @@ export function AppRegistrationFromJSONTyped(json: any, ignoreDiscriminator: boo
         'description': json['description'],
         'principalType': PrincipalTypeFromJSON(json['principalType']),
         'type': AppTypeFromJSON(json['type']),
+        'clientType': AppClientTypeFromJSON(json['clientType']),
         'secretExpiresAt': !exists(json, 'secretExpiresAt') ? undefined : (json['secretExpiresAt'] === null ? null : new Date(json['secretExpiresAt'])),
         'isArchived': json['isArchived'],
         'requiresAdminConsent': json['requiresAdminConsent'],
@@ -166,6 +180,7 @@ export function AppRegistrationToJSON(value?: AppRegistration | null): any {
         'description': value.description,
         'principalType': PrincipalTypeToJSON(value.principalType),
         'type': AppTypeToJSON(value.type),
+        'clientType': AppClientTypeToJSON(value.clientType),
         'secretExpiresAt': value.secretExpiresAt === undefined ? undefined : (value.secretExpiresAt === null ? null : value.secretExpiresAt.toISOString()),
         'isArchived': value.isArchived,
         'requiresAdminConsent': value.requiresAdminConsent,
