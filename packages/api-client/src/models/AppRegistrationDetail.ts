@@ -13,6 +13,12 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { AppClientType } from './AppClientType';
+import {
+    AppClientTypeFromJSON,
+    AppClientTypeFromJSONTyped,
+    AppClientTypeToJSON,
+} from './AppClientType';
 import type { AppType } from './AppType';
 import {
     AppTypeFromJSON,
@@ -82,10 +88,16 @@ export interface AppRegistrationDetail {
     type: AppType;
     /**
      * 
+     * @type {AppClientType}
+     * @memberof AppRegistrationDetail
+     */
+    clientType: AppClientType;
+    /**
+     * 
      * @type {Array<string>}
      * @memberof AppRegistrationDetail
      */
-    allowedIps: Array<string>;
+    allowedIps?: Array<string> | null;
     /**
      * 
      * @type {Date}
@@ -97,13 +109,13 @@ export interface AppRegistrationDetail {
      * @type {Date}
      * @memberof AppRegistrationDetail
      */
-    secretGeneratedAt: Date;
+    secretGeneratedAt?: Date | null;
     /**
      * 
      * @type {string}
      * @memberof AppRegistrationDetail
      */
-    secretGeneratedBy: string;
+    secretGeneratedBy?: string | null;
     /**
      * 
      * @type {Array<ProjectPermissionSet>}
@@ -122,6 +134,12 @@ export interface AppRegistrationDetail {
      * @memberof AppRegistrationDetail
      */
     isArchived: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof AppRegistrationDetail
+     */
+    requiresAdminConsent: boolean;
     /**
      * 
      * @type {Date}
@@ -153,12 +171,11 @@ export function instanceOfAppRegistrationDetail(value: object): boolean {
     isInstance = isInstance && "description" in value;
     isInstance = isInstance && "principalType" in value;
     isInstance = isInstance && "type" in value;
-    isInstance = isInstance && "allowedIps" in value;
-    isInstance = isInstance && "secretGeneratedAt" in value;
-    isInstance = isInstance && "secretGeneratedBy" in value;
+    isInstance = isInstance && "clientType" in value;
     isInstance = isInstance && "projectPermissions" in value;
     isInstance = isInstance && "globalPermissions" in value;
     isInstance = isInstance && "isArchived" in value;
+    isInstance = isInstance && "requiresAdminConsent" in value;
     isInstance = isInstance && "createdAt" in value;
     isInstance = isInstance && "updatedAt" in value;
     isInstance = isInstance && "createdBy" in value;
@@ -182,13 +199,15 @@ export function AppRegistrationDetailFromJSONTyped(json: any, ignoreDiscriminato
         'description': json['description'],
         'principalType': PrincipalTypeFromJSON(json['principalType']),
         'type': AppTypeFromJSON(json['type']),
-        'allowedIps': json['allowedIps'],
+        'clientType': AppClientTypeFromJSON(json['clientType']),
+        'allowedIps': !exists(json, 'allowedIps') ? undefined : json['allowedIps'],
         'secretExpiresAt': !exists(json, 'secretExpiresAt') ? undefined : (json['secretExpiresAt'] === null ? null : new Date(json['secretExpiresAt'])),
-        'secretGeneratedAt': (new Date(json['secretGeneratedAt'])),
-        'secretGeneratedBy': json['secretGeneratedBy'],
+        'secretGeneratedAt': !exists(json, 'secretGeneratedAt') ? undefined : (json['secretGeneratedAt'] === null ? null : new Date(json['secretGeneratedAt'])),
+        'secretGeneratedBy': !exists(json, 'secretGeneratedBy') ? undefined : json['secretGeneratedBy'],
         'projectPermissions': ((json['projectPermissions'] as Array<any>).map(ProjectPermissionSetFromJSON)),
         'globalPermissions': ((json['globalPermissions'] as Array<any>).map(PermissionFromJSON)),
         'isArchived': json['isArchived'],
+        'requiresAdminConsent': json['requiresAdminConsent'],
         'createdAt': (new Date(json['createdAt'])),
         'updatedAt': (new Date(json['updatedAt'])),
         'createdBy': json['createdBy'],
@@ -210,13 +229,15 @@ export function AppRegistrationDetailToJSON(value?: AppRegistrationDetail | null
         'description': value.description,
         'principalType': PrincipalTypeToJSON(value.principalType),
         'type': AppTypeToJSON(value.type),
+        'clientType': AppClientTypeToJSON(value.clientType),
         'allowedIps': value.allowedIps,
         'secretExpiresAt': value.secretExpiresAt === undefined ? undefined : (value.secretExpiresAt === null ? null : value.secretExpiresAt.toISOString()),
-        'secretGeneratedAt': (value.secretGeneratedAt.toISOString()),
+        'secretGeneratedAt': value.secretGeneratedAt === undefined ? undefined : (value.secretGeneratedAt === null ? null : value.secretGeneratedAt.toISOString()),
         'secretGeneratedBy': value.secretGeneratedBy,
         'projectPermissions': ((value.projectPermissions as Array<any>).map(ProjectPermissionSetToJSON)),
         'globalPermissions': ((value.globalPermissions as Array<any>).map(PermissionToJSON)),
         'isArchived': value.isArchived,
+        'requiresAdminConsent': value.requiresAdminConsent,
         'createdAt': (value.createdAt.toISOString()),
         'updatedAt': (value.updatedAt.toISOString()),
         'createdBy': value.createdBy,

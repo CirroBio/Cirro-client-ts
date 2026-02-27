@@ -18,7 +18,10 @@
  * @enum {string}
  */
 export enum AppType {
-    ConfidentialClient = 'CONFIDENTIAL_CLIENT'
+    Traditional = 'TRADITIONAL',
+    MachineToMachine = 'MACHINE_TO_MACHINE',
+    PublicApp = 'PUBLIC_APP',
+    Unknown = 'UNKNOWN'
 }
 
 

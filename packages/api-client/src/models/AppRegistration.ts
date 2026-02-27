@@ -82,6 +82,12 @@ export interface AppRegistration {
     isArchived: boolean;
     /**
      * 
+     * @type {boolean}
+     * @memberof AppRegistration
+     */
+    requiresAdminConsent: boolean;
+    /**
+     * 
      * @type {Date}
      * @memberof AppRegistration
      */
@@ -112,6 +118,7 @@ export function instanceOfAppRegistration(value: object): boolean {
     isInstance = isInstance && "principalType" in value;
     isInstance = isInstance && "type" in value;
     isInstance = isInstance && "isArchived" in value;
+    isInstance = isInstance && "requiresAdminConsent" in value;
     isInstance = isInstance && "updatedAt" in value;
     isInstance = isInstance && "createdAt" in value;
     isInstance = isInstance && "createdBy" in value;
@@ -137,6 +144,7 @@ export function AppRegistrationFromJSONTyped(json: any, ignoreDiscriminator: boo
         'type': AppTypeFromJSON(json['type']),
         'secretExpiresAt': !exists(json, 'secretExpiresAt') ? undefined : (json['secretExpiresAt'] === null ? null : new Date(json['secretExpiresAt'])),
         'isArchived': json['isArchived'],
+        'requiresAdminConsent': json['requiresAdminConsent'],
         'updatedAt': (new Date(json['updatedAt'])),
         'createdAt': (new Date(json['createdAt'])),
         'createdBy': json['createdBy'],
@@ -160,6 +168,7 @@ export function AppRegistrationToJSON(value?: AppRegistration | null): any {
         'type': AppTypeToJSON(value.type),
         'secretExpiresAt': value.secretExpiresAt === undefined ? undefined : (value.secretExpiresAt === null ? null : value.secretExpiresAt.toISOString()),
         'isArchived': value.isArchived,
+        'requiresAdminConsent': value.requiresAdminConsent,
         'updatedAt': (value.updatedAt.toISOString()),
         'createdAt': (value.createdAt.toISOString()),
         'createdBy': value.createdBy,

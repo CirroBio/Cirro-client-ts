@@ -34,6 +34,10 @@ import {
     PaginatedResponseAppRegistrationDtoToJSON,
 } from '../models/index';
 
+export interface ApproveAppRequest {
+    id: string;
+}
+
 export interface ArchiveAppRegistrationRequest {
     id: string;
 }
@@ -64,6 +68,45 @@ export interface UpdateAppRegistrationRequest {
  * 
  */
 export class AppRegistrationsApi extends runtime.BaseAPI {
+
+    /**
+     * Mark application as approved by an administrator.
+     * Approve application
+     */
+    async approveAppRaw(requestParameters: ApproveAppRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling approveApp.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/app-registrations/{id}:approve`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Mark application as approved by an administrator.
+     * Approve application
+     */
+    async approveApp(requestParameters: ApproveAppRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.approveAppRaw(requestParameters, initOverrides);
+    }
 
     /**
      * Archives an app registration. Archived registrations cannot authenticate.
