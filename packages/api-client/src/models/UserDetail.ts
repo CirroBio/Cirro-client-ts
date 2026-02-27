@@ -105,6 +105,13 @@ export interface UserDetail {
      */
     globalRoles: Array<string>;
     /**
+     * Replaced by globalRoles.
+     * @type {Array<string>}
+     * @memberof UserDetail
+     * @deprecated
+     */
+    groups?: Array<string> | null;
+    /**
      * 
      * @type {UserSettings}
      * @memberof UserDetail
@@ -154,6 +161,7 @@ export function UserDetailFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'lastSignedIn': !exists(json, 'lastSignedIn') ? undefined : (json['lastSignedIn'] === null ? null : new Date(json['lastSignedIn'])),
         'projectAssignments': ((json['projectAssignments'] as Array<any>).map(UserProjectAssignmentFromJSON)),
         'globalRoles': json['globalRoles'],
+        'groups': !exists(json, 'groups') ? undefined : json['groups'],
         'settings': UserSettingsFromJSON(json['settings']),
     };
 }
@@ -179,6 +187,7 @@ export function UserDetailToJSON(value?: UserDetail | null): any {
         'lastSignedIn': value.lastSignedIn === undefined ? undefined : (value.lastSignedIn === null ? null : value.lastSignedIn.toISOString()),
         'projectAssignments': ((value.projectAssignments as Array<any>).map(UserProjectAssignmentToJSON)),
         'globalRoles': value.globalRoles,
+        'groups': value.groups,
         'settings': UserSettingsToJSON(value.settings),
     };
 }
