@@ -50,6 +50,12 @@ export interface WorkspaceComputeConfig {
      */
     gpu?: number;
     /**
+     * NVIDIA GPU model. When null, AWS selects from any available GPU instance family.
+     * @type {string}
+     * @memberof WorkspaceComputeConfig
+     */
+    gpuModel?: string | null;
+    /**
      * Map of environment variables injected into the container at runtime. Keys must be non-blank.
      * @type {{ [key: string]: string; }}
      * @memberof WorkspaceComputeConfig
@@ -88,6 +94,7 @@ export function WorkspaceComputeConfigFromJSONTyped(json: any, ignoreDiscriminat
         'memoryGiB': !exists(json, 'memoryGiB') ? undefined : json['memoryGiB'],
         'volumeSizeGiB': !exists(json, 'volumeSizeGiB') ? undefined : json['volumeSizeGiB'],
         'gpu': !exists(json, 'gpu') ? undefined : json['gpu'],
+        'gpuModel': !exists(json, 'gpuModel') ? undefined : json['gpuModel'],
         'environmentVariables': !exists(json, 'environmentVariables') ? undefined : json['environmentVariables'],
         'localPort': !exists(json, 'localPort') ? undefined : json['localPort'],
     };
@@ -107,6 +114,7 @@ export function WorkspaceComputeConfigToJSON(value?: WorkspaceComputeConfig | nu
         'memoryGiB': value.memoryGiB,
         'volumeSizeGiB': value.volumeSizeGiB,
         'gpu': value.gpu,
+        'gpuModel': value.gpuModel,
         'environmentVariables': value.environmentVariables,
         'localPort': value.localPort,
     };
