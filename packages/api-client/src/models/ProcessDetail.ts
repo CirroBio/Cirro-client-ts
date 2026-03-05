@@ -37,6 +37,12 @@ import {
     PipelineCodeFromJSONTyped,
     PipelineCodeToJSON,
 } from './PipelineCode';
+import type { Tag } from './Tag';
+import {
+    TagFromJSON,
+    TagFromJSONTyped,
+    TagToJSON,
+} from './Tag';
 
 /**
  * Identifies a data type or pipeline in Cirro
@@ -176,6 +182,12 @@ export interface ProcessDetail {
      * @memberof ProcessDetail
      */
     updatedAt?: Date;
+    /**
+     * 
+     * @type {Array<Tag>}
+     * @memberof ProcessDetail
+     */
+    tags: Array<Tag>;
 }
 
 /**
@@ -195,6 +207,7 @@ export function instanceOfProcessDetail(value: object): boolean {
     isInstance = isInstance && "allowMultipleSources" in value;
     isInstance = isInstance && "usesSampleSheet" in value;
     isInstance = isInstance && "isArchived" in value;
+    isInstance = isInstance && "tags" in value;
 
     return isInstance;
 }
@@ -231,6 +244,7 @@ export function ProcessDetailFromJSONTyped(json: any, ignoreDiscriminator: boole
         'fileMappingRules': !exists(json, 'fileMappingRules') ? undefined : (json['fileMappingRules'] === null ? null : (json['fileMappingRules'] as Array<any>).map(FileMappingRuleFromJSON)),
         'createdAt': !exists(json, 'createdAt') ? undefined : (new Date(json['createdAt'])),
         'updatedAt': !exists(json, 'updatedAt') ? undefined : (new Date(json['updatedAt'])),
+        'tags': ((json['tags'] as Array<any>).map(TagFromJSON)),
     };
 }
 
@@ -265,6 +279,7 @@ export function ProcessDetailToJSON(value?: ProcessDetail | null): any {
         'fileMappingRules': value.fileMappingRules === undefined ? undefined : (value.fileMappingRules === null ? null : (value.fileMappingRules as Array<any>).map(FileMappingRuleToJSON)),
         'createdAt': value.createdAt === undefined ? undefined : (value.createdAt.toISOString()),
         'updatedAt': value.updatedAt === undefined ? undefined : (value.updatedAt.toISOString()),
+        'tags': ((value.tags as Array<any>).map(TagToJSON)),
     };
 }
 
