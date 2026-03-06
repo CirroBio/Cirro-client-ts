@@ -37,6 +37,12 @@ import {
     PipelineCodeFromJSONTyped,
     PipelineCodeToJSON,
 } from './PipelineCode';
+import type { Tag } from './Tag';
+import {
+    TagFromJSON,
+    TagFromJSONTyped,
+    TagToJSON,
+} from './Tag';
 
 /**
  * 
@@ -146,6 +152,12 @@ export interface CustomProcessInput {
      * @memberof CustomProcessInput
      */
     fileMappingRules?: Array<FileMappingRule> | null;
+    /**
+     * 
+     * @type {Array<Tag>}
+     * @memberof CustomProcessInput
+     */
+    tags?: Array<Tag> | null;
 }
 
 /**
@@ -191,6 +203,7 @@ export function CustomProcessInputFromJSONTyped(json: any, ignoreDiscriminator: 
         'usesSampleSheet': !exists(json, 'usesSampleSheet') ? undefined : json['usesSampleSheet'],
         'customSettings': !exists(json, 'customSettings') ? undefined : CustomPipelineSettingsFromJSON(json['customSettings']),
         'fileMappingRules': !exists(json, 'fileMappingRules') ? undefined : (json['fileMappingRules'] === null ? null : (json['fileMappingRules'] as Array<any>).map(FileMappingRuleFromJSON)),
+        'tags': !exists(json, 'tags') ? undefined : (json['tags'] === null ? null : (json['tags'] as Array<any>).map(TagFromJSON)),
     };
 }
 
@@ -220,6 +233,7 @@ export function CustomProcessInputToJSON(value?: CustomProcessInput | null): any
         'usesSampleSheet': value.usesSampleSheet,
         'customSettings': CustomPipelineSettingsToJSON(value.customSettings),
         'fileMappingRules': value.fileMappingRules === undefined ? undefined : (value.fileMappingRules === null ? null : (value.fileMappingRules as Array<any>).map(FileMappingRuleToJSON)),
+        'tags': value.tags === undefined ? undefined : (value.tags === null ? null : (value.tags as Array<any>).map(TagToJSON)),
     };
 }
 

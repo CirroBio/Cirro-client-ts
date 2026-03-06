@@ -19,6 +19,12 @@ import {
     ExecutorFromJSONTyped,
     ExecutorToJSON,
 } from './Executor';
+import type { Tag } from './Tag';
+import {
+    TagFromJSON,
+    TagFromJSONTyped,
+    TagToJSON,
+} from './Tag';
 
 /**
  * Identifies a data type or pipeline in Cirro
@@ -140,6 +146,12 @@ export interface Process {
      * @memberof Process
      */
     updatedAt?: Date;
+    /**
+     * 
+     * @type {Array<Tag>}
+     * @memberof Process
+     */
+    tags: Array<Tag>;
 }
 
 /**
@@ -159,6 +171,7 @@ export function instanceOfProcess(value: object): boolean {
     isInstance = isInstance && "allowMultipleSources" in value;
     isInstance = isInstance && "usesSampleSheet" in value;
     isInstance = isInstance && "isArchived" in value;
+    isInstance = isInstance && "tags" in value;
 
     return isInstance;
 }
@@ -192,6 +205,7 @@ export function ProcessFromJSONTyped(json: any, ignoreDiscriminator: boolean): P
         'isArchived': json['isArchived'],
         'createdAt': !exists(json, 'createdAt') ? undefined : (new Date(json['createdAt'])),
         'updatedAt': !exists(json, 'updatedAt') ? undefined : (new Date(json['updatedAt'])),
+        'tags': ((json['tags'] as Array<any>).map(TagFromJSON)),
     };
 }
 
@@ -223,6 +237,7 @@ export function ProcessToJSON(value?: Process | null): any {
         'isArchived': value.isArchived,
         'createdAt': value.createdAt === undefined ? undefined : (value.createdAt.toISOString()),
         'updatedAt': value.updatedAt === undefined ? undefined : (value.updatedAt.toISOString()),
+        'tags': ((value.tags as Array<any>).map(TagToJSON)),
     };
 }
 
