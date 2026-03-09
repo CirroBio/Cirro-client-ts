@@ -16,6 +16,7 @@
 import * as runtime from '../runtime';
 import type {
   CreateResponse,
+  LogEntry,
   PostponeWorkspaceAutostopInput,
   Workspace,
   WorkspaceConnectionResponse,
@@ -25,6 +26,8 @@ import type {
 import {
     CreateResponseFromJSON,
     CreateResponseToJSON,
+    LogEntryFromJSON,
+    LogEntryToJSON,
     PostponeWorkspaceAutostopInputFromJSON,
     PostponeWorkspaceAutostopInputToJSON,
     WorkspaceFromJSON,
@@ -59,6 +62,11 @@ export interface DisconnectWorkspaceRequest {
 }
 
 export interface GetWorkspaceRequest {
+    projectId: string;
+    workspaceId: string;
+}
+
+export interface GetWorkspaceLogsRequest {
     projectId: string;
     workspaceId: string;
 }
@@ -356,6 +364,50 @@ export class WorkspacesApi extends runtime.BaseAPI {
      */
     async getWorkspaceEnvironments(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<WorkspaceEnvironment>> {
         const response = await this.getWorkspaceEnvironmentsRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Retrieves logs from the main workspace container
+     * Get workspace logs
+     */
+    async getWorkspaceLogsRaw(requestParameters: GetWorkspaceLogsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<LogEntry>>> {
+        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
+            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling getWorkspaceLogs.');
+        }
+
+        if (requestParameters.workspaceId === null || requestParameters.workspaceId === undefined) {
+            throw new runtime.RequiredError('workspaceId','Required parameter requestParameters.workspaceId was null or undefined when calling getWorkspaceLogs.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/projects/{projectId}/workspaces/{workspaceId}/logs`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))).replace(`{${"workspaceId"}}`, encodeURIComponent(String(requestParameters.workspaceId))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(LogEntryFromJSON));
+    }
+
+    /**
+     * Retrieves logs from the main workspace container
+     * Get workspace logs
+     */
+    async getWorkspaceLogs(requestParameters: GetWorkspaceLogsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<LogEntry>> {
+        const response = await this.getWorkspaceLogsRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

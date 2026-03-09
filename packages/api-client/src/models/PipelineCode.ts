@@ -50,6 +50,12 @@ export interface PipelineCode {
      * @memberof PipelineCode
      */
     entryPoint: string;
+    /**
+     * Version of the executor
+     * @type {string}
+     * @memberof PipelineCode
+     */
+    executorVersion?: string | null;
 }
 
 /**
@@ -79,6 +85,7 @@ export function PipelineCodeFromJSONTyped(json: any, ignoreDiscriminator: boolea
         'version': json['version'],
         'repositoryType': RepositoryTypeFromJSON(json['repositoryType']),
         'entryPoint': json['entryPoint'],
+        'executorVersion': !exists(json, 'executorVersion') ? undefined : json['executorVersion'],
     };
 }
 
@@ -95,6 +102,7 @@ export function PipelineCodeToJSON(value?: PipelineCode | null): any {
         'version': value.version,
         'repositoryType': RepositoryTypeToJSON(value.repositoryType),
         'entryPoint': value.entryPoint,
+        'executorVersion': value.executorVersion,
     };
 }
 
