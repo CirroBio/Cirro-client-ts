@@ -153,6 +153,12 @@ export interface DatasetDetail {
      */
     totalSizeBytes?: number | null;
     /**
+     * Total number of dataset files
+     * @type {number}
+     * @memberof DatasetDetail
+     */
+    fileCount?: number | null;
+    /**
      * 
      * @type {string}
      * @memberof DatasetDetail
@@ -229,6 +235,7 @@ export function DatasetDetailFromJSONTyped(json: any, ignoreDiscriminator: boole
         'share': !exists(json, 'share') ? undefined : NamedItemFromJSON(json['share']),
         'isViewRestricted': json['isViewRestricted'],
         'totalSizeBytes': !exists(json, 'totalSizeBytes') ? undefined : json['totalSizeBytes'],
+        'fileCount': !exists(json, 'fileCount') ? undefined : json['fileCount'],
         'createdBy': json['createdBy'],
         'createdAt': (new Date(json['createdAt'])),
         'updatedAt': (new Date(json['updatedAt'])),
@@ -263,6 +270,7 @@ export function DatasetDetailToJSON(value?: DatasetDetail | null): any {
         'share': NamedItemToJSON(value.share),
         'isViewRestricted': value.isViewRestricted,
         'totalSizeBytes': value.totalSizeBytes,
+        'fileCount': value.fileCount,
         'createdBy': value.createdBy,
         'createdAt': (value.createdAt.toISOString()),
         'updatedAt': (value.updatedAt.toISOString()),

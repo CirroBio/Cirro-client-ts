@@ -148,6 +148,12 @@ export interface ProjectSettings {
      */
     maxWorkspacesPerUser?: number;
     /**
+     * Enables advanced GPU configuration (multi-GPU and GPU model selection) for workspaces
+     * @type {boolean}
+     * @memberof ProjectSettings
+     */
+    enableAdvancedGpuConfig?: boolean | null;
+    /**
      * Enables the project to be discoverable by other users
      * @type {boolean}
      * @memberof ProjectSettings
@@ -214,6 +220,7 @@ export function ProjectSettingsFromJSONTyped(json: any, ignoreDiscriminator: boo
         'maxWorkspacesVCPU': !exists(json, 'maxWorkspacesVCPU') ? undefined : json['maxWorkspacesVCPU'],
         'maxWorkspacesGPUVCPU': !exists(json, 'maxWorkspacesGPUVCPU') ? undefined : json['maxWorkspacesGPUVCPU'],
         'maxWorkspacesPerUser': !exists(json, 'maxWorkspacesPerUser') ? undefined : json['maxWorkspacesPerUser'],
+        'enableAdvancedGpuConfig': !exists(json, 'enableAdvancedGpuConfig') ? undefined : json['enableAdvancedGpuConfig'],
         'isDiscoverable': !exists(json, 'isDiscoverable') ? undefined : json['isDiscoverable'],
         'isShareable': !exists(json, 'isShareable') ? undefined : json['isShareable'],
         'hasPipelinesEnabled': !exists(json, 'hasPipelinesEnabled') ? undefined : json['hasPipelinesEnabled'],
@@ -250,6 +257,7 @@ export function ProjectSettingsToJSON(value?: ProjectSettings | null): any {
         'maxWorkspacesVCPU': value.maxWorkspacesVCPU,
         'maxWorkspacesGPUVCPU': value.maxWorkspacesGPUVCPU,
         'maxWorkspacesPerUser': value.maxWorkspacesPerUser,
+        'enableAdvancedGpuConfig': value.enableAdvancedGpuConfig,
         'isDiscoverable': value.isDiscoverable,
         'isShareable': value.isShareable,
         'hasPipelinesEnabled': value.hasPipelinesEnabled,
