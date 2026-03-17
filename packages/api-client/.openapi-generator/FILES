@@ -182,6 +182,7 @@ src/models/SheetDetail.ts
 src/models/SheetJob.ts
 src/models/SheetJobType.ts
 src/models/SheetTableType.ts
+src/models/SheetType.ts
 src/models/SortOrder.ts
 src/models/Status.ts
 src/models/StopExecutionResponse.ts

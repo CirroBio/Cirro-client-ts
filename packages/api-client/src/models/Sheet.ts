@@ -19,6 +19,12 @@ import {
     SheetTableTypeFromJSONTyped,
     SheetTableTypeToJSON,
 } from './SheetTableType';
+import type { SheetType } from './SheetType';
+import {
+    SheetTypeFromJSON,
+    SheetTypeFromJSONTyped,
+    SheetTypeToJSON,
+} from './SheetType';
 import type { Status } from './Status';
 import {
     StatusFromJSON,
@@ -56,6 +62,12 @@ export interface Sheet {
      * @memberof Sheet
      */
     projectId: string;
+    /**
+     * 
+     * @type {SheetType}
+     * @memberof Sheet
+     */
+    sheetType: SheetType;
     /**
      * 
      * @type {SheetTableType}
@@ -97,6 +109,7 @@ export function instanceOfSheet(value: object): boolean {
     isInstance = isInstance && "name" in value;
     isInstance = isInstance && "description" in value;
     isInstance = isInstance && "projectId" in value;
+    isInstance = isInstance && "sheetType" in value;
     isInstance = isInstance && "tableType" in value;
     isInstance = isInstance && "status" in value;
     isInstance = isInstance && "createdBy" in value;
@@ -120,6 +133,7 @@ export function SheetFromJSONTyped(json: any, ignoreDiscriminator: boolean): She
         'name': json['name'],
         'description': json['description'],
         'projectId': json['projectId'],
+        'sheetType': SheetTypeFromJSON(json['sheetType']),
         'tableType': SheetTableTypeFromJSON(json['tableType']),
         'status': StatusFromJSON(json['status']),
         'createdBy': json['createdBy'],
@@ -141,6 +155,7 @@ export function SheetToJSON(value?: Sheet | null): any {
         'name': value.name,
         'description': value.description,
         'projectId': value.projectId,
+        'sheetType': SheetTypeToJSON(value.sheetType),
         'tableType': SheetTableTypeToJSON(value.tableType),
         'status': StatusToJSON(value.status),
         'createdBy': value.createdBy,

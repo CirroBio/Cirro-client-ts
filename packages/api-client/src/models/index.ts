@@ -155,6 +155,7 @@ export * from './SheetDetail';
 export * from './SheetJob';
 export * from './SheetJobType';
 export * from './SheetTableType';
+export * from './SheetType';
 export * from './SortOrder';
 export * from './Status';
 export * from './StopExecutionResponse';

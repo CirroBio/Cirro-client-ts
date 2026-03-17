@@ -25,6 +25,12 @@ import {
     SheetTableTypeFromJSONTyped,
     SheetTableTypeToJSON,
 } from './SheetTableType';
+import type { SheetType } from './SheetType';
+import {
+    SheetTypeFromJSON,
+    SheetTypeFromJSONTyped,
+    SheetTypeToJSON,
+} from './SheetType';
 import type { Status } from './Status';
 import {
     StatusFromJSON,
@@ -76,6 +82,12 @@ export interface SheetDetail {
     tableName: string;
     /**
      * 
+     * @type {SheetType}
+     * @memberof SheetDetail
+     */
+    sheetType: SheetType;
+    /**
+     * 
      * @type {SheetTableType}
      * @memberof SheetDetail
      */
@@ -123,6 +135,7 @@ export function instanceOfSheetDetail(value: object): boolean {
     isInstance = isInstance && "projectId" in value;
     isInstance = isInstance && "namespaceName" in value;
     isInstance = isInstance && "tableName" in value;
+    isInstance = isInstance && "sheetType" in value;
     isInstance = isInstance && "tableType" in value;
     isInstance = isInstance && "status" in value;
     isInstance = isInstance && "columns" in value;
@@ -149,6 +162,7 @@ export function SheetDetailFromJSONTyped(json: any, ignoreDiscriminator: boolean
         'projectId': json['projectId'],
         'namespaceName': json['namespaceName'],
         'tableName': json['tableName'],
+        'sheetType': SheetTypeFromJSON(json['sheetType']),
         'tableType': SheetTableTypeFromJSON(json['tableType']),
         'status': StatusFromJSON(json['status']),
         'columns': ((json['columns'] as Array<any>).map(ColumnDefFromJSON)),
@@ -173,6 +187,7 @@ export function SheetDetailToJSON(value?: SheetDetail | null): any {
         'projectId': value.projectId,
         'namespaceName': value.namespaceName,
         'tableName': value.tableName,
+        'sheetType': SheetTypeToJSON(value.sheetType),
         'tableType': SheetTableTypeToJSON(value.tableType),
         'status': StatusToJSON(value.status),
         'columns': ((value.columns as Array<any>).map(ColumnDefToJSON)),
