@@ -55,6 +55,12 @@ export interface FeatureFlags {
      * @memberof FeatureFlags
      */
     appRegistrationsEnabled: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof FeatureFlags
+     */
+    sheetsEnabled: boolean;
 }
 
 /**
@@ -68,6 +74,7 @@ export function instanceOfFeatureFlags(value: object): boolean {
     isInstance = isInstance && "workspacesEnabled" in value;
     isInstance = isInstance && "driveEnabled" in value;
     isInstance = isInstance && "appRegistrationsEnabled" in value;
+    isInstance = isInstance && "sheetsEnabled" in value;
 
     return isInstance;
 }
@@ -88,6 +95,7 @@ export function FeatureFlagsFromJSONTyped(json: any, ignoreDiscriminator: boolea
         'workspacesEnabled': json['workspacesEnabled'],
         'driveEnabled': json['driveEnabled'],
         'appRegistrationsEnabled': json['appRegistrationsEnabled'],
+        'sheetsEnabled': json['sheetsEnabled'],
     };
 }
 
@@ -106,6 +114,7 @@ export function FeatureFlagsToJSON(value?: FeatureFlags | null): any {
         'workspacesEnabled': value.workspacesEnabled,
         'driveEnabled': value.driveEnabled,
         'appRegistrationsEnabled': value.appRegistrationsEnabled,
+        'sheetsEnabled': value.sheetsEnabled,
     };
 }
 
