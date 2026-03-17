@@ -20,6 +20,7 @@ src/apis/ProjectRequestsApi.ts
 src/apis/ProjectsApi.ts
 src/apis/ReferencesApi.ts
 src/apis/SharingApi.ts
+src/apis/SheetsApi.ts
 src/apis/SystemApi.ts
 src/apis/ToolsApi.ts
 src/apis/UsersApi.ts
@@ -51,6 +52,8 @@ src/models/BudgetPeriod.ts
 src/models/ClassificationInput.ts
 src/models/CloudAccount.ts
 src/models/CloudAccountType.ts
+src/models/ColumnDataType.ts
+src/models/ColumnDef.ts
 src/models/ColumnDefinition.ts
 src/models/ComputeEnvironmentConfiguration.ts
 src/models/ComputeEnvironmentConfigurationInput.ts
@@ -61,6 +64,8 @@ src/models/CreateNotebookInstanceRequest.ts
 src/models/CreateProjectAccessRequest.ts
 src/models/CreateReferenceRequest.ts
 src/models/CreateResponse.ts
+src/models/CreateSheetRequest.ts
+src/models/CreateSheetRequestFileDef.ts
 src/models/CustomPipelineSettings.ts
 src/models/CustomProcessInput.ts
 src/models/CustomerType.ts
@@ -82,11 +87,14 @@ src/models/EnvironmentType.ts
 src/models/ErrorMessage.ts
 src/models/Executor.ts
 src/models/FeatureFlags.ts
+src/models/FileDef.ts
 src/models/FileEntry.ts
 src/models/FileMappingRule.ts
 src/models/FileNameMatch.ts
 src/models/FileNamePattern.ts
 src/models/FileRequirements.ts
+src/models/FileType.ts
+src/models/ForeignKeyRef.ts
 src/models/FormSchema.ts
 src/models/FulfillmentResponse.ts
 src/models/GenerateSftpCredentialsRequest.ts
@@ -169,6 +177,12 @@ src/models/ShareDetail.ts
 src/models/ShareInput.ts
 src/models/ShareType.ts
 src/models/SharingType.ts
+src/models/Sheet.ts
+src/models/SheetDetail.ts
+src/models/SheetJob.ts
+src/models/SheetJobType.ts
+src/models/SheetTableType.ts
+src/models/SheetType.ts
 src/models/SortOrder.ts
 src/models/Status.ts
 src/models/StopExecutionResponse.ts
@@ -179,6 +193,7 @@ src/models/Tag.ts
 src/models/Task.ts
 src/models/TaskCost.ts
 src/models/TenantInfo.ts
+src/models/TriggerIngestRequest.ts
 src/models/UpdateDatasetRequest.ts
 src/models/UpdateUserRequest.ts
 src/models/UploadDatasetCreateResponse.ts
