@@ -49,6 +49,18 @@ export interface CloudQuota {
      * @memberof CloudQuota
      */
     appliedQuota: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof CloudQuota
+     */
+    requestedQuota?: number | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof CloudQuota
+     */
+    hasOpenRequest: boolean;
 }
 
 /**
@@ -61,6 +73,7 @@ export function instanceOfCloudQuota(value: object): boolean {
     isInstance = isInstance && "service" in value;
     isInstance = isInstance && "code" in value;
     isInstance = isInstance && "appliedQuota" in value;
+    isInstance = isInstance && "hasOpenRequest" in value;
 
     return isInstance;
 }
@@ -80,6 +93,8 @@ export function CloudQuotaFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'service': json['service'],
         'code': json['code'],
         'appliedQuota': json['appliedQuota'],
+        'requestedQuota': !exists(json, 'requestedQuota') ? undefined : json['requestedQuota'],
+        'hasOpenRequest': json['hasOpenRequest'],
     };
 }
 
@@ -97,6 +112,8 @@ export function CloudQuotaToJSON(value?: CloudQuota | null): any {
         'service': value.service,
         'code': value.code,
         'appliedQuota': value.appliedQuota,
+        'requestedQuota': value.requestedQuota,
+        'hasOpenRequest': value.hasOpenRequest,
     };
 }
 
