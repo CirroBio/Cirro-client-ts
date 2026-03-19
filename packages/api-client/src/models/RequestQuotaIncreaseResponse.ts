@@ -32,12 +32,6 @@ export interface RequestQuotaIncreaseResponse {
      * @memberof RequestQuotaIncreaseResponse
      */
     quota: CloudQuota;
-    /**
-     * Case ID, if a support case has been opened for the quota increase request
-     * @type {string}
-     * @memberof RequestQuotaIncreaseResponse
-     */
-    caseId?: string | null;
 }
 
 /**
@@ -61,7 +55,6 @@ export function RequestQuotaIncreaseResponseFromJSONTyped(json: any, ignoreDiscr
     return {
         
         'quota': CloudQuotaFromJSON(json['quota']),
-        'caseId': !exists(json, 'caseId') ? undefined : json['caseId'],
     };
 }
 
@@ -75,7 +68,6 @@ export function RequestQuotaIncreaseResponseToJSON(value?: RequestQuotaIncreaseR
     return {
         
         'quota': CloudQuotaToJSON(value.quota),
-        'caseId': value.caseId,
     };
 }
 
