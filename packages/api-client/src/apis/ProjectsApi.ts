@@ -16,6 +16,7 @@
 import * as runtime from '../runtime';
 import type {
   ApproveProjectAccessRequest,
+  CloudQuota,
   CreateProjectAccessRequest,
   CreateResponse,
   Project,
@@ -24,12 +25,16 @@ import type {
   ProjectDetail,
   ProjectInput,
   ProjectUser,
+  RequestQuotaIncreaseCommand,
+  RequestQuotaIncreaseResponse,
   SetUserProjectRoleRequest,
   Tag,
 } from '../models/index';
 import {
     ApproveProjectAccessRequestFromJSON,
     ApproveProjectAccessRequestToJSON,
+    CloudQuotaFromJSON,
+    CloudQuotaToJSON,
     CreateProjectAccessRequestFromJSON,
     CreateProjectAccessRequestToJSON,
     CreateResponseFromJSON,
@@ -46,6 +51,10 @@ import {
     ProjectInputToJSON,
     ProjectUserFromJSON,
     ProjectUserToJSON,
+    RequestQuotaIncreaseCommandFromJSON,
+    RequestQuotaIncreaseCommandToJSON,
+    RequestQuotaIncreaseResponseFromJSON,
+    RequestQuotaIncreaseResponseToJSON,
     SetUserProjectRoleRequestFromJSON,
     SetUserProjectRoleRequestToJSON,
     TagFromJSON,
@@ -89,8 +98,17 @@ export interface GetProjectUsersRequest {
     projectId: string;
 }
 
+export interface GetQuotasRequest {
+    projectId: string;
+}
+
 export interface RedeployProjectRequest {
     projectId: string;
+}
+
+export interface RequestQuotaIncreaseRequest {
+    projectId: string;
+    requestQuotaIncreaseCommand: RequestQuotaIncreaseCommand;
 }
 
 export interface SetUserProjectRoleOperationRequest {
@@ -572,6 +590,46 @@ export class ProjectsApi extends runtime.BaseAPI {
     }
 
     /**
+     * Retrieves a list of relevant cloud service quotas for project
+     * Get cloud quotas
+     */
+    async getQuotasRaw(requestParameters: GetQuotasRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<CloudQuota>>> {
+        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
+            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling getQuotas.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/projects/{projectId}/cloud-quotas`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(CloudQuotaFromJSON));
+    }
+
+    /**
+     * Retrieves a list of relevant cloud service quotas for project
+     * Get cloud quotas
+     */
+    async getQuotas(requestParameters: GetQuotasRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<CloudQuota>> {
+        const response = await this.getQuotasRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
      * Redeploys cloud resources for a project
      * Redeploy project
      */
@@ -608,6 +666,53 @@ export class ProjectsApi extends runtime.BaseAPI {
      */
     async redeployProject(requestParameters: RedeployProjectRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.redeployProjectRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Request a service quota increase for a project\'s cloud account
+     * Request quota increase
+     */
+    async requestQuotaIncreaseRaw(requestParameters: RequestQuotaIncreaseRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<RequestQuotaIncreaseResponse>> {
+        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
+            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling requestQuotaIncrease.');
+        }
+
+        if (requestParameters.requestQuotaIncreaseCommand === null || requestParameters.requestQuotaIncreaseCommand === undefined) {
+            throw new runtime.RequiredError('requestQuotaIncreaseCommand','Required parameter requestParameters.requestQuotaIncreaseCommand was null or undefined when calling requestQuotaIncrease.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/projects/{projectId}/cloud-quotas`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))),
+            method: 'PUT',
+            headers: headerParameters,
+            query: queryParameters,
+            body: RequestQuotaIncreaseCommandToJSON(requestParameters.requestQuotaIncreaseCommand),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => RequestQuotaIncreaseResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Request a service quota increase for a project\'s cloud account
+     * Request quota increase
+     */
+    async requestQuotaIncrease(requestParameters: RequestQuotaIncreaseRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<RequestQuotaIncreaseResponse> {
+        const response = await this.requestQuotaIncreaseRaw(requestParameters, initOverrides);
+        return await response.value();
     }
 
     /**
