@@ -118,6 +118,7 @@ export * from './PrincipalType';
 export * from './Process';
 export * from './ProcessDetail';
 export * from './ProcessDocumentation';
+export * from './ProcessFormResponse';
 export * from './Project';
 export * from './ProjectAccessRequest';
 export * from './ProjectAccessType';

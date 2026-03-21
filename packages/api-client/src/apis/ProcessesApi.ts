@@ -21,12 +21,12 @@ import type {
   ErrorMessage,
   FileNameMatch,
   FileRequirements,
-  FormSchema,
   PipelineCost,
   PortalErrorResponse,
   Process,
   ProcessDetail,
   ProcessDocumentation,
+  ProcessFormResponse,
   ValidateFileNamePatternsRequest,
   ValidateFileRequirementsRequest,
 } from '../models/index';
@@ -43,8 +43,6 @@ import {
     FileNameMatchToJSON,
     FileRequirementsFromJSON,
     FileRequirementsToJSON,
-    FormSchemaFromJSON,
-    FormSchemaToJSON,
     PipelineCostFromJSON,
     PipelineCostToJSON,
     PortalErrorResponseFromJSON,
@@ -55,6 +53,8 @@ import {
     ProcessDetailToJSON,
     ProcessDocumentationFromJSON,
     ProcessDocumentationToJSON,
+    ProcessFormResponseFromJSON,
+    ProcessFormResponseToJSON,
     ValidateFileNamePatternsRequestFromJSON,
     ValidateFileNamePatternsRequestToJSON,
     ValidateFileRequirementsRequestFromJSON,
@@ -327,7 +327,7 @@ export class ProcessesApi extends runtime.BaseAPI {
      * Retrieves the input parameters for a process
      * Get process parameters
      */
-    async getProcessParametersRaw(requestParameters: GetProcessParametersRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FormSchema>> {
+    async getProcessParametersRaw(requestParameters: GetProcessParametersRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ProcessFormResponse>> {
         if (requestParameters.processId === null || requestParameters.processId === undefined) {
             throw new runtime.RequiredError('processId','Required parameter requestParameters.processId was null or undefined when calling getProcessParameters.');
         }
@@ -351,14 +351,14 @@ export class ProcessesApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => FormSchemaFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => ProcessFormResponseFromJSON(jsonValue));
     }
 
     /**
      * Retrieves the input parameters for a process
      * Get process parameters
      */
-    async getProcessParameters(requestParameters: GetProcessParametersRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<FormSchema> {
+    async getProcessParameters(requestParameters: GetProcessParametersRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ProcessFormResponse> {
         const response = await this.getProcessParametersRaw(requestParameters, initOverrides);
         return await response.value();
     }
