@@ -19,6 +19,12 @@ import {
     ColumnDefFromJSONTyped,
     ColumnDefToJSON,
 } from './ColumnDef';
+import type { SheetDetailViewDefinition } from './SheetDetailViewDefinition';
+import {
+    SheetDetailViewDefinitionFromJSON,
+    SheetDetailViewDefinitionFromJSONTyped,
+    SheetDetailViewDefinitionToJSON,
+} from './SheetDetailViewDefinition';
 import type { SheetTableType } from './SheetTableType';
 import {
     SheetTableTypeFromJSON,
@@ -91,7 +97,7 @@ export interface SheetDetail {
      * @type {SheetTableType}
      * @memberof SheetDetail
      */
-    tableType: SheetTableType;
+    tableType?: SheetTableType | null;
     /**
      * 
      * @type {Status}
@@ -99,11 +105,29 @@ export interface SheetDetail {
      */
     status: Status;
     /**
-     * 
+     * Column definitions for the table schema. Null for VIEW sheets.
      * @type {Array<ColumnDef>}
      * @memberof SheetDetail
      */
-    columns: Array<ColumnDef>;
+    columns?: Array<ColumnDef> | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof SheetDetail
+     */
+    auditReadAccess: boolean;
+    /**
+     * 
+     * @type {SheetDetailViewDefinition}
+     * @memberof SheetDetail
+     */
+    viewDefinition?: SheetDetailViewDefinition | null;
+    /**
+     * When the view was last materialized. Null for TABLE sheets.
+     * @type {Date}
+     * @memberof SheetDetail
+     */
+    lastRefreshedAt?: Date | null;
     /**
      * 
      * @type {string}
@@ -136,9 +160,8 @@ export function instanceOfSheetDetail(value: object): boolean {
     isInstance = isInstance && "namespaceName" in value;
     isInstance = isInstance && "tableName" in value;
     isInstance = isInstance && "sheetType" in value;
-    isInstance = isInstance && "tableType" in value;
     isInstance = isInstance && "status" in value;
-    isInstance = isInstance && "columns" in value;
+    isInstance = isInstance && "auditReadAccess" in value;
     isInstance = isInstance && "createdBy" in value;
     isInstance = isInstance && "createdAt" in value;
     isInstance = isInstance && "updatedAt" in value;
@@ -163,9 +186,12 @@ export function SheetDetailFromJSONTyped(json: any, ignoreDiscriminator: boolean
         'namespaceName': json['namespaceName'],
         'tableName': json['tableName'],
         'sheetType': SheetTypeFromJSON(json['sheetType']),
-        'tableType': SheetTableTypeFromJSON(json['tableType']),
+        'tableType': !exists(json, 'tableType') ? undefined : SheetTableTypeFromJSON(json['tableType']),
         'status': StatusFromJSON(json['status']),
-        'columns': ((json['columns'] as Array<any>).map(ColumnDefFromJSON)),
+        'columns': !exists(json, 'columns') ? undefined : (json['columns'] === null ? null : (json['columns'] as Array<any>).map(ColumnDefFromJSON)),
+        'auditReadAccess': json['auditReadAccess'],
+        'viewDefinition': !exists(json, 'viewDefinition') ? undefined : SheetDetailViewDefinitionFromJSON(json['viewDefinition']),
+        'lastRefreshedAt': !exists(json, 'lastRefreshedAt') ? undefined : (json['lastRefreshedAt'] === null ? null : new Date(json['lastRefreshedAt'])),
         'createdBy': json['createdBy'],
         'createdAt': (new Date(json['createdAt'])),
         'updatedAt': (new Date(json['updatedAt'])),
@@ -190,7 +216,10 @@ export function SheetDetailToJSON(value?: SheetDetail | null): any {
         'sheetType': SheetTypeToJSON(value.sheetType),
         'tableType': SheetTableTypeToJSON(value.tableType),
         'status': StatusToJSON(value.status),
-        'columns': ((value.columns as Array<any>).map(ColumnDefToJSON)),
+        'columns': value.columns === undefined ? undefined : (value.columns === null ? null : (value.columns as Array<any>).map(ColumnDefToJSON)),
+        'auditReadAccess': value.auditReadAccess,
+        'viewDefinition': SheetDetailViewDefinitionToJSON(value.viewDefinition),
+        'lastRefreshedAt': value.lastRefreshedAt === undefined ? undefined : (value.lastRefreshedAt === null ? null : value.lastRefreshedAt.toISOString()),
         'createdBy': value.createdBy,
         'createdAt': (value.createdAt.toISOString()),
         'updatedAt': (value.updatedAt.toISOString()),

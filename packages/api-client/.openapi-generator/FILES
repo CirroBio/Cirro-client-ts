@@ -67,6 +67,7 @@ src/models/CreateReferenceRequest.ts
 src/models/CreateResponse.ts
 src/models/CreateSheetRequest.ts
 src/models/CreateSheetRequestFileDef.ts
+src/models/CreateSheetRequestViewDefinition.ts
 src/models/CustomPipelineSettings.ts
 src/models/CustomProcessInput.ts
 src/models/CustomerType.ts
@@ -95,6 +96,7 @@ src/models/FileNameMatch.ts
 src/models/FileNamePattern.ts
 src/models/FileRequirements.ts
 src/models/FileType.ts
+src/models/FilterOperator.ts
 src/models/ForeignKeyRef.ts
 src/models/FormSchema.ts
 src/models/FulfillmentResponse.ts
@@ -117,7 +119,10 @@ src/models/GroupCost.ts
 src/models/ImportDataRequest.ts
 src/models/InviteUserRequest.ts
 src/models/InviteUserResponse.ts
+src/models/JoinCondition.ts
+src/models/JoinType.ts
 src/models/LogEntry.ts
+src/models/LogicalOperator.ts
 src/models/LoginProvider.ts
 src/models/Message.ts
 src/models/MessageInput.ts
@@ -159,6 +164,7 @@ src/models/ProjectRequirement.ts
 src/models/ProjectRole.ts
 src/models/ProjectSettings.ts
 src/models/ProjectUser.ts
+src/models/QueryColumn.ts
 src/models/Reference.ts
 src/models/ReferenceType.ts
 src/models/RepositoryType.ts
@@ -182,8 +188,10 @@ src/models/ShareType.ts
 src/models/SharingType.ts
 src/models/Sheet.ts
 src/models/SheetDetail.ts
+src/models/SheetDetailViewDefinition.ts
 src/models/SheetJob.ts
 src/models/SheetJobType.ts
+src/models/SheetQueryResponse.ts
 src/models/SheetTableType.ts
 src/models/SheetType.ts
 src/models/SortOrder.ts
@@ -198,6 +206,8 @@ src/models/TaskCost.ts
 src/models/TenantInfo.ts
 src/models/TriggerIngestRequest.ts
 src/models/UpdateDatasetRequest.ts
+src/models/UpdateSheetRequest.ts
+src/models/UpdateSheetRequestViewDefinition.ts
 src/models/UpdateUserRequest.ts
 src/models/UploadDatasetCreateResponse.ts
 src/models/UploadDatasetRequest.ts
@@ -208,6 +218,11 @@ src/models/UserSettings.ts
 src/models/ValidateFileNamePatternsRequest.ts
 src/models/ValidateFileRequirementsRequest.ts
 src/models/VersionSpecification.ts
+src/models/ViewFilter.ts
+src/models/ViewJoin.ts
+src/models/ViewQueryRequest.ts
+src/models/ViewQueryRequestFilter.ts
+src/models/ViewSheetRef.ts
 src/models/Workspace.ts
 src/models/WorkspaceComputeConfig.ts
 src/models/WorkspaceConnectionResponse.ts

@@ -31,6 +31,12 @@ export interface FormSchema {
      * @memberof FormSchema
      */
     ui?: { [key: string]: any; };
+    /**
+     * JSONSchema for validating sample metadata
+     * @type {{ [key: string]: any; }}
+     * @memberof FormSchema
+     */
+    metadataRequirements?: { [key: string]: any; };
 }
 
 /**
@@ -54,6 +60,7 @@ export function FormSchemaFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         
         'form': !exists(json, 'form') ? undefined : json['form'],
         'ui': !exists(json, 'ui') ? undefined : json['ui'],
+        'metadataRequirements': !exists(json, 'metadataRequirements') ? undefined : json['metadataRequirements'],
     };
 }
 
@@ -68,6 +75,7 @@ export function FormSchemaToJSON(value?: FormSchema | null): any {
         
         'form': value.form,
         'ui': value.ui,
+        'metadataRequirements': value.metadataRequirements,
     };
 }
 

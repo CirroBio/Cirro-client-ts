@@ -25,12 +25,24 @@ import {
     CreateSheetRequestFileDefFromJSONTyped,
     CreateSheetRequestFileDefToJSON,
 } from './CreateSheetRequestFileDef';
+import type { CreateSheetRequestViewDefinition } from './CreateSheetRequestViewDefinition';
+import {
+    CreateSheetRequestViewDefinitionFromJSON,
+    CreateSheetRequestViewDefinitionFromJSONTyped,
+    CreateSheetRequestViewDefinitionToJSON,
+} from './CreateSheetRequestViewDefinition';
 import type { SheetTableType } from './SheetTableType';
 import {
     SheetTableTypeFromJSON,
     SheetTableTypeFromJSONTyped,
     SheetTableTypeToJSON,
 } from './SheetTableType';
+import type { SheetType } from './SheetType';
+import {
+    SheetTypeFromJSON,
+    SheetTypeFromJSONTyped,
+    SheetTypeToJSON,
+} from './SheetType';
 
 /**
  * 
@@ -64,22 +76,40 @@ export interface CreateSheetRequest {
     tableName: string;
     /**
      * 
+     * @type {SheetType}
+     * @memberof CreateSheetRequest
+     */
+    sheetType: SheetType;
+    /**
+     * Enable audit logging for read access to this sheet
+     * @type {boolean}
+     * @memberof CreateSheetRequest
+     */
+    auditReadAccess?: boolean;
+    /**
+     * 
      * @type {SheetTableType}
      * @memberof CreateSheetRequest
      */
-    tableType: SheetTableType;
+    tableType?: SheetTableType | null;
     /**
-     * Column definitions for the table schema
+     * Column definitions for the table schema (required for TABLE)
      * @type {Array<ColumnDef>}
      * @memberof CreateSheetRequest
      */
-    columns: Array<ColumnDef>;
+    columns?: Array<ColumnDef> | null;
     /**
      * 
      * @type {CreateSheetRequestFileDef}
      * @memberof CreateSheetRequest
      */
     fileDef?: CreateSheetRequestFileDef | null;
+    /**
+     * 
+     * @type {CreateSheetRequestViewDefinition}
+     * @memberof CreateSheetRequest
+     */
+    viewDefinition?: CreateSheetRequestViewDefinition | null;
 }
 
 /**
@@ -90,8 +120,7 @@ export function instanceOfCreateSheetRequest(value: object): boolean {
     isInstance = isInstance && "name" in value;
     isInstance = isInstance && "namespaceName" in value;
     isInstance = isInstance && "tableName" in value;
-    isInstance = isInstance && "tableType" in value;
-    isInstance = isInstance && "columns" in value;
+    isInstance = isInstance && "sheetType" in value;
 
     return isInstance;
 }
@@ -110,9 +139,12 @@ export function CreateSheetRequestFromJSONTyped(json: any, ignoreDiscriminator: 
         'description': !exists(json, 'description') ? undefined : json['description'],
         'namespaceName': json['namespaceName'],
         'tableName': json['tableName'],
-        'tableType': SheetTableTypeFromJSON(json['tableType']),
-        'columns': ((json['columns'] as Array<any>).map(ColumnDefFromJSON)),
+        'sheetType': SheetTypeFromJSON(json['sheetType']),
+        'auditReadAccess': !exists(json, 'auditReadAccess') ? undefined : json['auditReadAccess'],
+        'tableType': !exists(json, 'tableType') ? undefined : SheetTableTypeFromJSON(json['tableType']),
+        'columns': !exists(json, 'columns') ? undefined : (json['columns'] === null ? null : (json['columns'] as Array<any>).map(ColumnDefFromJSON)),
         'fileDef': !exists(json, 'fileDef') ? undefined : CreateSheetRequestFileDefFromJSON(json['fileDef']),
+        'viewDefinition': !exists(json, 'viewDefinition') ? undefined : CreateSheetRequestViewDefinitionFromJSON(json['viewDefinition']),
     };
 }
 
@@ -129,9 +161,12 @@ export function CreateSheetRequestToJSON(value?: CreateSheetRequest | null): any
         'description': value.description,
         'namespaceName': value.namespaceName,
         'tableName': value.tableName,
+        'sheetType': SheetTypeToJSON(value.sheetType),
+        'auditReadAccess': value.auditReadAccess,
         'tableType': SheetTableTypeToJSON(value.tableType),
-        'columns': ((value.columns as Array<any>).map(ColumnDefToJSON)),
+        'columns': value.columns === undefined ? undefined : (value.columns === null ? null : (value.columns as Array<any>).map(ColumnDefToJSON)),
         'fileDef': CreateSheetRequestFileDefToJSON(value.fileDef),
+        'viewDefinition': CreateSheetRequestViewDefinitionToJSON(value.viewDefinition),
     };
 }
 
