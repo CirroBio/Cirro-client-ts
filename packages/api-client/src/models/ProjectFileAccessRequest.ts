@@ -40,6 +40,12 @@ export interface ProjectFileAccessRequest {
     datasetId?: string | null;
     /**
      * 
+     * @type {string}
+     * @memberof ProjectFileAccessRequest
+     */
+    sheetId?: string | null;
+    /**
+     * 
      * @type {number}
      * @memberof ProjectFileAccessRequest
      */
@@ -68,6 +74,7 @@ export function ProjectFileAccessRequestFromJSONTyped(json: any, ignoreDiscrimin
         
         'accessType': ProjectAccessTypeFromJSON(json['accessType']),
         'datasetId': !exists(json, 'datasetId') ? undefined : json['datasetId'],
+        'sheetId': !exists(json, 'sheetId') ? undefined : json['sheetId'],
         'tokenLifetimeHours': !exists(json, 'tokenLifetimeHours') ? undefined : json['tokenLifetimeHours'],
     };
 }
@@ -83,6 +90,7 @@ export function ProjectFileAccessRequestToJSON(value?: ProjectFileAccessRequest 
         
         'accessType': ProjectAccessTypeToJSON(value.accessType),
         'datasetId': value.datasetId,
+        'sheetId': value.sheetId,
         'tokenLifetimeHours': value.tokenLifetimeHours,
     };
 }

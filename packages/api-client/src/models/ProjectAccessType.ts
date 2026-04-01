@@ -22,7 +22,8 @@ export enum ProjectAccessType {
     SharedDatasetDownload = 'SHARED_DATASET_DOWNLOAD',
     SamplesheetUpload = 'SAMPLESHEET_UPLOAD',
     ReferenceUpload = 'REFERENCE_UPLOAD',
-    ProjectDownload = 'PROJECT_DOWNLOAD'
+    ProjectDownload = 'PROJECT_DOWNLOAD',
+    SheetUpload = 'SHEET_UPLOAD'
 }
 
 
