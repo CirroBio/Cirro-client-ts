@@ -31,7 +31,7 @@ export interface UpdateSheetRequest {
      * @type {string}
      * @memberof UpdateSheetRequest
      */
-    name?: string;
+    name: string;
     /**
      * 
      * @type {string}
@@ -51,6 +51,7 @@ export interface UpdateSheetRequest {
  */
 export function instanceOfUpdateSheetRequest(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "name" in value;
     isInstance = isInstance && "description" in value;
 
     return isInstance;
@@ -66,7 +67,7 @@ export function UpdateSheetRequestFromJSONTyped(json: any, ignoreDiscriminator: 
     }
     return {
         
-        'name': !exists(json, 'name') ? undefined : json['name'],
+        'name': json['name'],
         'description': json['description'],
         'viewDefinition': !exists(json, 'viewDefinition') ? undefined : UpdateSheetRequestViewDefinitionFromJSON(json['viewDefinition']),
     };
