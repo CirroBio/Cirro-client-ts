@@ -154,6 +154,12 @@ export interface ProjectSettings {
      */
     enableAdvancedGpuConfig?: boolean | null;
     /**
+     * Enables custom IAM task roles for workspaces (BYOA projects only)
+     * @type {boolean}
+     * @memberof ProjectSettings
+     */
+    enableCustomWorkspaceRoles?: boolean | null;
+    /**
      * Enables the project to be discoverable by other users
      * @type {boolean}
      * @memberof ProjectSettings
@@ -165,6 +171,12 @@ export interface ProjectSettings {
      * @memberof ProjectSettings
      */
     isShareable?: boolean | null;
+    /**
+     * Allows users of this project to interact with AI services
+     * @type {boolean}
+     * @memberof ProjectSettings
+     */
+    isAiEnabled?: boolean | null;
     /**
      * (Read-only) Whether this project has pipelines enabled
      * @type {boolean}
@@ -221,8 +233,10 @@ export function ProjectSettingsFromJSONTyped(json: any, ignoreDiscriminator: boo
         'maxWorkspacesGPUVCPU': !exists(json, 'maxWorkspacesGPUVCPU') ? undefined : json['maxWorkspacesGPUVCPU'],
         'maxWorkspacesPerUser': !exists(json, 'maxWorkspacesPerUser') ? undefined : json['maxWorkspacesPerUser'],
         'enableAdvancedGpuConfig': !exists(json, 'enableAdvancedGpuConfig') ? undefined : json['enableAdvancedGpuConfig'],
+        'enableCustomWorkspaceRoles': !exists(json, 'enableCustomWorkspaceRoles') ? undefined : json['enableCustomWorkspaceRoles'],
         'isDiscoverable': !exists(json, 'isDiscoverable') ? undefined : json['isDiscoverable'],
         'isShareable': !exists(json, 'isShareable') ? undefined : json['isShareable'],
+        'isAiEnabled': !exists(json, 'isAiEnabled') ? undefined : json['isAiEnabled'],
         'hasPipelinesEnabled': !exists(json, 'hasPipelinesEnabled') ? undefined : json['hasPipelinesEnabled'],
         'hasWorkspacesEnabled': !exists(json, 'hasWorkspacesEnabled') ? undefined : json['hasWorkspacesEnabled'],
     };
@@ -258,8 +272,10 @@ export function ProjectSettingsToJSON(value?: ProjectSettings | null): any {
         'maxWorkspacesGPUVCPU': value.maxWorkspacesGPUVCPU,
         'maxWorkspacesPerUser': value.maxWorkspacesPerUser,
         'enableAdvancedGpuConfig': value.enableAdvancedGpuConfig,
+        'enableCustomWorkspaceRoles': value.enableCustomWorkspaceRoles,
         'isDiscoverable': value.isDiscoverable,
         'isShareable': value.isShareable,
+        'isAiEnabled': value.isAiEnabled,
         'hasPipelinesEnabled': value.hasPipelinesEnabled,
         'hasWorkspacesEnabled': value.hasWorkspacesEnabled,
     };

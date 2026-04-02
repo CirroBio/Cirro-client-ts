@@ -13,12 +13,12 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import type { SheetTableType } from './SheetTableType';
+import type { SheetCreationMode } from './SheetCreationMode';
 import {
-    SheetTableTypeFromJSON,
-    SheetTableTypeFromJSONTyped,
-    SheetTableTypeToJSON,
-} from './SheetTableType';
+    SheetCreationModeFromJSON,
+    SheetCreationModeFromJSONTyped,
+    SheetCreationModeToJSON,
+} from './SheetCreationMode';
 import type { SheetType } from './SheetType';
 import {
     SheetTypeFromJSON,
@@ -70,10 +70,10 @@ export interface Sheet {
     sheetType: SheetType;
     /**
      * 
-     * @type {SheetTableType}
+     * @type {SheetCreationMode}
      * @memberof Sheet
      */
-    tableType: SheetTableType;
+    tableType: SheetCreationMode;
     /**
      * 
      * @type {Status}
@@ -134,7 +134,7 @@ export function SheetFromJSONTyped(json: any, ignoreDiscriminator: boolean): She
         'description': json['description'],
         'projectId': json['projectId'],
         'sheetType': SheetTypeFromJSON(json['sheetType']),
-        'tableType': SheetTableTypeFromJSON(json['tableType']),
+        'tableType': SheetCreationModeFromJSON(json['tableType']),
         'status': StatusFromJSON(json['status']),
         'createdBy': json['createdBy'],
         'createdAt': (new Date(json['createdAt'])),
@@ -156,7 +156,7 @@ export function SheetToJSON(value?: Sheet | null): any {
         'description': value.description,
         'projectId': value.projectId,
         'sheetType': SheetTypeToJSON(value.sheetType),
-        'tableType': SheetTableTypeToJSON(value.tableType),
+        'tableType': SheetCreationModeToJSON(value.tableType),
         'status': StatusToJSON(value.status),
         'createdBy': value.createdBy,
         'createdAt': (value.createdAt.toISOString()),

@@ -33,11 +33,11 @@ export interface CreateSheetRequestFileDef {
      */
     fileType: FileType;
     /**
-     * 
+     * Full S3 URI to the source file.
      * @type {string}
      * @memberof CreateSheetRequestFileDef
      */
-    storageUri: string;
+    storageUri?: string;
 }
 
 /**
@@ -46,7 +46,6 @@ export interface CreateSheetRequestFileDef {
 export function instanceOfCreateSheetRequestFileDef(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "fileType" in value;
-    isInstance = isInstance && "storageUri" in value;
 
     return isInstance;
 }
@@ -62,7 +61,7 @@ export function CreateSheetRequestFileDefFromJSONTyped(json: any, ignoreDiscrimi
     return {
         
         'fileType': FileTypeFromJSON(json['fileType']),
-        'storageUri': json['storageUri'],
+        'storageUri': !exists(json, 'storageUri') ? undefined : json['storageUri'],
     };
 }
 

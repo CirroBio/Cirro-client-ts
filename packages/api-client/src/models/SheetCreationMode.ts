@@ -17,7 +17,7 @@
  * @export
  * @enum {string}
  */
-export enum SheetTableType {
+export enum SheetCreationMode {
     File = 'FILE',
     Scratch = 'SCRATCH',
     Template = 'TEMPLATE',
@@ -25,15 +25,15 @@ export enum SheetTableType {
 }
 
 
-export function SheetTableTypeFromJSON(json: any): SheetTableType {
-    return SheetTableTypeFromJSONTyped(json, false);
+export function SheetCreationModeFromJSON(json: any): SheetCreationMode {
+    return SheetCreationModeFromJSONTyped(json, false);
 }
 
-export function SheetTableTypeFromJSONTyped(json: any, ignoreDiscriminator: boolean): SheetTableType {
-    return json as SheetTableType;
+export function SheetCreationModeFromJSONTyped(json: any, ignoreDiscriminator: boolean): SheetCreationMode {
+    return json as SheetCreationMode;
 }
 
-export function SheetTableTypeToJSON(value?: SheetTableType | null): any {
+export function SheetCreationModeToJSON(value?: SheetCreationMode | null): any {
     return value as any;
 }
 

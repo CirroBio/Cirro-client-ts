@@ -67,6 +67,12 @@ export interface WorkspaceComputeConfig {
      * @memberof WorkspaceComputeConfig
      */
     localPort?: number;
+    /**
+     * Custom IAM task role ARN for the workspace ECS task. Must belong to the project's AWS account and follow the naming convention 'Cirro-CustomWorkspaceTaskRole-{projectShortCode}-{name}'.
+     * @type {string}
+     * @memberof WorkspaceComputeConfig
+     */
+    customTaskRoleArn?: string | null;
 }
 
 /**
@@ -97,6 +103,7 @@ export function WorkspaceComputeConfigFromJSONTyped(json: any, ignoreDiscriminat
         'gpuModel': !exists(json, 'gpuModel') ? undefined : json['gpuModel'],
         'environmentVariables': !exists(json, 'environmentVariables') ? undefined : json['environmentVariables'],
         'localPort': !exists(json, 'localPort') ? undefined : json['localPort'],
+        'customTaskRoleArn': !exists(json, 'customTaskRoleArn') ? undefined : json['customTaskRoleArn'],
     };
 }
 
@@ -117,6 +124,7 @@ export function WorkspaceComputeConfigToJSON(value?: WorkspaceComputeConfig | nu
         'gpuModel': value.gpuModel,
         'environmentVariables': value.environmentVariables,
         'localPort': value.localPort,
+        'customTaskRoleArn': value.customTaskRoleArn,
     };
 }
 

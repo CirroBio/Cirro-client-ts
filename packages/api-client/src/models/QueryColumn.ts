@@ -13,24 +13,31 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { ColumnDataType } from './ColumnDataType';
+import {
+    ColumnDataTypeFromJSON,
+    ColumnDataTypeFromJSONTyped,
+    ColumnDataTypeToJSON,
+} from './ColumnDataType';
+
 /**
- * 
+ * A column in a sheet query result.
  * @export
  * @interface QueryColumn
  */
 export interface QueryColumn {
     /**
-     * 
+     * Column name.
      * @type {string}
      * @memberof QueryColumn
      */
-    name: string;
+    name?: string;
     /**
      * 
-     * @type {string}
+     * @type {ColumnDataType}
      * @memberof QueryColumn
      */
-    type: string;
+    dataType?: ColumnDataType;
 }
 
 /**
@@ -38,8 +45,6 @@ export interface QueryColumn {
  */
 export function instanceOfQueryColumn(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "type" in value;
 
     return isInstance;
 }
@@ -54,8 +59,8 @@ export function QueryColumnFromJSONTyped(json: any, ignoreDiscriminator: boolean
     }
     return {
         
-        'name': json['name'],
-        'type': json['type'],
+        'name': !exists(json, 'name') ? undefined : json['name'],
+        'dataType': !exists(json, 'dataType') ? undefined : ColumnDataTypeFromJSON(json['dataType']),
     };
 }
 
@@ -69,7 +74,7 @@ export function QueryColumnToJSON(value?: QueryColumn | null): any {
     return {
         
         'name': value.name,
-        'type': value.type,
+        'dataType': ColumnDataTypeToJSON(value.dataType),
     };
 }
 

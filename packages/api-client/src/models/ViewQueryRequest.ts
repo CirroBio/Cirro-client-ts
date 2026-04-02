@@ -33,7 +33,7 @@ import {
 } from './ViewSheetRef';
 
 /**
- * Request to query a view joining one or more sheets with optional column selection and filtering
+ * Request for a view joining one or more sheets with optional column selection and filtering
  * @export
  * @interface ViewQueryRequest
  */

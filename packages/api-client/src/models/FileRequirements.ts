@@ -44,6 +44,12 @@ export interface FileRequirements {
      * @memberof FileRequirements
      */
     allowedDataTypes: Array<AllowedDataType>;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof FileRequirements
+     */
+    hasError?: boolean;
 }
 
 /**
@@ -71,6 +77,7 @@ export function FileRequirementsFromJSONTyped(json: any, ignoreDiscriminator: bo
         'files': json['files'],
         'errorMsg': json['errorMsg'],
         'allowedDataTypes': ((json['allowedDataTypes'] as Array<any>).map(AllowedDataTypeFromJSON)),
+        'hasError': !exists(json, 'hasError') ? undefined : json['hasError'],
     };
 }
 
@@ -86,6 +93,7 @@ export function FileRequirementsToJSON(value?: FileRequirements | null): any {
         'files': value.files,
         'errorMsg': value.errorMsg,
         'allowedDataTypes': ((value.allowedDataTypes as Array<any>).map(AllowedDataTypeToJSON)),
+        'hasError': value.hasError,
     };
 }
 

@@ -19,18 +19,18 @@ import {
     ColumnDefFromJSONTyped,
     ColumnDefToJSON,
 } from './ColumnDef';
+import type { SheetCreationMode } from './SheetCreationMode';
+import {
+    SheetCreationModeFromJSON,
+    SheetCreationModeFromJSONTyped,
+    SheetCreationModeToJSON,
+} from './SheetCreationMode';
 import type { SheetDetailViewDefinition } from './SheetDetailViewDefinition';
 import {
     SheetDetailViewDefinitionFromJSON,
     SheetDetailViewDefinitionFromJSONTyped,
     SheetDetailViewDefinitionToJSON,
 } from './SheetDetailViewDefinition';
-import type { SheetTableType } from './SheetTableType';
-import {
-    SheetTableTypeFromJSON,
-    SheetTableTypeFromJSONTyped,
-    SheetTableTypeToJSON,
-} from './SheetTableType';
 import type { SheetType } from './SheetType';
 import {
     SheetTypeFromJSON,
@@ -94,10 +94,10 @@ export interface SheetDetail {
     sheetType: SheetType;
     /**
      * 
-     * @type {SheetTableType}
+     * @type {SheetCreationMode}
      * @memberof SheetDetail
      */
-    tableType?: SheetTableType | null;
+    tableType?: SheetCreationMode | null;
     /**
      * 
      * @type {Status}
@@ -186,7 +186,7 @@ export function SheetDetailFromJSONTyped(json: any, ignoreDiscriminator: boolean
         'namespaceName': json['namespaceName'],
         'tableName': json['tableName'],
         'sheetType': SheetTypeFromJSON(json['sheetType']),
-        'tableType': !exists(json, 'tableType') ? undefined : SheetTableTypeFromJSON(json['tableType']),
+        'tableType': !exists(json, 'tableType') ? undefined : SheetCreationModeFromJSON(json['tableType']),
         'status': StatusFromJSON(json['status']),
         'columns': !exists(json, 'columns') ? undefined : (json['columns'] === null ? null : (json['columns'] as Array<any>).map(ColumnDefFromJSON)),
         'auditReadAccess': json['auditReadAccess'],
@@ -214,7 +214,7 @@ export function SheetDetailToJSON(value?: SheetDetail | null): any {
         'namespaceName': value.namespaceName,
         'tableName': value.tableName,
         'sheetType': SheetTypeToJSON(value.sheetType),
-        'tableType': SheetTableTypeToJSON(value.tableType),
+        'tableType': SheetCreationModeToJSON(value.tableType),
         'status': StatusToJSON(value.status),
         'columns': value.columns === undefined ? undefined : (value.columns === null ? null : (value.columns as Array<any>).map(ColumnDefToJSON)),
         'auditReadAccess': value.auditReadAccess,
