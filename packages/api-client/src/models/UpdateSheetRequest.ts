@@ -27,17 +27,17 @@ import {
  */
 export interface UpdateSheetRequest {
     /**
-     * Updated display name
+     * Display name
      * @type {string}
      * @memberof UpdateSheetRequest
      */
     name?: string;
     /**
-     * Updated description
+     * 
      * @type {string}
      * @memberof UpdateSheetRequest
      */
-    description?: string;
+    description: string;
     /**
      * 
      * @type {UpdateSheetRequestViewDefinition}
@@ -51,6 +51,7 @@ export interface UpdateSheetRequest {
  */
 export function instanceOfUpdateSheetRequest(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "description" in value;
 
     return isInstance;
 }
@@ -66,7 +67,7 @@ export function UpdateSheetRequestFromJSONTyped(json: any, ignoreDiscriminator: 
     return {
         
         'name': !exists(json, 'name') ? undefined : json['name'],
-        'description': !exists(json, 'description') ? undefined : json['description'],
+        'description': json['description'],
         'viewDefinition': !exists(json, 'viewDefinition') ? undefined : UpdateSheetRequestViewDefinitionFromJSON(json['viewDefinition']),
     };
 }

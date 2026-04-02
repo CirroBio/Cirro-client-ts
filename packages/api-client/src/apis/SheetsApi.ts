@@ -22,6 +22,7 @@ import type {
   SheetJob,
   SheetQueryResponse,
   TriggerIngestRequest,
+  UpdateRowsRequest,
   UpdateSheetRequest,
 } from '../models/index';
 import {
@@ -39,6 +40,8 @@ import {
     SheetQueryResponseToJSON,
     TriggerIngestRequestFromJSON,
     TriggerIngestRequestToJSON,
+    UpdateRowsRequestFromJSON,
+    UpdateRowsRequestToJSON,
     UpdateSheetRequestFromJSON,
     UpdateSheetRequestToJSON,
 } from '../models/index';
@@ -66,8 +69,8 @@ export interface GetSheetRequest {
 export interface GetSheetDataRequest {
     projectId: string;
     sheetId: string;
-    limit: number;
-    page: number;
+    limit?: number;
+    page?: number;
 }
 
 export interface GetSheetsRequest {
@@ -89,6 +92,12 @@ export interface UpdateSheetOperationRequest {
     projectId: string;
     sheetId: string;
     updateSheetRequest: UpdateSheetRequest;
+}
+
+export interface UpdateSheetDataRequest {
+    projectId: string;
+    sheetId: string;
+    updateRowsRequest: UpdateRowsRequest;
 }
 
 /**
@@ -275,7 +284,7 @@ export class SheetsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Returns paginated rows from an S3 Tables Iceberg sheet
+     * Returns paginated rows from a sheet. The first column is always _row_id, which uniquely identifies each row and is required for row updates via PUT. Defaults page=1 and limit=1000.
      * Get sheet data
      */
     async getSheetDataRaw(requestParameters: GetSheetDataRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SheetQueryResponse>> {
@@ -285,14 +294,6 @@ export class SheetsApi extends runtime.BaseAPI {
 
         if (requestParameters.sheetId === null || requestParameters.sheetId === undefined) {
             throw new runtime.RequiredError('sheetId','Required parameter requestParameters.sheetId was null or undefined when calling getSheetData.');
-        }
-
-        if (requestParameters.limit === null || requestParameters.limit === undefined) {
-            throw new runtime.RequiredError('limit','Required parameter requestParameters.limit was null or undefined when calling getSheetData.');
-        }
-
-        if (requestParameters.page === null || requestParameters.page === undefined) {
-            throw new runtime.RequiredError('page','Required parameter requestParameters.page was null or undefined when calling getSheetData.');
         }
 
         const queryParameters: any = {};
@@ -326,7 +327,7 @@ export class SheetsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Returns paginated rows from an S3 Tables Iceberg sheet
+     * Returns paginated rows from a sheet. The first column is always _row_id, which uniquely identifies each row and is required for row updates via PUT. Defaults page=1 and limit=1000.
      * Get sheet data
      */
     async getSheetData(requestParameters: GetSheetDataRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SheetQueryResponse> {
@@ -516,6 +517,56 @@ export class SheetsApi extends runtime.BaseAPI {
      */
     async updateSheet(requestParameters: UpdateSheetOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.updateSheetRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Updates specific rows in a TABLE sheet by _row_id. This is a partial update: only the columns included in each entry are modified, all other columns are left unchanged.
+     * Update sheet rows
+     */
+    async updateSheetDataRaw(requestParameters: UpdateSheetDataRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
+            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling updateSheetData.');
+        }
+
+        if (requestParameters.sheetId === null || requestParameters.sheetId === undefined) {
+            throw new runtime.RequiredError('sheetId','Required parameter requestParameters.sheetId was null or undefined when calling updateSheetData.');
+        }
+
+        if (requestParameters.updateRowsRequest === null || requestParameters.updateRowsRequest === undefined) {
+            throw new runtime.RequiredError('updateRowsRequest','Required parameter requestParameters.updateRowsRequest was null or undefined when calling updateSheetData.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/projects/{projectId}/sheets/{sheetId}/data`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))).replace(`{${"sheetId"}}`, encodeURIComponent(String(requestParameters.sheetId))),
+            method: 'PUT',
+            headers: headerParameters,
+            query: queryParameters,
+            body: UpdateRowsRequestToJSON(requestParameters.updateRowsRequest),
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Updates specific rows in a TABLE sheet by _row_id. This is a partial update: only the columns included in each entry are modified, all other columns are left unchanged.
+     * Update sheet rows
+     */
+    async updateSheetData(requestParameters: UpdateSheetDataRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.updateSheetDataRaw(requestParameters, initOverrides);
     }
 
 }

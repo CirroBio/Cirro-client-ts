@@ -43,12 +43,6 @@ export interface DatasetViz {
      * @memberof DatasetViz
      */
     type?: string;
-    /**
-     * Config or path to config used to render viz
-     * @type {object}
-     * @memberof DatasetViz
-     */
-    config?: object;
 }
 
 /**
@@ -74,7 +68,6 @@ export function DatasetVizFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'name': !exists(json, 'name') ? undefined : json['name'],
         'desc': !exists(json, 'desc') ? undefined : json['desc'],
         'type': !exists(json, 'type') ? undefined : json['type'],
-        'config': !exists(json, 'config') ? undefined : json['config'],
     };
 }
 
@@ -91,7 +84,6 @@ export function DatasetVizToJSON(value?: DatasetViz | null): any {
         'name': value.name,
         'desc': value.desc,
         'type': value.type,
-        'config': value.config,
     };
 }
 

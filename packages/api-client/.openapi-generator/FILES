@@ -174,6 +174,7 @@ src/models/RequestStatus.ts
 src/models/RequirementFulfillmentInput.ts
 src/models/RequirementInput.ts
 src/models/ResourcesInfo.ts
+src/models/RowUpdate.ts
 src/models/RunAnalysisRequest.ts
 src/models/Sample.ts
 src/models/SampleRequest.ts
@@ -187,12 +188,12 @@ src/models/ShareInput.ts
 src/models/ShareType.ts
 src/models/SharingType.ts
 src/models/Sheet.ts
+src/models/SheetCreationMode.ts
 src/models/SheetDetail.ts
 src/models/SheetDetailViewDefinition.ts
 src/models/SheetJob.ts
 src/models/SheetJobType.ts
 src/models/SheetQueryResponse.ts
-src/models/SheetTableType.ts
 src/models/SheetType.ts
 src/models/SortOrder.ts
 src/models/Status.ts
@@ -206,6 +207,7 @@ src/models/TaskCost.ts
 src/models/TenantInfo.ts
 src/models/TriggerIngestRequest.ts
 src/models/UpdateDatasetRequest.ts
+src/models/UpdateRowsRequest.ts
 src/models/UpdateSheetRequest.ts
 src/models/UpdateSheetRequestViewDefinition.ts
 src/models/UpdateUserRequest.ts

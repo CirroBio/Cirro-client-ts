@@ -31,12 +31,12 @@ import {
     CreateSheetRequestViewDefinitionFromJSONTyped,
     CreateSheetRequestViewDefinitionToJSON,
 } from './CreateSheetRequestViewDefinition';
-import type { SheetTableType } from './SheetTableType';
+import type { SheetCreationMode } from './SheetCreationMode';
 import {
-    SheetTableTypeFromJSON,
-    SheetTableTypeFromJSONTyped,
-    SheetTableTypeToJSON,
-} from './SheetTableType';
+    SheetCreationModeFromJSON,
+    SheetCreationModeFromJSONTyped,
+    SheetCreationModeToJSON,
+} from './SheetCreationMode';
 import type { SheetType } from './SheetType';
 import {
     SheetTypeFromJSON,
@@ -63,13 +63,13 @@ export interface CreateSheetRequest {
      */
     description?: string;
     /**
-     * S3 Tables namespace for the Iceberg table
+     * Namespace for the sheet. This serves as a container to group and manage sheets. Permissions can be broadly managed at this level too.
      * @type {string}
      * @memberof CreateSheetRequest
      */
     namespaceName: string;
     /**
-     * Name of the Iceberg table within the namespace
+     * Name of the sheet's underlying table
      * @type {string}
      * @memberof CreateSheetRequest
      */
@@ -88,10 +88,10 @@ export interface CreateSheetRequest {
     auditReadAccess?: boolean;
     /**
      * 
-     * @type {SheetTableType}
+     * @type {SheetCreationMode}
      * @memberof CreateSheetRequest
      */
-    tableType?: SheetTableType | null;
+    tableType?: SheetCreationMode | null;
     /**
      * Column definitions for the table schema (required for TABLE)
      * @type {Array<ColumnDef>}
@@ -141,7 +141,7 @@ export function CreateSheetRequestFromJSONTyped(json: any, ignoreDiscriminator: 
         'tableName': json['tableName'],
         'sheetType': SheetTypeFromJSON(json['sheetType']),
         'auditReadAccess': !exists(json, 'auditReadAccess') ? undefined : json['auditReadAccess'],
-        'tableType': !exists(json, 'tableType') ? undefined : SheetTableTypeFromJSON(json['tableType']),
+        'tableType': !exists(json, 'tableType') ? undefined : SheetCreationModeFromJSON(json['tableType']),
         'columns': !exists(json, 'columns') ? undefined : (json['columns'] === null ? null : (json['columns'] as Array<any>).map(ColumnDefFromJSON)),
         'fileDef': !exists(json, 'fileDef') ? undefined : CreateSheetRequestFileDefFromJSON(json['fileDef']),
         'viewDefinition': !exists(json, 'viewDefinition') ? undefined : CreateSheetRequestViewDefinitionFromJSON(json['viewDefinition']),
@@ -163,7 +163,7 @@ export function CreateSheetRequestToJSON(value?: CreateSheetRequest | null): any
         'tableName': value.tableName,
         'sheetType': SheetTypeToJSON(value.sheetType),
         'auditReadAccess': value.auditReadAccess,
-        'tableType': SheetTableTypeToJSON(value.tableType),
+        'tableType': SheetCreationModeToJSON(value.tableType),
         'columns': value.columns === undefined ? undefined : (value.columns === null ? null : (value.columns as Array<any>).map(ColumnDefToJSON)),
         'fileDef': CreateSheetRequestFileDefToJSON(value.fileDef),
         'viewDefinition': CreateSheetRequestViewDefinitionToJSON(value.viewDefinition),
