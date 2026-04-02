@@ -172,6 +172,12 @@ export interface ProjectSettings {
      */
     isShareable?: boolean | null;
     /**
+     * Allows users of this project to interact with AI services
+     * @type {boolean}
+     * @memberof ProjectSettings
+     */
+    isAiEnabled?: boolean | null;
+    /**
      * (Read-only) Whether this project has pipelines enabled
      * @type {boolean}
      * @memberof ProjectSettings
@@ -230,6 +236,7 @@ export function ProjectSettingsFromJSONTyped(json: any, ignoreDiscriminator: boo
         'enableCustomWorkspaceRoles': !exists(json, 'enableCustomWorkspaceRoles') ? undefined : json['enableCustomWorkspaceRoles'],
         'isDiscoverable': !exists(json, 'isDiscoverable') ? undefined : json['isDiscoverable'],
         'isShareable': !exists(json, 'isShareable') ? undefined : json['isShareable'],
+        'isAiEnabled': !exists(json, 'isAiEnabled') ? undefined : json['isAiEnabled'],
         'hasPipelinesEnabled': !exists(json, 'hasPipelinesEnabled') ? undefined : json['hasPipelinesEnabled'],
         'hasWorkspacesEnabled': !exists(json, 'hasWorkspacesEnabled') ? undefined : json['hasWorkspacesEnabled'],
     };
@@ -268,6 +275,7 @@ export function ProjectSettingsToJSON(value?: ProjectSettings | null): any {
         'enableCustomWorkspaceRoles': value.enableCustomWorkspaceRoles,
         'isDiscoverable': value.isDiscoverable,
         'isShareable': value.isShareable,
+        'isAiEnabled': value.isAiEnabled,
         'hasPipelinesEnabled': value.hasPipelinesEnabled,
         'hasWorkspacesEnabled': value.hasWorkspacesEnabled,
     };
