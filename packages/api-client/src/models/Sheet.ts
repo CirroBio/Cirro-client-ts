@@ -73,7 +73,7 @@ export interface Sheet {
      * @type {SheetCreationMode}
      * @memberof Sheet
      */
-    tableType: SheetCreationMode;
+    sheetCreationMode: SheetCreationMode;
     /**
      * 
      * @type {Status}
@@ -110,7 +110,7 @@ export function instanceOfSheet(value: object): boolean {
     isInstance = isInstance && "description" in value;
     isInstance = isInstance && "projectId" in value;
     isInstance = isInstance && "sheetType" in value;
-    isInstance = isInstance && "tableType" in value;
+    isInstance = isInstance && "sheetCreationMode" in value;
     isInstance = isInstance && "status" in value;
     isInstance = isInstance && "createdBy" in value;
     isInstance = isInstance && "createdAt" in value;
@@ -134,7 +134,7 @@ export function SheetFromJSONTyped(json: any, ignoreDiscriminator: boolean): She
         'description': json['description'],
         'projectId': json['projectId'],
         'sheetType': SheetTypeFromJSON(json['sheetType']),
-        'tableType': SheetCreationModeFromJSON(json['tableType']),
+        'sheetCreationMode': SheetCreationModeFromJSON(json['sheetCreationMode']),
         'status': StatusFromJSON(json['status']),
         'createdBy': json['createdBy'],
         'createdAt': (new Date(json['createdAt'])),
@@ -156,7 +156,7 @@ export function SheetToJSON(value?: Sheet | null): any {
         'description': value.description,
         'projectId': value.projectId,
         'sheetType': SheetTypeToJSON(value.sheetType),
-        'tableType': SheetCreationModeToJSON(value.tableType),
+        'sheetCreationMode': SheetCreationModeToJSON(value.sheetCreationMode),
         'status': StatusToJSON(value.status),
         'createdBy': value.createdBy,
         'createdAt': (value.createdAt.toISOString()),

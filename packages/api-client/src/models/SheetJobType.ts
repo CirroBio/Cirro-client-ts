@@ -18,9 +18,8 @@
  * @enum {string}
  */
 export enum SheetJobType {
-    Ddl = 'DDL',
+    CreateTable = 'CREATE_TABLE',
     Ingest = 'INGEST',
-    DdlIngest = 'DDL_INGEST',
     DropTable = 'DROP_TABLE',
     MaterializeView = 'MATERIALIZE_VIEW'
 }

@@ -25,8 +25,7 @@ export enum ColumnDataType {
     Double = 'DOUBLE',
     Boolean = 'BOOLEAN',
     Date = 'DATE',
-    Timestamp = 'TIMESTAMP',
-    Blob = 'BLOB'
+    Timestamp = 'TIMESTAMP'
 }
 
 
