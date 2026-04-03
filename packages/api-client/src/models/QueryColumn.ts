@@ -31,13 +31,13 @@ export interface QueryColumn {
      * @type {string}
      * @memberof QueryColumn
      */
-    name?: string;
+    name: string;
     /**
      * 
      * @type {ColumnDataType}
      * @memberof QueryColumn
      */
-    dataType?: ColumnDataType;
+    dataType: ColumnDataType;
 }
 
 /**
@@ -45,6 +45,8 @@ export interface QueryColumn {
  */
 export function instanceOfQueryColumn(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "name" in value;
+    isInstance = isInstance && "dataType" in value;
 
     return isInstance;
 }
@@ -59,8 +61,8 @@ export function QueryColumnFromJSONTyped(json: any, ignoreDiscriminator: boolean
     }
     return {
         
-        'name': !exists(json, 'name') ? undefined : json['name'],
-        'dataType': !exists(json, 'dataType') ? undefined : ColumnDataTypeFromJSON(json['dataType']),
+        'name': json['name'],
+        'dataType': ColumnDataTypeFromJSON(json['dataType']),
     };
 }
 

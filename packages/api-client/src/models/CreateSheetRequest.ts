@@ -91,7 +91,7 @@ export interface CreateSheetRequest {
      * @type {SheetCreationMode}
      * @memberof CreateSheetRequest
      */
-    tableType?: SheetCreationMode | null;
+    sheetCreationMode?: SheetCreationMode | null;
     /**
      * Column definitions for the table schema (required for TABLE)
      * @type {Array<ColumnDef>}
@@ -141,7 +141,7 @@ export function CreateSheetRequestFromJSONTyped(json: any, ignoreDiscriminator: 
         'tableName': json['tableName'],
         'sheetType': SheetTypeFromJSON(json['sheetType']),
         'auditReadAccess': !exists(json, 'auditReadAccess') ? undefined : json['auditReadAccess'],
-        'tableType': !exists(json, 'tableType') ? undefined : SheetCreationModeFromJSON(json['tableType']),
+        'sheetCreationMode': !exists(json, 'sheetCreationMode') ? undefined : SheetCreationModeFromJSON(json['sheetCreationMode']),
         'columns': !exists(json, 'columns') ? undefined : (json['columns'] === null ? null : (json['columns'] as Array<any>).map(ColumnDefFromJSON)),
         'fileDef': !exists(json, 'fileDef') ? undefined : CreateSheetRequestFileDefFromJSON(json['fileDef']),
         'viewDefinition': !exists(json, 'viewDefinition') ? undefined : CreateSheetRequestViewDefinitionFromJSON(json['viewDefinition']),
@@ -163,7 +163,7 @@ export function CreateSheetRequestToJSON(value?: CreateSheetRequest | null): any
         'tableName': value.tableName,
         'sheetType': SheetTypeToJSON(value.sheetType),
         'auditReadAccess': value.auditReadAccess,
-        'tableType': SheetCreationModeToJSON(value.tableType),
+        'sheetCreationMode': SheetCreationModeToJSON(value.sheetCreationMode),
         'columns': value.columns === undefined ? undefined : (value.columns === null ? null : (value.columns as Array<any>).map(ColumnDefToJSON)),
         'fileDef': CreateSheetRequestFileDefToJSON(value.fileDef),
         'viewDefinition': CreateSheetRequestViewDefinitionToJSON(value.viewDefinition),
