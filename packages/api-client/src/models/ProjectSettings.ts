@@ -87,13 +87,6 @@ export interface ProjectSettings {
      */
     batchSubnets?: Array<string> | null;
     /**
-     * List of subnets that the sagemaker instances will use
-     * @type {Array<string>}
-     * @memberof ProjectSettings
-     * @deprecated
-     */
-    sagemakerSubnets?: Array<string> | null;
-    /**
      * List of subnets that workspace instances will use
      * @type {Array<string>}
      * @memberof ProjectSettings
@@ -222,7 +215,6 @@ export function ProjectSettingsFromJSONTyped(json: any, ignoreDiscriminator: boo
         'temporaryStorageLifetimeDays': !exists(json, 'temporaryStorageLifetimeDays') ? undefined : json['temporaryStorageLifetimeDays'],
         'vpcId': !exists(json, 'vpcId') ? undefined : json['vpcId'],
         'batchSubnets': !exists(json, 'batchSubnets') ? undefined : json['batchSubnets'],
-        'sagemakerSubnets': !exists(json, 'sagemakerSubnets') ? undefined : json['sagemakerSubnets'],
         'workspaceSubnets': !exists(json, 'workspaceSubnets') ? undefined : json['workspaceSubnets'],
         'maxSpotVCPU': !exists(json, 'maxSpotVCPU') ? undefined : json['maxSpotVCPU'],
         'maxFPGAVCPU': !exists(json, 'maxFPGAVCPU') ? undefined : json['maxFPGAVCPU'],
@@ -261,7 +253,6 @@ export function ProjectSettingsToJSON(value?: ProjectSettings | null): any {
         'temporaryStorageLifetimeDays': value.temporaryStorageLifetimeDays,
         'vpcId': value.vpcId,
         'batchSubnets': value.batchSubnets,
-        'sagemakerSubnets': value.sagemakerSubnets,
         'workspaceSubnets': value.workspaceSubnets,
         'maxSpotVCPU': value.maxSpotVCPU,
         'maxFPGAVCPU': value.maxFPGAVCPU,

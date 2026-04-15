@@ -21,6 +21,7 @@ import type {
   SheetDetail,
   SheetJob,
   SheetQueryResponse,
+  SqlSortOrder,
   TriggerIngestRequest,
   UpdateRowsRequest,
   UpdateSheetRequest,
@@ -38,6 +39,8 @@ import {
     SheetJobToJSON,
     SheetQueryResponseFromJSON,
     SheetQueryResponseToJSON,
+    SqlSortOrderFromJSON,
+    SqlSortOrderToJSON,
     TriggerIngestRequestFromJSON,
     TriggerIngestRequestToJSON,
     UpdateRowsRequestFromJSON,
@@ -71,6 +74,8 @@ export interface GetSheetDataRequest {
     sheetId: string;
     limit?: number;
     page?: number;
+    orderBy?: string | null;
+    order?: SqlSortOrder;
 }
 
 export interface GetSheetsRequest {
@@ -284,7 +289,7 @@ export class SheetsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Returns paginated rows from a sheet. The first column is always _row_id, which uniquely identifies each row and is required for row updates via PUT. Defaults page=1 and limit=1000.
+     * Returns paginated rows from a sheet. The first column is always _row_id, which uniquely identifies each row and is required for row updates via PUT. Defaults page=1, limit=1000, order=ASCENDING.
      * Get sheet data
      */
     async getSheetDataRaw(requestParameters: GetSheetDataRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SheetQueryResponse>> {
@@ -304,6 +309,14 @@ export class SheetsApi extends runtime.BaseAPI {
 
         if (requestParameters.page !== undefined) {
             queryParameters['page'] = requestParameters.page;
+        }
+
+        if (requestParameters.orderBy !== undefined) {
+            queryParameters['orderBy'] = requestParameters.orderBy;
+        }
+
+        if (requestParameters.order !== undefined) {
+            queryParameters['order'] = requestParameters.order;
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -327,7 +340,7 @@ export class SheetsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Returns paginated rows from a sheet. The first column is always _row_id, which uniquely identifies each row and is required for row updates via PUT. Defaults page=1 and limit=1000.
+     * Returns paginated rows from a sheet. The first column is always _row_id, which uniquely identifies each row and is required for row updates via PUT. Defaults page=1, limit=1000, order=ASCENDING.
      * Get sheet data
      */
     async getSheetData(requestParameters: GetSheetDataRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SheetQueryResponse> {

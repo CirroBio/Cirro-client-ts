@@ -12,7 +12,6 @@ export * from './FileApi';
 export * from './GovernanceApi';
 export * from './MetadataApi';
 export * from './MetricsApi';
-export * from './NotebooksApi';
 export * from './ProcessesApi';
 export * from './ProjectRequestsApi';
 export * from './ProjectsApi';

@@ -122,6 +122,6 @@ export enum ListEventsEntityTypeEnum {
     User = 'User',
     BillingAccount = 'BillingAccount',
     Process = 'Process',
-    NotebookInstance = 'NotebookInstance',
+    Workspace = 'Workspace',
     UserProjectAssignment = 'UserProjectAssignment'
 }
