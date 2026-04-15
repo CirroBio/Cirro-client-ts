@@ -41,7 +41,7 @@ jobs:
       - name: Publish API Client to NPM
         if: github.event_name == 'release'
         working-directory: packages/api-client
-        run: npm publish
+        run: npm publish --provenance
 
   build-sdk:
     runs-on: ubuntu-latest
@@ -70,4 +70,4 @@ jobs:
       - name: Publish SDK to NPM
         if: github.event_name == 'release'
         working-directory: packages/sdk
-        run: npm publish
+        run: npm publish --provenance
