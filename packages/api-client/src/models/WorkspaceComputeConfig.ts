@@ -68,7 +68,7 @@ export interface WorkspaceComputeConfig {
      */
     localPort?: number;
     /**
-     * Custom IAM task role ARN for the workspace ECS task. Must belong to the project's AWS account and follow the naming convention 'Cirro-CustomWorkspaceTaskRole-{projectShortCode}-{name}'.
+     * Custom IAM task role for the workspace ECS task. Provide either a role name (e.g., 'Cirro-CustomWorkspaceTaskRole-{projectShortCode}-{name}') or a full ARN (e.g., 'arn:aws:iam::{accountId}:role/Cirro-CustomWorkspaceTaskRole-{projectShortCode}-{name}'). Must belong to the project's AWS account.
      * @type {string}
      * @memberof WorkspaceComputeConfig
      */
