@@ -72,6 +72,12 @@ export interface FeatureFlags {
      * @type {boolean}
      * @memberof FeatureFlags
      */
+    sharedFilesystemsEnabled: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof FeatureFlags
+     */
     customWorkspaceRolesEnabled: boolean;
 }
 
@@ -88,6 +94,7 @@ export function instanceOfFeatureFlags(value: object): boolean {
     isInstance = isInstance && "appRegistrationsEnabled" in value;
     isInstance = isInstance && "sheetsEnabled" in value;
     isInstance = isInstance && "aiEnabled" in value;
+    isInstance = isInstance && "sharedFilesystemsEnabled" in value;
     isInstance = isInstance && "customWorkspaceRolesEnabled" in value;
 
     return isInstance;
@@ -111,6 +118,7 @@ export function FeatureFlagsFromJSONTyped(json: any, ignoreDiscriminator: boolea
         'appRegistrationsEnabled': json['appRegistrationsEnabled'],
         'sheetsEnabled': json['sheetsEnabled'],
         'aiEnabled': json['aiEnabled'],
+        'sharedFilesystemsEnabled': json['sharedFilesystemsEnabled'],
         'customWorkspaceRolesEnabled': json['customWorkspaceRolesEnabled'],
     };
 }
@@ -132,6 +140,7 @@ export function FeatureFlagsToJSON(value?: FeatureFlags | null): any {
         'appRegistrationsEnabled': value.appRegistrationsEnabled,
         'sheetsEnabled': value.sheetsEnabled,
         'aiEnabled': value.aiEnabled,
+        'sharedFilesystemsEnabled': value.sharedFilesystemsEnabled,
         'customWorkspaceRolesEnabled': value.customWorkspaceRolesEnabled,
     };
 }

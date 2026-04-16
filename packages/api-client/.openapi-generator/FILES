@@ -18,6 +18,7 @@ src/apis/ProcessesApi.ts
 src/apis/ProjectRequestsApi.ts
 src/apis/ProjectsApi.ts
 src/apis/ReferencesApi.ts
+src/apis/SharedFilesystemsApi.ts
 src/apis/SharingApi.ts
 src/apis/SheetsApi.ts
 src/apis/SystemApi.ts
@@ -181,6 +182,8 @@ src/models/Share.ts
 src/models/ShareDetail.ts
 src/models/ShareInput.ts
 src/models/ShareType.ts
+src/models/SharedFilesystem.ts
+src/models/SharedFilesystemInput.ts
 src/models/SharingType.ts
 src/models/Sheet.ts
 src/models/SheetCreationMode.ts
