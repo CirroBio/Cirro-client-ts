@@ -1408,11 +1408,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@cirrobio/react-auth@npm:^0.0.6, @cirrobio/react-auth@workspace:packages/react-auth":
+"@cirrobio/react-auth@npm:^0.0.7, @cirrobio/react-auth@workspace:packages/react-auth":
   version: 0.0.0-use.local
   resolution: "@cirrobio/react-auth@workspace:packages/react-auth"
   dependencies:
-    "@cirrobio/react-core": "npm:^0.0.3"
+    "@cirrobio/react-core": "npm:^0.0.4"
     aws-amplify: "npm:^6.16.2"
   peerDependencies:
     "@cirrobio/api-client": ^0.13.0
@@ -1427,7 +1427,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@cirrobio/react-core@npm:^0.0.3, @cirrobio/react-core@workspace:packages/react-core":
+"@cirrobio/react-core@npm:^0.0.4, @cirrobio/react-core@workspace:packages/react-core":
   version: 0.0.0-use.local
   resolution: "@cirrobio/react-core@workspace:packages/react-core"
   peerDependencies:
@@ -1441,8 +1441,8 @@ __metadata:
   resolution: "@cirrobio/react-tool@workspace:packages/react-tool"
   dependencies:
     "@cirrobio/api-client": "npm:^0.13.0"
-    "@cirrobio/react-auth": "npm:^0.0.6"
-    "@cirrobio/react-core": "npm:^0.0.3"
+    "@cirrobio/react-auth": "npm:^0.0.7"
+    "@cirrobio/react-core": "npm:^0.0.4"
     "@cirrobio/sdk": "npm:^0.13.0"
   peerDependencies:
     "@emotion/react": ^11.11.3

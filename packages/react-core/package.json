@@ -1,6 +1,6 @@
 {
   "name": "@cirrobio/react-core",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Core providers and functions for Cirro React applications",
   "author": "CirroBio",
   "repository": {

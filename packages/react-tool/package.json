@@ -1,6 +1,6 @@
 {
   "name": "@cirrobio/react-tool",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "React components and utilities for developing Cirro tools",
   "author": "CirroBio",
   "repository": {
@@ -24,8 +24,8 @@
   },
   "dependencies": {
     "@cirrobio/api-client": "^0.13.0",
-    "@cirrobio/react-auth": "^0.0.6",
-    "@cirrobio/react-core": "^0.0.3",
+    "@cirrobio/react-auth": "^0.0.7",
+    "@cirrobio/react-core": "^0.0.4",
     "@cirrobio/sdk": "^0.13.0"
   },
   "peerDependencies": {

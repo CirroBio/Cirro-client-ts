@@ -1,6 +1,6 @@
 {
   "name": "@cirrobio/react-auth",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Provides authentication configuration and components for React applications using Cirro.",
   "author": "CirroBio",
   "repository": {
@@ -25,7 +25,7 @@
     "test": "jest --coverage --silent --passWithNoTests"
   },
   "dependencies": {
-    "@cirrobio/react-core": "^0.0.3"
+    "@cirrobio/react-core": "^0.0.4"
   },
   "peerDependencies": {
     "@cirrobio/api-client": "^0.13.0",
