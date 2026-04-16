@@ -23,10 +23,10 @@
     "test": "jest --coverage --silent --passWithNoTests"
   },
   "dependencies": {
-    "@cirrobio/api-client": "^0.12.0",
+    "@cirrobio/api-client": "^0.13.0",
     "@cirrobio/react-auth": "^0.0.6",
     "@cirrobio/react-core": "^0.0.3",
-    "@cirrobio/sdk": "^0.12.0"
+    "@cirrobio/sdk": "^0.13.0"
   },
   "peerDependencies": {
     "@emotion/react": "^11.11.3",

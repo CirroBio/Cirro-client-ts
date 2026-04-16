@@ -28,8 +28,8 @@
     "@cirrobio/react-core": "^0.0.3"
   },
   "peerDependencies": {
-    "@cirrobio/api-client": "^0.12.0",
-    "@cirrobio/sdk": "^0.12.0",
+    "@cirrobio/api-client": "^0.13.0",
+    "@cirrobio/sdk": "^0.13.0",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^7.3.7",
