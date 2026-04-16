@@ -13,18 +13,12 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import type { SheetCreationMode } from './SheetCreationMode';
+import type { NamedItem } from './NamedItem';
 import {
-    SheetCreationModeFromJSON,
-    SheetCreationModeFromJSONTyped,
-    SheetCreationModeToJSON,
-} from './SheetCreationMode';
-import type { SheetType } from './SheetType';
-import {
-    SheetTypeFromJSON,
-    SheetTypeFromJSONTyped,
-    SheetTypeToJSON,
-} from './SheetType';
+    NamedItemFromJSON,
+    NamedItemFromJSONTyped,
+    NamedItemToJSON,
+} from './NamedItem';
 import type { Status } from './Status';
 import {
     StatusFromJSON,
@@ -35,102 +29,111 @@ import {
 /**
  * 
  * @export
- * @interface Sheet
+ * @interface SharedFilesystem
  */
-export interface Sheet {
+export interface SharedFilesystem {
     /**
      * 
      * @type {string}
-     * @memberof Sheet
+     * @memberof SharedFilesystem
      */
     id: string;
     /**
      * 
      * @type {string}
-     * @memberof Sheet
+     * @memberof SharedFilesystem
      */
     name: string;
     /**
      * 
      * @type {string}
-     * @memberof Sheet
+     * @memberof SharedFilesystem
      */
     description: string;
     /**
      * 
      * @type {string}
-     * @memberof Sheet
+     * @memberof SharedFilesystem
      */
     projectId: string;
     /**
      * 
-     * @type {SheetType}
-     * @memberof Sheet
-     */
-    sheetType: SheetType;
-    /**
-     * 
-     * @type {SheetCreationMode}
-     * @memberof Sheet
-     */
-    sheetCreationMode: SheetCreationMode;
-    /**
-     * 
      * @type {Status}
-     * @memberof Sheet
+     * @memberof SharedFilesystem
      */
     status: Status;
     /**
      * 
      * @type {string}
-     * @memberof Sheet
+     * @memberof SharedFilesystem
+     */
+    statusMessage?: string | null;
+    /**
+     * Size of file system (refreshed daily)
+     * @type {number}
+     * @memberof SharedFilesystem
+     */
+    sizeInBytes?: number | null;
+    /**
+     * 
+     * @type {number}
+     * @memberof SharedFilesystem
+     */
+    warningThresholdBytes?: number | null;
+    /**
+     * Workspaces currently referencing this filesystem
+     * @type {Array<NamedItem>}
+     * @memberof SharedFilesystem
+     */
+    usedByWorkspaces?: Array<NamedItem>;
+    /**
+     * 
+     * @type {string}
+     * @memberof SharedFilesystem
      */
     createdBy: string;
     /**
      * 
      * @type {Date}
-     * @memberof Sheet
+     * @memberof SharedFilesystem
      */
     createdAt: Date;
     /**
      * 
      * @type {Date}
-     * @memberof Sheet
+     * @memberof SharedFilesystem
      */
     updatedAt: Date;
     /**
-     * 
+     * Number of workspaces currently referencing this filesystem
      * @type {number}
-     * @memberof Sheet
+     * @memberof SharedFilesystem
      */
-    totalRowCount: number;
+    usedByCount?: number;
 }
 
 /**
- * Check if a given object implements the Sheet interface.
+ * Check if a given object implements the SharedFilesystem interface.
  */
-export function instanceOfSheet(value: object): boolean {
+export function instanceOfSharedFilesystem(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "id" in value;
     isInstance = isInstance && "name" in value;
     isInstance = isInstance && "description" in value;
     isInstance = isInstance && "projectId" in value;
-    isInstance = isInstance && "sheetType" in value;
-    isInstance = isInstance && "sheetCreationMode" in value;
     isInstance = isInstance && "status" in value;
     isInstance = isInstance && "createdBy" in value;
     isInstance = isInstance && "createdAt" in value;
     isInstance = isInstance && "updatedAt" in value;
-    isInstance = isInstance && "totalRowCount" in value;
 
     return isInstance;
 }
 
-export function SheetFromJSON(json: any): Sheet {
-    return SheetFromJSONTyped(json, false);
+export function SharedFilesystemFromJSON(json: any): SharedFilesystem {
+    return SharedFilesystemFromJSONTyped(json, false);
 }
 
-export function SheetFromJSONTyped(json: any, ignoreDiscriminator: boolean): Sheet {
+export function SharedFilesystemFromJSONTyped(json: any, ignoreDiscriminator: boolean): SharedFilesystem {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -140,17 +143,19 @@ export function SheetFromJSONTyped(json: any, ignoreDiscriminator: boolean): She
         'name': json['name'],
         'description': json['description'],
         'projectId': json['projectId'],
-        'sheetType': SheetTypeFromJSON(json['sheetType']),
-        'sheetCreationMode': SheetCreationModeFromJSON(json['sheetCreationMode']),
         'status': StatusFromJSON(json['status']),
+        'statusMessage': !exists(json, 'statusMessage') ? undefined : json['statusMessage'],
+        'sizeInBytes': !exists(json, 'sizeInBytes') ? undefined : json['sizeInBytes'],
+        'warningThresholdBytes': !exists(json, 'warningThresholdBytes') ? undefined : json['warningThresholdBytes'],
+        'usedByWorkspaces': !exists(json, 'usedByWorkspaces') ? undefined : ((json['usedByWorkspaces'] as Array<any>).map(NamedItemFromJSON)),
         'createdBy': json['createdBy'],
         'createdAt': (new Date(json['createdAt'])),
         'updatedAt': (new Date(json['updatedAt'])),
-        'totalRowCount': json['totalRowCount'],
+        'usedByCount': !exists(json, 'usedByCount') ? undefined : json['usedByCount'],
     };
 }
 
-export function SheetToJSON(value?: Sheet | null): any {
+export function SharedFilesystemToJSON(value?: SharedFilesystem | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -163,13 +168,15 @@ export function SheetToJSON(value?: Sheet | null): any {
         'name': value.name,
         'description': value.description,
         'projectId': value.projectId,
-        'sheetType': SheetTypeToJSON(value.sheetType),
-        'sheetCreationMode': SheetCreationModeToJSON(value.sheetCreationMode),
         'status': StatusToJSON(value.status),
+        'statusMessage': value.statusMessage,
+        'sizeInBytes': value.sizeInBytes,
+        'warningThresholdBytes': value.warningThresholdBytes,
+        'usedByWorkspaces': value.usedByWorkspaces === undefined ? undefined : ((value.usedByWorkspaces as Array<any>).map(NamedItemToJSON)),
         'createdBy': value.createdBy,
         'createdAt': (value.createdAt.toISOString()),
         'updatedAt': (value.updatedAt.toISOString()),
-        'totalRowCount': value.totalRowCount,
+        'usedByCount': value.usedByCount,
     };
 }
 

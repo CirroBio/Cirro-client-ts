@@ -16,6 +16,7 @@ export * from './ProcessesApi';
 export * from './ProjectRequestsApi';
 export * from './ProjectsApi';
 export * from './ReferencesApi';
+export * from './SharedFilesystemsApi';
 export * from './SharingApi';
 export * from './SheetsApi';
 export * from './SystemApi';

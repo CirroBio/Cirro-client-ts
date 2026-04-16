@@ -38,6 +38,12 @@ export interface SheetQueryResponse {
      * @memberof SheetQueryResponse
      */
     rows: Array<Array<object>>;
+    /**
+     * 
+     * @type {number}
+     * @memberof SheetQueryResponse
+     */
+    totalRowCount: number;
 }
 
 /**
@@ -47,6 +53,7 @@ export function instanceOfSheetQueryResponse(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "columns" in value;
     isInstance = isInstance && "rows" in value;
+    isInstance = isInstance && "totalRowCount" in value;
 
     return isInstance;
 }
@@ -63,6 +70,7 @@ export function SheetQueryResponseFromJSONTyped(json: any, ignoreDiscriminator: 
         
         'columns': ((json['columns'] as Array<any>).map(QueryColumnFromJSON)),
         'rows': json['rows'],
+        'totalRowCount': json['totalRowCount'],
     };
 }
 
@@ -77,6 +85,7 @@ export function SheetQueryResponseToJSON(value?: SheetQueryResponse | null): any
         
         'columns': ((value.columns as Array<any>).map(QueryColumnToJSON)),
         'rows': value.rows,
+        'totalRowCount': value.totalRowCount,
     };
 }
 

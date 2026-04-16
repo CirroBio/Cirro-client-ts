@@ -155,6 +155,8 @@ export * from './Share';
 export * from './ShareDetail';
 export * from './ShareInput';
 export * from './ShareType';
+export * from './SharedFilesystem';
+export * from './SharedFilesystemInput';
 export * from './SharingType';
 export * from './Sheet';
 export * from './SheetCreationMode';

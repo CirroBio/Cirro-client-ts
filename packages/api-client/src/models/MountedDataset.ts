@@ -37,6 +37,12 @@ export interface MountedDataset {
      * @memberof MountedDataset
      */
     customUri?: string | null;
+    /**
+     * ID of a shared filesystem to mount (read-write)
+     * @type {string}
+     * @memberof MountedDataset
+     */
+    sharedFilesystemId?: string | null;
 }
 
 /**
@@ -62,6 +68,7 @@ export function MountedDatasetFromJSONTyped(json: any, ignoreDiscriminator: bool
         'name': json['name'],
         'datasetId': !exists(json, 'datasetId') ? undefined : json['datasetId'],
         'customUri': !exists(json, 'customUri') ? undefined : json['customUri'],
+        'sharedFilesystemId': !exists(json, 'sharedFilesystemId') ? undefined : json['sharedFilesystemId'],
     };
 }
 
@@ -77,6 +84,7 @@ export function MountedDatasetToJSON(value?: MountedDataset | null): any {
         'name': value.name,
         'datasetId': value.datasetId,
         'customUri': value.customUri,
+        'sharedFilesystemId': value.sharedFilesystemId,
     };
 }
 

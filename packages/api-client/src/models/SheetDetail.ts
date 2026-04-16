@@ -146,6 +146,12 @@ export interface SheetDetail {
      * @memberof SheetDetail
      */
     updatedAt: Date;
+    /**
+     * 
+     * @type {number}
+     * @memberof SheetDetail
+     */
+    totalRowCount: number;
 }
 
 /**
@@ -165,6 +171,7 @@ export function instanceOfSheetDetail(value: object): boolean {
     isInstance = isInstance && "createdBy" in value;
     isInstance = isInstance && "createdAt" in value;
     isInstance = isInstance && "updatedAt" in value;
+    isInstance = isInstance && "totalRowCount" in value;
 
     return isInstance;
 }
@@ -195,6 +202,7 @@ export function SheetDetailFromJSONTyped(json: any, ignoreDiscriminator: boolean
         'createdBy': json['createdBy'],
         'createdAt': (new Date(json['createdAt'])),
         'updatedAt': (new Date(json['updatedAt'])),
+        'totalRowCount': json['totalRowCount'],
     };
 }
 
@@ -223,6 +231,7 @@ export function SheetDetailToJSON(value?: SheetDetail | null): any {
         'createdBy': value.createdBy,
         'createdAt': (value.createdAt.toISOString()),
         'updatedAt': (value.updatedAt.toISOString()),
+        'totalRowCount': value.totalRowCount,
     };
 }
 

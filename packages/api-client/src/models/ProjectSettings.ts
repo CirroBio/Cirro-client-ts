@@ -153,6 +153,12 @@ export interface ProjectSettings {
      */
     enableCustomWorkspaceRoles?: boolean | null;
     /**
+     * Maximum number of shared filesystems for this project
+     * @type {number}
+     * @memberof ProjectSettings
+     */
+    maxSharedFilesystems?: number;
+    /**
      * Enables the project to be discoverable by other users
      * @type {boolean}
      * @memberof ProjectSettings
@@ -182,6 +188,12 @@ export interface ProjectSettings {
      * @memberof ProjectSettings
      */
     hasWorkspacesEnabled?: boolean | null;
+    /**
+     * (Read-only) Whether this project has shared filesystems enabled
+     * @type {boolean}
+     * @memberof ProjectSettings
+     */
+    hasSharedFilesystemsEnabled?: boolean | null;
 }
 
 /**
@@ -226,11 +238,13 @@ export function ProjectSettingsFromJSONTyped(json: any, ignoreDiscriminator: boo
         'maxWorkspacesPerUser': !exists(json, 'maxWorkspacesPerUser') ? undefined : json['maxWorkspacesPerUser'],
         'enableAdvancedGpuConfig': !exists(json, 'enableAdvancedGpuConfig') ? undefined : json['enableAdvancedGpuConfig'],
         'enableCustomWorkspaceRoles': !exists(json, 'enableCustomWorkspaceRoles') ? undefined : json['enableCustomWorkspaceRoles'],
+        'maxSharedFilesystems': !exists(json, 'maxSharedFilesystems') ? undefined : json['maxSharedFilesystems'],
         'isDiscoverable': !exists(json, 'isDiscoverable') ? undefined : json['isDiscoverable'],
         'isShareable': !exists(json, 'isShareable') ? undefined : json['isShareable'],
         'isAiEnabled': !exists(json, 'isAiEnabled') ? undefined : json['isAiEnabled'],
         'hasPipelinesEnabled': !exists(json, 'hasPipelinesEnabled') ? undefined : json['hasPipelinesEnabled'],
         'hasWorkspacesEnabled': !exists(json, 'hasWorkspacesEnabled') ? undefined : json['hasWorkspacesEnabled'],
+        'hasSharedFilesystemsEnabled': !exists(json, 'hasSharedFilesystemsEnabled') ? undefined : json['hasSharedFilesystemsEnabled'],
     };
 }
 
@@ -264,11 +278,13 @@ export function ProjectSettingsToJSON(value?: ProjectSettings | null): any {
         'maxWorkspacesPerUser': value.maxWorkspacesPerUser,
         'enableAdvancedGpuConfig': value.enableAdvancedGpuConfig,
         'enableCustomWorkspaceRoles': value.enableCustomWorkspaceRoles,
+        'maxSharedFilesystems': value.maxSharedFilesystems,
         'isDiscoverable': value.isDiscoverable,
         'isShareable': value.isShareable,
         'isAiEnabled': value.isAiEnabled,
         'hasPipelinesEnabled': value.hasPipelinesEnabled,
         'hasWorkspacesEnabled': value.hasWorkspacesEnabled,
+        'hasSharedFilesystemsEnabled': value.hasSharedFilesystemsEnabled,
     };
 }
 

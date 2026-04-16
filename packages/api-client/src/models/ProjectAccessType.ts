@@ -23,7 +23,8 @@ export enum ProjectAccessType {
     SamplesheetUpload = 'SAMPLESHEET_UPLOAD',
     ReferenceUpload = 'REFERENCE_UPLOAD',
     ProjectDownload = 'PROJECT_DOWNLOAD',
-    SheetUpload = 'SHEET_UPLOAD'
+    SheetUpload = 'SHEET_UPLOAD',
+    ReadScratch = 'READ_SCRATCH'
 }
 
 
