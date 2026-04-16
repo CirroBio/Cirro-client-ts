@@ -8,7 +8,6 @@ import {
   FileApi,
   GovernanceApi,
   MetadataApi,
-  NotebooksApi,
   ProcessesApi,
   ProjectRequestsApi,
   ProjectsApi,
@@ -37,7 +36,6 @@ export class DataService {
   private readonly _fileApi: FileApi;
   private readonly _governanceApi: GovernanceApi;
   private readonly _metadataApi: MetadataApi;
-  private readonly _notebooksApi: NotebooksApi;
   private readonly _processesApi: ProcessesApi;
   private readonly _projectRequestsApi: ProjectRequestsApi;
   private readonly _projectsApi: ProjectsApi;
@@ -59,7 +57,6 @@ export class DataService {
     this._fileApi = new FileApi(this.apiConfig);
     this._governanceApi = new GovernanceApi(this.apiConfig);
     this._metadataApi = new MetadataApi(this.apiConfig);
-    this._notebooksApi = new NotebooksApi(this.apiConfig);
     this._processesApi = new ProcessesApi(this.apiConfig);
     this._projectRequestsApi = new ProjectRequestsApi(this.apiConfig);
     this._projectsApi = new ProjectsApi(this.apiConfig);
@@ -94,9 +91,6 @@ export class DataService {
   }
   get metadata(): MetadataApi {
     return this._metadataApi;
-  }
-  get notebooks(): NotebooksApi {
-    return this._notebooksApi;
   }
   get processes(): ProcessesApi {
     return this._processesApi;
