@@ -33,57 +33,57 @@ import {
 } from './LogicalOperator';
 
 /**
- * Filter conditions to apply
+ * Filter tree.
  * @export
- * @interface ViewQueryRequestFilter
+ * @interface SheetDataRequestFilter
  */
-export interface ViewQueryRequestFilter {
+export interface SheetDataRequestFilter {
     /**
      * 
      * @type {LogicalOperator}
-     * @memberof ViewQueryRequestFilter
+     * @memberof SheetDataRequestFilter
      */
     logicalOperator?: LogicalOperator | null;
     /**
      * Child filter nodes (for group nodes)
      * @type {Array<Filter>}
-     * @memberof ViewQueryRequestFilter
+     * @memberof SheetDataRequestFilter
      */
     conditions?: Array<Filter> | null;
     /**
      * Column reference (for leaf nodes). For view filters, must be in alias.column format (e.g., 's1.age'). For sheet data filters, must be a bare column name (e.g., 'age').
      * @type {string}
-     * @memberof ViewQueryRequestFilter
+     * @memberof SheetDataRequestFilter
      */
     column?: string | null;
     /**
      * 
      * @type {FilterOperator}
-     * @memberof ViewQueryRequestFilter
+     * @memberof SheetDataRequestFilter
      */
     operator?: FilterOperator | null;
     /**
      * Values for the filter. Single-element list for comparison operators (EQUALS, GREATER_THAN, etc.), multi-element for IN/NOT_IN. Null or empty for IS_NULL/IS_NOT_NULL.
      * @type {Array<object>}
-     * @memberof ViewQueryRequestFilter
+     * @memberof SheetDataRequestFilter
      */
     values?: Array<object> | null;
 }
 
 /**
- * Check if a given object implements the ViewQueryRequestFilter interface.
+ * Check if a given object implements the SheetDataRequestFilter interface.
  */
-export function instanceOfViewQueryRequestFilter(value: object): boolean {
+export function instanceOfSheetDataRequestFilter(value: object): boolean {
     let isInstance = true;
 
     return isInstance;
 }
 
-export function ViewQueryRequestFilterFromJSON(json: any): ViewQueryRequestFilter {
-    return ViewQueryRequestFilterFromJSONTyped(json, false);
+export function SheetDataRequestFilterFromJSON(json: any): SheetDataRequestFilter {
+    return SheetDataRequestFilterFromJSONTyped(json, false);
 }
 
-export function ViewQueryRequestFilterFromJSONTyped(json: any, ignoreDiscriminator: boolean): ViewQueryRequestFilter {
+export function SheetDataRequestFilterFromJSONTyped(json: any, ignoreDiscriminator: boolean): SheetDataRequestFilter {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -97,7 +97,7 @@ export function ViewQueryRequestFilterFromJSONTyped(json: any, ignoreDiscriminat
     };
 }
 
-export function ViewQueryRequestFilterToJSON(value?: ViewQueryRequestFilter | null): any {
+export function SheetDataRequestFilterToJSON(value?: SheetDataRequestFilter | null): any {
     if (value === undefined) {
         return undefined;
     }

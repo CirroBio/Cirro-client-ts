@@ -13,7 +13,7 @@
  */
 
 
-export const BASE_PATH = "/api".replace(/\/+$/, "");
+export const BASE_PATH = "https://dev.cirro.bio/api".replace(/\/+$/, "");
 
 export interface ConfigurationParameters {
     basePath?: string; // override base path

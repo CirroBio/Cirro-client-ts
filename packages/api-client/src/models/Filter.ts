@@ -13,12 +13,6 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import type { Filter } from './Filter';
-import {
-    FilterFromJSON,
-    FilterFromJSONTyped,
-    FilterToJSON,
-} from './Filter';
 import type { FilterOperator } from './FilterOperator';
 import {
     FilterOperatorFromJSON,
@@ -33,57 +27,57 @@ import {
 } from './LogicalOperator';
 
 /**
- * Filter conditions to apply
+ * A filter node: either a group (with logicalOperator and conditions) or a leaf condition (with column, operator, and values)
  * @export
- * @interface ViewQueryRequestFilter
+ * @interface Filter
  */
-export interface ViewQueryRequestFilter {
+export interface Filter {
     /**
      * 
      * @type {LogicalOperator}
-     * @memberof ViewQueryRequestFilter
+     * @memberof Filter
      */
     logicalOperator?: LogicalOperator | null;
     /**
      * Child filter nodes (for group nodes)
      * @type {Array<Filter>}
-     * @memberof ViewQueryRequestFilter
+     * @memberof Filter
      */
     conditions?: Array<Filter> | null;
     /**
      * Column reference (for leaf nodes). For view filters, must be in alias.column format (e.g., 's1.age'). For sheet data filters, must be a bare column name (e.g., 'age').
      * @type {string}
-     * @memberof ViewQueryRequestFilter
+     * @memberof Filter
      */
     column?: string | null;
     /**
      * 
      * @type {FilterOperator}
-     * @memberof ViewQueryRequestFilter
+     * @memberof Filter
      */
     operator?: FilterOperator | null;
     /**
      * Values for the filter. Single-element list for comparison operators (EQUALS, GREATER_THAN, etc.), multi-element for IN/NOT_IN. Null or empty for IS_NULL/IS_NOT_NULL.
      * @type {Array<object>}
-     * @memberof ViewQueryRequestFilter
+     * @memberof Filter
      */
     values?: Array<object> | null;
 }
 
 /**
- * Check if a given object implements the ViewQueryRequestFilter interface.
+ * Check if a given object implements the Filter interface.
  */
-export function instanceOfViewQueryRequestFilter(value: object): boolean {
+export function instanceOfFilter(value: object): boolean {
     let isInstance = true;
 
     return isInstance;
 }
 
-export function ViewQueryRequestFilterFromJSON(json: any): ViewQueryRequestFilter {
-    return ViewQueryRequestFilterFromJSONTyped(json, false);
+export function FilterFromJSON(json: any): Filter {
+    return FilterFromJSONTyped(json, false);
 }
 
-export function ViewQueryRequestFilterFromJSONTyped(json: any, ignoreDiscriminator: boolean): ViewQueryRequestFilter {
+export function FilterFromJSONTyped(json: any, ignoreDiscriminator: boolean): Filter {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -97,7 +91,7 @@ export function ViewQueryRequestFilterFromJSONTyped(json: any, ignoreDiscriminat
     };
 }
 
-export function ViewQueryRequestFilterToJSON(value?: ViewQueryRequestFilter | null): any {
+export function FilterToJSON(value?: Filter | null): any {
     if (value === undefined) {
         return undefined;
     }

@@ -1400,7 +1400,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@cirrobio/api-client@npm:^0.13.0, @cirrobio/api-client@workspace:packages/api-client":
+"@cirrobio/api-client@npm:^0.13.0":
+  version: 0.13.0
+  resolution: "@cirrobio/api-client@npm:0.13.0"
+  checksum: 10c0/ac362202893f1a04c5154e3b06c9627570bb5f3c445334b930e3b6949e4f83b525b7a64002895f31d21da88db8691ff7e5ae0f6fcddb2e199e64991a7e4b2a40
+  languageName: node
+  linkType: hard
+
+"@cirrobio/api-client@workspace:packages/api-client":
   version: 0.0.0-use.local
   resolution: "@cirrobio/api-client@workspace:packages/api-client"
   dependencies:
@@ -1469,7 +1476,21 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@cirrobio/sdk@npm:^0.13.0, @cirrobio/sdk@workspace:*, @cirrobio/sdk@workspace:packages/sdk":
+"@cirrobio/sdk@npm:^0.13.0":
+  version: 0.13.0
+  resolution: "@cirrobio/sdk@npm:0.13.0"
+  dependencies:
+    "@aws-sdk/client-s3": "npm:^3.995.0"
+    "@aws-sdk/lib-storage": "npm:^3.995.0"
+    "@aws-sdk/s3-request-presigner": "npm:^3.995.0"
+    uuid: "npm:^11.1.0"
+  peerDependencies:
+    "@cirrobio/api-client": ^0.13.0
+  checksum: 10c0/a4086905fe0d26779cf5c10d0313367bbef36528a4574dbf41c39f99dc28074fa49166d82189739f8222e615a627cbe4b8b14ec013a6198b214e1180f5354ce0
+  languageName: node
+  linkType: hard
+
+"@cirrobio/sdk@workspace:*, @cirrobio/sdk@workspace:packages/sdk":
   version: 0.0.0-use.local
   resolution: "@cirrobio/sdk@workspace:packages/sdk"
   dependencies:
@@ -1478,7 +1499,7 @@ __metadata:
     "@aws-sdk/s3-request-presigner": "npm:^3.995.0"
     uuid: "npm:^11.1.0"
   peerDependencies:
-    "@cirrobio/api-client": ^0.13.0
+    "@cirrobio/api-client": ^0.14.0
   languageName: unknown
   linkType: soft
 
