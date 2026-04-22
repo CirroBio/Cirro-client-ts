@@ -19,6 +19,12 @@ import {
     AppClientTypeFromJSONTyped,
     AppClientTypeToJSON,
 } from './AppClientType';
+import type { AppPublisherType } from './AppPublisherType';
+import {
+    AppPublisherTypeFromJSON,
+    AppPublisherTypeFromJSONTyped,
+    AppPublisherTypeToJSON,
+} from './AppPublisherType';
 import type { AppType } from './AppType';
 import {
     AppTypeFromJSON,
@@ -64,6 +70,30 @@ export interface AppRegistration {
     description: string;
     /**
      * 
+     * @type {string}
+     * @memberof AppRegistration
+     */
+    logoUrl: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof AppRegistration
+     */
+    appUrl: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof AppRegistration
+     */
+    publisher: string;
+    /**
+     * 
+     * @type {AppPublisherType}
+     * @memberof AppRegistration
+     */
+    publisherType: AppPublisherType;
+    /**
+     * 
      * @type {PrincipalType}
      * @memberof AppRegistration
      */
@@ -100,6 +130,18 @@ export interface AppRegistration {
     requiresAdminConsent: boolean;
     /**
      * 
+     * @type {boolean}
+     * @memberof AppRegistration
+     */
+    discoveryEnabled: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof AppRegistration
+     */
+    createdFromTemplate: boolean;
+    /**
+     * 
      * @type {Date}
      * @memberof AppRegistration
      */
@@ -127,11 +169,17 @@ export function instanceOfAppRegistration(value: object): boolean {
     isInstance = isInstance && "clientId" in value;
     isInstance = isInstance && "name" in value;
     isInstance = isInstance && "description" in value;
+    isInstance = isInstance && "logoUrl" in value;
+    isInstance = isInstance && "appUrl" in value;
+    isInstance = isInstance && "publisher" in value;
+    isInstance = isInstance && "publisherType" in value;
     isInstance = isInstance && "principalType" in value;
     isInstance = isInstance && "type" in value;
     isInstance = isInstance && "clientType" in value;
     isInstance = isInstance && "isArchived" in value;
     isInstance = isInstance && "requiresAdminConsent" in value;
+    isInstance = isInstance && "discoveryEnabled" in value;
+    isInstance = isInstance && "createdFromTemplate" in value;
     isInstance = isInstance && "updatedAt" in value;
     isInstance = isInstance && "createdAt" in value;
     isInstance = isInstance && "createdBy" in value;
@@ -153,12 +201,18 @@ export function AppRegistrationFromJSONTyped(json: any, ignoreDiscriminator: boo
         'clientId': json['clientId'],
         'name': json['name'],
         'description': json['description'],
+        'logoUrl': json['logoUrl'],
+        'appUrl': json['appUrl'],
+        'publisher': json['publisher'],
+        'publisherType': AppPublisherTypeFromJSON(json['publisherType']),
         'principalType': PrincipalTypeFromJSON(json['principalType']),
         'type': AppTypeFromJSON(json['type']),
         'clientType': AppClientTypeFromJSON(json['clientType']),
         'secretExpiresAt': !exists(json, 'secretExpiresAt') ? undefined : (json['secretExpiresAt'] === null ? null : new Date(json['secretExpiresAt'])),
         'isArchived': json['isArchived'],
         'requiresAdminConsent': json['requiresAdminConsent'],
+        'discoveryEnabled': json['discoveryEnabled'],
+        'createdFromTemplate': json['createdFromTemplate'],
         'updatedAt': (new Date(json['updatedAt'])),
         'createdAt': (new Date(json['createdAt'])),
         'createdBy': json['createdBy'],
@@ -178,12 +232,18 @@ export function AppRegistrationToJSON(value?: AppRegistration | null): any {
         'clientId': value.clientId,
         'name': value.name,
         'description': value.description,
+        'logoUrl': value.logoUrl,
+        'appUrl': value.appUrl,
+        'publisher': value.publisher,
+        'publisherType': AppPublisherTypeToJSON(value.publisherType),
         'principalType': PrincipalTypeToJSON(value.principalType),
         'type': AppTypeToJSON(value.type),
         'clientType': AppClientTypeToJSON(value.clientType),
         'secretExpiresAt': value.secretExpiresAt === undefined ? undefined : (value.secretExpiresAt === null ? null : value.secretExpiresAt.toISOString()),
         'isArchived': value.isArchived,
         'requiresAdminConsent': value.requiresAdminConsent,
+        'discoveryEnabled': value.discoveryEnabled,
+        'createdFromTemplate': value.createdFromTemplate,
         'updatedAt': (value.updatedAt.toISOString()),
         'createdAt': (value.createdAt.toISOString()),
         'createdBy': value.createdBy,

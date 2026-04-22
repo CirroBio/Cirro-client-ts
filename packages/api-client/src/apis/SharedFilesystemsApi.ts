@@ -28,26 +28,26 @@ import {
     SharedFilesystemInputToJSON,
 } from '../models/index';
 
-export interface DeleteRequest {
-    projectId: string;
-    filesystemId: string;
-}
-
-export interface CreateRequest {
+export interface CreateSharedFilesystemRequest {
     projectId: string;
     sharedFilesystemInput: SharedFilesystemInput;
 }
 
-export interface GetRequest {
+export interface DeleteSharedFilesystemRequest {
     projectId: string;
     filesystemId: string;
 }
 
-export interface ListRequest {
+export interface GetSharedFilesystemRequest {
+    projectId: string;
+    filesystemId: string;
+}
+
+export interface ListSharedFilesystemsRequest {
     projectId: string;
 }
 
-export interface UpdateRequest {
+export interface UpdateSharedFilesystemRequest {
     projectId: string;
     filesystemId: string;
     sharedFilesystemInput: SharedFilesystemInput;
@@ -59,56 +59,15 @@ export interface UpdateRequest {
 export class SharedFilesystemsApi extends runtime.BaseAPI {
 
     /**
-     * Delete a shared filesystem
-     */
-    async _deleteRaw(requestParameters: DeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
-            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling _delete.');
-        }
-
-        if (requestParameters.filesystemId === null || requestParameters.filesystemId === undefined) {
-            throw new runtime.RequiredError('filesystemId','Required parameter requestParameters.filesystemId was null or undefined when calling _delete.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("accessToken", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-        const response = await this.request({
-            path: `/projects/{projectId}/shared-filesystems/{filesystemId}`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))).replace(`{${"filesystemId"}}`, encodeURIComponent(String(requestParameters.filesystemId))),
-            method: 'DELETE',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.VoidApiResponse(response);
-    }
-
-    /**
-     * Delete a shared filesystem
-     */
-    async _delete(requestParameters: DeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this._deleteRaw(requestParameters, initOverrides);
-    }
-
-    /**
      * Create a shared filesystem
      */
-    async createRaw(requestParameters: CreateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateResponse>> {
+    async createSharedFilesystemRaw(requestParameters: CreateSharedFilesystemRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateResponse>> {
         if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
-            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling create.');
+            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling createSharedFilesystem.');
         }
 
         if (requestParameters.sharedFilesystemInput === null || requestParameters.sharedFilesystemInput === undefined) {
-            throw new runtime.RequiredError('sharedFilesystemInput','Required parameter requestParameters.sharedFilesystemInput was null or undefined when calling create.');
+            throw new runtime.RequiredError('sharedFilesystemInput','Required parameter requestParameters.sharedFilesystemInput was null or undefined when calling createSharedFilesystem.');
         }
 
         const queryParameters: any = {};
@@ -139,21 +98,62 @@ export class SharedFilesystemsApi extends runtime.BaseAPI {
     /**
      * Create a shared filesystem
      */
-    async create(requestParameters: CreateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateResponse> {
-        const response = await this.createRaw(requestParameters, initOverrides);
+    async createSharedFilesystem(requestParameters: CreateSharedFilesystemRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateResponse> {
+        const response = await this.createSharedFilesystemRaw(requestParameters, initOverrides);
         return await response.value();
+    }
+
+    /**
+     * Delete a shared filesystem
+     */
+    async deleteSharedFilesystemRaw(requestParameters: DeleteSharedFilesystemRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
+            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling deleteSharedFilesystem.');
+        }
+
+        if (requestParameters.filesystemId === null || requestParameters.filesystemId === undefined) {
+            throw new runtime.RequiredError('filesystemId','Required parameter requestParameters.filesystemId was null or undefined when calling deleteSharedFilesystem.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/projects/{projectId}/shared-filesystems/{filesystemId}`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))).replace(`{${"filesystemId"}}`, encodeURIComponent(String(requestParameters.filesystemId))),
+            method: 'DELETE',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Delete a shared filesystem
+     */
+    async deleteSharedFilesystem(requestParameters: DeleteSharedFilesystemRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.deleteSharedFilesystemRaw(requestParameters, initOverrides);
     }
 
     /**
      * Get shared filesystem details
      */
-    async getRaw(requestParameters: GetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SharedFilesystem>> {
+    async getSharedFilesystemRaw(requestParameters: GetSharedFilesystemRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SharedFilesystem>> {
         if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
-            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling get.');
+            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling getSharedFilesystem.');
         }
 
         if (requestParameters.filesystemId === null || requestParameters.filesystemId === undefined) {
-            throw new runtime.RequiredError('filesystemId','Required parameter requestParameters.filesystemId was null or undefined when calling get.');
+            throw new runtime.RequiredError('filesystemId','Required parameter requestParameters.filesystemId was null or undefined when calling getSharedFilesystem.');
         }
 
         const queryParameters: any = {};
@@ -181,17 +181,17 @@ export class SharedFilesystemsApi extends runtime.BaseAPI {
     /**
      * Get shared filesystem details
      */
-    async get(requestParameters: GetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SharedFilesystem> {
-        const response = await this.getRaw(requestParameters, initOverrides);
+    async getSharedFilesystem(requestParameters: GetSharedFilesystemRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SharedFilesystem> {
+        const response = await this.getSharedFilesystemRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      * List shared filesystems in a project
      */
-    async listRaw(requestParameters: ListRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<SharedFilesystem>>> {
+    async listSharedFilesystemsRaw(requestParameters: ListSharedFilesystemsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<SharedFilesystem>>> {
         if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
-            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling list.');
+            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling listSharedFilesystems.');
         }
 
         const queryParameters: any = {};
@@ -219,25 +219,25 @@ export class SharedFilesystemsApi extends runtime.BaseAPI {
     /**
      * List shared filesystems in a project
      */
-    async list(requestParameters: ListRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<SharedFilesystem>> {
-        const response = await this.listRaw(requestParameters, initOverrides);
+    async listSharedFilesystems(requestParameters: ListSharedFilesystemsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<SharedFilesystem>> {
+        const response = await this.listSharedFilesystemsRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      * Update a shared filesystem
      */
-    async updateRaw(requestParameters: UpdateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SharedFilesystem>> {
+    async updateSharedFilesystemRaw(requestParameters: UpdateSharedFilesystemRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SharedFilesystem>> {
         if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
-            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling update.');
+            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling updateSharedFilesystem.');
         }
 
         if (requestParameters.filesystemId === null || requestParameters.filesystemId === undefined) {
-            throw new runtime.RequiredError('filesystemId','Required parameter requestParameters.filesystemId was null or undefined when calling update.');
+            throw new runtime.RequiredError('filesystemId','Required parameter requestParameters.filesystemId was null or undefined when calling updateSharedFilesystem.');
         }
 
         if (requestParameters.sharedFilesystemInput === null || requestParameters.sharedFilesystemInput === undefined) {
-            throw new runtime.RequiredError('sharedFilesystemInput','Required parameter requestParameters.sharedFilesystemInput was null or undefined when calling update.');
+            throw new runtime.RequiredError('sharedFilesystemInput','Required parameter requestParameters.sharedFilesystemInput was null or undefined when calling updateSharedFilesystem.');
         }
 
         const queryParameters: any = {};
@@ -268,8 +268,8 @@ export class SharedFilesystemsApi extends runtime.BaseAPI {
     /**
      * Update a shared filesystem
      */
-    async update(requestParameters: UpdateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SharedFilesystem> {
-        const response = await this.updateRaw(requestParameters, initOverrides);
+    async updateSharedFilesystem(requestParameters: UpdateSharedFilesystemRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SharedFilesystem> {
+        const response = await this.updateSharedFilesystemRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

@@ -18,6 +18,7 @@ import type {
   CreateResponse,
   CreateSheetRequest,
   Sheet,
+  SheetDataRequest,
   SheetDetail,
   SheetJob,
   SheetQueryResponse,
@@ -33,6 +34,8 @@ import {
     CreateSheetRequestToJSON,
     SheetFromJSON,
     SheetToJSON,
+    SheetDataRequestFromJSON,
+    SheetDataRequestToJSON,
     SheetDetailFromJSON,
     SheetDetailToJSON,
     SheetJobFromJSON,
@@ -80,6 +83,12 @@ export interface GetSheetDataRequest {
 
 export interface GetSheetsRequest {
     projectId: string;
+}
+
+export interface QuerySheetDataRequest {
+    projectId: string;
+    sheetId: string;
+    sheetDataRequest: SheetDataRequest;
 }
 
 export interface RefreshViewRequest {
@@ -201,7 +210,7 @@ export class SheetsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Retrieves ingest jobs for a sheet
+     * Retrieves jobs for a sheet
      * List jobs
      */
     async getJobsRaw(requestParameters: GetJobsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<SheetJob>>> {
@@ -236,7 +245,7 @@ export class SheetsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Retrieves ingest jobs for a sheet
+     * Retrieves jobs for a sheet
      * List jobs
      */
     async getJobs(requestParameters: GetJobsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<SheetJob>> {
@@ -385,6 +394,57 @@ export class SheetsApi extends runtime.BaseAPI {
      */
     async getSheets(requestParameters: GetSheetsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<Sheet>> {
         const response = await this.getSheetsRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Returns paginated rows from a sheet. The first column is always _row_id, which uniquely identifies each row and is required for row updates via PUT. This is essentially a GET request disguised as a POST so we can pass in a body.
+     * Query sheet data
+     */
+    async querySheetDataRaw(requestParameters: QuerySheetDataRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SheetQueryResponse>> {
+        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
+            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling querySheetData.');
+        }
+
+        if (requestParameters.sheetId === null || requestParameters.sheetId === undefined) {
+            throw new runtime.RequiredError('sheetId','Required parameter requestParameters.sheetId was null or undefined when calling querySheetData.');
+        }
+
+        if (requestParameters.sheetDataRequest === null || requestParameters.sheetDataRequest === undefined) {
+            throw new runtime.RequiredError('sheetDataRequest','Required parameter requestParameters.sheetDataRequest was null or undefined when calling querySheetData.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/projects/{projectId}/sheets/{sheetId}/data/query`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))).replace(`{${"sheetId"}}`, encodeURIComponent(String(requestParameters.sheetId))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: SheetDataRequestToJSON(requestParameters.sheetDataRequest),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SheetQueryResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Returns paginated rows from a sheet. The first column is always _row_id, which uniquely identifies each row and is required for row updates via PUT. This is essentially a GET request disguised as a POST so we can pass in a body.
+     * Query sheet data
+     */
+    async querySheetData(requestParameters: QuerySheetDataRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SheetQueryResponse> {
+        const response = await this.querySheetDataRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

@@ -19,6 +19,12 @@ import {
     FileDefFromJSONTyped,
     FileDefToJSON,
 } from './FileDef';
+import type { SourceColumn } from './SourceColumn';
+import {
+    SourceColumnFromJSON,
+    SourceColumnFromJSONTyped,
+    SourceColumnToJSON,
+} from './SourceColumn';
 
 /**
  * 
@@ -32,6 +38,12 @@ export interface TriggerIngestRequest {
      * @memberof TriggerIngestRequest
      */
     fileDef: FileDef;
+    /**
+     * List of file column to sheet column mapping. If null, requires the column headers to match the sheet column names.
+     * @type {Array<SourceColumn>}
+     * @memberof TriggerIngestRequest
+     */
+    sourceColumns?: Array<SourceColumn> | null;
 }
 
 /**
@@ -55,6 +67,7 @@ export function TriggerIngestRequestFromJSONTyped(json: any, ignoreDiscriminator
     return {
         
         'fileDef': FileDefFromJSON(json['fileDef']),
+        'sourceColumns': !exists(json, 'sourceColumns') ? undefined : (json['sourceColumns'] === null ? null : (json['sourceColumns'] as Array<any>).map(SourceColumnFromJSON)),
     };
 }
 
@@ -68,6 +81,7 @@ export function TriggerIngestRequestToJSON(value?: TriggerIngestRequest | null):
     return {
         
         'fileDef': FileDefToJSON(value.fileDef),
+        'sourceColumns': value.sourceColumns === undefined ? undefined : (value.sourceColumns === null ? null : (value.sourceColumns as Array<any>).map(SourceColumnToJSON)),
     };
 }
 
