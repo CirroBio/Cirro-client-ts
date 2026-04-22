@@ -190,6 +190,12 @@ export interface AppRegistrationDetail {
     createdFromTemplate: boolean;
     /**
      * 
+     * @type {string}
+     * @memberof AppRegistrationDetail
+     */
+    templateId?: string | null;
+    /**
+     * 
      * @type {Date}
      * @memberof AppRegistrationDetail
      */
@@ -281,6 +287,7 @@ export function AppRegistrationDetailFromJSONTyped(json: any, ignoreDiscriminato
         'requiresAdminConsent': json['requiresAdminConsent'],
         'discoveryEnabled': json['discoveryEnabled'],
         'createdFromTemplate': json['createdFromTemplate'],
+        'templateId': !exists(json, 'templateId') ? undefined : json['templateId'],
         'approvedAt': !exists(json, 'approvedAt') ? undefined : (json['approvedAt'] === null ? null : new Date(json['approvedAt'])),
         'approvedBy': !exists(json, 'approvedBy') ? undefined : json['approvedBy'],
         'createdAt': (new Date(json['createdAt'])),
@@ -320,6 +327,7 @@ export function AppRegistrationDetailToJSON(value?: AppRegistrationDetail | null
         'requiresAdminConsent': value.requiresAdminConsent,
         'discoveryEnabled': value.discoveryEnabled,
         'createdFromTemplate': value.createdFromTemplate,
+        'templateId': value.templateId,
         'approvedAt': value.approvedAt === undefined ? undefined : (value.approvedAt === null ? null : value.approvedAt.toISOString()),
         'approvedBy': value.approvedBy,
         'createdAt': (value.createdAt.toISOString()),
