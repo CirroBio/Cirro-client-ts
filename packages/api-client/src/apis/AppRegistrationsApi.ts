@@ -19,6 +19,7 @@ import type {
   AppRegistrationDetail,
   AppRegistrationInput,
   AppRegistrationSecretResponse,
+  AppRegistrationTemplate,
   PaginatedResponseAppRegistrationDto,
 } from '../models/index';
 import {
@@ -30,6 +31,8 @@ import {
     AppRegistrationInputToJSON,
     AppRegistrationSecretResponseFromJSON,
     AppRegistrationSecretResponseToJSON,
+    AppRegistrationTemplateFromJSON,
+    AppRegistrationTemplateToJSON,
     PaginatedResponseAppRegistrationDtoFromJSON,
     PaginatedResponseAppRegistrationDtoToJSON,
 } from '../models/index';
@@ -227,6 +230,42 @@ export class AppRegistrationsApi extends runtime.BaseAPI {
      */
     async getAppRegistration(requestParameters: GetAppRegistrationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AppRegistrationDetail> {
         const response = await this.getAppRegistrationRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Lists pre-defined application templates to register.
+     * List app registration templates
+     */
+    async listAppRegistrationTemplatesRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<AppRegistrationTemplate>>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+        const response = await this.request({
+            path: `/app-registration-templates`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(AppRegistrationTemplateFromJSON));
+    }
+
+    /**
+     * Lists pre-defined application templates to register.
+     * List app registration templates
+     */
+    async listAppRegistrationTemplates(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<AppRegistrationTemplate>> {
+        const response = await this.listAppRegistrationTemplatesRaw(initOverrides);
         return await response.value();
     }
 

@@ -129,6 +129,12 @@ export interface SheetDetail {
      */
     lastRefreshedAt?: Date | null;
     /**
+     * S3 upload path for files to be ingested into this sheet
+     * @type {string}
+     * @memberof SheetDetail
+     */
+    stagingUploadPath?: string;
+    /**
      * 
      * @type {string}
      * @memberof SheetDetail
@@ -199,6 +205,7 @@ export function SheetDetailFromJSONTyped(json: any, ignoreDiscriminator: boolean
         'auditReadAccess': json['auditReadAccess'],
         'viewDefinition': !exists(json, 'viewDefinition') ? undefined : SheetDetailViewDefinitionFromJSON(json['viewDefinition']),
         'lastRefreshedAt': !exists(json, 'lastRefreshedAt') ? undefined : (json['lastRefreshedAt'] === null ? null : new Date(json['lastRefreshedAt'])),
+        'stagingUploadPath': !exists(json, 'stagingUploadPath') ? undefined : json['stagingUploadPath'],
         'createdBy': json['createdBy'],
         'createdAt': (new Date(json['createdAt'])),
         'updatedAt': (new Date(json['updatedAt'])),
@@ -228,6 +235,7 @@ export function SheetDetailToJSON(value?: SheetDetail | null): any {
         'auditReadAccess': value.auditReadAccess,
         'viewDefinition': SheetDetailViewDefinitionToJSON(value.viewDefinition),
         'lastRefreshedAt': value.lastRefreshedAt === undefined ? undefined : (value.lastRefreshedAt === null ? null : value.lastRefreshedAt.toISOString()),
+        'stagingUploadPath': value.stagingUploadPath,
         'createdBy': value.createdBy,
         'createdAt': (value.createdAt.toISOString()),
         'updatedAt': (value.updatedAt.toISOString()),

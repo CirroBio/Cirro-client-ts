@@ -57,6 +57,24 @@ export interface AppRegistrationInput {
      */
     description: string;
     /**
+     * Set a logo for the app, only available for administrators
+     * @type {string}
+     * @memberof AppRegistrationInput
+     */
+    logoUrl?: string | null;
+    /**
+     * Set a link for more information on the app
+     * @type {string}
+     * @memberof AppRegistrationInput
+     */
+    appUrl?: string | null;
+    /**
+     * Set a publisher display name, only available for administrators
+     * @type {string}
+     * @memberof AppRegistrationInput
+     */
+    publisher?: string | null;
+    /**
      * 
      * @type {PrincipalType}
      * @memberof AppRegistrationInput
@@ -98,6 +116,18 @@ export interface AppRegistrationInput {
      * @memberof AppRegistrationInput
      */
     globalPermissions: Array<Permission>;
+    /**
+     * Enables dynamic client registration to discover this app (useful for MCPs), only available for administrators
+     * @type {boolean}
+     * @memberof AppRegistrationInput
+     */
+    discoveryEnabled?: boolean | null;
+    /**
+     * ID of the app registration template
+     * @type {string}
+     * @memberof AppRegistrationInput
+     */
+    templateId?: string | null;
 }
 
 /**
@@ -129,6 +159,9 @@ export function AppRegistrationInputFromJSONTyped(json: any, ignoreDiscriminator
         
         'name': json['name'],
         'description': json['description'],
+        'logoUrl': !exists(json, 'logoUrl') ? undefined : json['logoUrl'],
+        'appUrl': !exists(json, 'appUrl') ? undefined : json['appUrl'],
+        'publisher': !exists(json, 'publisher') ? undefined : json['publisher'],
         'principalType': PrincipalTypeFromJSON(json['principalType']),
         'clientType': AppClientTypeFromJSON(json['clientType']),
         'allowedIps': json['allowedIps'],
@@ -136,6 +169,8 @@ export function AppRegistrationInputFromJSONTyped(json: any, ignoreDiscriminator
         'secretExpiresAt': !exists(json, 'secretExpiresAt') ? undefined : (json['secretExpiresAt'] === null ? null : new Date(json['secretExpiresAt'])),
         'projectPermissions': ((json['projectPermissions'] as Array<any>).map(ProjectPermissionSetFromJSON)),
         'globalPermissions': ((json['globalPermissions'] as Array<any>).map(PermissionFromJSON)),
+        'discoveryEnabled': !exists(json, 'discoveryEnabled') ? undefined : json['discoveryEnabled'],
+        'templateId': !exists(json, 'templateId') ? undefined : json['templateId'],
     };
 }
 
@@ -150,6 +185,9 @@ export function AppRegistrationInputToJSON(value?: AppRegistrationInput | null):
         
         'name': value.name,
         'description': value.description,
+        'logoUrl': value.logoUrl,
+        'appUrl': value.appUrl,
+        'publisher': value.publisher,
         'principalType': PrincipalTypeToJSON(value.principalType),
         'clientType': AppClientTypeToJSON(value.clientType),
         'allowedIps': value.allowedIps,
@@ -157,6 +195,8 @@ export function AppRegistrationInputToJSON(value?: AppRegistrationInput | null):
         'secretExpiresAt': value.secretExpiresAt === undefined ? undefined : (value.secretExpiresAt === null ? null : value.secretExpiresAt.toISOString()),
         'projectPermissions': ((value.projectPermissions as Array<any>).map(ProjectPermissionSetToJSON)),
         'globalPermissions': ((value.globalPermissions as Array<any>).map(PermissionToJSON)),
+        'discoveryEnabled': value.discoveryEnabled,
+        'templateId': value.templateId,
     };
 }
 

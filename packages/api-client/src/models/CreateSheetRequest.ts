@@ -43,6 +43,12 @@ import {
     SheetTypeFromJSONTyped,
     SheetTypeToJSON,
 } from './SheetType';
+import type { SourceColumn } from './SourceColumn';
+import {
+    SourceColumnFromJSON,
+    SourceColumnFromJSONTyped,
+    SourceColumnToJSON,
+} from './SourceColumn';
 
 /**
  * 
@@ -105,6 +111,12 @@ export interface CreateSheetRequest {
      */
     fileDef?: CreateSheetRequestFileDef | null;
     /**
+     * Only valid when fileDef is provided. Maps file columns to sheet columns. If null, requires the column headers to match the sheet column names.
+     * @type {Array<SourceColumn>}
+     * @memberof CreateSheetRequest
+     */
+    sourceColumns?: Array<SourceColumn> | null;
+    /**
      * 
      * @type {CreateSheetRequestViewDefinition}
      * @memberof CreateSheetRequest
@@ -144,6 +156,7 @@ export function CreateSheetRequestFromJSONTyped(json: any, ignoreDiscriminator: 
         'sheetCreationMode': !exists(json, 'sheetCreationMode') ? undefined : SheetCreationModeFromJSON(json['sheetCreationMode']),
         'columns': !exists(json, 'columns') ? undefined : (json['columns'] === null ? null : (json['columns'] as Array<any>).map(ColumnDefFromJSON)),
         'fileDef': !exists(json, 'fileDef') ? undefined : CreateSheetRequestFileDefFromJSON(json['fileDef']),
+        'sourceColumns': !exists(json, 'sourceColumns') ? undefined : (json['sourceColumns'] === null ? null : (json['sourceColumns'] as Array<any>).map(SourceColumnFromJSON)),
         'viewDefinition': !exists(json, 'viewDefinition') ? undefined : CreateSheetRequestViewDefinitionFromJSON(json['viewDefinition']),
     };
 }
@@ -166,6 +179,7 @@ export function CreateSheetRequestToJSON(value?: CreateSheetRequest | null): any
         'sheetCreationMode': SheetCreationModeToJSON(value.sheetCreationMode),
         'columns': value.columns === undefined ? undefined : (value.columns === null ? null : (value.columns as Array<any>).map(ColumnDefToJSON)),
         'fileDef': CreateSheetRequestFileDefToJSON(value.fileDef),
+        'sourceColumns': value.sourceColumns === undefined ? undefined : (value.sourceColumns === null ? null : (value.sourceColumns as Array<any>).map(SourceColumnToJSON)),
         'viewDefinition': CreateSheetRequestViewDefinitionToJSON(value.viewDefinition),
     };
 }

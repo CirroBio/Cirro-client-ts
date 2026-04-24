@@ -56,6 +56,12 @@ export interface ColumnDef {
      * @memberof ColumnDef
      */
     foreignKey?: ForeignKeyRef | null;
+    /**
+     * Whether the column is required to be non-null.
+     * @type {boolean}
+     * @memberof ColumnDef
+     */
+    required?: boolean;
 }
 
 /**
@@ -84,6 +90,7 @@ export function ColumnDefFromJSONTyped(json: any, ignoreDiscriminator: boolean):
         'dataType': ColumnDataTypeFromJSON(json['dataType']),
         'description': json['description'],
         'foreignKey': !exists(json, 'foreignKey') ? undefined : ForeignKeyRefFromJSON(json['foreignKey']),
+        'required': !exists(json, 'required') ? undefined : json['required'],
     };
 }
 
@@ -100,6 +107,7 @@ export function ColumnDefToJSON(value?: ColumnDef | null): any {
         'dataType': ColumnDataTypeToJSON(value.dataType),
         'description': value.description,
         'foreignKey': ForeignKeyRefToJSON(value.foreignKey),
+        'required': value.required,
     };
 }
 
