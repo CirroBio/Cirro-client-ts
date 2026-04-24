@@ -60,6 +60,12 @@ export interface FeatureFlags {
      * @type {boolean}
      * @memberof FeatureFlags
      */
+    machineAuthEnabled: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof FeatureFlags
+     */
     sheetsEnabled: boolean;
     /**
      * 
@@ -92,6 +98,7 @@ export function instanceOfFeatureFlags(value: object): boolean {
     isInstance = isInstance && "workspacesEnabled" in value;
     isInstance = isInstance && "driveEnabled" in value;
     isInstance = isInstance && "appRegistrationsEnabled" in value;
+    isInstance = isInstance && "machineAuthEnabled" in value;
     isInstance = isInstance && "sheetsEnabled" in value;
     isInstance = isInstance && "aiEnabled" in value;
     isInstance = isInstance && "sharedFilesystemsEnabled" in value;
@@ -116,6 +123,7 @@ export function FeatureFlagsFromJSONTyped(json: any, ignoreDiscriminator: boolea
         'workspacesEnabled': json['workspacesEnabled'],
         'driveEnabled': json['driveEnabled'],
         'appRegistrationsEnabled': json['appRegistrationsEnabled'],
+        'machineAuthEnabled': json['machineAuthEnabled'],
         'sheetsEnabled': json['sheetsEnabled'],
         'aiEnabled': json['aiEnabled'],
         'sharedFilesystemsEnabled': json['sharedFilesystemsEnabled'],
@@ -138,6 +146,7 @@ export function FeatureFlagsToJSON(value?: FeatureFlags | null): any {
         'workspacesEnabled': value.workspacesEnabled,
         'driveEnabled': value.driveEnabled,
         'appRegistrationsEnabled': value.appRegistrationsEnabled,
+        'machineAuthEnabled': value.machineAuthEnabled,
         'sheetsEnabled': value.sheetsEnabled,
         'aiEnabled': value.aiEnabled,
         'sharedFilesystemsEnabled': value.sharedFilesystemsEnabled,
