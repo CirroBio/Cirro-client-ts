@@ -13,6 +13,13 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { Tag } from './Tag';
+import {
+    TagFromJSON,
+    TagFromJSONTyped,
+    TagToJSON,
+} from './Tag';
+
 /**
  * 
  * @export
@@ -79,6 +86,12 @@ export interface RunAnalysisRequest {
      * @memberof RunAnalysisRequest
      */
     computeEnvironmentId?: string | null;
+    /**
+     * List of tags to apply to the dataset
+     * @type {Array<Tag>}
+     * @memberof RunAnalysisRequest
+     */
+    tags?: Array<Tag> | null;
 }
 
 /**
@@ -115,6 +128,7 @@ export function RunAnalysisRequestFromJSONTyped(json: any, ignoreDiscriminator: 
         'params': json['params'],
         'notificationEmails': json['notificationEmails'],
         'computeEnvironmentId': !exists(json, 'computeEnvironmentId') ? undefined : json['computeEnvironmentId'],
+        'tags': !exists(json, 'tags') ? undefined : (json['tags'] === null ? null : (json['tags'] as Array<any>).map(TagFromJSON)),
     };
 }
 
@@ -137,6 +151,7 @@ export function RunAnalysisRequestToJSON(value?: RunAnalysisRequest | null): any
         'params': value.params,
         'notificationEmails': value.notificationEmails,
         'computeEnvironmentId': value.computeEnvironmentId,
+        'tags': value.tags === undefined ? undefined : (value.tags === null ? null : (value.tags as Array<any>).map(TagToJSON)),
     };
 }
 

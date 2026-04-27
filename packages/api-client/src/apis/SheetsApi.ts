@@ -16,45 +16,45 @@
 import * as runtime from '../runtime';
 import type {
   CreateResponse,
-  CreateSheetRequest,
   Sheet,
   SheetDataRequest,
   SheetDetail,
+  SheetIngestRequest,
+  SheetInput,
   SheetJob,
   SheetQueryResponse,
+  SheetUpdateResponse,
   SqlSortOrder,
-  TriggerIngestRequest,
   UpdateRowsRequest,
-  UpdateSheetRequest,
 } from '../models/index';
 import {
     CreateResponseFromJSON,
     CreateResponseToJSON,
-    CreateSheetRequestFromJSON,
-    CreateSheetRequestToJSON,
     SheetFromJSON,
     SheetToJSON,
     SheetDataRequestFromJSON,
     SheetDataRequestToJSON,
     SheetDetailFromJSON,
     SheetDetailToJSON,
+    SheetIngestRequestFromJSON,
+    SheetIngestRequestToJSON,
+    SheetInputFromJSON,
+    SheetInputToJSON,
     SheetJobFromJSON,
     SheetJobToJSON,
     SheetQueryResponseFromJSON,
     SheetQueryResponseToJSON,
+    SheetUpdateResponseFromJSON,
+    SheetUpdateResponseToJSON,
     SqlSortOrderFromJSON,
     SqlSortOrderToJSON,
-    TriggerIngestRequestFromJSON,
-    TriggerIngestRequestToJSON,
     UpdateRowsRequestFromJSON,
     UpdateRowsRequestToJSON,
-    UpdateSheetRequestFromJSON,
-    UpdateSheetRequestToJSON,
 } from '../models/index';
 
-export interface CreateSheetOperationRequest {
+export interface CreateSheetRequest {
     projectId: string;
-    createSheetRequest: CreateSheetRequest;
+    sheetInput: SheetInput;
 }
 
 export interface DeleteSheetRequest {
@@ -96,16 +96,17 @@ export interface RefreshViewRequest {
     sheetId: string;
 }
 
-export interface TriggerIngestOperationRequest {
+export interface TriggerIngestRequest {
     projectId: string;
     sheetId: string;
-    triggerIngestRequest: TriggerIngestRequest;
+    sheetIngestRequest: SheetIngestRequest;
 }
 
-export interface UpdateSheetOperationRequest {
+export interface UpdateSheetRequest {
     projectId: string;
     sheetId: string;
-    updateSheetRequest: UpdateSheetRequest;
+    sheetInput: SheetInput;
+    dryRun?: boolean;
 }
 
 export interface UpdateSheetDataRequest {
@@ -123,13 +124,13 @@ export class SheetsApi extends runtime.BaseAPI {
      * Creates a sheet (table or view)
      * Create sheet
      */
-    async createSheetRaw(requestParameters: CreateSheetOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateResponse>> {
+    async createSheetRaw(requestParameters: CreateSheetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateResponse>> {
         if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
             throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling createSheet.');
         }
 
-        if (requestParameters.createSheetRequest === null || requestParameters.createSheetRequest === undefined) {
-            throw new runtime.RequiredError('createSheetRequest','Required parameter requestParameters.createSheetRequest was null or undefined when calling createSheet.');
+        if (requestParameters.sheetInput === null || requestParameters.sheetInput === undefined) {
+            throw new runtime.RequiredError('sheetInput','Required parameter requestParameters.sheetInput was null or undefined when calling createSheet.');
         }
 
         const queryParameters: any = {};
@@ -151,7 +152,7 @@ export class SheetsApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: CreateSheetRequestToJSON(requestParameters.createSheetRequest),
+            body: SheetInputToJSON(requestParameters.sheetInput),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => CreateResponseFromJSON(jsonValue));
@@ -161,7 +162,7 @@ export class SheetsApi extends runtime.BaseAPI {
      * Creates a sheet (table or view)
      * Create sheet
      */
-    async createSheet(requestParameters: CreateSheetOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateResponse> {
+    async createSheet(requestParameters: CreateSheetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateResponse> {
         const response = await this.createSheetRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -475,7 +476,7 @@ export class SheetsApi extends runtime.BaseAPI {
         }
         const response = await this.request({
             path: `/projects/{projectId}/sheets/{sheetId}:refresh`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))).replace(`{${"sheetId"}}`, encodeURIComponent(String(requestParameters.sheetId))),
-            method: 'POST',
+            method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
         }, initOverrides);
@@ -495,7 +496,7 @@ export class SheetsApi extends runtime.BaseAPI {
      * Triggers an async file ingest into the sheet
      * Trigger ingest
      */
-    async triggerIngestRaw(requestParameters: TriggerIngestOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateResponse>> {
+    async triggerIngestRaw(requestParameters: TriggerIngestRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
             throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling triggerIngest.');
         }
@@ -504,8 +505,8 @@ export class SheetsApi extends runtime.BaseAPI {
             throw new runtime.RequiredError('sheetId','Required parameter requestParameters.sheetId was null or undefined when calling triggerIngest.');
         }
 
-        if (requestParameters.triggerIngestRequest === null || requestParameters.triggerIngestRequest === undefined) {
-            throw new runtime.RequiredError('triggerIngestRequest','Required parameter requestParameters.triggerIngestRequest was null or undefined when calling triggerIngest.');
+        if (requestParameters.sheetIngestRequest === null || requestParameters.sheetIngestRequest === undefined) {
+            throw new runtime.RequiredError('sheetIngestRequest','Required parameter requestParameters.sheetIngestRequest was null or undefined when calling triggerIngest.');
         }
 
         const queryParameters: any = {};
@@ -527,26 +528,25 @@ export class SheetsApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: TriggerIngestRequestToJSON(requestParameters.triggerIngestRequest),
+            body: SheetIngestRequestToJSON(requestParameters.sheetIngestRequest),
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => CreateResponseFromJSON(jsonValue));
+        return new runtime.VoidApiResponse(response);
     }
 
     /**
      * Triggers an async file ingest into the sheet
      * Trigger ingest
      */
-    async triggerIngest(requestParameters: TriggerIngestOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateResponse> {
-        const response = await this.triggerIngestRaw(requestParameters, initOverrides);
-        return await response.value();
+    async triggerIngest(requestParameters: TriggerIngestRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.triggerIngestRaw(requestParameters, initOverrides);
     }
 
     /**
-     * Updates a sheet (table or view)
+     * Idempotent update: send the full target state. Server validates immutable fields match and applies the diff of mutable fields (rename, columns, view definition). For TABLE dryRun, returns the ALTER statements that would run.
      * Update sheet
      */
-    async updateSheetRaw(requestParameters: UpdateSheetOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async updateSheetRaw(requestParameters: UpdateSheetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SheetUpdateResponse>> {
         if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
             throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling updateSheet.');
         }
@@ -555,11 +555,15 @@ export class SheetsApi extends runtime.BaseAPI {
             throw new runtime.RequiredError('sheetId','Required parameter requestParameters.sheetId was null or undefined when calling updateSheet.');
         }
 
-        if (requestParameters.updateSheetRequest === null || requestParameters.updateSheetRequest === undefined) {
-            throw new runtime.RequiredError('updateSheetRequest','Required parameter requestParameters.updateSheetRequest was null or undefined when calling updateSheet.');
+        if (requestParameters.sheetInput === null || requestParameters.sheetInput === undefined) {
+            throw new runtime.RequiredError('sheetInput','Required parameter requestParameters.sheetInput was null or undefined when calling updateSheet.');
         }
 
         const queryParameters: any = {};
+
+        if (requestParameters.dryRun !== undefined) {
+            queryParameters['dryRun'] = requestParameters.dryRun;
+        }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
@@ -578,18 +582,19 @@ export class SheetsApi extends runtime.BaseAPI {
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: UpdateSheetRequestToJSON(requestParameters.updateSheetRequest),
+            body: SheetInputToJSON(requestParameters.sheetInput),
         }, initOverrides);
 
-        return new runtime.VoidApiResponse(response);
+        return new runtime.JSONApiResponse(response, (jsonValue) => SheetUpdateResponseFromJSON(jsonValue));
     }
 
     /**
-     * Updates a sheet (table or view)
+     * Idempotent update: send the full target state. Server validates immutable fields match and applies the diff of mutable fields (rename, columns, view definition). For TABLE dryRun, returns the ALTER statements that would run.
      * Update sheet
      */
-    async updateSheet(requestParameters: UpdateSheetOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.updateSheetRaw(requestParameters, initOverrides);
+    async updateSheet(requestParameters: UpdateSheetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SheetUpdateResponse> {
+        const response = await this.updateSheetRaw(requestParameters, initOverrides);
+        return await response.value();
     }
 
     /**

@@ -29,38 +29,38 @@ import {
 /**
  * 
  * @export
- * @interface TriggerIngestRequest
+ * @interface SheetIngestRequest
  */
-export interface TriggerIngestRequest {
+export interface SheetIngestRequest {
     /**
      * 
      * @type {FileDef}
-     * @memberof TriggerIngestRequest
+     * @memberof SheetIngestRequest
      */
     fileDef: FileDef;
     /**
      * List of file column to sheet column mapping. If null, requires the column headers to match the sheet column names.
      * @type {Array<SourceColumn>}
-     * @memberof TriggerIngestRequest
+     * @memberof SheetIngestRequest
      */
     sourceColumns?: Array<SourceColumn> | null;
 }
 
 /**
- * Check if a given object implements the TriggerIngestRequest interface.
+ * Check if a given object implements the SheetIngestRequest interface.
  */
-export function instanceOfTriggerIngestRequest(value: object): boolean {
+export function instanceOfSheetIngestRequest(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "fileDef" in value;
 
     return isInstance;
 }
 
-export function TriggerIngestRequestFromJSON(json: any): TriggerIngestRequest {
-    return TriggerIngestRequestFromJSONTyped(json, false);
+export function SheetIngestRequestFromJSON(json: any): SheetIngestRequest {
+    return SheetIngestRequestFromJSONTyped(json, false);
 }
 
-export function TriggerIngestRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): TriggerIngestRequest {
+export function SheetIngestRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): SheetIngestRequest {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -71,7 +71,7 @@ export function TriggerIngestRequestFromJSONTyped(json: any, ignoreDiscriminator
     };
 }
 
-export function TriggerIngestRequestToJSON(value?: TriggerIngestRequest | null): any {
+export function SheetIngestRequestToJSON(value?: SheetIngestRequest | null): any {
     if (value === undefined) {
         return undefined;
     }

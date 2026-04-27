@@ -37,6 +37,12 @@ export interface ColumnDef {
      * @type {string}
      * @memberof ColumnDef
      */
+    id?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof ColumnDef
+     */
     name: string;
     /**
      * 
@@ -49,7 +55,7 @@ export interface ColumnDef {
      * @type {string}
      * @memberof ColumnDef
      */
-    description: string;
+    description?: string | null;
     /**
      * 
      * @type {ForeignKeyRef}
@@ -71,7 +77,6 @@ export function instanceOfColumnDef(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "name" in value;
     isInstance = isInstance && "dataType" in value;
-    isInstance = isInstance && "description" in value;
 
     return isInstance;
 }
@@ -86,9 +91,10 @@ export function ColumnDefFromJSONTyped(json: any, ignoreDiscriminator: boolean):
     }
     return {
         
+        'id': !exists(json, 'id') ? undefined : json['id'],
         'name': json['name'],
         'dataType': ColumnDataTypeFromJSON(json['dataType']),
-        'description': json['description'],
+        'description': !exists(json, 'description') ? undefined : json['description'],
         'foreignKey': !exists(json, 'foreignKey') ? undefined : ForeignKeyRefFromJSON(json['foreignKey']),
         'required': !exists(json, 'required') ? undefined : json['required'],
     };
@@ -103,6 +109,7 @@ export function ColumnDefToJSON(value?: ColumnDef | null): any {
     }
     return {
         
+        'id': value.id,
         'name': value.name,
         'dataType': ColumnDataTypeToJSON(value.dataType),
         'description': value.description,

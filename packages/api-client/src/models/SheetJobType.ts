@@ -21,7 +21,8 @@ export enum SheetJobType {
     CreateTable = 'CREATE_TABLE',
     Ingest = 'INGEST',
     DropTable = 'DROP_TABLE',
-    MaterializeView = 'MATERIALIZE_VIEW'
+    MaterializeView = 'MATERIALIZE_VIEW',
+    UpdateSchema = 'UPDATE_SCHEMA'
 }
 
 

@@ -21,7 +21,7 @@ import {
 } from './FileType';
 
 /**
- * If provided, an ingest job is triggered immediately after table creation (TABLE only)
+ * 
  * @export
  * @interface FileDef
  */
