@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -36,12 +36,10 @@ export interface ServiceConnection {
 /**
  * Check if a given object implements the ServiceConnection interface.
  */
-export function instanceOfServiceConnection(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "description" in value;
-
-    return isInstance;
+export function instanceOfServiceConnection(value: object): value is ServiceConnection {
+    if (!('name' in value) || value['name'] === undefined) return false;
+    if (!('description' in value) || value['description'] === undefined) return false;
+    return true;
 }
 
 export function ServiceConnectionFromJSON(json: any): ServiceConnection {
@@ -49,7 +47,7 @@ export function ServiceConnectionFromJSON(json: any): ServiceConnection {
 }
 
 export function ServiceConnectionFromJSONTyped(json: any, ignoreDiscriminator: boolean): ServiceConnection {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -59,17 +57,19 @@ export function ServiceConnectionFromJSONTyped(json: any, ignoreDiscriminator: b
     };
 }
 
-export function ServiceConnectionToJSON(value?: ServiceConnection | null): any {
-    if (value === undefined) {
-        return undefined;
+export function ServiceConnectionToJSON(json: any): ServiceConnection {
+    return ServiceConnectionToJSONTyped(json, false);
+}
+
+export function ServiceConnectionToJSONTyped(value?: ServiceConnection | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'name': value.name,
-        'description': value.description,
+        'name': value['name'],
+        'description': value['description'],
     };
 }
 

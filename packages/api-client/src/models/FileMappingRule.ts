@@ -12,12 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { FileNamePattern } from './FileNamePattern';
 import {
     FileNamePatternFromJSON,
     FileNamePatternFromJSONTyped,
     FileNamePatternToJSON,
+    FileNamePatternToJSONTyped,
 } from './FileNamePattern';
 
 /**
@@ -61,12 +62,10 @@ export interface FileMappingRule {
 /**
  * Check if a given object implements the FileMappingRule interface.
  */
-export function instanceOfFileMappingRule(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "description" in value;
-    isInstance = isInstance && "fileNamePatterns" in value;
-
-    return isInstance;
+export function instanceOfFileMappingRule(value: object): value is FileMappingRule {
+    if (!('description' in value) || value['description'] === undefined) return false;
+    if (!('fileNamePatterns' in value) || value['fileNamePatterns'] === undefined) return false;
+    return true;
 }
 
 export function FileMappingRuleFromJSON(json: any): FileMappingRule {
@@ -74,33 +73,35 @@ export function FileMappingRuleFromJSON(json: any): FileMappingRule {
 }
 
 export function FileMappingRuleFromJSONTyped(json: any, ignoreDiscriminator: boolean): FileMappingRule {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
         'description': json['description'],
-        'min': !exists(json, 'min') ? undefined : json['min'],
-        'max': !exists(json, 'max') ? undefined : json['max'],
-        'isSample': !exists(json, 'isSample') ? undefined : json['isSample'],
+        'min': json['min'] == null ? undefined : json['min'],
+        'max': json['max'] == null ? undefined : json['max'],
+        'isSample': json['isSample'] == null ? undefined : json['isSample'],
         'fileNamePatterns': ((json['fileNamePatterns'] as Array<any>).map(FileNamePatternFromJSON)),
     };
 }
 
-export function FileMappingRuleToJSON(value?: FileMappingRule | null): any {
-    if (value === undefined) {
-        return undefined;
+export function FileMappingRuleToJSON(json: any): FileMappingRule {
+    return FileMappingRuleToJSONTyped(json, false);
+}
+
+export function FileMappingRuleToJSONTyped(value?: FileMappingRule | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'description': value.description,
-        'min': value.min,
-        'max': value.max,
-        'isSample': value.isSample,
-        'fileNamePatterns': ((value.fileNamePatterns as Array<any>).map(FileNamePatternToJSON)),
+        'description': value['description'],
+        'min': value['min'],
+        'max': value['max'],
+        'isSample': value['isSample'],
+        'fileNamePatterns': ((value['fileNamePatterns'] as Array<any>).map(FileNamePatternToJSON)),
     };
 }
 

@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -60,16 +60,14 @@ export interface User {
 /**
  * Check if a given object implements the User interface.
  */
-export function instanceOfUser(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "username" in value;
-    isInstance = isInstance && "organization" in value;
-    isInstance = isInstance && "department" in value;
-    isInstance = isInstance && "jobTitle" in value;
-    isInstance = isInstance && "globalRoles" in value;
-
-    return isInstance;
+export function instanceOfUser(value: object): value is User {
+    if (!('name' in value) || value['name'] === undefined) return false;
+    if (!('username' in value) || value['username'] === undefined) return false;
+    if (!('organization' in value) || value['organization'] === undefined) return false;
+    if (!('department' in value) || value['department'] === undefined) return false;
+    if (!('jobTitle' in value) || value['jobTitle'] === undefined) return false;
+    if (!('globalRoles' in value) || value['globalRoles'] === undefined) return false;
+    return true;
 }
 
 export function UserFromJSON(json: any): User {
@@ -77,7 +75,7 @@ export function UserFromJSON(json: any): User {
 }
 
 export function UserFromJSONTyped(json: any, ignoreDiscriminator: boolean): User {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -91,21 +89,23 @@ export function UserFromJSONTyped(json: any, ignoreDiscriminator: boolean): User
     };
 }
 
-export function UserToJSON(value?: User | null): any {
-    if (value === undefined) {
-        return undefined;
+export function UserToJSON(json: any): User {
+    return UserToJSONTyped(json, false);
+}
+
+export function UserToJSONTyped(value?: User | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'name': value.name,
-        'username': value.username,
-        'organization': value.organization,
-        'department': value.department,
-        'jobTitle': value.jobTitle,
-        'globalRoles': value.globalRoles,
+        'name': value['name'],
+        'username': value['username'],
+        'organization': value['organization'],
+        'department': value['department'],
+        'jobTitle': value['jobTitle'],
+        'globalRoles': value['globalRoles'],
     };
 }
 

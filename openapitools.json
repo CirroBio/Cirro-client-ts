@@ -2,21 +2,27 @@
   "$schema": "./node_modules/@openapitools/openapi-generator-cli/config.schema.json",
   "spaces": 2,
   "generator-cli": {
-    "version": "7.0.1",
+    "version": "7.22.0",
     "generators": {
       "cirro": {
         "generatorName": "typescript-fetch",
         "output": "#{cwd}/packages/api-client",
-        "inputSpec": "https://dev.cirro.bio/openapi/cirro-data-latest.yml",
+        "inputSpec": "http://localhost:8080/openapi/cirro-data-latest.yml",
         "gitRepoId": "Cirro-client-ts",
         "gitUserId": "CirroBio",
         "templateDir": "#{cwd}/packages/api-client/templates",
         "typeMappings": {
           "date": "string"
         },
+        "globalProperty": {
+          "apiDocs": false,
+          "modelDocs": false,
+          "apiTests": false,
+          "modelTests": false
+        },
         "additionalProperties": {
           "npmName": "@cirrobio/api-client",
-          "npmVersion": "0.13.2",
+          "npmVersion": "0.13.3",
           "author": "CirroBio",
           "stringEnums": true,
           "supportsES6": true

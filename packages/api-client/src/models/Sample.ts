@@ -12,12 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { DataFile } from './DataFile';
 import {
     DataFileFromJSON,
     DataFileFromJSONTyped,
     DataFileToJSON,
+    DataFileToJSONTyped,
 } from './DataFile';
 
 /**
@@ -73,12 +74,10 @@ export interface Sample {
 /**
  * Check if a given object implements the Sample interface.
  */
-export function instanceOfSample(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "id" in value;
-    isInstance = isInstance && "name" in value;
-
-    return isInstance;
+export function instanceOfSample(value: object): value is Sample {
+    if (!('id' in value) || value['id'] === undefined) return false;
+    if (!('name' in value) || value['name'] === undefined) return false;
+    return true;
 }
 
 export function SampleFromJSON(json: any): Sample {
@@ -86,37 +85,39 @@ export function SampleFromJSON(json: any): Sample {
 }
 
 export function SampleFromJSONTyped(json: any, ignoreDiscriminator: boolean): Sample {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
         'id': json['id'],
         'name': json['name'],
-        'metadata': !exists(json, 'metadata') ? undefined : json['metadata'],
-        'files': !exists(json, 'files') ? undefined : (json['files'] === null ? null : (json['files'] as Array<any>).map(DataFileFromJSON)),
-        'datasetIds': !exists(json, 'datasetIds') ? undefined : json['datasetIds'],
-        'createdAt': !exists(json, 'createdAt') ? undefined : (json['createdAt'] === null ? null : new Date(json['createdAt'])),
-        'updatedAt': !exists(json, 'updatedAt') ? undefined : (json['updatedAt'] === null ? null : new Date(json['updatedAt'])),
+        'metadata': json['metadata'] == null ? undefined : json['metadata'],
+        'files': json['files'] == null ? undefined : ((json['files'] as Array<any>).map(DataFileFromJSON)),
+        'datasetIds': json['datasetIds'] == null ? undefined : json['datasetIds'],
+        'createdAt': json['createdAt'] == null ? undefined : (new Date(json['createdAt'])),
+        'updatedAt': json['updatedAt'] == null ? undefined : (new Date(json['updatedAt'])),
     };
 }
 
-export function SampleToJSON(value?: Sample | null): any {
-    if (value === undefined) {
-        return undefined;
+export function SampleToJSON(json: any): Sample {
+    return SampleToJSONTyped(json, false);
+}
+
+export function SampleToJSONTyped(value?: Sample | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'id': value.id,
-        'name': value.name,
-        'metadata': value.metadata,
-        'files': value.files === undefined ? undefined : (value.files === null ? null : (value.files as Array<any>).map(DataFileToJSON)),
-        'datasetIds': value.datasetIds,
-        'createdAt': value.createdAt === undefined ? undefined : (value.createdAt === null ? null : value.createdAt.toISOString()),
-        'updatedAt': value.updatedAt === undefined ? undefined : (value.updatedAt === null ? null : value.updatedAt.toISOString()),
+        'id': value['id'],
+        'name': value['name'],
+        'metadata': value['metadata'],
+        'files': value['files'] == null ? undefined : ((value['files'] as Array<any>).map(DataFileToJSON)),
+        'datasetIds': value['datasetIds'],
+        'createdAt': value['createdAt'] == null ? value['createdAt'] : value['createdAt'].toISOString(),
+        'updatedAt': value['updatedAt'] == null ? value['updatedAt'] : value['updatedAt'].toISOString(),
     };
 }
 

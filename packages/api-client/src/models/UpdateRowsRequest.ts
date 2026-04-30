@@ -12,12 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { RowUpdate } from './RowUpdate';
 import {
     RowUpdateFromJSON,
     RowUpdateFromJSONTyped,
     RowUpdateToJSON,
+    RowUpdateToJSONTyped,
 } from './RowUpdate';
 
 /**
@@ -37,11 +38,9 @@ export interface UpdateRowsRequest {
 /**
  * Check if a given object implements the UpdateRowsRequest interface.
  */
-export function instanceOfUpdateRowsRequest(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "updates" in value;
-
-    return isInstance;
+export function instanceOfUpdateRowsRequest(value: object): value is UpdateRowsRequest {
+    if (!('updates' in value) || value['updates'] === undefined) return false;
+    return true;
 }
 
 export function UpdateRowsRequestFromJSON(json: any): UpdateRowsRequest {
@@ -49,7 +48,7 @@ export function UpdateRowsRequestFromJSON(json: any): UpdateRowsRequest {
 }
 
 export function UpdateRowsRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): UpdateRowsRequest {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -58,16 +57,18 @@ export function UpdateRowsRequestFromJSONTyped(json: any, ignoreDiscriminator: b
     };
 }
 
-export function UpdateRowsRequestToJSON(value?: UpdateRowsRequest | null): any {
-    if (value === undefined) {
-        return undefined;
+export function UpdateRowsRequestToJSON(json: any): UpdateRowsRequest {
+    return UpdateRowsRequestToJSONTyped(json, false);
+}
+
+export function UpdateRowsRequestToJSONTyped(value?: UpdateRowsRequest | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'updates': ((value.updates as Array<any>).map(RowUpdateToJSON)),
+        'updates': ((value['updates'] as Array<any>).map(RowUpdateToJSON)),
     };
 }
 

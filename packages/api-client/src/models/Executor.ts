@@ -25,6 +25,17 @@ export enum Executor {
 }
 
 
+export function instanceOfExecutor(value: any): boolean {
+    for (const key in Executor) {
+        if (Object.prototype.hasOwnProperty.call(Executor, key)) {
+            if (Executor[key as keyof typeof Executor] === value) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 export function ExecutorFromJSON(json: any): Executor {
     return ExecutorFromJSONTyped(json, false);
 }
@@ -35,5 +46,9 @@ export function ExecutorFromJSONTyped(json: any, ignoreDiscriminator: boolean): 
 
 export function ExecutorToJSON(value?: Executor | null): any {
     return value as any;
+}
+
+export function ExecutorToJSONTyped(value: any, ignoreDiscriminator: boolean): Executor {
+    return value as Executor;
 }
 

@@ -12,27 +12,32 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  CreateResponse,
-  PaginatedResponseDatasetListDto,
-  Share,
-  ShareDetail,
-  ShareInput,
-} from '../models/index';
 import {
+    type CreateResponse,
     CreateResponseFromJSON,
     CreateResponseToJSON,
+} from '../models/CreateResponse';
+import {
+    type PaginatedResponseDatasetListDto,
     PaginatedResponseDatasetListDtoFromJSON,
     PaginatedResponseDatasetListDtoToJSON,
+} from '../models/PaginatedResponseDatasetListDto';
+import {
+    type Share,
     ShareFromJSON,
     ShareToJSON,
+} from '../models/Share';
+import {
+    type ShareDetail,
     ShareDetailFromJSON,
     ShareDetailToJSON,
+} from '../models/ShareDetail';
+import {
+    type ShareInput,
     ShareInputFromJSON,
     ShareInputToJSON,
-} from '../models/index';
+} from '../models/ShareInput';
 
 export interface CreateShareRequest {
     projectId: string;
@@ -86,16 +91,21 @@ export interface UpdateShareRequest {
 export class SharingApi extends runtime.BaseAPI {
 
     /**
-     * Create a new share to publish to other projects
-     * Create share
+     * Creates request options for createShare without sending the request
      */
-    async createShareRaw(requestParameters: CreateShareRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateResponse>> {
-        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
-            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling createShare.');
+    async createShareRequestOpts(requestParameters: CreateShareRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling createShare().'
+            );
         }
 
-        if (requestParameters.shareInput === null || requestParameters.shareInput === undefined) {
-            throw new runtime.RequiredError('shareInput','Required parameter requestParameters.shareInput was null or undefined when calling createShare.');
+        if (requestParameters['shareInput'] == null) {
+            throw new runtime.RequiredError(
+                'shareInput',
+                'Required parameter "shareInput" was null or undefined when calling createShare().'
+            );
         }
 
         const queryParameters: any = {};
@@ -112,13 +122,26 @@ export class SharingApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/projects/{projectId}/shares`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))),
+
+        let urlPath = `/projects/{projectId}/shares`;
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+
+        return {
+            path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: ShareInputToJSON(requestParameters.shareInput),
-        }, initOverrides);
+            body: ShareInputToJSON(requestParameters['shareInput']),
+        };
+    }
+
+    /**
+     * Create a new share to publish to other projects
+     * Create share
+     */
+    async createShareRaw(requestParameters: CreateShareRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateResponse>> {
+        const requestOptions = await this.createShareRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => CreateResponseFromJSON(jsonValue));
     }
@@ -133,16 +156,21 @@ export class SharingApi extends runtime.BaseAPI {
     }
 
     /**
-     * Delete a share that you\'ve published
-     * Delete share
+     * Creates request options for deleteShare without sending the request
      */
-    async deleteShareRaw(requestParameters: DeleteShareRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
-            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling deleteShare.');
+    async deleteShareRequestOpts(requestParameters: DeleteShareRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling deleteShare().'
+            );
         }
 
-        if (requestParameters.shareId === null || requestParameters.shareId === undefined) {
-            throw new runtime.RequiredError('shareId','Required parameter requestParameters.shareId was null or undefined when calling deleteShare.');
+        if (requestParameters['shareId'] == null) {
+            throw new runtime.RequiredError(
+                'shareId',
+                'Required parameter "shareId" was null or undefined when calling deleteShare().'
+            );
         }
 
         const queryParameters: any = {};
@@ -157,12 +185,26 @@ export class SharingApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/projects/{projectId}/shares/{shareId}`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))).replace(`{${"shareId"}}`, encodeURIComponent(String(requestParameters.shareId))),
+
+        let urlPath = `/projects/{projectId}/shares/{shareId}`;
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+        urlPath = urlPath.replace('{shareId}', encodeURIComponent(String(requestParameters['shareId'])));
+
+        return {
+            path: urlPath,
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Delete a share that you\'ve published
+     * Delete share
+     */
+    async deleteShareRaw(requestParameters: DeleteShareRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.deleteShareRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -176,12 +218,14 @@ export class SharingApi extends runtime.BaseAPI {
     }
 
     /**
-     * Get shares that the project can request access to
-     * Get discoverable shares
+     * Creates request options for getDiscoverableShares without sending the request
      */
-    async getDiscoverableSharesRaw(requestParameters: GetDiscoverableSharesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<Share>>> {
-        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
-            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling getDiscoverableShares.');
+    async getDiscoverableSharesRequestOpts(requestParameters: GetDiscoverableSharesRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling getDiscoverableShares().'
+            );
         }
 
         const queryParameters: any = {};
@@ -196,12 +240,25 @@ export class SharingApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/projects/{projectId}/shares/discover`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))),
+
+        let urlPath = `/projects/{projectId}/shares/discover`;
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+
+        return {
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Get shares that the project can request access to
+     * Get discoverable shares
+     */
+    async getDiscoverableSharesRaw(requestParameters: GetDiscoverableSharesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<Share>>> {
+        const requestOptions = await this.getDiscoverableSharesRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(ShareFromJSON));
     }
@@ -216,16 +273,21 @@ export class SharingApi extends runtime.BaseAPI {
     }
 
     /**
-     * Get details on a share that you\'ve published or subscribed to
-     * Get share
+     * Creates request options for getShare without sending the request
      */
-    async getShareRaw(requestParameters: GetShareRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ShareDetail>> {
-        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
-            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling getShare.');
+    async getShareRequestOpts(requestParameters: GetShareRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling getShare().'
+            );
         }
 
-        if (requestParameters.shareId === null || requestParameters.shareId === undefined) {
-            throw new runtime.RequiredError('shareId','Required parameter requestParameters.shareId was null or undefined when calling getShare.');
+        if (requestParameters['shareId'] == null) {
+            throw new runtime.RequiredError(
+                'shareId',
+                'Required parameter "shareId" was null or undefined when calling getShare().'
+            );
         }
 
         const queryParameters: any = {};
@@ -240,12 +302,26 @@ export class SharingApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/projects/{projectId}/shares/{shareId}`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))).replace(`{${"shareId"}}`, encodeURIComponent(String(requestParameters.shareId))),
+
+        let urlPath = `/projects/{projectId}/shares/{shareId}`;
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+        urlPath = urlPath.replace('{shareId}', encodeURIComponent(String(requestParameters['shareId'])));
+
+        return {
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Get details on a share that you\'ve published or subscribed to
+     * Get share
+     */
+    async getShareRaw(requestParameters: GetShareRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ShareDetail>> {
+        const requestOptions = await this.getShareRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => ShareDetailFromJSON(jsonValue));
     }
@@ -260,26 +336,31 @@ export class SharingApi extends runtime.BaseAPI {
     }
 
     /**
-     * Get dataset listing for a share
-     * Get share datasets
+     * Creates request options for getSharedDatasets without sending the request
      */
-    async getSharedDatasetsRaw(requestParameters: GetSharedDatasetsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PaginatedResponseDatasetListDto>> {
-        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
-            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling getSharedDatasets.');
+    async getSharedDatasetsRequestOpts(requestParameters: GetSharedDatasetsRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling getSharedDatasets().'
+            );
         }
 
-        if (requestParameters.shareId === null || requestParameters.shareId === undefined) {
-            throw new runtime.RequiredError('shareId','Required parameter requestParameters.shareId was null or undefined when calling getSharedDatasets.');
+        if (requestParameters['shareId'] == null) {
+            throw new runtime.RequiredError(
+                'shareId',
+                'Required parameter "shareId" was null or undefined when calling getSharedDatasets().'
+            );
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters.limit !== undefined) {
-            queryParameters['limit'] = requestParameters.limit;
+        if (requestParameters['limit'] != null) {
+            queryParameters['limit'] = requestParameters['limit'];
         }
 
-        if (requestParameters.nextToken !== undefined) {
-            queryParameters['nextToken'] = requestParameters.nextToken;
+        if (requestParameters['nextToken'] != null) {
+            queryParameters['nextToken'] = requestParameters['nextToken'];
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -292,12 +373,26 @@ export class SharingApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/projects/{projectId}/shares/{shareId}/datasets`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))).replace(`{${"shareId"}}`, encodeURIComponent(String(requestParameters.shareId))),
+
+        let urlPath = `/projects/{projectId}/shares/{shareId}/datasets`;
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+        urlPath = urlPath.replace('{shareId}', encodeURIComponent(String(requestParameters['shareId'])));
+
+        return {
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Get dataset listing for a share
+     * Get share datasets
+     */
+    async getSharedDatasetsRaw(requestParameters: GetSharedDatasetsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PaginatedResponseDatasetListDto>> {
+        const requestOptions = await this.getSharedDatasetsRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => PaginatedResponseDatasetListDtoFromJSON(jsonValue));
     }
@@ -312,12 +407,14 @@ export class SharingApi extends runtime.BaseAPI {
     }
 
     /**
-     * Get shares for a project (both published and shared with the project)
-     * Get shares
+     * Creates request options for getShares without sending the request
      */
-    async getSharesRaw(requestParameters: GetSharesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<Share>>> {
-        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
-            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling getShares.');
+    async getSharesRequestOpts(requestParameters: GetSharesRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling getShares().'
+            );
         }
 
         const queryParameters: any = {};
@@ -332,12 +429,25 @@ export class SharingApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/projects/{projectId}/shares`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))),
+
+        let urlPath = `/projects/{projectId}/shares`;
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+
+        return {
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Get shares for a project (both published and shared with the project)
+     * Get shares
+     */
+    async getSharesRaw(requestParameters: GetSharesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<Share>>> {
+        const requestOptions = await this.getSharesRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(ShareFromJSON));
     }
@@ -352,16 +462,21 @@ export class SharingApi extends runtime.BaseAPI {
     }
 
     /**
-     * Subscribe to a share that has been shared with your project
-     * Subscribe to share
+     * Creates request options for subscribeShare without sending the request
      */
-    async subscribeShareRaw(requestParameters: SubscribeShareRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
-            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling subscribeShare.');
+    async subscribeShareRequestOpts(requestParameters: SubscribeShareRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling subscribeShare().'
+            );
         }
 
-        if (requestParameters.shareId === null || requestParameters.shareId === undefined) {
-            throw new runtime.RequiredError('shareId','Required parameter requestParameters.shareId was null or undefined when calling subscribeShare.');
+        if (requestParameters['shareId'] == null) {
+            throw new runtime.RequiredError(
+                'shareId',
+                'Required parameter "shareId" was null or undefined when calling subscribeShare().'
+            );
         }
 
         const queryParameters: any = {};
@@ -376,12 +491,26 @@ export class SharingApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/projects/{projectId}/shares/{shareId}:subscribe`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))).replace(`{${"shareId"}}`, encodeURIComponent(String(requestParameters.shareId))),
+
+        let urlPath = `/projects/{projectId}/shares/{shareId}:subscribe`;
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+        urlPath = urlPath.replace('{shareId}', encodeURIComponent(String(requestParameters['shareId'])));
+
+        return {
+            path: urlPath,
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Subscribe to a share that has been shared with your project
+     * Subscribe to share
+     */
+    async subscribeShareRaw(requestParameters: SubscribeShareRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.subscribeShareRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -395,16 +524,21 @@ export class SharingApi extends runtime.BaseAPI {
     }
 
     /**
-     * Unsubscribe from a share that has been shared with your project
-     * Unsubscribe from share
+     * Creates request options for unsubscribeShare without sending the request
      */
-    async unsubscribeShareRaw(requestParameters: UnsubscribeShareRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
-            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling unsubscribeShare.');
+    async unsubscribeShareRequestOpts(requestParameters: UnsubscribeShareRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling unsubscribeShare().'
+            );
         }
 
-        if (requestParameters.shareId === null || requestParameters.shareId === undefined) {
-            throw new runtime.RequiredError('shareId','Required parameter requestParameters.shareId was null or undefined when calling unsubscribeShare.');
+        if (requestParameters['shareId'] == null) {
+            throw new runtime.RequiredError(
+                'shareId',
+                'Required parameter "shareId" was null or undefined when calling unsubscribeShare().'
+            );
         }
 
         const queryParameters: any = {};
@@ -419,12 +553,26 @@ export class SharingApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/projects/{projectId}/shares/{shareId}:unsubscribe`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))).replace(`{${"shareId"}}`, encodeURIComponent(String(requestParameters.shareId))),
+
+        let urlPath = `/projects/{projectId}/shares/{shareId}:unsubscribe`;
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+        urlPath = urlPath.replace('{shareId}', encodeURIComponent(String(requestParameters['shareId'])));
+
+        return {
+            path: urlPath,
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Unsubscribe from a share that has been shared with your project
+     * Unsubscribe from share
+     */
+    async unsubscribeShareRaw(requestParameters: UnsubscribeShareRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.unsubscribeShareRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -438,20 +586,28 @@ export class SharingApi extends runtime.BaseAPI {
     }
 
     /**
-     * Update a share that you\'ve published
-     * Update share
+     * Creates request options for updateShare without sending the request
      */
-    async updateShareRaw(requestParameters: UpdateShareRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
-            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling updateShare.');
+    async updateShareRequestOpts(requestParameters: UpdateShareRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling updateShare().'
+            );
         }
 
-        if (requestParameters.shareId === null || requestParameters.shareId === undefined) {
-            throw new runtime.RequiredError('shareId','Required parameter requestParameters.shareId was null or undefined when calling updateShare.');
+        if (requestParameters['shareId'] == null) {
+            throw new runtime.RequiredError(
+                'shareId',
+                'Required parameter "shareId" was null or undefined when calling updateShare().'
+            );
         }
 
-        if (requestParameters.shareInput === null || requestParameters.shareInput === undefined) {
-            throw new runtime.RequiredError('shareInput','Required parameter requestParameters.shareInput was null or undefined when calling updateShare.');
+        if (requestParameters['shareInput'] == null) {
+            throw new runtime.RequiredError(
+                'shareInput',
+                'Required parameter "shareInput" was null or undefined when calling updateShare().'
+            );
         }
 
         const queryParameters: any = {};
@@ -468,13 +624,27 @@ export class SharingApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/projects/{projectId}/shares/{shareId}`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))).replace(`{${"shareId"}}`, encodeURIComponent(String(requestParameters.shareId))),
+
+        let urlPath = `/projects/{projectId}/shares/{shareId}`;
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+        urlPath = urlPath.replace('{shareId}', encodeURIComponent(String(requestParameters['shareId'])));
+
+        return {
+            path: urlPath,
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: ShareInputToJSON(requestParameters.shareInput),
-        }, initOverrides);
+            body: ShareInputToJSON(requestParameters['shareInput']),
+        };
+    }
+
+    /**
+     * Update a share that you\'ve published
+     * Update share
+     */
+    async updateShareRaw(requestParameters: UpdateShareRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.updateShareRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }

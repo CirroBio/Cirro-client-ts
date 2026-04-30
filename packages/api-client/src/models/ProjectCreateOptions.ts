@@ -12,12 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { CloudAccountType } from './CloudAccountType';
 import {
     CloudAccountTypeFromJSON,
     CloudAccountTypeFromJSONTyped,
     CloudAccountTypeToJSON,
+    CloudAccountTypeToJSONTyped,
 } from './CloudAccountType';
 
 /**
@@ -61,15 +62,13 @@ export interface ProjectCreateOptions {
 /**
  * Check if a given object implements the ProjectCreateOptions interface.
  */
-export function instanceOfProjectCreateOptions(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "enabledAccountTypes" in value;
-    isInstance = isInstance && "portalAccountId" in value;
-    isInstance = isInstance && "portalRegion" in value;
-    isInstance = isInstance && "templateUrl" in value;
-    isInstance = isInstance && "wizardUrl" in value;
-
-    return isInstance;
+export function instanceOfProjectCreateOptions(value: object): value is ProjectCreateOptions {
+    if (!('enabledAccountTypes' in value) || value['enabledAccountTypes'] === undefined) return false;
+    if (!('portalAccountId' in value) || value['portalAccountId'] === undefined) return false;
+    if (!('portalRegion' in value) || value['portalRegion'] === undefined) return false;
+    if (!('templateUrl' in value) || value['templateUrl'] === undefined) return false;
+    if (!('wizardUrl' in value) || value['wizardUrl'] === undefined) return false;
+    return true;
 }
 
 export function ProjectCreateOptionsFromJSON(json: any): ProjectCreateOptions {
@@ -77,7 +76,7 @@ export function ProjectCreateOptionsFromJSON(json: any): ProjectCreateOptions {
 }
 
 export function ProjectCreateOptionsFromJSONTyped(json: any, ignoreDiscriminator: boolean): ProjectCreateOptions {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -90,20 +89,22 @@ export function ProjectCreateOptionsFromJSONTyped(json: any, ignoreDiscriminator
     };
 }
 
-export function ProjectCreateOptionsToJSON(value?: ProjectCreateOptions | null): any {
-    if (value === undefined) {
-        return undefined;
+export function ProjectCreateOptionsToJSON(json: any): ProjectCreateOptions {
+    return ProjectCreateOptionsToJSONTyped(json, false);
+}
+
+export function ProjectCreateOptionsToJSONTyped(value?: ProjectCreateOptions | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'enabledAccountTypes': ((value.enabledAccountTypes as Array<any>).map(CloudAccountTypeToJSON)),
-        'portalAccountId': value.portalAccountId,
-        'portalRegion': value.portalRegion,
-        'templateUrl': value.templateUrl,
-        'wizardUrl': value.wizardUrl,
+        'enabledAccountTypes': ((value['enabledAccountTypes'] as Array<any>).map(CloudAccountTypeToJSON)),
+        'portalAccountId': value['portalAccountId'],
+        'portalRegion': value['portalRegion'],
+        'templateUrl': value['templateUrl'],
+        'wizardUrl': value['wizardUrl'],
     };
 }
 

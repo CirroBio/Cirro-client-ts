@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -42,11 +42,9 @@ export interface ComputeEnvironmentConfigurationInput {
 /**
  * Check if a given object implements the ComputeEnvironmentConfigurationInput interface.
  */
-export function instanceOfComputeEnvironmentConfigurationInput(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "name" in value;
-
-    return isInstance;
+export function instanceOfComputeEnvironmentConfigurationInput(value: object): value is ComputeEnvironmentConfigurationInput {
+    if (!('name' in value) || value['name'] === undefined) return false;
+    return true;
 }
 
 export function ComputeEnvironmentConfigurationInputFromJSON(json: any): ComputeEnvironmentConfigurationInput {
@@ -54,29 +52,31 @@ export function ComputeEnvironmentConfigurationInputFromJSON(json: any): Compute
 }
 
 export function ComputeEnvironmentConfigurationInputFromJSONTyped(json: any, ignoreDiscriminator: boolean): ComputeEnvironmentConfigurationInput {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
         'name': json['name'],
-        'agentId': !exists(json, 'agentId') ? undefined : json['agentId'],
-        'properties': !exists(json, 'properties') ? undefined : json['properties'],
+        'agentId': json['agentId'] == null ? undefined : json['agentId'],
+        'properties': json['properties'] == null ? undefined : json['properties'],
     };
 }
 
-export function ComputeEnvironmentConfigurationInputToJSON(value?: ComputeEnvironmentConfigurationInput | null): any {
-    if (value === undefined) {
-        return undefined;
+export function ComputeEnvironmentConfigurationInputToJSON(json: any): ComputeEnvironmentConfigurationInput {
+    return ComputeEnvironmentConfigurationInputToJSONTyped(json, false);
+}
+
+export function ComputeEnvironmentConfigurationInputToJSONTyped(value?: ComputeEnvironmentConfigurationInput | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'name': value.name,
-        'agentId': value.agentId,
-        'properties': value.properties,
+        'name': value['name'],
+        'agentId': value['agentId'],
+        'properties': value['properties'],
     };
 }
 

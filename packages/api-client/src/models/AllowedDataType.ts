@@ -12,12 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { FileNamePattern } from './FileNamePattern';
 import {
     FileNamePatternFromJSON,
     FileNamePatternFromJSONTyped,
     FileNamePatternToJSON,
+    FileNamePatternToJSONTyped,
 } from './FileNamePattern';
 
 /**
@@ -49,13 +50,11 @@ export interface AllowedDataType {
 /**
  * Check if a given object implements the AllowedDataType interface.
  */
-export function instanceOfAllowedDataType(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "description" in value;
-    isInstance = isInstance && "errorMsg" in value;
-    isInstance = isInstance && "allowedPatterns" in value;
-
-    return isInstance;
+export function instanceOfAllowedDataType(value: object): value is AllowedDataType {
+    if (!('description' in value) || value['description'] === undefined) return false;
+    if (!('errorMsg' in value) || value['errorMsg'] === undefined) return false;
+    if (!('allowedPatterns' in value) || value['allowedPatterns'] === undefined) return false;
+    return true;
 }
 
 export function AllowedDataTypeFromJSON(json: any): AllowedDataType {
@@ -63,7 +62,7 @@ export function AllowedDataTypeFromJSON(json: any): AllowedDataType {
 }
 
 export function AllowedDataTypeFromJSONTyped(json: any, ignoreDiscriminator: boolean): AllowedDataType {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -74,18 +73,20 @@ export function AllowedDataTypeFromJSONTyped(json: any, ignoreDiscriminator: boo
     };
 }
 
-export function AllowedDataTypeToJSON(value?: AllowedDataType | null): any {
-    if (value === undefined) {
-        return undefined;
+export function AllowedDataTypeToJSON(json: any): AllowedDataType {
+    return AllowedDataTypeToJSONTyped(json, false);
+}
+
+export function AllowedDataTypeToJSONTyped(value?: AllowedDataType | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'description': value.description,
-        'errorMsg': value.errorMsg,
-        'allowedPatterns': ((value.allowedPatterns as Array<any>).map(FileNamePatternToJSON)),
+        'description': value['description'],
+        'errorMsg': value['errorMsg'],
+        'allowedPatterns': ((value['allowedPatterns'] as Array<any>).map(FileNamePatternToJSON)),
     };
 }
 

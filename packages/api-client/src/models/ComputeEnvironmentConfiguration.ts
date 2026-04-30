@@ -12,18 +12,20 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { Agent } from './Agent';
 import {
     AgentFromJSON,
     AgentFromJSONTyped,
     AgentToJSON,
+    AgentToJSONTyped,
 } from './Agent';
 import type { EnvironmentType } from './EnvironmentType';
 import {
     EnvironmentTypeFromJSON,
     EnvironmentTypeFromJSONTyped,
     EnvironmentTypeToJSON,
+    EnvironmentTypeToJSONTyped,
 } from './EnvironmentType';
 
 /**
@@ -82,16 +84,16 @@ export interface ComputeEnvironmentConfiguration {
     updatedAt: Date;
 }
 
+
+
 /**
  * Check if a given object implements the ComputeEnvironmentConfiguration interface.
  */
-export function instanceOfComputeEnvironmentConfiguration(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "environmentType" in value;
-    isInstance = isInstance && "createdAt" in value;
-    isInstance = isInstance && "updatedAt" in value;
-
-    return isInstance;
+export function instanceOfComputeEnvironmentConfiguration(value: object): value is ComputeEnvironmentConfiguration {
+    if (!('environmentType' in value) || value['environmentType'] === undefined) return false;
+    if (!('createdAt' in value) || value['createdAt'] === undefined) return false;
+    if (!('updatedAt' in value) || value['updatedAt'] === undefined) return false;
+    return true;
 }
 
 export function ComputeEnvironmentConfigurationFromJSON(json: any): ComputeEnvironmentConfiguration {
@@ -99,39 +101,41 @@ export function ComputeEnvironmentConfigurationFromJSON(json: any): ComputeEnvir
 }
 
 export function ComputeEnvironmentConfigurationFromJSONTyped(json: any, ignoreDiscriminator: boolean): ComputeEnvironmentConfiguration {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'id': !exists(json, 'id') ? undefined : json['id'],
-        'name': !exists(json, 'name') ? undefined : json['name'],
-        'properties': !exists(json, 'properties') ? undefined : json['properties'],
+        'id': json['id'] == null ? undefined : json['id'],
+        'name': json['name'] == null ? undefined : json['name'],
+        'properties': json['properties'] == null ? undefined : json['properties'],
         'environmentType': EnvironmentTypeFromJSON(json['environmentType']),
-        'agent': !exists(json, 'agent') ? undefined : AgentFromJSON(json['agent']),
-        'createdBy': !exists(json, 'createdBy') ? undefined : json['createdBy'],
+        'agent': json['agent'] == null ? undefined : AgentFromJSON(json['agent']),
+        'createdBy': json['createdBy'] == null ? undefined : json['createdBy'],
         'createdAt': (new Date(json['createdAt'])),
         'updatedAt': (new Date(json['updatedAt'])),
     };
 }
 
-export function ComputeEnvironmentConfigurationToJSON(value?: ComputeEnvironmentConfiguration | null): any {
-    if (value === undefined) {
-        return undefined;
+export function ComputeEnvironmentConfigurationToJSON(json: any): ComputeEnvironmentConfiguration {
+    return ComputeEnvironmentConfigurationToJSONTyped(json, false);
+}
+
+export function ComputeEnvironmentConfigurationToJSONTyped(value?: ComputeEnvironmentConfiguration | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'id': value.id,
-        'name': value.name,
-        'properties': value.properties,
-        'environmentType': EnvironmentTypeToJSON(value.environmentType),
-        'agent': AgentToJSON(value.agent),
-        'createdBy': value.createdBy,
-        'createdAt': (value.createdAt.toISOString()),
-        'updatedAt': (value.updatedAt.toISOString()),
+        'id': value['id'],
+        'name': value['name'],
+        'properties': value['properties'],
+        'environmentType': EnvironmentTypeToJSON(value['environmentType']),
+        'agent': AgentToJSON(value['agent']),
+        'createdBy': value['createdBy'],
+        'createdAt': value['createdAt'].toISOString(),
+        'updatedAt': value['updatedAt'].toISOString(),
     };
 }
 

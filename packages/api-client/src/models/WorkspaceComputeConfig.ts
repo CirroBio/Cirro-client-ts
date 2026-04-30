@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * Configuration parameters for a containerized workspace compute environment.
  * @export
@@ -78,11 +78,9 @@ export interface WorkspaceComputeConfig {
 /**
  * Check if a given object implements the WorkspaceComputeConfig interface.
  */
-export function instanceOfWorkspaceComputeConfig(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "containerImageUri" in value;
-
-    return isInstance;
+export function instanceOfWorkspaceComputeConfig(value: object): value is WorkspaceComputeConfig {
+    if (!('containerImageUri' in value) || value['containerImageUri'] === undefined) return false;
+    return true;
 }
 
 export function WorkspaceComputeConfigFromJSON(json: any): WorkspaceComputeConfig {
@@ -90,41 +88,43 @@ export function WorkspaceComputeConfigFromJSON(json: any): WorkspaceComputeConfi
 }
 
 export function WorkspaceComputeConfigFromJSONTyped(json: any, ignoreDiscriminator: boolean): WorkspaceComputeConfig {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
         'containerImageUri': json['containerImageUri'],
-        'cpu': !exists(json, 'cpu') ? undefined : json['cpu'],
-        'memoryGiB': !exists(json, 'memoryGiB') ? undefined : json['memoryGiB'],
-        'volumeSizeGiB': !exists(json, 'volumeSizeGiB') ? undefined : json['volumeSizeGiB'],
-        'gpu': !exists(json, 'gpu') ? undefined : json['gpu'],
-        'gpuModel': !exists(json, 'gpuModel') ? undefined : json['gpuModel'],
-        'environmentVariables': !exists(json, 'environmentVariables') ? undefined : json['environmentVariables'],
-        'localPort': !exists(json, 'localPort') ? undefined : json['localPort'],
-        'customTaskRoleArn': !exists(json, 'customTaskRoleArn') ? undefined : json['customTaskRoleArn'],
+        'cpu': json['cpu'] == null ? undefined : json['cpu'],
+        'memoryGiB': json['memoryGiB'] == null ? undefined : json['memoryGiB'],
+        'volumeSizeGiB': json['volumeSizeGiB'] == null ? undefined : json['volumeSizeGiB'],
+        'gpu': json['gpu'] == null ? undefined : json['gpu'],
+        'gpuModel': json['gpuModel'] == null ? undefined : json['gpuModel'],
+        'environmentVariables': json['environmentVariables'] == null ? undefined : json['environmentVariables'],
+        'localPort': json['localPort'] == null ? undefined : json['localPort'],
+        'customTaskRoleArn': json['customTaskRoleArn'] == null ? undefined : json['customTaskRoleArn'],
     };
 }
 
-export function WorkspaceComputeConfigToJSON(value?: WorkspaceComputeConfig | null): any {
-    if (value === undefined) {
-        return undefined;
+export function WorkspaceComputeConfigToJSON(json: any): WorkspaceComputeConfig {
+    return WorkspaceComputeConfigToJSONTyped(json, false);
+}
+
+export function WorkspaceComputeConfigToJSONTyped(value?: WorkspaceComputeConfig | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'containerImageUri': value.containerImageUri,
-        'cpu': value.cpu,
-        'memoryGiB': value.memoryGiB,
-        'volumeSizeGiB': value.volumeSizeGiB,
-        'gpu': value.gpu,
-        'gpuModel': value.gpuModel,
-        'environmentVariables': value.environmentVariables,
-        'localPort': value.localPort,
-        'customTaskRoleArn': value.customTaskRoleArn,
+        'containerImageUri': value['containerImageUri'],
+        'cpu': value['cpu'],
+        'memoryGiB': value['memoryGiB'],
+        'volumeSizeGiB': value['volumeSizeGiB'],
+        'gpu': value['gpu'],
+        'gpuModel': value['gpuModel'],
+        'environmentVariables': value['environmentVariables'],
+        'localPort': value['localPort'],
+        'customTaskRoleArn': value['customTaskRoleArn'],
     };
 }
 

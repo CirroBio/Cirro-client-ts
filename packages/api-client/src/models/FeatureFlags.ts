@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -90,21 +90,19 @@ export interface FeatureFlags {
 /**
  * Check if a given object implements the FeatureFlags interface.
  */
-export function instanceOfFeatureFlags(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "sftpEnabled" in value;
-    isInstance = isInstance && "governanceEnabled" in value;
-    isInstance = isInstance && "projectRequestsEnabled" in value;
-    isInstance = isInstance && "workspacesEnabled" in value;
-    isInstance = isInstance && "driveEnabled" in value;
-    isInstance = isInstance && "appRegistrationsEnabled" in value;
-    isInstance = isInstance && "machineAuthEnabled" in value;
-    isInstance = isInstance && "sheetsEnabled" in value;
-    isInstance = isInstance && "aiEnabled" in value;
-    isInstance = isInstance && "sharedFilesystemsEnabled" in value;
-    isInstance = isInstance && "customWorkspaceRolesEnabled" in value;
-
-    return isInstance;
+export function instanceOfFeatureFlags(value: object): value is FeatureFlags {
+    if (!('sftpEnabled' in value) || value['sftpEnabled'] === undefined) return false;
+    if (!('governanceEnabled' in value) || value['governanceEnabled'] === undefined) return false;
+    if (!('projectRequestsEnabled' in value) || value['projectRequestsEnabled'] === undefined) return false;
+    if (!('workspacesEnabled' in value) || value['workspacesEnabled'] === undefined) return false;
+    if (!('driveEnabled' in value) || value['driveEnabled'] === undefined) return false;
+    if (!('appRegistrationsEnabled' in value) || value['appRegistrationsEnabled'] === undefined) return false;
+    if (!('machineAuthEnabled' in value) || value['machineAuthEnabled'] === undefined) return false;
+    if (!('sheetsEnabled' in value) || value['sheetsEnabled'] === undefined) return false;
+    if (!('aiEnabled' in value) || value['aiEnabled'] === undefined) return false;
+    if (!('sharedFilesystemsEnabled' in value) || value['sharedFilesystemsEnabled'] === undefined) return false;
+    if (!('customWorkspaceRolesEnabled' in value) || value['customWorkspaceRolesEnabled'] === undefined) return false;
+    return true;
 }
 
 export function FeatureFlagsFromJSON(json: any): FeatureFlags {
@@ -112,7 +110,7 @@ export function FeatureFlagsFromJSON(json: any): FeatureFlags {
 }
 
 export function FeatureFlagsFromJSONTyped(json: any, ignoreDiscriminator: boolean): FeatureFlags {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -131,26 +129,28 @@ export function FeatureFlagsFromJSONTyped(json: any, ignoreDiscriminator: boolea
     };
 }
 
-export function FeatureFlagsToJSON(value?: FeatureFlags | null): any {
-    if (value === undefined) {
-        return undefined;
+export function FeatureFlagsToJSON(json: any): FeatureFlags {
+    return FeatureFlagsToJSONTyped(json, false);
+}
+
+export function FeatureFlagsToJSONTyped(value?: FeatureFlags | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'sftpEnabled': value.sftpEnabled,
-        'governanceEnabled': value.governanceEnabled,
-        'projectRequestsEnabled': value.projectRequestsEnabled,
-        'workspacesEnabled': value.workspacesEnabled,
-        'driveEnabled': value.driveEnabled,
-        'appRegistrationsEnabled': value.appRegistrationsEnabled,
-        'machineAuthEnabled': value.machineAuthEnabled,
-        'sheetsEnabled': value.sheetsEnabled,
-        'aiEnabled': value.aiEnabled,
-        'sharedFilesystemsEnabled': value.sharedFilesystemsEnabled,
-        'customWorkspaceRolesEnabled': value.customWorkspaceRolesEnabled,
+        'sftpEnabled': value['sftpEnabled'],
+        'governanceEnabled': value['governanceEnabled'],
+        'projectRequestsEnabled': value['projectRequestsEnabled'],
+        'workspacesEnabled': value['workspacesEnabled'],
+        'driveEnabled': value['driveEnabled'],
+        'appRegistrationsEnabled': value['appRegistrationsEnabled'],
+        'machineAuthEnabled': value['machineAuthEnabled'],
+        'sheetsEnabled': value['sheetsEnabled'],
+        'aiEnabled': value['aiEnabled'],
+        'sharedFilesystemsEnabled': value['sharedFilesystemsEnabled'],
+        'customWorkspaceRolesEnabled': value['customWorkspaceRolesEnabled'],
     };
 }
 

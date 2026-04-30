@@ -12,18 +12,20 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { VersionSpecification } from './VersionSpecification';
 import {
     VersionSpecificationFromJSON,
     VersionSpecificationFromJSONTyped,
     VersionSpecificationToJSON,
+    VersionSpecificationToJSONTyped,
 } from './VersionSpecification';
 import type { WorkspaceComputeConfig } from './WorkspaceComputeConfig';
 import {
     WorkspaceComputeConfigFromJSON,
     WorkspaceComputeConfigFromJSONTyped,
     WorkspaceComputeConfigToJSON,
+    WorkspaceComputeConfigToJSONTyped,
 } from './WorkspaceComputeConfig';
 
 /**
@@ -79,17 +81,15 @@ export interface WorkspaceEnvironment {
 /**
  * Check if a given object implements the WorkspaceEnvironment interface.
  */
-export function instanceOfWorkspaceEnvironment(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "id" in value;
-    isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "description" in value;
-    isInstance = isInstance && "category" in value;
-    isInstance = isInstance && "defaultComputeConfig" in value;
-    isInstance = isInstance && "versions" in value;
-    isInstance = isInstance && "owner" in value;
-
-    return isInstance;
+export function instanceOfWorkspaceEnvironment(value: object): value is WorkspaceEnvironment {
+    if (!('id' in value) || value['id'] === undefined) return false;
+    if (!('name' in value) || value['name'] === undefined) return false;
+    if (!('description' in value) || value['description'] === undefined) return false;
+    if (!('category' in value) || value['category'] === undefined) return false;
+    if (!('defaultComputeConfig' in value) || value['defaultComputeConfig'] === undefined) return false;
+    if (!('versions' in value) || value['versions'] === undefined) return false;
+    if (!('owner' in value) || value['owner'] === undefined) return false;
+    return true;
 }
 
 export function WorkspaceEnvironmentFromJSON(json: any): WorkspaceEnvironment {
@@ -97,7 +97,7 @@ export function WorkspaceEnvironmentFromJSON(json: any): WorkspaceEnvironment {
 }
 
 export function WorkspaceEnvironmentFromJSONTyped(json: any, ignoreDiscriminator: boolean): WorkspaceEnvironment {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -112,22 +112,24 @@ export function WorkspaceEnvironmentFromJSONTyped(json: any, ignoreDiscriminator
     };
 }
 
-export function WorkspaceEnvironmentToJSON(value?: WorkspaceEnvironment | null): any {
-    if (value === undefined) {
-        return undefined;
+export function WorkspaceEnvironmentToJSON(json: any): WorkspaceEnvironment {
+    return WorkspaceEnvironmentToJSONTyped(json, false);
+}
+
+export function WorkspaceEnvironmentToJSONTyped(value?: WorkspaceEnvironment | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'id': value.id,
-        'name': value.name,
-        'description': value.description,
-        'category': value.category,
-        'defaultComputeConfig': WorkspaceComputeConfigToJSON(value.defaultComputeConfig),
-        'versions': ((value.versions as Array<any>).map(VersionSpecificationToJSON)),
-        'owner': value.owner,
+        'id': value['id'],
+        'name': value['name'],
+        'description': value['description'],
+        'category': value['category'],
+        'defaultComputeConfig': WorkspaceComputeConfigToJSON(value['defaultComputeConfig']),
+        'versions': ((value['versions'] as Array<any>).map(VersionSpecificationToJSON)),
+        'owner': value['owner'],
     };
 }
 

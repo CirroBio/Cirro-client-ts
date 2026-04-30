@@ -23,6 +23,17 @@ export enum GovernanceTrainingVerification {
 }
 
 
+export function instanceOfGovernanceTrainingVerification(value: any): boolean {
+    for (const key in GovernanceTrainingVerification) {
+        if (Object.prototype.hasOwnProperty.call(GovernanceTrainingVerification, key)) {
+            if (GovernanceTrainingVerification[key as keyof typeof GovernanceTrainingVerification] === value) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 export function GovernanceTrainingVerificationFromJSON(json: any): GovernanceTrainingVerification {
     return GovernanceTrainingVerificationFromJSONTyped(json, false);
 }
@@ -33,5 +44,9 @@ export function GovernanceTrainingVerificationFromJSONTyped(json: any, ignoreDis
 
 export function GovernanceTrainingVerificationToJSON(value?: GovernanceTrainingVerification | null): any {
     return value as any;
+}
+
+export function GovernanceTrainingVerificationToJSONTyped(value: any, ignoreDiscriminator: boolean): GovernanceTrainingVerification {
+    return value as GovernanceTrainingVerification;
 }
 

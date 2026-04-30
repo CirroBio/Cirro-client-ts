@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -42,10 +42,8 @@ export interface ProcessDocumentation {
 /**
  * Check if a given object implements the ProcessDocumentation interface.
  */
-export function instanceOfProcessDocumentation(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfProcessDocumentation(value: object): value is ProcessDocumentation {
+    return true;
 }
 
 export function ProcessDocumentationFromJSON(json: any): ProcessDocumentation {
@@ -53,29 +51,31 @@ export function ProcessDocumentationFromJSON(json: any): ProcessDocumentation {
 }
 
 export function ProcessDocumentationFromJSONTyped(json: any, ignoreDiscriminator: boolean): ProcessDocumentation {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'docsUri': !exists(json, 'docsUri') ? undefined : json['docsUri'],
-        'partialUri': !exists(json, 'partialUri') ? undefined : json['partialUri'],
-        'content': !exists(json, 'content') ? undefined : json['content'],
+        'docsUri': json['docsUri'] == null ? undefined : json['docsUri'],
+        'partialUri': json['partialUri'] == null ? undefined : json['partialUri'],
+        'content': json['content'] == null ? undefined : json['content'],
     };
 }
 
-export function ProcessDocumentationToJSON(value?: ProcessDocumentation | null): any {
-    if (value === undefined) {
-        return undefined;
+export function ProcessDocumentationToJSON(json: any): ProcessDocumentation {
+    return ProcessDocumentationToJSONTyped(json, false);
+}
+
+export function ProcessDocumentationToJSONTyped(value?: ProcessDocumentation | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'docsUri': value.docsUri,
-        'partialUri': value.partialUri,
-        'content': value.content,
+        'docsUri': value['docsUri'],
+        'partialUri': value['partialUri'],
+        'content': value['content'],
     };
 }
 

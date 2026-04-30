@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -36,12 +36,10 @@ export interface RowUpdate {
 /**
  * Check if a given object implements the RowUpdate interface.
  */
-export function instanceOfRowUpdate(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "rowId" in value;
-    isInstance = isInstance && "values" in value;
-
-    return isInstance;
+export function instanceOfRowUpdate(value: object): value is RowUpdate {
+    if (!('rowId' in value) || value['rowId'] === undefined) return false;
+    if (!('values' in value) || value['values'] === undefined) return false;
+    return true;
 }
 
 export function RowUpdateFromJSON(json: any): RowUpdate {
@@ -49,7 +47,7 @@ export function RowUpdateFromJSON(json: any): RowUpdate {
 }
 
 export function RowUpdateFromJSONTyped(json: any, ignoreDiscriminator: boolean): RowUpdate {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -59,17 +57,19 @@ export function RowUpdateFromJSONTyped(json: any, ignoreDiscriminator: boolean):
     };
 }
 
-export function RowUpdateToJSON(value?: RowUpdate | null): any {
-    if (value === undefined) {
-        return undefined;
+export function RowUpdateToJSON(json: any): RowUpdate {
+    return RowUpdateToJSONTyped(json, false);
+}
+
+export function RowUpdateToJSONTyped(value?: RowUpdate | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'rowId': value.rowId,
-        'values': value.values,
+        'rowId': value['rowId'],
+        'values': value['values'],
     };
 }
 

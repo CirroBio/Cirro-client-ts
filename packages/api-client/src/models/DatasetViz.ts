@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -48,10 +48,8 @@ export interface DatasetViz {
 /**
  * Check if a given object implements the DatasetViz interface.
  */
-export function instanceOfDatasetViz(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfDatasetViz(value: object): value is DatasetViz {
+    return true;
 }
 
 export function DatasetVizFromJSON(json: any): DatasetViz {
@@ -59,31 +57,33 @@ export function DatasetVizFromJSON(json: any): DatasetViz {
 }
 
 export function DatasetVizFromJSONTyped(json: any, ignoreDiscriminator: boolean): DatasetViz {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'path': !exists(json, 'path') ? undefined : json['path'],
-        'name': !exists(json, 'name') ? undefined : json['name'],
-        'desc': !exists(json, 'desc') ? undefined : json['desc'],
-        'type': !exists(json, 'type') ? undefined : json['type'],
+        'path': json['path'] == null ? undefined : json['path'],
+        'name': json['name'] == null ? undefined : json['name'],
+        'desc': json['desc'] == null ? undefined : json['desc'],
+        'type': json['type'] == null ? undefined : json['type'],
     };
 }
 
-export function DatasetVizToJSON(value?: DatasetViz | null): any {
-    if (value === undefined) {
-        return undefined;
+export function DatasetVizToJSON(json: any): DatasetViz {
+    return DatasetVizToJSONTyped(json, false);
+}
+
+export function DatasetVizToJSONTyped(value?: DatasetViz | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'path': value.path,
-        'name': value.name,
-        'desc': value.desc,
-        'type': value.type,
+        'path': value['path'],
+        'name': value['name'],
+        'desc': value['desc'],
+        'type': value['type'],
     };
 }
 

@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -48,14 +48,12 @@ export interface LoginProvider {
 /**
  * Check if a given object implements the LoginProvider interface.
  */
-export function instanceOfLoginProvider(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "id" in value;
-    isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "description" in value;
-    isInstance = isInstance && "logoUrl" in value;
-
-    return isInstance;
+export function instanceOfLoginProvider(value: object): value is LoginProvider {
+    if (!('id' in value) || value['id'] === undefined) return false;
+    if (!('name' in value) || value['name'] === undefined) return false;
+    if (!('description' in value) || value['description'] === undefined) return false;
+    if (!('logoUrl' in value) || value['logoUrl'] === undefined) return false;
+    return true;
 }
 
 export function LoginProviderFromJSON(json: any): LoginProvider {
@@ -63,7 +61,7 @@ export function LoginProviderFromJSON(json: any): LoginProvider {
 }
 
 export function LoginProviderFromJSONTyped(json: any, ignoreDiscriminator: boolean): LoginProvider {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -75,19 +73,21 @@ export function LoginProviderFromJSONTyped(json: any, ignoreDiscriminator: boole
     };
 }
 
-export function LoginProviderToJSON(value?: LoginProvider | null): any {
-    if (value === undefined) {
-        return undefined;
+export function LoginProviderToJSON(json: any): LoginProvider {
+    return LoginProviderToJSONTyped(json, false);
+}
+
+export function LoginProviderToJSONTyped(value?: LoginProvider | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'id': value.id,
-        'name': value.name,
-        'description': value.description,
-        'logoUrl': value.logoUrl,
+        'id': value['id'],
+        'name': value['name'],
+        'description': value['description'],
+        'logoUrl': value['logoUrl'],
     };
 }
 

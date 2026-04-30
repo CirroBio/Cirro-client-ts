@@ -24,6 +24,17 @@ export enum FileType {
 }
 
 
+export function instanceOfFileType(value: any): boolean {
+    for (const key in FileType) {
+        if (Object.prototype.hasOwnProperty.call(FileType, key)) {
+            if (FileType[key as keyof typeof FileType] === value) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 export function FileTypeFromJSON(json: any): FileType {
     return FileTypeFromJSONTyped(json, false);
 }
@@ -34,5 +45,9 @@ export function FileTypeFromJSONTyped(json: any, ignoreDiscriminator: boolean): 
 
 export function FileTypeToJSON(value?: FileType | null): any {
     return value as any;
+}
+
+export function FileTypeToJSONTyped(value: any, ignoreDiscriminator: boolean): FileType {
+    return value as FileType;
 }
 

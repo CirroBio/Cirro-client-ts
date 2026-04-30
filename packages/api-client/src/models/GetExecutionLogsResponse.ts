@@ -12,12 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { LogEntry } from './LogEntry';
 import {
     LogEntryFromJSON,
     LogEntryFromJSONTyped,
     LogEntryToJSON,
+    LogEntryToJSONTyped,
 } from './LogEntry';
 
 /**
@@ -37,11 +38,9 @@ export interface GetExecutionLogsResponse {
 /**
  * Check if a given object implements the GetExecutionLogsResponse interface.
  */
-export function instanceOfGetExecutionLogsResponse(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "events" in value;
-
-    return isInstance;
+export function instanceOfGetExecutionLogsResponse(value: object): value is GetExecutionLogsResponse {
+    if (!('events' in value) || value['events'] === undefined) return false;
+    return true;
 }
 
 export function GetExecutionLogsResponseFromJSON(json: any): GetExecutionLogsResponse {
@@ -49,7 +48,7 @@ export function GetExecutionLogsResponseFromJSON(json: any): GetExecutionLogsRes
 }
 
 export function GetExecutionLogsResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): GetExecutionLogsResponse {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -58,16 +57,18 @@ export function GetExecutionLogsResponseFromJSONTyped(json: any, ignoreDiscrimin
     };
 }
 
-export function GetExecutionLogsResponseToJSON(value?: GetExecutionLogsResponse | null): any {
-    if (value === undefined) {
-        return undefined;
+export function GetExecutionLogsResponseToJSON(json: any): GetExecutionLogsResponse {
+    return GetExecutionLogsResponseToJSONTyped(json, false);
+}
+
+export function GetExecutionLogsResponseToJSONTyped(value?: GetExecutionLogsResponse | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'events': ((value.events as Array<any>).map(LogEntryToJSON)),
+        'events': ((value['events'] as Array<any>).map(LogEntryToJSON)),
     };
 }
 

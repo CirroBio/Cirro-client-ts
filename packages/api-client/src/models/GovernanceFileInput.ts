@@ -12,12 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { GovernanceFileType } from './GovernanceFileType';
 import {
     GovernanceFileTypeFromJSON,
     GovernanceFileTypeFromJSONTyped,
     GovernanceFileTypeToJSON,
+    GovernanceFileTypeToJSONTyped,
 } from './GovernanceFileType';
 
 /**
@@ -52,17 +53,17 @@ export interface GovernanceFileInput {
     type: GovernanceFileType;
 }
 
+
+
 /**
  * Check if a given object implements the GovernanceFileInput interface.
  */
-export function instanceOfGovernanceFileInput(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "description" in value;
-    isInstance = isInstance && "src" in value;
-    isInstance = isInstance && "type" in value;
-
-    return isInstance;
+export function instanceOfGovernanceFileInput(value: object): value is GovernanceFileInput {
+    if (!('name' in value) || value['name'] === undefined) return false;
+    if (!('description' in value) || value['description'] === undefined) return false;
+    if (!('src' in value) || value['src'] === undefined) return false;
+    if (!('type' in value) || value['type'] === undefined) return false;
+    return true;
 }
 
 export function GovernanceFileInputFromJSON(json: any): GovernanceFileInput {
@@ -70,7 +71,7 @@ export function GovernanceFileInputFromJSON(json: any): GovernanceFileInput {
 }
 
 export function GovernanceFileInputFromJSONTyped(json: any, ignoreDiscriminator: boolean): GovernanceFileInput {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -82,19 +83,21 @@ export function GovernanceFileInputFromJSONTyped(json: any, ignoreDiscriminator:
     };
 }
 
-export function GovernanceFileInputToJSON(value?: GovernanceFileInput | null): any {
-    if (value === undefined) {
-        return undefined;
+export function GovernanceFileInputToJSON(json: any): GovernanceFileInput {
+    return GovernanceFileInputToJSONTyped(json, false);
+}
+
+export function GovernanceFileInputToJSONTyped(value?: GovernanceFileInput | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'name': value.name,
-        'description': value.description,
-        'src': value.src,
-        'type': GovernanceFileTypeToJSON(value.type),
+        'name': value['name'],
+        'description': value['description'],
+        'src': value['src'],
+        'type': GovernanceFileTypeToJSON(value['type']),
     };
 }
 

@@ -28,6 +28,17 @@ export enum ProjectAccessType {
 }
 
 
+export function instanceOfProjectAccessType(value: any): boolean {
+    for (const key in ProjectAccessType) {
+        if (Object.prototype.hasOwnProperty.call(ProjectAccessType, key)) {
+            if (ProjectAccessType[key as keyof typeof ProjectAccessType] === value) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 export function ProjectAccessTypeFromJSON(json: any): ProjectAccessType {
     return ProjectAccessTypeFromJSONTyped(json, false);
 }
@@ -38,5 +49,9 @@ export function ProjectAccessTypeFromJSONTyped(json: any, ignoreDiscriminator: b
 
 export function ProjectAccessTypeToJSON(value?: ProjectAccessType | null): any {
     return value as any;
+}
+
+export function ProjectAccessTypeToJSONTyped(value: any, ignoreDiscriminator: boolean): ProjectAccessType {
+    return value as ProjectAccessType;
 }
 

@@ -12,12 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { Dataset } from './Dataset';
 import {
     DatasetFromJSON,
     DatasetFromJSONTyped,
     DatasetToJSON,
+    DatasetToJSONTyped,
 } from './Dataset';
 
 /**
@@ -43,12 +44,10 @@ export interface PaginatedResponseDatasetListDto {
 /**
  * Check if a given object implements the PaginatedResponseDatasetListDto interface.
  */
-export function instanceOfPaginatedResponseDatasetListDto(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "data" in value;
-    isInstance = isInstance && "nextToken" in value;
-
-    return isInstance;
+export function instanceOfPaginatedResponseDatasetListDto(value: object): value is PaginatedResponseDatasetListDto {
+    if (!('data' in value) || value['data'] === undefined) return false;
+    if (!('nextToken' in value) || value['nextToken'] === undefined) return false;
+    return true;
 }
 
 export function PaginatedResponseDatasetListDtoFromJSON(json: any): PaginatedResponseDatasetListDto {
@@ -56,7 +55,7 @@ export function PaginatedResponseDatasetListDtoFromJSON(json: any): PaginatedRes
 }
 
 export function PaginatedResponseDatasetListDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): PaginatedResponseDatasetListDto {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -66,17 +65,19 @@ export function PaginatedResponseDatasetListDtoFromJSONTyped(json: any, ignoreDi
     };
 }
 
-export function PaginatedResponseDatasetListDtoToJSON(value?: PaginatedResponseDatasetListDto | null): any {
-    if (value === undefined) {
-        return undefined;
+export function PaginatedResponseDatasetListDtoToJSON(json: any): PaginatedResponseDatasetListDto {
+    return PaginatedResponseDatasetListDtoToJSONTyped(json, false);
+}
+
+export function PaginatedResponseDatasetListDtoToJSONTyped(value?: PaginatedResponseDatasetListDto | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'data': ((value.data as Array<any>).map(DatasetToJSON)),
-        'nextToken': value.nextToken,
+        'data': ((value['data'] as Array<any>).map(DatasetToJSON)),
+        'nextToken': value['nextToken'],
     };
 }
 

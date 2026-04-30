@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -42,13 +42,11 @@ export interface MoveDatasetResponse {
 /**
  * Check if a given object implements the MoveDatasetResponse interface.
  */
-export function instanceOfMoveDatasetResponse(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "s3CopyCommand" in value;
-    isInstance = isInstance && "s3DeleteCommand" in value;
-    isInstance = isInstance && "samplesNotMoved" in value;
-
-    return isInstance;
+export function instanceOfMoveDatasetResponse(value: object): value is MoveDatasetResponse {
+    if (!('s3CopyCommand' in value) || value['s3CopyCommand'] === undefined) return false;
+    if (!('s3DeleteCommand' in value) || value['s3DeleteCommand'] === undefined) return false;
+    if (!('samplesNotMoved' in value) || value['samplesNotMoved'] === undefined) return false;
+    return true;
 }
 
 export function MoveDatasetResponseFromJSON(json: any): MoveDatasetResponse {
@@ -56,7 +54,7 @@ export function MoveDatasetResponseFromJSON(json: any): MoveDatasetResponse {
 }
 
 export function MoveDatasetResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): MoveDatasetResponse {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -67,18 +65,20 @@ export function MoveDatasetResponseFromJSONTyped(json: any, ignoreDiscriminator:
     };
 }
 
-export function MoveDatasetResponseToJSON(value?: MoveDatasetResponse | null): any {
-    if (value === undefined) {
-        return undefined;
+export function MoveDatasetResponseToJSON(json: any): MoveDatasetResponse {
+    return MoveDatasetResponseToJSONTyped(json, false);
+}
+
+export function MoveDatasetResponseToJSONTyped(value?: MoveDatasetResponse | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        's3CopyCommand': value.s3CopyCommand,
-        's3DeleteCommand': value.s3DeleteCommand,
-        'samplesNotMoved': value.samplesNotMoved,
+        's3CopyCommand': value['s3CopyCommand'],
+        's3DeleteCommand': value['s3DeleteCommand'],
+        'samplesNotMoved': value['samplesNotMoved'],
     };
 }
 

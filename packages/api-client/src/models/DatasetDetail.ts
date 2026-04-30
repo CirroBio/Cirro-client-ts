@@ -12,25 +12,28 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
-import type { NamedItem } from './NamedItem';
-import {
-    NamedItemFromJSON,
-    NamedItemFromJSONTyped,
-    NamedItemToJSON,
-} from './NamedItem';
+import { mapValues } from '../runtime';
 import type { Status } from './Status';
 import {
     StatusFromJSON,
     StatusFromJSONTyped,
     StatusToJSON,
+    StatusToJSONTyped,
 } from './Status';
 import type { Tag } from './Tag';
 import {
     TagFromJSON,
     TagFromJSONTyped,
     TagToJSON,
+    TagToJSONTyped,
 } from './Tag';
+import type { NamedItem } from './NamedItem';
+import {
+    NamedItemFromJSON,
+    NamedItemFromJSONTyped,
+    NamedItemToJSON,
+    NamedItemToJSONTyped,
+} from './NamedItem';
 
 /**
  * 
@@ -39,23 +42,23 @@ import {
  */
 export interface DatasetDetail {
     /**
-     * 
+     * Dataset ID
      * @type {string}
      * @memberof DatasetDetail
      */
     id: string;
     /**
-     * 
+     * Dataset name
      * @type {string}
      * @memberof DatasetDetail
      */
     name: string;
     /**
-     * 
+     * Dataset description
      * @type {string}
      * @memberof DatasetDetail
      */
-    description: string;
+    description?: string;
     /**
      * 
      * @type {string}
@@ -63,13 +66,13 @@ export interface DatasetDetail {
      */
     s3: string;
     /**
-     * 
+     * Process ID
      * @type {string}
      * @memberof DatasetDetail
      */
     processId: string;
     /**
-     * 
+     * Project ID
      * @type {string}
      * @memberof DatasetDetail
      */
@@ -81,7 +84,7 @@ export interface DatasetDetail {
      */
     originatingProjectId?: string;
     /**
-     * 
+     * Source dataset IDs
      * @type {Array<string>}
      * @memberof DatasetDetail
      */
@@ -105,7 +108,7 @@ export interface DatasetDetail {
      */
     sourceSampleFilesMap: { [key: string]: Array<string>; };
     /**
-     * 
+     * Dataset status
      * @type {Status}
      * @memberof DatasetDetail
      */
@@ -117,11 +120,17 @@ export interface DatasetDetail {
      */
     statusMessage: string;
     /**
-     * 
+     * Tags
      * @type {Array<Tag>}
      * @memberof DatasetDetail
      */
     tags: Array<Tag>;
+    /**
+     * Folder(s) that contain the dataset
+     * @type {Array<string>}
+     * @memberof DatasetDetail
+     */
+    folders: Array<string>;
     /**
      * 
      * @type {{ [key: string]: any; }}
@@ -159,51 +168,51 @@ export interface DatasetDetail {
      */
     fileCount?: number | null;
     /**
-     * 
+     * User who created the dataset
      * @type {string}
      * @memberof DatasetDetail
      */
     createdBy: string;
     /**
-     * 
+     * Timestamp when the dataset was created
      * @type {Date}
      * @memberof DatasetDetail
      */
     createdAt: Date;
     /**
-     * 
+     * Timestamp when the dataset was last updated
      * @type {Date}
      * @memberof DatasetDetail
      */
     updatedAt: Date;
 }
 
+
+
 /**
  * Check if a given object implements the DatasetDetail interface.
  */
-export function instanceOfDatasetDetail(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "id" in value;
-    isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "description" in value;
-    isInstance = isInstance && "s3" in value;
-    isInstance = isInstance && "processId" in value;
-    isInstance = isInstance && "projectId" in value;
-    isInstance = isInstance && "sourceDatasetIds" in value;
-    isInstance = isInstance && "sourceDatasets" in value;
-    isInstance = isInstance && "sourceSampleIds" in value;
-    isInstance = isInstance && "sourceSampleFilesMap" in value;
-    isInstance = isInstance && "status" in value;
-    isInstance = isInstance && "statusMessage" in value;
-    isInstance = isInstance && "tags" in value;
-    isInstance = isInstance && "params" in value;
-    isInstance = isInstance && "info" in value;
-    isInstance = isInstance && "isViewRestricted" in value;
-    isInstance = isInstance && "createdBy" in value;
-    isInstance = isInstance && "createdAt" in value;
-    isInstance = isInstance && "updatedAt" in value;
-
-    return isInstance;
+export function instanceOfDatasetDetail(value: object): value is DatasetDetail {
+    if (!('id' in value) || value['id'] === undefined) return false;
+    if (!('name' in value) || value['name'] === undefined) return false;
+    if (!('s3' in value) || value['s3'] === undefined) return false;
+    if (!('processId' in value) || value['processId'] === undefined) return false;
+    if (!('projectId' in value) || value['projectId'] === undefined) return false;
+    if (!('sourceDatasetIds' in value) || value['sourceDatasetIds'] === undefined) return false;
+    if (!('sourceDatasets' in value) || value['sourceDatasets'] === undefined) return false;
+    if (!('sourceSampleIds' in value) || value['sourceSampleIds'] === undefined) return false;
+    if (!('sourceSampleFilesMap' in value) || value['sourceSampleFilesMap'] === undefined) return false;
+    if (!('status' in value) || value['status'] === undefined) return false;
+    if (!('statusMessage' in value) || value['statusMessage'] === undefined) return false;
+    if (!('tags' in value) || value['tags'] === undefined) return false;
+    if (!('folders' in value) || value['folders'] === undefined) return false;
+    if (!('params' in value) || value['params'] === undefined) return false;
+    if (!('info' in value) || value['info'] === undefined) return false;
+    if (!('isViewRestricted' in value) || value['isViewRestricted'] === undefined) return false;
+    if (!('createdBy' in value) || value['createdBy'] === undefined) return false;
+    if (!('createdAt' in value) || value['createdAt'] === undefined) return false;
+    if (!('updatedAt' in value) || value['updatedAt'] === undefined) return false;
+    return true;
 }
 
 export function DatasetDetailFromJSON(json: any): DatasetDetail {
@@ -211,18 +220,18 @@ export function DatasetDetailFromJSON(json: any): DatasetDetail {
 }
 
 export function DatasetDetailFromJSONTyped(json: any, ignoreDiscriminator: boolean): DatasetDetail {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
         'id': json['id'],
         'name': json['name'],
-        'description': json['description'],
+        'description': json['description'] == null ? undefined : json['description'],
         's3': json['s3'],
         'processId': json['processId'],
         'projectId': json['projectId'],
-        'originatingProjectId': !exists(json, 'originatingProjectId') ? undefined : json['originatingProjectId'],
+        'originatingProjectId': json['originatingProjectId'] == null ? undefined : json['originatingProjectId'],
         'sourceDatasetIds': json['sourceDatasetIds'],
         'sourceDatasets': ((json['sourceDatasets'] as Array<any>).map(NamedItemFromJSON)),
         'sourceSampleIds': json['sourceSampleIds'],
@@ -230,50 +239,54 @@ export function DatasetDetailFromJSONTyped(json: any, ignoreDiscriminator: boole
         'status': StatusFromJSON(json['status']),
         'statusMessage': json['statusMessage'],
         'tags': ((json['tags'] as Array<any>).map(TagFromJSON)),
+        'folders': json['folders'],
         'params': json['params'],
         'info': json['info'],
-        'share': !exists(json, 'share') ? undefined : NamedItemFromJSON(json['share']),
+        'share': json['share'] == null ? undefined : NamedItemFromJSON(json['share']),
         'isViewRestricted': json['isViewRestricted'],
-        'totalSizeBytes': !exists(json, 'totalSizeBytes') ? undefined : json['totalSizeBytes'],
-        'fileCount': !exists(json, 'fileCount') ? undefined : json['fileCount'],
+        'totalSizeBytes': json['totalSizeBytes'] == null ? undefined : json['totalSizeBytes'],
+        'fileCount': json['fileCount'] == null ? undefined : json['fileCount'],
         'createdBy': json['createdBy'],
         'createdAt': (new Date(json['createdAt'])),
         'updatedAt': (new Date(json['updatedAt'])),
     };
 }
 
-export function DatasetDetailToJSON(value?: DatasetDetail | null): any {
-    if (value === undefined) {
-        return undefined;
+export function DatasetDetailToJSON(json: any): DatasetDetail {
+    return DatasetDetailToJSONTyped(json, false);
+}
+
+export function DatasetDetailToJSONTyped(value?: DatasetDetail | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'id': value.id,
-        'name': value.name,
-        'description': value.description,
-        's3': value.s3,
-        'processId': value.processId,
-        'projectId': value.projectId,
-        'originatingProjectId': value.originatingProjectId,
-        'sourceDatasetIds': value.sourceDatasetIds,
-        'sourceDatasets': ((value.sourceDatasets as Array<any>).map(NamedItemToJSON)),
-        'sourceSampleIds': value.sourceSampleIds,
-        'sourceSampleFilesMap': value.sourceSampleFilesMap,
-        'status': StatusToJSON(value.status),
-        'statusMessage': value.statusMessage,
-        'tags': ((value.tags as Array<any>).map(TagToJSON)),
-        'params': value.params,
-        'info': value.info,
-        'share': NamedItemToJSON(value.share),
-        'isViewRestricted': value.isViewRestricted,
-        'totalSizeBytes': value.totalSizeBytes,
-        'fileCount': value.fileCount,
-        'createdBy': value.createdBy,
-        'createdAt': (value.createdAt.toISOString()),
-        'updatedAt': (value.updatedAt.toISOString()),
+        'id': value['id'],
+        'name': value['name'],
+        'description': value['description'],
+        's3': value['s3'],
+        'processId': value['processId'],
+        'projectId': value['projectId'],
+        'originatingProjectId': value['originatingProjectId'],
+        'sourceDatasetIds': value['sourceDatasetIds'],
+        'sourceDatasets': ((value['sourceDatasets'] as Array<any>).map(NamedItemToJSON)),
+        'sourceSampleIds': value['sourceSampleIds'],
+        'sourceSampleFilesMap': value['sourceSampleFilesMap'],
+        'status': StatusToJSON(value['status']),
+        'statusMessage': value['statusMessage'],
+        'tags': ((value['tags'] as Array<any>).map(TagToJSON)),
+        'folders': value['folders'],
+        'params': value['params'],
+        'info': value['info'],
+        'share': NamedItemToJSON(value['share']),
+        'isViewRestricted': value['isViewRestricted'],
+        'totalSizeBytes': value['totalSizeBytes'],
+        'fileCount': value['fileCount'],
+        'createdBy': value['createdBy'],
+        'createdAt': value['createdAt'].toISOString(),
+        'updatedAt': value['updatedAt'].toISOString(),
     };
 }
 

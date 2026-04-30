@@ -12,31 +12,35 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
-import type { Artifact } from './Artifact';
+import { mapValues } from '../runtime';
+import type { Table } from './Table';
 import {
-    ArtifactFromJSON,
-    ArtifactFromJSONTyped,
-    ArtifactToJSON,
-} from './Artifact';
+    TableFromJSON,
+    TableFromJSONTyped,
+    TableToJSON,
+    TableToJSONTyped,
+} from './Table';
 import type { DatasetViz } from './DatasetViz';
 import {
     DatasetVizFromJSON,
     DatasetVizFromJSONTyped,
     DatasetVizToJSON,
+    DatasetVizToJSONTyped,
 } from './DatasetViz';
 import type { FileEntry } from './FileEntry';
 import {
     FileEntryFromJSON,
     FileEntryFromJSONTyped,
     FileEntryToJSON,
+    FileEntryToJSONTyped,
 } from './FileEntry';
-import type { Table } from './Table';
+import type { Artifact } from './Artifact';
 import {
-    TableFromJSON,
-    TableFromJSONTyped,
-    TableToJSON,
-} from './Table';
+    ArtifactFromJSON,
+    ArtifactFromJSONTyped,
+    ArtifactToJSON,
+    ArtifactToJSONTyped,
+} from './Artifact';
 
 /**
  * 
@@ -85,10 +89,8 @@ export interface DatasetAssetsManifest {
 /**
  * Check if a given object implements the DatasetAssetsManifest interface.
  */
-export function instanceOfDatasetAssetsManifest(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfDatasetAssetsManifest(value: object): value is DatasetAssetsManifest {
+    return true;
 }
 
 export function DatasetAssetsManifestFromJSON(json: any): DatasetAssetsManifest {
@@ -96,35 +98,37 @@ export function DatasetAssetsManifestFromJSON(json: any): DatasetAssetsManifest 
 }
 
 export function DatasetAssetsManifestFromJSONTyped(json: any, ignoreDiscriminator: boolean): DatasetAssetsManifest {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'domain': !exists(json, 'domain') ? undefined : json['domain'],
-        'files': !exists(json, 'files') ? undefined : ((json['files'] as Array<any>).map(FileEntryFromJSON)),
-        'totalFiles': !exists(json, 'totalFiles') ? undefined : json['totalFiles'],
-        'viz': !exists(json, 'viz') ? undefined : ((json['viz'] as Array<any>).map(DatasetVizFromJSON)),
-        'tables': !exists(json, 'tables') ? undefined : ((json['tables'] as Array<any>).map(TableFromJSON)),
-        'artifacts': !exists(json, 'artifacts') ? undefined : ((json['artifacts'] as Array<any>).map(ArtifactFromJSON)),
+        'domain': json['domain'] == null ? undefined : json['domain'],
+        'files': json['files'] == null ? undefined : ((json['files'] as Array<any>).map(FileEntryFromJSON)),
+        'totalFiles': json['totalFiles'] == null ? undefined : json['totalFiles'],
+        'viz': json['viz'] == null ? undefined : ((json['viz'] as Array<any>).map(DatasetVizFromJSON)),
+        'tables': json['tables'] == null ? undefined : ((json['tables'] as Array<any>).map(TableFromJSON)),
+        'artifacts': json['artifacts'] == null ? undefined : ((json['artifacts'] as Array<any>).map(ArtifactFromJSON)),
     };
 }
 
-export function DatasetAssetsManifestToJSON(value?: DatasetAssetsManifest | null): any {
-    if (value === undefined) {
-        return undefined;
+export function DatasetAssetsManifestToJSON(json: any): DatasetAssetsManifest {
+    return DatasetAssetsManifestToJSONTyped(json, false);
+}
+
+export function DatasetAssetsManifestToJSONTyped(value?: DatasetAssetsManifest | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'domain': value.domain,
-        'files': value.files === undefined ? undefined : ((value.files as Array<any>).map(FileEntryToJSON)),
-        'totalFiles': value.totalFiles,
-        'viz': value.viz === undefined ? undefined : ((value.viz as Array<any>).map(DatasetVizToJSON)),
-        'tables': value.tables === undefined ? undefined : ((value.tables as Array<any>).map(TableToJSON)),
-        'artifacts': value.artifacts === undefined ? undefined : ((value.artifacts as Array<any>).map(ArtifactToJSON)),
+        'domain': value['domain'],
+        'files': value['files'] == null ? undefined : ((value['files'] as Array<any>).map(FileEntryToJSON)),
+        'totalFiles': value['totalFiles'],
+        'viz': value['viz'] == null ? undefined : ((value['viz'] as Array<any>).map(DatasetVizToJSON)),
+        'tables': value['tables'] == null ? undefined : ((value['tables'] as Array<any>).map(TableToJSON)),
+        'artifacts': value['artifacts'] == null ? undefined : ((value['artifacts'] as Array<any>).map(ArtifactToJSON)),
     };
 }
 

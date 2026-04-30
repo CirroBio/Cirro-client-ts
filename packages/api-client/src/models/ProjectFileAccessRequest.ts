@@ -12,12 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { ProjectAccessType } from './ProjectAccessType';
 import {
     ProjectAccessTypeFromJSON,
     ProjectAccessTypeFromJSONTyped,
     ProjectAccessTypeToJSON,
+    ProjectAccessTypeToJSONTyped,
 } from './ProjectAccessType';
 
 /**
@@ -52,14 +53,14 @@ export interface ProjectFileAccessRequest {
     tokenLifetimeHours?: number | null;
 }
 
+
+
 /**
  * Check if a given object implements the ProjectFileAccessRequest interface.
  */
-export function instanceOfProjectFileAccessRequest(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "accessType" in value;
-
-    return isInstance;
+export function instanceOfProjectFileAccessRequest(value: object): value is ProjectFileAccessRequest {
+    if (!('accessType' in value) || value['accessType'] === undefined) return false;
+    return true;
 }
 
 export function ProjectFileAccessRequestFromJSON(json: any): ProjectFileAccessRequest {
@@ -67,31 +68,33 @@ export function ProjectFileAccessRequestFromJSON(json: any): ProjectFileAccessRe
 }
 
 export function ProjectFileAccessRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): ProjectFileAccessRequest {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
         'accessType': ProjectAccessTypeFromJSON(json['accessType']),
-        'datasetId': !exists(json, 'datasetId') ? undefined : json['datasetId'],
-        'sheetId': !exists(json, 'sheetId') ? undefined : json['sheetId'],
-        'tokenLifetimeHours': !exists(json, 'tokenLifetimeHours') ? undefined : json['tokenLifetimeHours'],
+        'datasetId': json['datasetId'] == null ? undefined : json['datasetId'],
+        'sheetId': json['sheetId'] == null ? undefined : json['sheetId'],
+        'tokenLifetimeHours': json['tokenLifetimeHours'] == null ? undefined : json['tokenLifetimeHours'],
     };
 }
 
-export function ProjectFileAccessRequestToJSON(value?: ProjectFileAccessRequest | null): any {
-    if (value === undefined) {
-        return undefined;
+export function ProjectFileAccessRequestToJSON(json: any): ProjectFileAccessRequest {
+    return ProjectFileAccessRequestToJSONTyped(json, false);
+}
+
+export function ProjectFileAccessRequestToJSONTyped(value?: ProjectFileAccessRequest | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'accessType': ProjectAccessTypeToJSON(value.accessType),
-        'datasetId': value.datasetId,
-        'sheetId': value.sheetId,
-        'tokenLifetimeHours': value.tokenLifetimeHours,
+        'accessType': ProjectAccessTypeToJSON(value['accessType']),
+        'datasetId': value['datasetId'],
+        'sheetId': value['sheetId'],
+        'tokenLifetimeHours': value['tokenLifetimeHours'],
     };
 }
 

@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -36,12 +36,10 @@ export interface ValidateFileRequirementsRequest {
 /**
  * Check if a given object implements the ValidateFileRequirementsRequest interface.
  */
-export function instanceOfValidateFileRequirementsRequest(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "fileNames" in value;
-    isInstance = isInstance && "sampleSheet" in value;
-
-    return isInstance;
+export function instanceOfValidateFileRequirementsRequest(value: object): value is ValidateFileRequirementsRequest {
+    if (!('fileNames' in value) || value['fileNames'] === undefined) return false;
+    if (!('sampleSheet' in value) || value['sampleSheet'] === undefined) return false;
+    return true;
 }
 
 export function ValidateFileRequirementsRequestFromJSON(json: any): ValidateFileRequirementsRequest {
@@ -49,7 +47,7 @@ export function ValidateFileRequirementsRequestFromJSON(json: any): ValidateFile
 }
 
 export function ValidateFileRequirementsRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): ValidateFileRequirementsRequest {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -59,17 +57,19 @@ export function ValidateFileRequirementsRequestFromJSONTyped(json: any, ignoreDi
     };
 }
 
-export function ValidateFileRequirementsRequestToJSON(value?: ValidateFileRequirementsRequest | null): any {
-    if (value === undefined) {
-        return undefined;
+export function ValidateFileRequirementsRequestToJSON(json: any): ValidateFileRequirementsRequest {
+    return ValidateFileRequirementsRequestToJSONTyped(json, false);
+}
+
+export function ValidateFileRequirementsRequestToJSONTyped(value?: ValidateFileRequirementsRequest | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'fileNames': value.fileNames,
-        'sampleSheet': value.sampleSheet,
+        'fileNames': value['fileNames'],
+        'sampleSheet': value['sampleSheet'],
     };
 }
 

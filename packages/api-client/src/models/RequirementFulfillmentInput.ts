@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -36,10 +36,8 @@ export interface RequirementFulfillmentInput {
 /**
  * Check if a given object implements the RequirementFulfillmentInput interface.
  */
-export function instanceOfRequirementFulfillmentInput(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfRequirementFulfillmentInput(value: object): value is RequirementFulfillmentInput {
+    return true;
 }
 
 export function RequirementFulfillmentInputFromJSON(json: any): RequirementFulfillmentInput {
@@ -47,27 +45,29 @@ export function RequirementFulfillmentInputFromJSON(json: any): RequirementFulfi
 }
 
 export function RequirementFulfillmentInputFromJSONTyped(json: any, ignoreDiscriminator: boolean): RequirementFulfillmentInput {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'file': !exists(json, 'file') ? undefined : json['file'],
-        'completedOn': !exists(json, 'completedOn') ? undefined : (json['completedOn'] === null ? null : new Date(json['completedOn'])),
+        'file': json['file'] == null ? undefined : json['file'],
+        'completedOn': json['completedOn'] == null ? undefined : (new Date(json['completedOn'])),
     };
 }
 
-export function RequirementFulfillmentInputToJSON(value?: RequirementFulfillmentInput | null): any {
-    if (value === undefined) {
-        return undefined;
+export function RequirementFulfillmentInputToJSON(json: any): RequirementFulfillmentInput {
+    return RequirementFulfillmentInputToJSONTyped(json, false);
+}
+
+export function RequirementFulfillmentInputToJSONTyped(value?: RequirementFulfillmentInput | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'file': value.file,
-        'completedOn': value.completedOn === undefined ? undefined : (value.completedOn === null ? null : value.completedOn.toISOString()),
+        'file': value['file'],
+        'completedOn': value['completedOn'] == null ? value['completedOn'] : value['completedOn'].toISOString(),
     };
 }
 

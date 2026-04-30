@@ -12,12 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { ProjectRole } from './ProjectRole';
 import {
     ProjectRoleFromJSON,
     ProjectRoleFromJSONTyped,
     ProjectRoleToJSON,
+    ProjectRoleToJSONTyped,
 } from './ProjectRole';
 
 /**
@@ -34,14 +35,14 @@ export interface ApproveProjectAccessRequest {
     role: ProjectRole;
 }
 
+
+
 /**
  * Check if a given object implements the ApproveProjectAccessRequest interface.
  */
-export function instanceOfApproveProjectAccessRequest(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "role" in value;
-
-    return isInstance;
+export function instanceOfApproveProjectAccessRequest(value: object): value is ApproveProjectAccessRequest {
+    if (!('role' in value) || value['role'] === undefined) return false;
+    return true;
 }
 
 export function ApproveProjectAccessRequestFromJSON(json: any): ApproveProjectAccessRequest {
@@ -49,7 +50,7 @@ export function ApproveProjectAccessRequestFromJSON(json: any): ApproveProjectAc
 }
 
 export function ApproveProjectAccessRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): ApproveProjectAccessRequest {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -58,16 +59,18 @@ export function ApproveProjectAccessRequestFromJSONTyped(json: any, ignoreDiscri
     };
 }
 
-export function ApproveProjectAccessRequestToJSON(value?: ApproveProjectAccessRequest | null): any {
-    if (value === undefined) {
-        return undefined;
+export function ApproveProjectAccessRequestToJSON(json: any): ApproveProjectAccessRequest {
+    return ApproveProjectAccessRequestToJSONTyped(json, false);
+}
+
+export function ApproveProjectAccessRequestToJSONTyped(value?: ApproveProjectAccessRequest | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'role': ProjectRoleToJSON(value.role),
+        'role': ProjectRoleToJSON(value['role']),
     };
 }
 

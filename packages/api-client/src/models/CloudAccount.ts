@@ -12,12 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { CloudAccountType } from './CloudAccountType';
 import {
     CloudAccountTypeFromJSON,
     CloudAccountTypeFromJSONTyped,
     CloudAccountTypeToJSON,
+    CloudAccountTypeToJSONTyped,
 } from './CloudAccountType';
 
 /**
@@ -52,14 +53,14 @@ export interface CloudAccount {
     accountType: CloudAccountType;
 }
 
+
+
 /**
  * Check if a given object implements the CloudAccount interface.
  */
-export function instanceOfCloudAccount(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "accountType" in value;
-
-    return isInstance;
+export function instanceOfCloudAccount(value: object): value is CloudAccount {
+    if (!('accountType' in value) || value['accountType'] === undefined) return false;
+    return true;
 }
 
 export function CloudAccountFromJSON(json: any): CloudAccount {
@@ -67,31 +68,33 @@ export function CloudAccountFromJSON(json: any): CloudAccount {
 }
 
 export function CloudAccountFromJSONTyped(json: any, ignoreDiscriminator: boolean): CloudAccount {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'accountId': !exists(json, 'accountId') ? undefined : json['accountId'],
-        'accountName': !exists(json, 'accountName') ? undefined : json['accountName'],
-        'regionName': !exists(json, 'regionName') ? undefined : json['regionName'],
+        'accountId': json['accountId'] == null ? undefined : json['accountId'],
+        'accountName': json['accountName'] == null ? undefined : json['accountName'],
+        'regionName': json['regionName'] == null ? undefined : json['regionName'],
         'accountType': CloudAccountTypeFromJSON(json['accountType']),
     };
 }
 
-export function CloudAccountToJSON(value?: CloudAccount | null): any {
-    if (value === undefined) {
-        return undefined;
+export function CloudAccountToJSON(json: any): CloudAccount {
+    return CloudAccountToJSONTyped(json, false);
+}
+
+export function CloudAccountToJSONTyped(value?: CloudAccount | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'accountId': value.accountId,
-        'accountName': value.accountName,
-        'regionName': value.regionName,
-        'accountType': CloudAccountTypeToJSON(value.accountType),
+        'accountId': value['accountId'],
+        'accountName': value['accountName'],
+        'regionName': value['regionName'],
+        'accountType': CloudAccountTypeToJSON(value['accountType']),
     };
 }
 

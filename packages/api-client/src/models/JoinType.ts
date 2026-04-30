@@ -25,6 +25,17 @@ export enum JoinType {
 }
 
 
+export function instanceOfJoinType(value: any): boolean {
+    for (const key in JoinType) {
+        if (Object.prototype.hasOwnProperty.call(JoinType, key)) {
+            if (JoinType[key as keyof typeof JoinType] === value) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 export function JoinTypeFromJSON(json: any): JoinType {
     return JoinTypeFromJSONTyped(json, false);
 }
@@ -35,5 +46,9 @@ export function JoinTypeFromJSONTyped(json: any, ignoreDiscriminator: boolean): 
 
 export function JoinTypeToJSON(value?: JoinType | null): any {
     return value as any;
+}
+
+export function JoinTypeToJSONTyped(value: any, ignoreDiscriminator: boolean): JoinType {
+    return value as JoinType;
 }
 

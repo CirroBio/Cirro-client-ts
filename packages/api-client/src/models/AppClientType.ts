@@ -23,6 +23,17 @@ export enum AppClientType {
 }
 
 
+export function instanceOfAppClientType(value: any): boolean {
+    for (const key in AppClientType) {
+        if (Object.prototype.hasOwnProperty.call(AppClientType, key)) {
+            if (AppClientType[key as keyof typeof AppClientType] === value) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 export function AppClientTypeFromJSON(json: any): AppClientType {
     return AppClientTypeFromJSONTyped(json, false);
 }
@@ -33,5 +44,9 @@ export function AppClientTypeFromJSONTyped(json: any, ignoreDiscriminator: boole
 
 export function AppClientTypeToJSON(value?: AppClientType | null): any {
     return value as any;
+}
+
+export function AppClientTypeToJSONTyped(value: any, ignoreDiscriminator: boolean): AppClientType {
+    return value as AppClientType;
 }
 

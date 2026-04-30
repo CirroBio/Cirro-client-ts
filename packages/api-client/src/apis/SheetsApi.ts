@@ -12,45 +12,62 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  CreateResponse,
-  Sheet,
-  SheetDataRequest,
-  SheetDetail,
-  SheetIngestRequest,
-  SheetInput,
-  SheetJob,
-  SheetQueryResponse,
-  SheetUpdateResponse,
-  SqlSortOrder,
-  UpdateRowsRequest,
-} from '../models/index';
 import {
+    type CreateResponse,
     CreateResponseFromJSON,
     CreateResponseToJSON,
+} from '../models/CreateResponse';
+import {
+    type Sheet,
     SheetFromJSON,
     SheetToJSON,
+} from '../models/Sheet';
+import {
+    type SheetDataRequest,
     SheetDataRequestFromJSON,
     SheetDataRequestToJSON,
+} from '../models/SheetDataRequest';
+import {
+    type SheetDetail,
     SheetDetailFromJSON,
     SheetDetailToJSON,
+} from '../models/SheetDetail';
+import {
+    type SheetIngestRequest,
     SheetIngestRequestFromJSON,
     SheetIngestRequestToJSON,
+} from '../models/SheetIngestRequest';
+import {
+    type SheetInput,
     SheetInputFromJSON,
     SheetInputToJSON,
+} from '../models/SheetInput';
+import {
+    type SheetJob,
     SheetJobFromJSON,
     SheetJobToJSON,
+} from '../models/SheetJob';
+import {
+    type SheetQueryResponse,
     SheetQueryResponseFromJSON,
     SheetQueryResponseToJSON,
+} from '../models/SheetQueryResponse';
+import {
+    type SheetUpdateResponse,
     SheetUpdateResponseFromJSON,
     SheetUpdateResponseToJSON,
+} from '../models/SheetUpdateResponse';
+import {
+    type SqlSortOrder,
     SqlSortOrderFromJSON,
     SqlSortOrderToJSON,
+} from '../models/SqlSortOrder';
+import {
+    type UpdateRowsRequest,
     UpdateRowsRequestFromJSON,
     UpdateRowsRequestToJSON,
-} from '../models/index';
+} from '../models/UpdateRowsRequest';
 
 export interface CreateSheetRequest {
     projectId: string;
@@ -121,16 +138,21 @@ export interface UpdateSheetDataRequest {
 export class SheetsApi extends runtime.BaseAPI {
 
     /**
-     * Creates a sheet (table or view)
-     * Create sheet
+     * Creates request options for createSheet without sending the request
      */
-    async createSheetRaw(requestParameters: CreateSheetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateResponse>> {
-        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
-            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling createSheet.');
+    async createSheetRequestOpts(requestParameters: CreateSheetRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling createSheet().'
+            );
         }
 
-        if (requestParameters.sheetInput === null || requestParameters.sheetInput === undefined) {
-            throw new runtime.RequiredError('sheetInput','Required parameter requestParameters.sheetInput was null or undefined when calling createSheet.');
+        if (requestParameters['sheetInput'] == null) {
+            throw new runtime.RequiredError(
+                'sheetInput',
+                'Required parameter "sheetInput" was null or undefined when calling createSheet().'
+            );
         }
 
         const queryParameters: any = {};
@@ -147,13 +169,26 @@ export class SheetsApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/projects/{projectId}/sheets`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))),
+
+        let urlPath = `/projects/{projectId}/sheets`;
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+
+        return {
+            path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: SheetInputToJSON(requestParameters.sheetInput),
-        }, initOverrides);
+            body: SheetInputToJSON(requestParameters['sheetInput']),
+        };
+    }
+
+    /**
+     * Creates a sheet (table or view)
+     * Create sheet
+     */
+    async createSheetRaw(requestParameters: CreateSheetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateResponse>> {
+        const requestOptions = await this.createSheetRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => CreateResponseFromJSON(jsonValue));
     }
@@ -168,16 +203,21 @@ export class SheetsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Deletes a sheet
-     * Delete sheet
+     * Creates request options for deleteSheet without sending the request
      */
-    async deleteSheetRaw(requestParameters: DeleteSheetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
-            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling deleteSheet.');
+    async deleteSheetRequestOpts(requestParameters: DeleteSheetRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling deleteSheet().'
+            );
         }
 
-        if (requestParameters.sheetId === null || requestParameters.sheetId === undefined) {
-            throw new runtime.RequiredError('sheetId','Required parameter requestParameters.sheetId was null or undefined when calling deleteSheet.');
+        if (requestParameters['sheetId'] == null) {
+            throw new runtime.RequiredError(
+                'sheetId',
+                'Required parameter "sheetId" was null or undefined when calling deleteSheet().'
+            );
         }
 
         const queryParameters: any = {};
@@ -192,12 +232,26 @@ export class SheetsApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/projects/{projectId}/sheets/{sheetId}`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))).replace(`{${"sheetId"}}`, encodeURIComponent(String(requestParameters.sheetId))),
+
+        let urlPath = `/projects/{projectId}/sheets/{sheetId}`;
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+        urlPath = urlPath.replace('{sheetId}', encodeURIComponent(String(requestParameters['sheetId'])));
+
+        return {
+            path: urlPath,
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Deletes a sheet
+     * Delete sheet
+     */
+    async deleteSheetRaw(requestParameters: DeleteSheetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.deleteSheetRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -211,16 +265,21 @@ export class SheetsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Retrieves jobs for a sheet
-     * List jobs
+     * Creates request options for getJobs without sending the request
      */
-    async getJobsRaw(requestParameters: GetJobsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<SheetJob>>> {
-        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
-            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling getJobs.');
+    async getJobsRequestOpts(requestParameters: GetJobsRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling getJobs().'
+            );
         }
 
-        if (requestParameters.sheetId === null || requestParameters.sheetId === undefined) {
-            throw new runtime.RequiredError('sheetId','Required parameter requestParameters.sheetId was null or undefined when calling getJobs.');
+        if (requestParameters['sheetId'] == null) {
+            throw new runtime.RequiredError(
+                'sheetId',
+                'Required parameter "sheetId" was null or undefined when calling getJobs().'
+            );
         }
 
         const queryParameters: any = {};
@@ -235,12 +294,26 @@ export class SheetsApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/projects/{projectId}/sheets/{sheetId}/jobs`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))).replace(`{${"sheetId"}}`, encodeURIComponent(String(requestParameters.sheetId))),
+
+        let urlPath = `/projects/{projectId}/sheets/{sheetId}/jobs`;
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+        urlPath = urlPath.replace('{sheetId}', encodeURIComponent(String(requestParameters['sheetId'])));
+
+        return {
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Retrieves jobs for a sheet
+     * List jobs
+     */
+    async getJobsRaw(requestParameters: GetJobsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<SheetJob>>> {
+        const requestOptions = await this.getJobsRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(SheetJobFromJSON));
     }
@@ -255,16 +328,21 @@ export class SheetsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Retrieves a sheet
-     * Get sheet
+     * Creates request options for getSheet without sending the request
      */
-    async getSheetRaw(requestParameters: GetSheetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SheetDetail>> {
-        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
-            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling getSheet.');
+    async getSheetRequestOpts(requestParameters: GetSheetRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling getSheet().'
+            );
         }
 
-        if (requestParameters.sheetId === null || requestParameters.sheetId === undefined) {
-            throw new runtime.RequiredError('sheetId','Required parameter requestParameters.sheetId was null or undefined when calling getSheet.');
+        if (requestParameters['sheetId'] == null) {
+            throw new runtime.RequiredError(
+                'sheetId',
+                'Required parameter "sheetId" was null or undefined when calling getSheet().'
+            );
         }
 
         const queryParameters: any = {};
@@ -279,12 +357,26 @@ export class SheetsApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/projects/{projectId}/sheets/{sheetId}`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))).replace(`{${"sheetId"}}`, encodeURIComponent(String(requestParameters.sheetId))),
+
+        let urlPath = `/projects/{projectId}/sheets/{sheetId}`;
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+        urlPath = urlPath.replace('{sheetId}', encodeURIComponent(String(requestParameters['sheetId'])));
+
+        return {
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Retrieves a sheet
+     * Get sheet
+     */
+    async getSheetRaw(requestParameters: GetSheetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SheetDetail>> {
+        const requestOptions = await this.getSheetRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => SheetDetailFromJSON(jsonValue));
     }
@@ -299,34 +391,40 @@ export class SheetsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Returns paginated rows from a sheet. The first column is always _row_id, which uniquely identifies each row and is required for row updates via PUT. Defaults page=1, limit=1000, order=ASCENDING.
-     * Get sheet data
+     * Creates request options for getSheetData without sending the request
+     * @deprecated
      */
-    async getSheetDataRaw(requestParameters: GetSheetDataRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SheetQueryResponse>> {
-        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
-            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling getSheetData.');
+    async getSheetDataRequestOpts(requestParameters: GetSheetDataRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling getSheetData().'
+            );
         }
 
-        if (requestParameters.sheetId === null || requestParameters.sheetId === undefined) {
-            throw new runtime.RequiredError('sheetId','Required parameter requestParameters.sheetId was null or undefined when calling getSheetData.');
+        if (requestParameters['sheetId'] == null) {
+            throw new runtime.RequiredError(
+                'sheetId',
+                'Required parameter "sheetId" was null or undefined when calling getSheetData().'
+            );
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters.limit !== undefined) {
-            queryParameters['limit'] = requestParameters.limit;
+        if (requestParameters['limit'] != null) {
+            queryParameters['limit'] = requestParameters['limit'];
         }
 
-        if (requestParameters.page !== undefined) {
-            queryParameters['page'] = requestParameters.page;
+        if (requestParameters['page'] != null) {
+            queryParameters['page'] = requestParameters['page'];
         }
 
-        if (requestParameters.orderBy !== undefined) {
-            queryParameters['orderBy'] = requestParameters.orderBy;
+        if (requestParameters['orderBy'] != null) {
+            queryParameters['orderBy'] = requestParameters['orderBy'];
         }
 
-        if (requestParameters.order !== undefined) {
-            queryParameters['order'] = requestParameters.order;
+        if (requestParameters['order'] != null) {
+            queryParameters['order'] = requestParameters['order'];
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -339,12 +437,27 @@ export class SheetsApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/projects/{projectId}/sheets/{sheetId}/data`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))).replace(`{${"sheetId"}}`, encodeURIComponent(String(requestParameters.sheetId))),
+
+        let urlPath = `/projects/{projectId}/sheets/{sheetId}/data`;
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+        urlPath = urlPath.replace('{sheetId}', encodeURIComponent(String(requestParameters['sheetId'])));
+
+        return {
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Returns paginated rows from a sheet. The first column is always _row_id, which uniquely identifies each row and is required for row updates via PUT. Defaults page=1, limit=1000, order=ASCENDING.
+     * Get sheet data
+     * @deprecated
+     */
+    async getSheetDataRaw(requestParameters: GetSheetDataRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SheetQueryResponse>> {
+        const requestOptions = await this.getSheetDataRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => SheetQueryResponseFromJSON(jsonValue));
     }
@@ -352,6 +465,7 @@ export class SheetsApi extends runtime.BaseAPI {
     /**
      * Returns paginated rows from a sheet. The first column is always _row_id, which uniquely identifies each row and is required for row updates via PUT. Defaults page=1, limit=1000, order=ASCENDING.
      * Get sheet data
+     * @deprecated
      */
     async getSheetData(requestParameters: GetSheetDataRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SheetQueryResponse> {
         const response = await this.getSheetDataRaw(requestParameters, initOverrides);
@@ -359,12 +473,14 @@ export class SheetsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Retrieves sheets for a project
-     * List sheets
+     * Creates request options for getSheets without sending the request
      */
-    async getSheetsRaw(requestParameters: GetSheetsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<Sheet>>> {
-        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
-            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling getSheets.');
+    async getSheetsRequestOpts(requestParameters: GetSheetsRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling getSheets().'
+            );
         }
 
         const queryParameters: any = {};
@@ -379,12 +495,25 @@ export class SheetsApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/projects/{projectId}/sheets`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))),
+
+        let urlPath = `/projects/{projectId}/sheets`;
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+
+        return {
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Retrieves sheets for a project
+     * List sheets
+     */
+    async getSheetsRaw(requestParameters: GetSheetsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<Sheet>>> {
+        const requestOptions = await this.getSheetsRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(SheetFromJSON));
     }
@@ -399,20 +528,28 @@ export class SheetsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Returns paginated rows from a sheet. The first column is always _row_id, which uniquely identifies each row and is required for row updates via PUT. This is essentially a GET request disguised as a POST so we can pass in a body.
-     * Query sheet data
+     * Creates request options for querySheetData without sending the request
      */
-    async querySheetDataRaw(requestParameters: QuerySheetDataRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SheetQueryResponse>> {
-        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
-            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling querySheetData.');
+    async querySheetDataRequestOpts(requestParameters: QuerySheetDataRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling querySheetData().'
+            );
         }
 
-        if (requestParameters.sheetId === null || requestParameters.sheetId === undefined) {
-            throw new runtime.RequiredError('sheetId','Required parameter requestParameters.sheetId was null or undefined when calling querySheetData.');
+        if (requestParameters['sheetId'] == null) {
+            throw new runtime.RequiredError(
+                'sheetId',
+                'Required parameter "sheetId" was null or undefined when calling querySheetData().'
+            );
         }
 
-        if (requestParameters.sheetDataRequest === null || requestParameters.sheetDataRequest === undefined) {
-            throw new runtime.RequiredError('sheetDataRequest','Required parameter requestParameters.sheetDataRequest was null or undefined when calling querySheetData.');
+        if (requestParameters['sheetDataRequest'] == null) {
+            throw new runtime.RequiredError(
+                'sheetDataRequest',
+                'Required parameter "sheetDataRequest" was null or undefined when calling querySheetData().'
+            );
         }
 
         const queryParameters: any = {};
@@ -429,13 +566,27 @@ export class SheetsApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/projects/{projectId}/sheets/{sheetId}/data/query`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))).replace(`{${"sheetId"}}`, encodeURIComponent(String(requestParameters.sheetId))),
+
+        let urlPath = `/projects/{projectId}/sheets/{sheetId}/data/query`;
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+        urlPath = urlPath.replace('{sheetId}', encodeURIComponent(String(requestParameters['sheetId'])));
+
+        return {
+            path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: SheetDataRequestToJSON(requestParameters.sheetDataRequest),
-        }, initOverrides);
+            body: SheetDataRequestToJSON(requestParameters['sheetDataRequest']),
+        };
+    }
+
+    /**
+     * Returns paginated rows from a sheet. The first column is always _row_id, which uniquely identifies each row and is required for row updates via PUT. This is essentially a GET request disguised as a POST so we can pass in a body.
+     * Query sheet data
+     */
+    async querySheetDataRaw(requestParameters: QuerySheetDataRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SheetQueryResponse>> {
+        const requestOptions = await this.querySheetDataRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => SheetQueryResponseFromJSON(jsonValue));
     }
@@ -450,16 +601,21 @@ export class SheetsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Re-materializes a view from its source tables
-     * Refresh view
+     * Creates request options for refreshView without sending the request
      */
-    async refreshViewRaw(requestParameters: RefreshViewRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
-            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling refreshView.');
+    async refreshViewRequestOpts(requestParameters: RefreshViewRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling refreshView().'
+            );
         }
 
-        if (requestParameters.sheetId === null || requestParameters.sheetId === undefined) {
-            throw new runtime.RequiredError('sheetId','Required parameter requestParameters.sheetId was null or undefined when calling refreshView.');
+        if (requestParameters['sheetId'] == null) {
+            throw new runtime.RequiredError(
+                'sheetId',
+                'Required parameter "sheetId" was null or undefined when calling refreshView().'
+            );
         }
 
         const queryParameters: any = {};
@@ -474,12 +630,26 @@ export class SheetsApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/projects/{projectId}/sheets/{sheetId}:refresh`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))).replace(`{${"sheetId"}}`, encodeURIComponent(String(requestParameters.sheetId))),
+
+        let urlPath = `/projects/{projectId}/sheets/{sheetId}:refresh`;
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+        urlPath = urlPath.replace('{sheetId}', encodeURIComponent(String(requestParameters['sheetId'])));
+
+        return {
+            path: urlPath,
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Re-materializes a view from its source tables
+     * Refresh view
+     */
+    async refreshViewRaw(requestParameters: RefreshViewRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.refreshViewRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -493,20 +663,28 @@ export class SheetsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Triggers an async file ingest into the sheet
-     * Trigger ingest
+     * Creates request options for triggerIngest without sending the request
      */
-    async triggerIngestRaw(requestParameters: TriggerIngestRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
-            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling triggerIngest.');
+    async triggerIngestRequestOpts(requestParameters: TriggerIngestRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling triggerIngest().'
+            );
         }
 
-        if (requestParameters.sheetId === null || requestParameters.sheetId === undefined) {
-            throw new runtime.RequiredError('sheetId','Required parameter requestParameters.sheetId was null or undefined when calling triggerIngest.');
+        if (requestParameters['sheetId'] == null) {
+            throw new runtime.RequiredError(
+                'sheetId',
+                'Required parameter "sheetId" was null or undefined when calling triggerIngest().'
+            );
         }
 
-        if (requestParameters.sheetIngestRequest === null || requestParameters.sheetIngestRequest === undefined) {
-            throw new runtime.RequiredError('sheetIngestRequest','Required parameter requestParameters.sheetIngestRequest was null or undefined when calling triggerIngest.');
+        if (requestParameters['sheetIngestRequest'] == null) {
+            throw new runtime.RequiredError(
+                'sheetIngestRequest',
+                'Required parameter "sheetIngestRequest" was null or undefined when calling triggerIngest().'
+            );
         }
 
         const queryParameters: any = {};
@@ -523,13 +701,27 @@ export class SheetsApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/projects/{projectId}/sheets/{sheetId}/ingest`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))).replace(`{${"sheetId"}}`, encodeURIComponent(String(requestParameters.sheetId))),
+
+        let urlPath = `/projects/{projectId}/sheets/{sheetId}/ingest`;
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+        urlPath = urlPath.replace('{sheetId}', encodeURIComponent(String(requestParameters['sheetId'])));
+
+        return {
+            path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: SheetIngestRequestToJSON(requestParameters.sheetIngestRequest),
-        }, initOverrides);
+            body: SheetIngestRequestToJSON(requestParameters['sheetIngestRequest']),
+        };
+    }
+
+    /**
+     * Triggers an async file ingest into the sheet
+     * Trigger ingest
+     */
+    async triggerIngestRaw(requestParameters: TriggerIngestRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.triggerIngestRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -543,26 +735,34 @@ export class SheetsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Idempotent update: send the full target state. Server validates immutable fields match and applies the diff of mutable fields (rename, columns, view definition). For TABLE dryRun, returns the ALTER statements that would run.
-     * Update sheet
+     * Creates request options for updateSheet without sending the request
      */
-    async updateSheetRaw(requestParameters: UpdateSheetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SheetUpdateResponse>> {
-        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
-            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling updateSheet.');
+    async updateSheetRequestOpts(requestParameters: UpdateSheetRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling updateSheet().'
+            );
         }
 
-        if (requestParameters.sheetId === null || requestParameters.sheetId === undefined) {
-            throw new runtime.RequiredError('sheetId','Required parameter requestParameters.sheetId was null or undefined when calling updateSheet.');
+        if (requestParameters['sheetId'] == null) {
+            throw new runtime.RequiredError(
+                'sheetId',
+                'Required parameter "sheetId" was null or undefined when calling updateSheet().'
+            );
         }
 
-        if (requestParameters.sheetInput === null || requestParameters.sheetInput === undefined) {
-            throw new runtime.RequiredError('sheetInput','Required parameter requestParameters.sheetInput was null or undefined when calling updateSheet.');
+        if (requestParameters['sheetInput'] == null) {
+            throw new runtime.RequiredError(
+                'sheetInput',
+                'Required parameter "sheetInput" was null or undefined when calling updateSheet().'
+            );
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters.dryRun !== undefined) {
-            queryParameters['dryRun'] = requestParameters.dryRun;
+        if (requestParameters['dryRun'] != null) {
+            queryParameters['dryRun'] = requestParameters['dryRun'];
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -577,13 +777,27 @@ export class SheetsApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/projects/{projectId}/sheets/{sheetId}`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))).replace(`{${"sheetId"}}`, encodeURIComponent(String(requestParameters.sheetId))),
+
+        let urlPath = `/projects/{projectId}/sheets/{sheetId}`;
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+        urlPath = urlPath.replace('{sheetId}', encodeURIComponent(String(requestParameters['sheetId'])));
+
+        return {
+            path: urlPath,
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: SheetInputToJSON(requestParameters.sheetInput),
-        }, initOverrides);
+            body: SheetInputToJSON(requestParameters['sheetInput']),
+        };
+    }
+
+    /**
+     * Idempotent update: send the full target state. Server validates immutable fields match and applies the diff of mutable fields (rename, columns, view definition). For TABLE dryRun, returns the ALTER statements that would run.
+     * Update sheet
+     */
+    async updateSheetRaw(requestParameters: UpdateSheetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SheetUpdateResponse>> {
+        const requestOptions = await this.updateSheetRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => SheetUpdateResponseFromJSON(jsonValue));
     }
@@ -598,20 +812,28 @@ export class SheetsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Updates specific rows in a TABLE sheet by _row_id. This is a partial update: only the columns included in each entry are modified, all other columns are left unchanged.
-     * Update sheet rows
+     * Creates request options for updateSheetData without sending the request
      */
-    async updateSheetDataRaw(requestParameters: UpdateSheetDataRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
-            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling updateSheetData.');
+    async updateSheetDataRequestOpts(requestParameters: UpdateSheetDataRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling updateSheetData().'
+            );
         }
 
-        if (requestParameters.sheetId === null || requestParameters.sheetId === undefined) {
-            throw new runtime.RequiredError('sheetId','Required parameter requestParameters.sheetId was null or undefined when calling updateSheetData.');
+        if (requestParameters['sheetId'] == null) {
+            throw new runtime.RequiredError(
+                'sheetId',
+                'Required parameter "sheetId" was null or undefined when calling updateSheetData().'
+            );
         }
 
-        if (requestParameters.updateRowsRequest === null || requestParameters.updateRowsRequest === undefined) {
-            throw new runtime.RequiredError('updateRowsRequest','Required parameter requestParameters.updateRowsRequest was null or undefined when calling updateSheetData.');
+        if (requestParameters['updateRowsRequest'] == null) {
+            throw new runtime.RequiredError(
+                'updateRowsRequest',
+                'Required parameter "updateRowsRequest" was null or undefined when calling updateSheetData().'
+            );
         }
 
         const queryParameters: any = {};
@@ -628,13 +850,27 @@ export class SheetsApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/projects/{projectId}/sheets/{sheetId}/data`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))).replace(`{${"sheetId"}}`, encodeURIComponent(String(requestParameters.sheetId))),
+
+        let urlPath = `/projects/{projectId}/sheets/{sheetId}/data`;
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+        urlPath = urlPath.replace('{sheetId}', encodeURIComponent(String(requestParameters['sheetId'])));
+
+        return {
+            path: urlPath,
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: UpdateRowsRequestToJSON(requestParameters.updateRowsRequest),
-        }, initOverrides);
+            body: UpdateRowsRequestToJSON(requestParameters['updateRowsRequest']),
+        };
+    }
+
+    /**
+     * Updates specific rows in a TABLE sheet by _row_id. This is a partial update: only the columns included in each entry are modified, all other columns are left unchanged.
+     * Update sheet rows
+     */
+    async updateSheetDataRaw(requestParameters: UpdateSheetDataRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.updateSheetDataRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }

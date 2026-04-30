@@ -12,30 +12,37 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  AppRegistration,
-  AppRegistrationDetail,
-  AppRegistrationInput,
-  AppRegistrationSecretResponse,
-  AppRegistrationTemplate,
-  PaginatedResponseAppRegistrationDto,
-} from '../models/index';
 import {
+    type AppRegistration,
     AppRegistrationFromJSON,
     AppRegistrationToJSON,
+} from '../models/AppRegistration';
+import {
+    type AppRegistrationDetail,
     AppRegistrationDetailFromJSON,
     AppRegistrationDetailToJSON,
+} from '../models/AppRegistrationDetail';
+import {
+    type AppRegistrationInput,
     AppRegistrationInputFromJSON,
     AppRegistrationInputToJSON,
+} from '../models/AppRegistrationInput';
+import {
+    type AppRegistrationSecretResponse,
     AppRegistrationSecretResponseFromJSON,
     AppRegistrationSecretResponseToJSON,
+} from '../models/AppRegistrationSecretResponse';
+import {
+    type AppRegistrationTemplate,
     AppRegistrationTemplateFromJSON,
     AppRegistrationTemplateToJSON,
+} from '../models/AppRegistrationTemplate';
+import {
+    type PaginatedResponseAppRegistrationDto,
     PaginatedResponseAppRegistrationDtoFromJSON,
     PaginatedResponseAppRegistrationDtoToJSON,
-} from '../models/index';
+} from '../models/PaginatedResponseAppRegistrationDto';
 
 export interface ApproveAppRequest {
     id: string;
@@ -73,12 +80,14 @@ export interface UpdateAppRegistrationRequest {
 export class AppRegistrationsApi extends runtime.BaseAPI {
 
     /**
-     * Mark application as approved by an administrator.
-     * Approve application
+     * Creates request options for approveApp without sending the request
      */
-    async approveAppRaw(requestParameters: ApproveAppRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling approveApp.');
+    async approveAppRequestOpts(requestParameters: ApproveAppRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling approveApp().'
+            );
         }
 
         const queryParameters: any = {};
@@ -93,12 +102,25 @@ export class AppRegistrationsApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/app-registrations/{id}:approve`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+
+        let urlPath = `/app-registrations/{id}:approve`;
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
+
+        return {
+            path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Mark application as approved by an administrator.
+     * Approve application
+     */
+    async approveAppRaw(requestParameters: ApproveAppRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.approveAppRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -112,12 +134,14 @@ export class AppRegistrationsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Archives an app registration. Archived registrations cannot authenticate.
-     * Archive app registration
+     * Creates request options for archiveAppRegistration without sending the request
      */
-    async archiveAppRegistrationRaw(requestParameters: ArchiveAppRegistrationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling archiveAppRegistration.');
+    async archiveAppRegistrationRequestOpts(requestParameters: ArchiveAppRegistrationRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling archiveAppRegistration().'
+            );
         }
 
         const queryParameters: any = {};
@@ -132,12 +156,25 @@ export class AppRegistrationsApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/app-registrations/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+
+        let urlPath = `/app-registrations/{id}`;
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
+
+        return {
+            path: urlPath,
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Archives an app registration. Archived registrations cannot authenticate.
+     * Archive app registration
+     */
+    async archiveAppRegistrationRaw(requestParameters: ArchiveAppRegistrationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.archiveAppRegistrationRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -151,12 +188,14 @@ export class AppRegistrationsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Creates a new OAuth client app registration. Returns the client secret which is only shown once.
-     * Create app registration
+     * Creates request options for createAppRegistration without sending the request
      */
-    async createAppRegistrationRaw(requestParameters: CreateAppRegistrationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AppRegistrationSecretResponse>> {
-        if (requestParameters.appRegistrationInput === null || requestParameters.appRegistrationInput === undefined) {
-            throw new runtime.RequiredError('appRegistrationInput','Required parameter requestParameters.appRegistrationInput was null or undefined when calling createAppRegistration.');
+    async createAppRegistrationRequestOpts(requestParameters: CreateAppRegistrationRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['appRegistrationInput'] == null) {
+            throw new runtime.RequiredError(
+                'appRegistrationInput',
+                'Required parameter "appRegistrationInput" was null or undefined when calling createAppRegistration().'
+            );
         }
 
         const queryParameters: any = {};
@@ -173,13 +212,25 @@ export class AppRegistrationsApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/app-registrations`,
+
+        let urlPath = `/app-registrations`;
+
+        return {
+            path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: AppRegistrationInputToJSON(requestParameters.appRegistrationInput),
-        }, initOverrides);
+            body: AppRegistrationInputToJSON(requestParameters['appRegistrationInput']),
+        };
+    }
+
+    /**
+     * Creates a new OAuth client app registration. Returns the client secret which is only shown once.
+     * Create app registration
+     */
+    async createAppRegistrationRaw(requestParameters: CreateAppRegistrationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AppRegistrationSecretResponse>> {
+        const requestOptions = await this.createAppRegistrationRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => AppRegistrationSecretResponseFromJSON(jsonValue));
     }
@@ -194,12 +245,14 @@ export class AppRegistrationsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Gets detailed information about an app registration.
-     * Get app registration
+     * Creates request options for getAppRegistration without sending the request
      */
-    async getAppRegistrationRaw(requestParameters: GetAppRegistrationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AppRegistrationDetail>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getAppRegistration.');
+    async getAppRegistrationRequestOpts(requestParameters: GetAppRegistrationRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling getAppRegistration().'
+            );
         }
 
         const queryParameters: any = {};
@@ -214,12 +267,25 @@ export class AppRegistrationsApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/app-registrations/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+
+        let urlPath = `/app-registrations/{id}`;
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
+
+        return {
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Gets detailed information about an app registration.
+     * Get app registration
+     */
+    async getAppRegistrationRaw(requestParameters: GetAppRegistrationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AppRegistrationDetail>> {
+        const requestOptions = await this.getAppRegistrationRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => AppRegistrationDetailFromJSON(jsonValue));
     }
@@ -234,10 +300,9 @@ export class AppRegistrationsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Lists pre-defined application templates to register.
-     * List app registration templates
+     * Creates request options for listAppRegistrationTemplates without sending the request
      */
-    async listAppRegistrationTemplatesRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<AppRegistrationTemplate>>> {
+    async listAppRegistrationTemplatesRequestOpts(): Promise<runtime.RequestOpts> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -250,12 +315,24 @@ export class AppRegistrationsApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/app-registration-templates`,
+
+        let urlPath = `/app-registration-templates`;
+
+        return {
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Lists pre-defined application templates to register.
+     * List app registration templates
+     */
+    async listAppRegistrationTemplatesRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<AppRegistrationTemplate>>> {
+        const requestOptions = await this.listAppRegistrationTemplatesRequestOpts();
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(AppRegistrationTemplateFromJSON));
     }
@@ -270,18 +347,17 @@ export class AppRegistrationsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Lists all app registrations in the system.
-     * List app registrations
+     * Creates request options for listAppRegistrations without sending the request
      */
-    async listAppRegistrationsRaw(requestParameters: ListAppRegistrationsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PaginatedResponseAppRegistrationDto>> {
+    async listAppRegistrationsRequestOpts(requestParameters: ListAppRegistrationsRequest): Promise<runtime.RequestOpts> {
         const queryParameters: any = {};
 
-        if (requestParameters.limit !== undefined) {
-            queryParameters['limit'] = requestParameters.limit;
+        if (requestParameters['limit'] != null) {
+            queryParameters['limit'] = requestParameters['limit'];
         }
 
-        if (requestParameters.nextToken !== undefined) {
-            queryParameters['nextToken'] = requestParameters.nextToken;
+        if (requestParameters['nextToken'] != null) {
+            queryParameters['nextToken'] = requestParameters['nextToken'];
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -294,12 +370,24 @@ export class AppRegistrationsApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/app-registrations`,
+
+        let urlPath = `/app-registrations`;
+
+        return {
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Lists all app registrations in the system.
+     * List app registrations
+     */
+    async listAppRegistrationsRaw(requestParameters: ListAppRegistrationsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PaginatedResponseAppRegistrationDto>> {
+        const requestOptions = await this.listAppRegistrationsRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => PaginatedResponseAppRegistrationDtoFromJSON(jsonValue));
     }
@@ -314,10 +402,9 @@ export class AppRegistrationsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Lists app registrations created by the current user.
-     * List my app registrations
+     * Creates request options for listMyAppRegistrations without sending the request
      */
-    async listMyAppRegistrationsRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<AppRegistration>>> {
+    async listMyAppRegistrationsRequestOpts(): Promise<runtime.RequestOpts> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -330,12 +417,24 @@ export class AppRegistrationsApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/app-registrations/mine`,
+
+        let urlPath = `/app-registrations/mine`;
+
+        return {
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Lists app registrations created by the current user.
+     * List my app registrations
+     */
+    async listMyAppRegistrationsRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<AppRegistration>>> {
+        const requestOptions = await this.listMyAppRegistrationsRequestOpts();
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(AppRegistrationFromJSON));
     }
@@ -350,12 +449,14 @@ export class AppRegistrationsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Generates a new client secret for the app registration. The old secret is invalidated.
-     * Regenerate client secret
+     * Creates request options for regenerateSecret without sending the request
      */
-    async regenerateSecretRaw(requestParameters: RegenerateSecretRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AppRegistrationSecretResponse>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling regenerateSecret.');
+    async regenerateSecretRequestOpts(requestParameters: RegenerateSecretRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling regenerateSecret().'
+            );
         }
 
         const queryParameters: any = {};
@@ -370,12 +471,25 @@ export class AppRegistrationsApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/app-registrations/{id}:regenerate-secret`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+
+        let urlPath = `/app-registrations/{id}:regenerate-secret`;
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
+
+        return {
+            path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Generates a new client secret for the app registration. The old secret is invalidated.
+     * Regenerate client secret
+     */
+    async regenerateSecretRaw(requestParameters: RegenerateSecretRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AppRegistrationSecretResponse>> {
+        const requestOptions = await this.regenerateSecretRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => AppRegistrationSecretResponseFromJSON(jsonValue));
     }
@@ -390,16 +504,21 @@ export class AppRegistrationsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Updates an existing app registration.
-     * Update app registration
+     * Creates request options for updateAppRegistration without sending the request
      */
-    async updateAppRegistrationRaw(requestParameters: UpdateAppRegistrationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AppRegistrationDetail>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling updateAppRegistration.');
+    async updateAppRegistrationRequestOpts(requestParameters: UpdateAppRegistrationRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['id'] == null) {
+            throw new runtime.RequiredError(
+                'id',
+                'Required parameter "id" was null or undefined when calling updateAppRegistration().'
+            );
         }
 
-        if (requestParameters.appRegistrationInput === null || requestParameters.appRegistrationInput === undefined) {
-            throw new runtime.RequiredError('appRegistrationInput','Required parameter requestParameters.appRegistrationInput was null or undefined when calling updateAppRegistration.');
+        if (requestParameters['appRegistrationInput'] == null) {
+            throw new runtime.RequiredError(
+                'appRegistrationInput',
+                'Required parameter "appRegistrationInput" was null or undefined when calling updateAppRegistration().'
+            );
         }
 
         const queryParameters: any = {};
@@ -416,13 +535,26 @@ export class AppRegistrationsApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/app-registrations/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+
+        let urlPath = `/app-registrations/{id}`;
+        urlPath = urlPath.replace('{id}', encodeURIComponent(String(requestParameters['id'])));
+
+        return {
+            path: urlPath,
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: AppRegistrationInputToJSON(requestParameters.appRegistrationInput),
-        }, initOverrides);
+            body: AppRegistrationInputToJSON(requestParameters['appRegistrationInput']),
+        };
+    }
+
+    /**
+     * Updates an existing app registration.
+     * Update app registration
+     */
+    async updateAppRegistrationRaw(requestParameters: UpdateAppRegistrationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AppRegistrationDetail>> {
+        const requestOptions = await this.updateAppRegistrationRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => AppRegistrationDetailFromJSON(jsonValue));
     }

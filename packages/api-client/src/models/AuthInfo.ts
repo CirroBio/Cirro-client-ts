@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -54,15 +54,13 @@ export interface AuthInfo {
 /**
  * Check if a given object implements the AuthInfo interface.
  */
-export function instanceOfAuthInfo(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "userPoolId" in value;
-    isInstance = isInstance && "sdkAppId" in value;
-    isInstance = isInstance && "uiAppId" in value;
-    isInstance = isInstance && "driveAppId" in value;
-    isInstance = isInstance && "endpoint" in value;
-
-    return isInstance;
+export function instanceOfAuthInfo(value: object): value is AuthInfo {
+    if (!('userPoolId' in value) || value['userPoolId'] === undefined) return false;
+    if (!('sdkAppId' in value) || value['sdkAppId'] === undefined) return false;
+    if (!('uiAppId' in value) || value['uiAppId'] === undefined) return false;
+    if (!('driveAppId' in value) || value['driveAppId'] === undefined) return false;
+    if (!('endpoint' in value) || value['endpoint'] === undefined) return false;
+    return true;
 }
 
 export function AuthInfoFromJSON(json: any): AuthInfo {
@@ -70,7 +68,7 @@ export function AuthInfoFromJSON(json: any): AuthInfo {
 }
 
 export function AuthInfoFromJSONTyped(json: any, ignoreDiscriminator: boolean): AuthInfo {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -83,20 +81,22 @@ export function AuthInfoFromJSONTyped(json: any, ignoreDiscriminator: boolean): 
     };
 }
 
-export function AuthInfoToJSON(value?: AuthInfo | null): any {
-    if (value === undefined) {
-        return undefined;
+export function AuthInfoToJSON(json: any): AuthInfo {
+    return AuthInfoToJSONTyped(json, false);
+}
+
+export function AuthInfoToJSONTyped(value?: AuthInfo | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'userPoolId': value.userPoolId,
-        'sdkAppId': value.sdkAppId,
-        'uiAppId': value.uiAppId,
-        'driveAppId': value.driveAppId,
-        'endpoint': value.endpoint,
+        'userPoolId': value['userPoolId'],
+        'sdkAppId': value['sdkAppId'],
+        'uiAppId': value['uiAppId'],
+        'driveAppId': value['driveAppId'],
+        'endpoint': value['endpoint'],
     };
 }
 

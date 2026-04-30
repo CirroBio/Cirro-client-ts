@@ -25,6 +25,17 @@ export enum AppType {
 }
 
 
+export function instanceOfAppType(value: any): boolean {
+    for (const key in AppType) {
+        if (Object.prototype.hasOwnProperty.call(AppType, key)) {
+            if (AppType[key as keyof typeof AppType] === value) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 export function AppTypeFromJSON(json: any): AppType {
     return AppTypeFromJSONTyped(json, false);
 }
@@ -35,5 +46,9 @@ export function AppTypeFromJSONTyped(json: any, ignoreDiscriminator: boolean): A
 
 export function AppTypeToJSON(value?: AppType | null): any {
     return value as any;
+}
+
+export function AppTypeToJSONTyped(value: any, ignoreDiscriminator: boolean): AppType {
+    return value as AppType;
 }
 

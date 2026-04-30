@@ -29,6 +29,17 @@ export enum ColumnDataType {
 }
 
 
+export function instanceOfColumnDataType(value: any): boolean {
+    for (const key in ColumnDataType) {
+        if (Object.prototype.hasOwnProperty.call(ColumnDataType, key)) {
+            if (ColumnDataType[key as keyof typeof ColumnDataType] === value) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 export function ColumnDataTypeFromJSON(json: any): ColumnDataType {
     return ColumnDataTypeFromJSONTyped(json, false);
 }
@@ -39,5 +50,9 @@ export function ColumnDataTypeFromJSONTyped(json: any, ignoreDiscriminator: bool
 
 export function ColumnDataTypeToJSON(value?: ColumnDataType | null): any {
     return value as any;
+}
+
+export function ColumnDataTypeToJSONTyped(value: any, ignoreDiscriminator: boolean): ColumnDataType {
+    return value as ColumnDataType;
 }
 

@@ -12,12 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { ViewQueryRequest } from './ViewQueryRequest';
 import {
     ViewQueryRequestFromJSON,
     ViewQueryRequestFromJSONTyped,
     ViewQueryRequestToJSON,
+    ViewQueryRequestToJSONTyped,
 } from './ViewQueryRequest';
 
 /**
@@ -57,7 +58,7 @@ export interface ViewSheetInput {
      */
     auditReadAccess?: boolean;
     /**
-     * 
+     * View definition. Replacing this on update triggers data refresh (async).
      * @type {ViewQueryRequest}
      * @memberof ViewSheetInput
      */
@@ -73,14 +74,12 @@ export interface ViewSheetInput {
 /**
  * Check if a given object implements the ViewSheetInput interface.
  */
-export function instanceOfViewSheetInput(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "namespaceName" in value;
-    isInstance = isInstance && "tableName" in value;
-    isInstance = isInstance && "viewDefinition" in value;
-
-    return isInstance;
+export function instanceOfViewSheetInput(value: object): value is ViewSheetInput {
+    if (!('name' in value) || value['name'] === undefined) return false;
+    if (!('namespaceName' in value) || value['namespaceName'] === undefined) return false;
+    if (!('tableName' in value) || value['tableName'] === undefined) return false;
+    if (!('viewDefinition' in value) || value['viewDefinition'] === undefined) return false;
+    return true;
 }
 
 export function ViewSheetInputFromJSON(json: any): ViewSheetInput {
@@ -88,37 +87,39 @@ export function ViewSheetInputFromJSON(json: any): ViewSheetInput {
 }
 
 export function ViewSheetInputFromJSONTyped(json: any, ignoreDiscriminator: boolean): ViewSheetInput {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
         'name': json['name'],
-        'description': !exists(json, 'description') ? undefined : json['description'],
+        'description': json['description'] == null ? undefined : json['description'],
         'namespaceName': json['namespaceName'],
         'tableName': json['tableName'],
-        'auditReadAccess': !exists(json, 'auditReadAccess') ? undefined : json['auditReadAccess'],
+        'auditReadAccess': json['auditReadAccess'] == null ? undefined : json['auditReadAccess'],
         'viewDefinition': ViewQueryRequestFromJSON(json['viewDefinition']),
-        'sheetType': !exists(json, 'sheetType') ? undefined : json['sheetType'],
+        'sheetType': json['sheetType'] == null ? undefined : json['sheetType'],
     };
 }
 
-export function ViewSheetInputToJSON(value?: ViewSheetInput | null): any {
-    if (value === undefined) {
-        return undefined;
+export function ViewSheetInputToJSON(json: any): ViewSheetInput {
+    return ViewSheetInputToJSONTyped(json, false);
+}
+
+export function ViewSheetInputToJSONTyped(value?: ViewSheetInput | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'name': value.name,
-        'description': value.description,
-        'namespaceName': value.namespaceName,
-        'tableName': value.tableName,
-        'auditReadAccess': value.auditReadAccess,
-        'viewDefinition': ViewQueryRequestToJSON(value.viewDefinition),
-        'sheetType': value.sheetType,
+        'name': value['name'],
+        'description': value['description'],
+        'namespaceName': value['namespaceName'],
+        'tableName': value['tableName'],
+        'auditReadAccess': value['auditReadAccess'],
+        'viewDefinition': ViewQueryRequestToJSON(value['viewDefinition']),
+        'sheetType': value['sheetType'],
     };
 }
 

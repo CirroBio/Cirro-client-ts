@@ -23,6 +23,17 @@ export enum MessageType {
 }
 
 
+export function instanceOfMessageType(value: any): boolean {
+    for (const key in MessageType) {
+        if (Object.prototype.hasOwnProperty.call(MessageType, key)) {
+            if (MessageType[key as keyof typeof MessageType] === value) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 export function MessageTypeFromJSON(json: any): MessageType {
     return MessageTypeFromJSONTyped(json, false);
 }
@@ -33,5 +44,9 @@ export function MessageTypeFromJSONTyped(json: any, ignoreDiscriminator: boolean
 
 export function MessageTypeToJSON(value?: MessageType | null): any {
     return value as any;
+}
+
+export function MessageTypeToJSONTyped(value: any, ignoreDiscriminator: boolean): MessageType {
+    return value as MessageType;
 }
 

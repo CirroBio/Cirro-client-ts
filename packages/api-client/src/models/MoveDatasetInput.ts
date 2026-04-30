@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -42,13 +42,11 @@ export interface MoveDatasetInput {
 /**
  * Check if a given object implements the MoveDatasetInput interface.
  */
-export function instanceOfMoveDatasetInput(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "datasetId" in value;
-    isInstance = isInstance && "sourceProjectId" in value;
-    isInstance = isInstance && "targetProjectId" in value;
-
-    return isInstance;
+export function instanceOfMoveDatasetInput(value: object): value is MoveDatasetInput {
+    if (!('datasetId' in value) || value['datasetId'] === undefined) return false;
+    if (!('sourceProjectId' in value) || value['sourceProjectId'] === undefined) return false;
+    if (!('targetProjectId' in value) || value['targetProjectId'] === undefined) return false;
+    return true;
 }
 
 export function MoveDatasetInputFromJSON(json: any): MoveDatasetInput {
@@ -56,7 +54,7 @@ export function MoveDatasetInputFromJSON(json: any): MoveDatasetInput {
 }
 
 export function MoveDatasetInputFromJSONTyped(json: any, ignoreDiscriminator: boolean): MoveDatasetInput {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -67,18 +65,20 @@ export function MoveDatasetInputFromJSONTyped(json: any, ignoreDiscriminator: bo
     };
 }
 
-export function MoveDatasetInputToJSON(value?: MoveDatasetInput | null): any {
-    if (value === undefined) {
-        return undefined;
+export function MoveDatasetInputToJSON(json: any): MoveDatasetInput {
+    return MoveDatasetInputToJSONTyped(json, false);
+}
+
+export function MoveDatasetInputToJSONTyped(value?: MoveDatasetInput | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'datasetId': value.datasetId,
-        'sourceProjectId': value.sourceProjectId,
-        'targetProjectId': value.targetProjectId,
+        'datasetId': value['datasetId'],
+        'sourceProjectId': value['sourceProjectId'],
+        'targetProjectId': value['targetProjectId'],
     };
 }
 

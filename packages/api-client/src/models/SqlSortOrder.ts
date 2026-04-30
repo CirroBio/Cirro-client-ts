@@ -23,6 +23,17 @@ export enum SqlSortOrder {
 }
 
 
+export function instanceOfSqlSortOrder(value: any): boolean {
+    for (const key in SqlSortOrder) {
+        if (Object.prototype.hasOwnProperty.call(SqlSortOrder, key)) {
+            if (SqlSortOrder[key as keyof typeof SqlSortOrder] === value) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 export function SqlSortOrderFromJSON(json: any): SqlSortOrder {
     return SqlSortOrderFromJSONTyped(json, false);
 }
@@ -33,5 +44,9 @@ export function SqlSortOrderFromJSONTyped(json: any, ignoreDiscriminator: boolea
 
 export function SqlSortOrderToJSON(value?: SqlSortOrder | null): any {
     return value as any;
+}
+
+export function SqlSortOrderToJSONTyped(value: any, ignoreDiscriminator: boolean): SqlSortOrder {
+    return value as SqlSortOrder;
 }
 

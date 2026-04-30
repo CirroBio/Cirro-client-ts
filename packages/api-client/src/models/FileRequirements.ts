@@ -12,12 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { AllowedDataType } from './AllowedDataType';
 import {
     AllowedDataTypeFromJSON,
     AllowedDataTypeFromJSONTyped,
     AllowedDataTypeToJSON,
+    AllowedDataTypeToJSONTyped,
 } from './AllowedDataType';
 
 /**
@@ -55,13 +56,11 @@ export interface FileRequirements {
 /**
  * Check if a given object implements the FileRequirements interface.
  */
-export function instanceOfFileRequirements(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "files" in value;
-    isInstance = isInstance && "errorMsg" in value;
-    isInstance = isInstance && "allowedDataTypes" in value;
-
-    return isInstance;
+export function instanceOfFileRequirements(value: object): value is FileRequirements {
+    if (!('files' in value) || value['files'] === undefined) return false;
+    if (!('errorMsg' in value) || value['errorMsg'] === undefined) return false;
+    if (!('allowedDataTypes' in value) || value['allowedDataTypes'] === undefined) return false;
+    return true;
 }
 
 export function FileRequirementsFromJSON(json: any): FileRequirements {
@@ -69,7 +68,7 @@ export function FileRequirementsFromJSON(json: any): FileRequirements {
 }
 
 export function FileRequirementsFromJSONTyped(json: any, ignoreDiscriminator: boolean): FileRequirements {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -77,23 +76,25 @@ export function FileRequirementsFromJSONTyped(json: any, ignoreDiscriminator: bo
         'files': json['files'],
         'errorMsg': json['errorMsg'],
         'allowedDataTypes': ((json['allowedDataTypes'] as Array<any>).map(AllowedDataTypeFromJSON)),
-        'hasError': !exists(json, 'hasError') ? undefined : json['hasError'],
+        'hasError': json['hasError'] == null ? undefined : json['hasError'],
     };
 }
 
-export function FileRequirementsToJSON(value?: FileRequirements | null): any {
-    if (value === undefined) {
-        return undefined;
+export function FileRequirementsToJSON(json: any): FileRequirements {
+    return FileRequirementsToJSONTyped(json, false);
+}
+
+export function FileRequirementsToJSONTyped(value?: FileRequirements | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'files': value.files,
-        'errorMsg': value.errorMsg,
-        'allowedDataTypes': ((value.allowedDataTypes as Array<any>).map(AllowedDataTypeToJSON)),
-        'hasError': value.hasError,
+        'files': value['files'],
+        'errorMsg': value['errorMsg'],
+        'allowedDataTypes': ((value['allowedDataTypes'] as Array<any>).map(AllowedDataTypeToJSON)),
+        'hasError': value['hasError'],
     };
 }
 

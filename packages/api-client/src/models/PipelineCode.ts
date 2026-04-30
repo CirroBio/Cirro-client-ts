@@ -12,12 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { RepositoryType } from './RepositoryType';
 import {
     RepositoryTypeFromJSON,
     RepositoryTypeFromJSONTyped,
     RepositoryTypeToJSON,
+    RepositoryTypeToJSONTyped,
 } from './RepositoryType';
 
 /**
@@ -58,17 +59,17 @@ export interface PipelineCode {
     executorVersion?: string | null;
 }
 
+
+
 /**
  * Check if a given object implements the PipelineCode interface.
  */
-export function instanceOfPipelineCode(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "repositoryPath" in value;
-    isInstance = isInstance && "version" in value;
-    isInstance = isInstance && "repositoryType" in value;
-    isInstance = isInstance && "entryPoint" in value;
-
-    return isInstance;
+export function instanceOfPipelineCode(value: object): value is PipelineCode {
+    if (!('repositoryPath' in value) || value['repositoryPath'] === undefined) return false;
+    if (!('version' in value) || value['version'] === undefined) return false;
+    if (!('repositoryType' in value) || value['repositoryType'] === undefined) return false;
+    if (!('entryPoint' in value) || value['entryPoint'] === undefined) return false;
+    return true;
 }
 
 export function PipelineCodeFromJSON(json: any): PipelineCode {
@@ -76,7 +77,7 @@ export function PipelineCodeFromJSON(json: any): PipelineCode {
 }
 
 export function PipelineCodeFromJSONTyped(json: any, ignoreDiscriminator: boolean): PipelineCode {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -85,24 +86,26 @@ export function PipelineCodeFromJSONTyped(json: any, ignoreDiscriminator: boolea
         'version': json['version'],
         'repositoryType': RepositoryTypeFromJSON(json['repositoryType']),
         'entryPoint': json['entryPoint'],
-        'executorVersion': !exists(json, 'executorVersion') ? undefined : json['executorVersion'],
+        'executorVersion': json['executorVersion'] == null ? undefined : json['executorVersion'],
     };
 }
 
-export function PipelineCodeToJSON(value?: PipelineCode | null): any {
-    if (value === undefined) {
-        return undefined;
+export function PipelineCodeToJSON(json: any): PipelineCode {
+    return PipelineCodeToJSONTyped(json, false);
+}
+
+export function PipelineCodeToJSONTyped(value?: PipelineCode | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'repositoryPath': value.repositoryPath,
-        'version': value.version,
-        'repositoryType': RepositoryTypeToJSON(value.repositoryType),
-        'entryPoint': value.entryPoint,
-        'executorVersion': value.executorVersion,
+        'repositoryPath': value['repositoryPath'],
+        'version': value['version'],
+        'repositoryType': RepositoryTypeToJSON(value['repositoryType']),
+        'entryPoint': value['entryPoint'],
+        'executorVersion': value['executorVersion'],
     };
 }
 

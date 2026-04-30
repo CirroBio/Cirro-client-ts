@@ -12,25 +12,28 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { BillingMethod } from './BillingMethod';
 import {
     BillingMethodFromJSON,
     BillingMethodFromJSONTyped,
     BillingMethodToJSON,
+    BillingMethodToJSONTyped,
 } from './BillingMethod';
-import type { Contact } from './Contact';
-import {
-    ContactFromJSON,
-    ContactFromJSONTyped,
-    ContactToJSON,
-} from './Contact';
 import type { CustomerType } from './CustomerType';
 import {
     CustomerTypeFromJSON,
     CustomerTypeFromJSONTyped,
     CustomerTypeToJSON,
+    CustomerTypeToJSONTyped,
 } from './CustomerType';
+import type { Contact } from './Contact';
+import {
+    ContactFromJSON,
+    ContactFromJSONTyped,
+    ContactToJSON,
+    ContactToJSONTyped,
+} from './Contact';
 
 /**
  * 
@@ -100,23 +103,23 @@ export interface BillingAccount {
     isArchived: boolean;
 }
 
+
+
 /**
  * Check if a given object implements the BillingAccount interface.
  */
-export function instanceOfBillingAccount(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "id" in value;
-    isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "organization" in value;
-    isInstance = isInstance && "contacts" in value;
-    isInstance = isInstance && "customerType" in value;
-    isInstance = isInstance && "billingMethod" in value;
-    isInstance = isInstance && "primaryBudgetNumber" in value;
-    isInstance = isInstance && "owner" in value;
-    isInstance = isInstance && "sharedWith" in value;
-    isInstance = isInstance && "isArchived" in value;
-
-    return isInstance;
+export function instanceOfBillingAccount(value: object): value is BillingAccount {
+    if (!('id' in value) || value['id'] === undefined) return false;
+    if (!('name' in value) || value['name'] === undefined) return false;
+    if (!('organization' in value) || value['organization'] === undefined) return false;
+    if (!('contacts' in value) || value['contacts'] === undefined) return false;
+    if (!('customerType' in value) || value['customerType'] === undefined) return false;
+    if (!('billingMethod' in value) || value['billingMethod'] === undefined) return false;
+    if (!('primaryBudgetNumber' in value) || value['primaryBudgetNumber'] === undefined) return false;
+    if (!('owner' in value) || value['owner'] === undefined) return false;
+    if (!('sharedWith' in value) || value['sharedWith'] === undefined) return false;
+    if (!('isArchived' in value) || value['isArchived'] === undefined) return false;
+    return true;
 }
 
 export function BillingAccountFromJSON(json: any): BillingAccount {
@@ -124,7 +127,7 @@ export function BillingAccountFromJSON(json: any): BillingAccount {
 }
 
 export function BillingAccountFromJSONTyped(json: any, ignoreDiscriminator: boolean): BillingAccount {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -142,25 +145,27 @@ export function BillingAccountFromJSONTyped(json: any, ignoreDiscriminator: bool
     };
 }
 
-export function BillingAccountToJSON(value?: BillingAccount | null): any {
-    if (value === undefined) {
-        return undefined;
+export function BillingAccountToJSON(json: any): BillingAccount {
+    return BillingAccountToJSONTyped(json, false);
+}
+
+export function BillingAccountToJSONTyped(value?: BillingAccount | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'id': value.id,
-        'name': value.name,
-        'organization': value.organization,
-        'contacts': ((value.contacts as Array<any>).map(ContactToJSON)),
-        'customerType': CustomerTypeToJSON(value.customerType),
-        'billingMethod': BillingMethodToJSON(value.billingMethod),
-        'primaryBudgetNumber': value.primaryBudgetNumber,
-        'owner': value.owner,
-        'sharedWith': value.sharedWith,
-        'isArchived': value.isArchived,
+        'id': value['id'],
+        'name': value['name'],
+        'organization': value['organization'],
+        'contacts': ((value['contacts'] as Array<any>).map(ContactToJSON)),
+        'customerType': CustomerTypeToJSON(value['customerType']),
+        'billingMethod': BillingMethodToJSON(value['billingMethod']),
+        'primaryBudgetNumber': value['primaryBudgetNumber'],
+        'owner': value['owner'],
+        'sharedWith': value['sharedWith'],
+        'isArchived': value['isArchived'],
     };
 }
 

@@ -18,11 +18,31 @@
  * @enum {string}
  */
 export enum ShareType {
+    /**
+    * The project owns this share
+    */
     Publisher = 'PUBLISHER',
+    /**
+    * The project can view this share
+    */
     Subscriber = 'SUBSCRIBER',
+    /**
+    * The share is available for subscription
+    */
     Available = 'AVAILABLE'
 }
 
+
+export function instanceOfShareType(value: any): boolean {
+    for (const key in ShareType) {
+        if (Object.prototype.hasOwnProperty.call(ShareType, key)) {
+            if (ShareType[key as keyof typeof ShareType] === value) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
 
 export function ShareTypeFromJSON(json: any): ShareType {
     return ShareTypeFromJSONTyped(json, false);
@@ -34,5 +54,9 @@ export function ShareTypeFromJSONTyped(json: any, ignoreDiscriminator: boolean):
 
 export function ShareTypeToJSON(value?: ShareType | null): any {
     return value as any;
+}
+
+export function ShareTypeToJSONTyped(value: any, ignoreDiscriminator: boolean): ShareType {
+    return value as ShareType;
 }
 

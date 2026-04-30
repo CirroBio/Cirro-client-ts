@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -60,12 +60,10 @@ export interface AgentInput {
 /**
  * Check if a given object implements the AgentInput interface.
  */
-export function instanceOfAgentInput(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "agentRoleArn" in value;
-
-    return isInstance;
+export function instanceOfAgentInput(value: object): value is AgentInput {
+    if (!('name' in value) || value['name'] === undefined) return false;
+    if (!('agentRoleArn' in value) || value['agentRoleArn'] === undefined) return false;
+    return true;
 }
 
 export function AgentInputFromJSON(json: any): AgentInput {
@@ -73,35 +71,37 @@ export function AgentInputFromJSON(json: any): AgentInput {
 }
 
 export function AgentInputFromJSONTyped(json: any, ignoreDiscriminator: boolean): AgentInput {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'id': !exists(json, 'id') ? undefined : json['id'],
+        'id': json['id'] == null ? undefined : json['id'],
         'name': json['name'],
         'agentRoleArn': json['agentRoleArn'],
-        'configurationOptionsSchema': !exists(json, 'configurationOptionsSchema') ? undefined : json['configurationOptionsSchema'],
-        'environmentConfiguration': !exists(json, 'environmentConfiguration') ? undefined : json['environmentConfiguration'],
-        'tags': !exists(json, 'tags') ? undefined : json['tags'],
+        'configurationOptionsSchema': json['configurationOptionsSchema'] == null ? undefined : json['configurationOptionsSchema'],
+        'environmentConfiguration': json['environmentConfiguration'] == null ? undefined : json['environmentConfiguration'],
+        'tags': json['tags'] == null ? undefined : json['tags'],
     };
 }
 
-export function AgentInputToJSON(value?: AgentInput | null): any {
-    if (value === undefined) {
-        return undefined;
+export function AgentInputToJSON(json: any): AgentInput {
+    return AgentInputToJSONTyped(json, false);
+}
+
+export function AgentInputToJSONTyped(value?: AgentInput | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'id': value.id,
-        'name': value.name,
-        'agentRoleArn': value.agentRoleArn,
-        'configurationOptionsSchema': value.configurationOptionsSchema,
-        'environmentConfiguration': value.environmentConfiguration,
-        'tags': value.tags,
+        'id': value['id'],
+        'name': value['name'],
+        'agentRoleArn': value['agentRoleArn'],
+        'configurationOptionsSchema': value['configurationOptionsSchema'],
+        'environmentConfiguration': value['environmentConfiguration'],
+        'tags': value['tags'],
     };
 }
 

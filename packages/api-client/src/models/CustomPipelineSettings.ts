@@ -12,18 +12,20 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { RepositoryType } from './RepositoryType';
 import {
     RepositoryTypeFromJSON,
     RepositoryTypeFromJSONTyped,
     RepositoryTypeToJSON,
+    RepositoryTypeToJSONTyped,
 } from './RepositoryType';
 import type { SyncStatus } from './SyncStatus';
 import {
     SyncStatusFromJSON,
     SyncStatusFromJSONTyped,
     SyncStatusToJSON,
+    SyncStatusToJSONTyped,
 } from './SyncStatus';
 
 /**
@@ -82,14 +84,14 @@ export interface CustomPipelineSettings {
     isAuthorized?: boolean;
 }
 
+
+
 /**
  * Check if a given object implements the CustomPipelineSettings interface.
  */
-export function instanceOfCustomPipelineSettings(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "repository" in value;
-
-    return isInstance;
+export function instanceOfCustomPipelineSettings(value: object): value is CustomPipelineSettings {
+    if (!('repository' in value) || value['repository'] === undefined) return false;
+    return true;
 }
 
 export function CustomPipelineSettingsFromJSON(json: any): CustomPipelineSettings {
@@ -97,39 +99,41 @@ export function CustomPipelineSettingsFromJSON(json: any): CustomPipelineSetting
 }
 
 export function CustomPipelineSettingsFromJSONTyped(json: any, ignoreDiscriminator: boolean): CustomPipelineSettings {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
         'repository': json['repository'],
-        'branch': !exists(json, 'branch') ? undefined : json['branch'],
-        'folder': !exists(json, 'folder') ? undefined : json['folder'],
-        'repositoryType': !exists(json, 'repositoryType') ? undefined : RepositoryTypeFromJSON(json['repositoryType']),
-        'lastSync': !exists(json, 'lastSync') ? undefined : (json['lastSync'] === null ? null : new Date(json['lastSync'])),
-        'syncStatus': !exists(json, 'syncStatus') ? undefined : SyncStatusFromJSON(json['syncStatus']),
-        'commitHash': !exists(json, 'commitHash') ? undefined : json['commitHash'],
-        'isAuthorized': !exists(json, 'isAuthorized') ? undefined : json['isAuthorized'],
+        'branch': json['branch'] == null ? undefined : json['branch'],
+        'folder': json['folder'] == null ? undefined : json['folder'],
+        'repositoryType': json['repositoryType'] == null ? undefined : RepositoryTypeFromJSON(json['repositoryType']),
+        'lastSync': json['lastSync'] == null ? undefined : (new Date(json['lastSync'])),
+        'syncStatus': json['syncStatus'] == null ? undefined : SyncStatusFromJSON(json['syncStatus']),
+        'commitHash': json['commitHash'] == null ? undefined : json['commitHash'],
+        'isAuthorized': json['isAuthorized'] == null ? undefined : json['isAuthorized'],
     };
 }
 
-export function CustomPipelineSettingsToJSON(value?: CustomPipelineSettings | null): any {
-    if (value === undefined) {
-        return undefined;
+export function CustomPipelineSettingsToJSON(json: any): CustomPipelineSettings {
+    return CustomPipelineSettingsToJSONTyped(json, false);
+}
+
+export function CustomPipelineSettingsToJSONTyped(value?: CustomPipelineSettings | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'repository': value.repository,
-        'branch': value.branch,
-        'folder': value.folder,
-        'repositoryType': RepositoryTypeToJSON(value.repositoryType),
-        'lastSync': value.lastSync === undefined ? undefined : (value.lastSync === null ? null : value.lastSync.toISOString()),
-        'syncStatus': SyncStatusToJSON(value.syncStatus),
-        'commitHash': value.commitHash,
-        'isAuthorized': value.isAuthorized,
+        'repository': value['repository'],
+        'branch': value['branch'],
+        'folder': value['folder'],
+        'repositoryType': RepositoryTypeToJSON(value['repositoryType']),
+        'lastSync': value['lastSync'] == null ? value['lastSync'] : value['lastSync'].toISOString(),
+        'syncStatus': SyncStatusToJSON(value['syncStatus']),
+        'commitHash': value['commitHash'],
+        'isAuthorized': value['isAuthorized'],
     };
 }
 

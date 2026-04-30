@@ -18,21 +18,71 @@
  * @enum {string}
  */
 export enum ArtifactType {
+    /**
+    * Snapshot of metadata at the time of execution
+    */
     Metadata = 'METADATA',
+    /**
+    * Files expected to upload
+    */
     IngestManifest = 'INGEST_MANIFEST',
+    /**
+    * Execution report from workflow engine
+    */
     WorkflowReport = 'WORKFLOW_REPORT',
+    /**
+    * Logs from workflow engine
+    */
     WorkflowLogs = 'WORKFLOW_LOGS',
+    /**
+    * Debug logs from workflow engine
+    */
     WorkflowDebugLogs = 'WORKFLOW_DEBUG_LOGS',
+    /**
+    * Direct acyclic graph of workflow execution
+    */
     WorkflowDag = 'WORKFLOW_DAG',
+    /**
+    * Timeline of workflow execution
+    */
     WorkflowTimeline = 'WORKFLOW_TIMELINE',
+    /**
+    * Trace of workflow execution
+    */
     WorkflowTrace = 'WORKFLOW_TRACE',
+    /**
+    * Parameters used in the workflow
+    */
     WorkflowParameters = 'WORKFLOW_PARAMETERS',
+    /**
+    * Compute overrides used in the workflow
+    */
     WorkflowComputeConfig = 'WORKFLOW_COMPUTE_CONFIG',
+    /**
+    * Options used in the workflow
+    */
     WorkflowOptions = 'WORKFLOW_OPTIONS',
+    /**
+    * Samples used in the workflow
+    */
     SampleSheet = 'SAMPLE_SHEET',
+    /**
+    * Files used in the workflow
+    */
     Files = 'FILES'
 }
 
+
+export function instanceOfArtifactType(value: any): boolean {
+    for (const key in ArtifactType) {
+        if (Object.prototype.hasOwnProperty.call(ArtifactType, key)) {
+            if (ArtifactType[key as keyof typeof ArtifactType] === value) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
 
 export function ArtifactTypeFromJSON(json: any): ArtifactType {
     return ArtifactTypeFromJSONTyped(json, false);
@@ -44,5 +94,9 @@ export function ArtifactTypeFromJSONTyped(json: any, ignoreDiscriminator: boolea
 
 export function ArtifactTypeToJSON(value?: ArtifactType | null): any {
     return value as any;
+}
+
+export function ArtifactTypeToJSONTyped(value: any, ignoreDiscriminator: boolean): ArtifactType {
+    return value as ArtifactType;
 }
 

@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -36,12 +36,10 @@ export interface CreateResponse {
 /**
  * Check if a given object implements the CreateResponse interface.
  */
-export function instanceOfCreateResponse(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "id" in value;
-    isInstance = isInstance && "message" in value;
-
-    return isInstance;
+export function instanceOfCreateResponse(value: object): value is CreateResponse {
+    if (!('id' in value) || value['id'] === undefined) return false;
+    if (!('message' in value) || value['message'] === undefined) return false;
+    return true;
 }
 
 export function CreateResponseFromJSON(json: any): CreateResponse {
@@ -49,7 +47,7 @@ export function CreateResponseFromJSON(json: any): CreateResponse {
 }
 
 export function CreateResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): CreateResponse {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -59,17 +57,19 @@ export function CreateResponseFromJSONTyped(json: any, ignoreDiscriminator: bool
     };
 }
 
-export function CreateResponseToJSON(value?: CreateResponse | null): any {
-    if (value === undefined) {
-        return undefined;
+export function CreateResponseToJSON(json: any): CreateResponse {
+    return CreateResponseToJSONTyped(json, false);
+}
+
+export function CreateResponseToJSONTyped(value?: CreateResponse | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'id': value.id,
-        'message': value.message,
+        'id': value['id'],
+        'message': value['message'],
     };
 }
 

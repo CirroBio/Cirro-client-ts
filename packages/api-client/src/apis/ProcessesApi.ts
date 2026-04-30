@@ -12,54 +12,77 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  CreateResponse,
-  CustomPipelineSettings,
-  CustomProcessInput,
-  ErrorMessage,
-  FileNameMatch,
-  FileRequirements,
-  FormSchema,
-  PipelineCost,
-  PortalErrorResponse,
-  Process,
-  ProcessDetail,
-  ProcessDocumentation,
-  ValidateFileNamePatternsRequest,
-  ValidateFileRequirementsRequest,
-} from '../models/index';
 import {
+    type CreateResponse,
     CreateResponseFromJSON,
     CreateResponseToJSON,
+} from '../models/CreateResponse';
+import {
+    type CustomPipelineSettings,
     CustomPipelineSettingsFromJSON,
     CustomPipelineSettingsToJSON,
+} from '../models/CustomPipelineSettings';
+import {
+    type CustomProcessInput,
     CustomProcessInputFromJSON,
     CustomProcessInputToJSON,
+} from '../models/CustomProcessInput';
+import {
+    type ErrorMessage,
     ErrorMessageFromJSON,
     ErrorMessageToJSON,
+} from '../models/ErrorMessage';
+import {
+    type FileNameMatch,
     FileNameMatchFromJSON,
     FileNameMatchToJSON,
+} from '../models/FileNameMatch';
+import {
+    type FileRequirements,
     FileRequirementsFromJSON,
     FileRequirementsToJSON,
+} from '../models/FileRequirements';
+import {
+    type FormSchema,
     FormSchemaFromJSON,
     FormSchemaToJSON,
+} from '../models/FormSchema';
+import {
+    type PipelineCost,
     PipelineCostFromJSON,
     PipelineCostToJSON,
+} from '../models/PipelineCost';
+import {
+    type PortalErrorResponse,
     PortalErrorResponseFromJSON,
     PortalErrorResponseToJSON,
+} from '../models/PortalErrorResponse';
+import {
+    type Process,
     ProcessFromJSON,
     ProcessToJSON,
+} from '../models/Process';
+import {
+    type ProcessDetail,
     ProcessDetailFromJSON,
     ProcessDetailToJSON,
+} from '../models/ProcessDetail';
+import {
+    type ProcessDocumentation,
     ProcessDocumentationFromJSON,
     ProcessDocumentationToJSON,
+} from '../models/ProcessDocumentation';
+import {
+    type ValidateFileNamePatternsRequest,
     ValidateFileNamePatternsRequestFromJSON,
     ValidateFileNamePatternsRequestToJSON,
+} from '../models/ValidateFileNamePatternsRequest';
+import {
+    type ValidateFileRequirementsRequest,
     ValidateFileRequirementsRequestFromJSON,
     ValidateFileRequirementsRequestToJSON,
-} from '../models/index';
+} from '../models/ValidateFileRequirementsRequest';
 
 export interface ArchiveCustomProcessRequest {
     processId: string;
@@ -115,12 +138,14 @@ export interface ValidateFileRequirementsOperationRequest {
 export class ProcessesApi extends runtime.BaseAPI {
 
     /**
-     * Removes the process from the list of available options
-     * Archive custom process
+     * Creates request options for archiveCustomProcess without sending the request
      */
-    async archiveCustomProcessRaw(requestParameters: ArchiveCustomProcessRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.processId === null || requestParameters.processId === undefined) {
-            throw new runtime.RequiredError('processId','Required parameter requestParameters.processId was null or undefined when calling archiveCustomProcess.');
+    async archiveCustomProcessRequestOpts(requestParameters: ArchiveCustomProcessRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['processId'] == null) {
+            throw new runtime.RequiredError(
+                'processId',
+                'Required parameter "processId" was null or undefined when calling archiveCustomProcess().'
+            );
         }
 
         const queryParameters: any = {};
@@ -135,12 +160,25 @@ export class ProcessesApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/processes/{processId}`.replace(`{${"processId"}}`, encodeURIComponent(String(requestParameters.processId))),
+
+        let urlPath = `/processes/{processId}`;
+        urlPath = urlPath.replace('{processId}', encodeURIComponent(String(requestParameters['processId'])));
+
+        return {
+            path: urlPath,
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Removes the process from the list of available options
+     * Archive custom process
+     */
+    async archiveCustomProcessRaw(requestParameters: ArchiveCustomProcessRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.archiveCustomProcessRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -154,16 +192,21 @@ export class ProcessesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Retrieves the cost of running the pipeline
-     * Calculate pipeline cost
+     * Creates request options for calculatePipelineCost without sending the request
      */
-    async calculatePipelineCostRaw(requestParameters: CalculatePipelineCostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PipelineCost>> {
-        if (requestParameters.processId === null || requestParameters.processId === undefined) {
-            throw new runtime.RequiredError('processId','Required parameter requestParameters.processId was null or undefined when calling calculatePipelineCost.');
+    async calculatePipelineCostRequestOpts(requestParameters: CalculatePipelineCostRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['processId'] == null) {
+            throw new runtime.RequiredError(
+                'processId',
+                'Required parameter "processId" was null or undefined when calling calculatePipelineCost().'
+            );
         }
 
-        if (requestParameters.body === null || requestParameters.body === undefined) {
-            throw new runtime.RequiredError('body','Required parameter requestParameters.body was null or undefined when calling calculatePipelineCost.');
+        if (requestParameters['body'] == null) {
+            throw new runtime.RequiredError(
+                'body',
+                'Required parameter "body" was null or undefined when calling calculatePipelineCost().'
+            );
         }
 
         const queryParameters: any = {};
@@ -180,13 +223,26 @@ export class ProcessesApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/processes/{processId}/cost`.replace(`{${"processId"}}`, encodeURIComponent(String(requestParameters.processId))),
+
+        let urlPath = `/processes/{processId}/cost`;
+        urlPath = urlPath.replace('{processId}', encodeURIComponent(String(requestParameters['processId'])));
+
+        return {
+            path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: requestParameters.body as any,
-        }, initOverrides);
+            body: requestParameters['body'] as any,
+        };
+    }
+
+    /**
+     * Retrieves the cost of running the pipeline
+     * Calculate pipeline cost
+     */
+    async calculatePipelineCostRaw(requestParameters: CalculatePipelineCostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PipelineCost>> {
+        const requestOptions = await this.calculatePipelineCostRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => PipelineCostFromJSON(jsonValue));
     }
@@ -201,12 +257,14 @@ export class ProcessesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Creates a custom data type or pipeline which you can use in the listed projects.
-     * Create custom process
+     * Creates request options for createCustomProcess without sending the request
      */
-    async createCustomProcessRaw(requestParameters: CreateCustomProcessRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateResponse>> {
-        if (requestParameters.customProcessInput === null || requestParameters.customProcessInput === undefined) {
-            throw new runtime.RequiredError('customProcessInput','Required parameter requestParameters.customProcessInput was null or undefined when calling createCustomProcess.');
+    async createCustomProcessRequestOpts(requestParameters: CreateCustomProcessRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['customProcessInput'] == null) {
+            throw new runtime.RequiredError(
+                'customProcessInput',
+                'Required parameter "customProcessInput" was null or undefined when calling createCustomProcess().'
+            );
         }
 
         const queryParameters: any = {};
@@ -223,13 +281,25 @@ export class ProcessesApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/processes`,
+
+        let urlPath = `/processes`;
+
+        return {
+            path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: CustomProcessInputToJSON(requestParameters.customProcessInput),
-        }, initOverrides);
+            body: CustomProcessInputToJSON(requestParameters['customProcessInput']),
+        };
+    }
+
+    /**
+     * Creates a custom data type or pipeline which you can use in the listed projects.
+     * Create custom process
+     */
+    async createCustomProcessRaw(requestParameters: CreateCustomProcessRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateResponse>> {
+        const requestOptions = await this.createCustomProcessRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => CreateResponseFromJSON(jsonValue));
     }
@@ -244,12 +314,14 @@ export class ProcessesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Retrieves detailed information on a process
-     * Get process
+     * Creates request options for getProcess without sending the request
      */
-    async getProcessRaw(requestParameters: GetProcessRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ProcessDetail>> {
-        if (requestParameters.processId === null || requestParameters.processId === undefined) {
-            throw new runtime.RequiredError('processId','Required parameter requestParameters.processId was null or undefined when calling getProcess.');
+    async getProcessRequestOpts(requestParameters: GetProcessRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['processId'] == null) {
+            throw new runtime.RequiredError(
+                'processId',
+                'Required parameter "processId" was null or undefined when calling getProcess().'
+            );
         }
 
         const queryParameters: any = {};
@@ -264,12 +336,25 @@ export class ProcessesApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/processes/{processId}`.replace(`{${"processId"}}`, encodeURIComponent(String(requestParameters.processId))),
+
+        let urlPath = `/processes/{processId}`;
+        urlPath = urlPath.replace('{processId}', encodeURIComponent(String(requestParameters['processId'])));
+
+        return {
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Retrieves detailed information on a process
+     * Get process
+     */
+    async getProcessRaw(requestParameters: GetProcessRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ProcessDetail>> {
+        const requestOptions = await this.getProcessRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => ProcessDetailFromJSON(jsonValue));
     }
@@ -284,12 +369,14 @@ export class ProcessesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Retrieves documentation for a given pipeline or data type (if available).
-     * Get process documentation
+     * Creates request options for getProcessDocumentation without sending the request
      */
-    async getProcessDocumentationRaw(requestParameters: GetProcessDocumentationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ProcessDocumentation>> {
-        if (requestParameters.processId === null || requestParameters.processId === undefined) {
-            throw new runtime.RequiredError('processId','Required parameter requestParameters.processId was null or undefined when calling getProcessDocumentation.');
+    async getProcessDocumentationRequestOpts(requestParameters: GetProcessDocumentationRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['processId'] == null) {
+            throw new runtime.RequiredError(
+                'processId',
+                'Required parameter "processId" was null or undefined when calling getProcessDocumentation().'
+            );
         }
 
         const queryParameters: any = {};
@@ -304,12 +391,25 @@ export class ProcessesApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/processes/{processId}/documentation`.replace(`{${"processId"}}`, encodeURIComponent(String(requestParameters.processId))),
+
+        let urlPath = `/processes/{processId}/documentation`;
+        urlPath = urlPath.replace('{processId}', encodeURIComponent(String(requestParameters['processId'])));
+
+        return {
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Retrieves documentation for a given pipeline or data type (if available).
+     * Get process documentation
+     */
+    async getProcessDocumentationRaw(requestParameters: GetProcessDocumentationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ProcessDocumentation>> {
+        const requestOptions = await this.getProcessDocumentationRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => ProcessDocumentationFromJSON(jsonValue));
     }
@@ -324,12 +424,14 @@ export class ProcessesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Retrieves the input parameters for a process
-     * Get process parameters
+     * Creates request options for getProcessParameters without sending the request
      */
-    async getProcessParametersRaw(requestParameters: GetProcessParametersRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FormSchema>> {
-        if (requestParameters.processId === null || requestParameters.processId === undefined) {
-            throw new runtime.RequiredError('processId','Required parameter requestParameters.processId was null or undefined when calling getProcessParameters.');
+    async getProcessParametersRequestOpts(requestParameters: GetProcessParametersRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['processId'] == null) {
+            throw new runtime.RequiredError(
+                'processId',
+                'Required parameter "processId" was null or undefined when calling getProcessParameters().'
+            );
         }
 
         const queryParameters: any = {};
@@ -344,12 +446,25 @@ export class ProcessesApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/processes/{processId}/parameters`.replace(`{${"processId"}}`, encodeURIComponent(String(requestParameters.processId))),
+
+        let urlPath = `/processes/{processId}/parameters`;
+        urlPath = urlPath.replace('{processId}', encodeURIComponent(String(requestParameters['processId'])));
+
+        return {
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Retrieves the input parameters for a process
+     * Get process parameters
+     */
+    async getProcessParametersRaw(requestParameters: GetProcessParametersRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FormSchema>> {
+        const requestOptions = await this.getProcessParametersRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => FormSchemaFromJSON(jsonValue));
     }
@@ -364,14 +479,13 @@ export class ProcessesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Retrieves a list of available processes
-     * List processes
+     * Creates request options for getProcesses without sending the request
      */
-    async getProcessesRaw(requestParameters: GetProcessesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<Process>>> {
+    async getProcessesRequestOpts(requestParameters: GetProcessesRequest): Promise<runtime.RequestOpts> {
         const queryParameters: any = {};
 
-        if (requestParameters.includeArchived !== undefined) {
-            queryParameters['includeArchived'] = requestParameters.includeArchived;
+        if (requestParameters['includeArchived'] != null) {
+            queryParameters['includeArchived'] = requestParameters['includeArchived'];
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -384,12 +498,24 @@ export class ProcessesApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/processes`,
+
+        let urlPath = `/processes`;
+
+        return {
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Retrieves a list of available processes
+     * List processes
+     */
+    async getProcessesRaw(requestParameters: GetProcessesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<Process>>> {
+        const requestOptions = await this.getProcessesRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(ProcessFromJSON));
     }
@@ -404,12 +530,14 @@ export class ProcessesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Updates the process definition from the repository
-     * Sync custom process
+     * Creates request options for syncCustomProcess without sending the request
      */
-    async syncCustomProcessRaw(requestParameters: SyncCustomProcessRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CustomPipelineSettings>> {
-        if (requestParameters.processId === null || requestParameters.processId === undefined) {
-            throw new runtime.RequiredError('processId','Required parameter requestParameters.processId was null or undefined when calling syncCustomProcess.');
+    async syncCustomProcessRequestOpts(requestParameters: SyncCustomProcessRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['processId'] == null) {
+            throw new runtime.RequiredError(
+                'processId',
+                'Required parameter "processId" was null or undefined when calling syncCustomProcess().'
+            );
         }
 
         const queryParameters: any = {};
@@ -424,12 +552,25 @@ export class ProcessesApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/processes/{processId}:sync`.replace(`{${"processId"}}`, encodeURIComponent(String(requestParameters.processId))),
+
+        let urlPath = `/processes/{processId}:sync`;
+        urlPath = urlPath.replace('{processId}', encodeURIComponent(String(requestParameters['processId'])));
+
+        return {
+            path: urlPath,
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Updates the process definition from the repository
+     * Sync custom process
+     */
+    async syncCustomProcessRaw(requestParameters: SyncCustomProcessRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CustomPipelineSettings>> {
+        const requestOptions = await this.syncCustomProcessRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => CustomPipelineSettingsFromJSON(jsonValue));
     }
@@ -444,16 +585,21 @@ export class ProcessesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Updates the custom process
-     * Update custom process
+     * Creates request options for updateCustomProcess without sending the request
      */
-    async updateCustomProcessRaw(requestParameters: UpdateCustomProcessRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.processId === null || requestParameters.processId === undefined) {
-            throw new runtime.RequiredError('processId','Required parameter requestParameters.processId was null or undefined when calling updateCustomProcess.');
+    async updateCustomProcessRequestOpts(requestParameters: UpdateCustomProcessRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['processId'] == null) {
+            throw new runtime.RequiredError(
+                'processId',
+                'Required parameter "processId" was null or undefined when calling updateCustomProcess().'
+            );
         }
 
-        if (requestParameters.customProcessInput === null || requestParameters.customProcessInput === undefined) {
-            throw new runtime.RequiredError('customProcessInput','Required parameter requestParameters.customProcessInput was null or undefined when calling updateCustomProcess.');
+        if (requestParameters['customProcessInput'] == null) {
+            throw new runtime.RequiredError(
+                'customProcessInput',
+                'Required parameter "customProcessInput" was null or undefined when calling updateCustomProcess().'
+            );
         }
 
         const queryParameters: any = {};
@@ -470,13 +616,26 @@ export class ProcessesApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/processes/{processId}`.replace(`{${"processId"}}`, encodeURIComponent(String(requestParameters.processId))),
+
+        let urlPath = `/processes/{processId}`;
+        urlPath = urlPath.replace('{processId}', encodeURIComponent(String(requestParameters['processId'])));
+
+        return {
+            path: urlPath,
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: CustomProcessInputToJSON(requestParameters.customProcessInput),
-        }, initOverrides);
+            body: CustomProcessInputToJSON(requestParameters['customProcessInput']),
+        };
+    }
+
+    /**
+     * Updates the custom process
+     * Update custom process
+     */
+    async updateCustomProcessRaw(requestParameters: UpdateCustomProcessRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.updateCustomProcessRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -490,16 +649,21 @@ export class ProcessesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Checks the input file names with the patterns for testing regex matching
-     * Validate file name patterns
+     * Creates request options for validateFileNamePatterns without sending the request
      */
-    async validateFileNamePatternsRaw(requestParameters: ValidateFileNamePatternsOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<FileNameMatch>>> {
-        if (requestParameters.processId === null || requestParameters.processId === undefined) {
-            throw new runtime.RequiredError('processId','Required parameter requestParameters.processId was null or undefined when calling validateFileNamePatterns.');
+    async validateFileNamePatternsRequestOpts(requestParameters: ValidateFileNamePatternsOperationRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['processId'] == null) {
+            throw new runtime.RequiredError(
+                'processId',
+                'Required parameter "processId" was null or undefined when calling validateFileNamePatterns().'
+            );
         }
 
-        if (requestParameters.validateFileNamePatternsRequest === null || requestParameters.validateFileNamePatternsRequest === undefined) {
-            throw new runtime.RequiredError('validateFileNamePatternsRequest','Required parameter requestParameters.validateFileNamePatternsRequest was null or undefined when calling validateFileNamePatterns.');
+        if (requestParameters['validateFileNamePatternsRequest'] == null) {
+            throw new runtime.RequiredError(
+                'validateFileNamePatternsRequest',
+                'Required parameter "validateFileNamePatternsRequest" was null or undefined when calling validateFileNamePatterns().'
+            );
         }
 
         const queryParameters: any = {};
@@ -516,13 +680,26 @@ export class ProcessesApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/processes/{processId}/validate-files:test`.replace(`{${"processId"}}`, encodeURIComponent(String(requestParameters.processId))),
+
+        let urlPath = `/processes/{processId}/validate-files:test`;
+        urlPath = urlPath.replace('{processId}', encodeURIComponent(String(requestParameters['processId'])));
+
+        return {
+            path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: ValidateFileNamePatternsRequestToJSON(requestParameters.validateFileNamePatternsRequest),
-        }, initOverrides);
+            body: ValidateFileNamePatternsRequestToJSON(requestParameters['validateFileNamePatternsRequest']),
+        };
+    }
+
+    /**
+     * Checks the input file names with the patterns for testing regex matching
+     * Validate file name patterns
+     */
+    async validateFileNamePatternsRaw(requestParameters: ValidateFileNamePatternsOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<FileNameMatch>>> {
+        const requestOptions = await this.validateFileNamePatternsRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(FileNameMatchFromJSON));
     }
@@ -537,16 +714,21 @@ export class ProcessesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Checks the input file names with the expected files for a data type (ingest processes only)
-     * Validate file requirements
+     * Creates request options for validateFileRequirements without sending the request
      */
-    async validateFileRequirementsRaw(requestParameters: ValidateFileRequirementsOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FileRequirements>> {
-        if (requestParameters.processId === null || requestParameters.processId === undefined) {
-            throw new runtime.RequiredError('processId','Required parameter requestParameters.processId was null or undefined when calling validateFileRequirements.');
+    async validateFileRequirementsRequestOpts(requestParameters: ValidateFileRequirementsOperationRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['processId'] == null) {
+            throw new runtime.RequiredError(
+                'processId',
+                'Required parameter "processId" was null or undefined when calling validateFileRequirements().'
+            );
         }
 
-        if (requestParameters.validateFileRequirementsRequest === null || requestParameters.validateFileRequirementsRequest === undefined) {
-            throw new runtime.RequiredError('validateFileRequirementsRequest','Required parameter requestParameters.validateFileRequirementsRequest was null or undefined when calling validateFileRequirements.');
+        if (requestParameters['validateFileRequirementsRequest'] == null) {
+            throw new runtime.RequiredError(
+                'validateFileRequirementsRequest',
+                'Required parameter "validateFileRequirementsRequest" was null or undefined when calling validateFileRequirements().'
+            );
         }
 
         const queryParameters: any = {};
@@ -563,13 +745,26 @@ export class ProcessesApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/processes/{processId}/validate-files`.replace(`{${"processId"}}`, encodeURIComponent(String(requestParameters.processId))),
+
+        let urlPath = `/processes/{processId}/validate-files`;
+        urlPath = urlPath.replace('{processId}', encodeURIComponent(String(requestParameters['processId'])));
+
+        return {
+            path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: ValidateFileRequirementsRequestToJSON(requestParameters.validateFileRequirementsRequest),
-        }, initOverrides);
+            body: ValidateFileRequirementsRequestToJSON(requestParameters['validateFileRequirementsRequest']),
+        };
+    }
+
+    /**
+     * Checks the input file names with the expected files for a data type (ingest processes only)
+     * Validate file requirements
+     */
+    async validateFileRequirementsRaw(requestParameters: ValidateFileRequirementsOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FileRequirements>> {
+        const requestOptions = await this.validateFileRequirementsRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => FileRequirementsFromJSON(jsonValue));
     }

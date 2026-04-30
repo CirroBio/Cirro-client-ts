@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -36,12 +36,10 @@ export interface SampleRequest {
 /**
  * Check if a given object implements the SampleRequest interface.
  */
-export function instanceOfSampleRequest(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "metadata" in value;
-
-    return isInstance;
+export function instanceOfSampleRequest(value: object): value is SampleRequest {
+    if (!('name' in value) || value['name'] === undefined) return false;
+    if (!('metadata' in value) || value['metadata'] === undefined) return false;
+    return true;
 }
 
 export function SampleRequestFromJSON(json: any): SampleRequest {
@@ -49,7 +47,7 @@ export function SampleRequestFromJSON(json: any): SampleRequest {
 }
 
 export function SampleRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): SampleRequest {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -59,17 +57,19 @@ export function SampleRequestFromJSONTyped(json: any, ignoreDiscriminator: boole
     };
 }
 
-export function SampleRequestToJSON(value?: SampleRequest | null): any {
-    if (value === undefined) {
-        return undefined;
+export function SampleRequestToJSON(json: any): SampleRequest {
+    return SampleRequestToJSONTyped(json, false);
+}
+
+export function SampleRequestToJSONTyped(value?: SampleRequest | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'name': value.name,
-        'metadata': value.metadata,
+        'name': value['name'],
+        'metadata': value['metadata'],
     };
 }
 

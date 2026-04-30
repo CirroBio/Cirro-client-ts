@@ -23,6 +23,17 @@ export enum GovernanceScope {
 }
 
 
+export function instanceOfGovernanceScope(value: any): boolean {
+    for (const key in GovernanceScope) {
+        if (Object.prototype.hasOwnProperty.call(GovernanceScope, key)) {
+            if (GovernanceScope[key as keyof typeof GovernanceScope] === value) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 export function GovernanceScopeFromJSON(json: any): GovernanceScope {
     return GovernanceScopeFromJSONTyped(json, false);
 }
@@ -33,5 +44,9 @@ export function GovernanceScopeFromJSONTyped(json: any, ignoreDiscriminator: boo
 
 export function GovernanceScopeToJSON(value?: GovernanceScope | null): any {
     return value as any;
+}
+
+export function GovernanceScopeToJSONTyped(value: any, ignoreDiscriminator: boolean): GovernanceScope {
+    return value as GovernanceScope;
 }
 

@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * Represents a mounted dataset in a workspace
  * @export
@@ -48,11 +48,9 @@ export interface MountedDataset {
 /**
  * Check if a given object implements the MountedDataset interface.
  */
-export function instanceOfMountedDataset(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "name" in value;
-
-    return isInstance;
+export function instanceOfMountedDataset(value: object): value is MountedDataset {
+    if (!('name' in value) || value['name'] === undefined) return false;
+    return true;
 }
 
 export function MountedDatasetFromJSON(json: any): MountedDataset {
@@ -60,31 +58,33 @@ export function MountedDatasetFromJSON(json: any): MountedDataset {
 }
 
 export function MountedDatasetFromJSONTyped(json: any, ignoreDiscriminator: boolean): MountedDataset {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
         'name': json['name'],
-        'datasetId': !exists(json, 'datasetId') ? undefined : json['datasetId'],
-        'customUri': !exists(json, 'customUri') ? undefined : json['customUri'],
-        'sharedFilesystemId': !exists(json, 'sharedFilesystemId') ? undefined : json['sharedFilesystemId'],
+        'datasetId': json['datasetId'] == null ? undefined : json['datasetId'],
+        'customUri': json['customUri'] == null ? undefined : json['customUri'],
+        'sharedFilesystemId': json['sharedFilesystemId'] == null ? undefined : json['sharedFilesystemId'],
     };
 }
 
-export function MountedDatasetToJSON(value?: MountedDataset | null): any {
-    if (value === undefined) {
-        return undefined;
+export function MountedDatasetToJSON(json: any): MountedDataset {
+    return MountedDatasetToJSONTyped(json, false);
+}
+
+export function MountedDatasetToJSONTyped(value?: MountedDataset | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'name': value.name,
-        'datasetId': value.datasetId,
-        'customUri': value.customUri,
-        'sharedFilesystemId': value.sharedFilesystemId,
+        'name': value['name'],
+        'datasetId': value['datasetId'],
+        'customUri': value['customUri'],
+        'sharedFilesystemId': value['sharedFilesystemId'],
     };
 }
 

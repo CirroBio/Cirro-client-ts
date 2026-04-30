@@ -12,12 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { Tag } from './Tag';
 import {
     TagFromJSON,
     TagFromJSONTyped,
     TagToJSON,
+    TagToJSONTyped,
 } from './Tag';
 
 /**
@@ -55,14 +56,12 @@ export interface UpdateDatasetRequest {
 /**
  * Check if a given object implements the UpdateDatasetRequest interface.
  */
-export function instanceOfUpdateDatasetRequest(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "description" in value;
-    isInstance = isInstance && "processId" in value;
-    isInstance = isInstance && "tags" in value;
-
-    return isInstance;
+export function instanceOfUpdateDatasetRequest(value: object): value is UpdateDatasetRequest {
+    if (!('name' in value) || value['name'] === undefined) return false;
+    if (!('description' in value) || value['description'] === undefined) return false;
+    if (!('processId' in value) || value['processId'] === undefined) return false;
+    if (!('tags' in value) || value['tags'] === undefined) return false;
+    return true;
 }
 
 export function UpdateDatasetRequestFromJSON(json: any): UpdateDatasetRequest {
@@ -70,7 +69,7 @@ export function UpdateDatasetRequestFromJSON(json: any): UpdateDatasetRequest {
 }
 
 export function UpdateDatasetRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): UpdateDatasetRequest {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -82,19 +81,21 @@ export function UpdateDatasetRequestFromJSONTyped(json: any, ignoreDiscriminator
     };
 }
 
-export function UpdateDatasetRequestToJSON(value?: UpdateDatasetRequest | null): any {
-    if (value === undefined) {
-        return undefined;
+export function UpdateDatasetRequestToJSON(json: any): UpdateDatasetRequest {
+    return UpdateDatasetRequestToJSONTyped(json, false);
+}
+
+export function UpdateDatasetRequestToJSONTyped(value?: UpdateDatasetRequest | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'name': value.name,
-        'description': value.description,
-        'processId': value.processId,
-        'tags': ((value.tags as Array<any>).map(TagToJSON)),
+        'name': value['name'],
+        'description': value['description'],
+        'processId': value['processId'],
+        'tags': ((value['tags'] as Array<any>).map(TagToJSON)),
     };
 }
 

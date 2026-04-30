@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -42,10 +42,8 @@ export interface ColumnDefinition {
 /**
  * Check if a given object implements the ColumnDefinition interface.
  */
-export function instanceOfColumnDefinition(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfColumnDefinition(value: object): value is ColumnDefinition {
+    return true;
 }
 
 export function ColumnDefinitionFromJSON(json: any): ColumnDefinition {
@@ -53,29 +51,31 @@ export function ColumnDefinitionFromJSON(json: any): ColumnDefinition {
 }
 
 export function ColumnDefinitionFromJSONTyped(json: any, ignoreDiscriminator: boolean): ColumnDefinition {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'col': !exists(json, 'col') ? undefined : json['col'],
-        'name': !exists(json, 'name') ? undefined : json['name'],
-        'desc': !exists(json, 'desc') ? undefined : json['desc'],
+        'col': json['col'] == null ? undefined : json['col'],
+        'name': json['name'] == null ? undefined : json['name'],
+        'desc': json['desc'] == null ? undefined : json['desc'],
     };
 }
 
-export function ColumnDefinitionToJSON(value?: ColumnDefinition | null): any {
-    if (value === undefined) {
-        return undefined;
+export function ColumnDefinitionToJSON(json: any): ColumnDefinition {
+    return ColumnDefinitionToJSONTyped(json, false);
+}
+
+export function ColumnDefinitionToJSONTyped(value?: ColumnDefinition | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'col': value.col,
-        'name': value.name,
-        'desc': value.desc,
+        'col': value['col'],
+        'name': value['name'],
+        'desc': value['desc'],
     };
 }
 

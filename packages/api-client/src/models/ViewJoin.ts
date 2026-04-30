@@ -12,19 +12,21 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
-import type { JoinCondition } from './JoinCondition';
-import {
-    JoinConditionFromJSON,
-    JoinConditionFromJSONTyped,
-    JoinConditionToJSON,
-} from './JoinCondition';
+import { mapValues } from '../runtime';
 import type { JoinType } from './JoinType';
 import {
     JoinTypeFromJSON,
     JoinTypeFromJSONTyped,
     JoinTypeToJSON,
+    JoinTypeToJSONTyped,
 } from './JoinType';
+import type { JoinCondition } from './JoinCondition';
+import {
+    JoinConditionFromJSON,
+    JoinConditionFromJSONTyped,
+    JoinConditionToJSON,
+    JoinConditionToJSONTyped,
+} from './JoinCondition';
 
 /**
  * 
@@ -52,16 +54,16 @@ export interface ViewJoin {
     conditions: Array<JoinCondition>;
 }
 
+
+
 /**
  * Check if a given object implements the ViewJoin interface.
  */
-export function instanceOfViewJoin(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "sheetAlias" in value;
-    isInstance = isInstance && "joinType" in value;
-    isInstance = isInstance && "conditions" in value;
-
-    return isInstance;
+export function instanceOfViewJoin(value: object): value is ViewJoin {
+    if (!('sheetAlias' in value) || value['sheetAlias'] === undefined) return false;
+    if (!('joinType' in value) || value['joinType'] === undefined) return false;
+    if (!('conditions' in value) || value['conditions'] === undefined) return false;
+    return true;
 }
 
 export function ViewJoinFromJSON(json: any): ViewJoin {
@@ -69,7 +71,7 @@ export function ViewJoinFromJSON(json: any): ViewJoin {
 }
 
 export function ViewJoinFromJSONTyped(json: any, ignoreDiscriminator: boolean): ViewJoin {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -80,18 +82,20 @@ export function ViewJoinFromJSONTyped(json: any, ignoreDiscriminator: boolean): 
     };
 }
 
-export function ViewJoinToJSON(value?: ViewJoin | null): any {
-    if (value === undefined) {
-        return undefined;
+export function ViewJoinToJSON(json: any): ViewJoin {
+    return ViewJoinToJSONTyped(json, false);
+}
+
+export function ViewJoinToJSONTyped(value?: ViewJoin | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'sheetAlias': value.sheetAlias,
-        'joinType': JoinTypeToJSON(value.joinType),
-        'conditions': ((value.conditions as Array<any>).map(JoinConditionToJSON)),
+        'sheetAlias': value['sheetAlias'],
+        'joinType': JoinTypeToJSON(value['joinType']),
+        'conditions': ((value['conditions'] as Array<any>).map(JoinConditionToJSON)),
     };
 }
 

@@ -12,18 +12,20 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { FileDef } from './FileDef';
 import {
     FileDefFromJSON,
     FileDefFromJSONTyped,
     FileDefToJSON,
+    FileDefToJSONTyped,
 } from './FileDef';
 import type { SourceColumn } from './SourceColumn';
 import {
     SourceColumnFromJSON,
     SourceColumnFromJSONTyped,
     SourceColumnToJSON,
+    SourceColumnToJSONTyped,
 } from './SourceColumn';
 
 /**
@@ -49,11 +51,9 @@ export interface SheetIngestRequest {
 /**
  * Check if a given object implements the SheetIngestRequest interface.
  */
-export function instanceOfSheetIngestRequest(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "fileDef" in value;
-
-    return isInstance;
+export function instanceOfSheetIngestRequest(value: object): value is SheetIngestRequest {
+    if (!('fileDef' in value) || value['fileDef'] === undefined) return false;
+    return true;
 }
 
 export function SheetIngestRequestFromJSON(json: any): SheetIngestRequest {
@@ -61,27 +61,29 @@ export function SheetIngestRequestFromJSON(json: any): SheetIngestRequest {
 }
 
 export function SheetIngestRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): SheetIngestRequest {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
         'fileDef': FileDefFromJSON(json['fileDef']),
-        'sourceColumns': !exists(json, 'sourceColumns') ? undefined : (json['sourceColumns'] === null ? null : (json['sourceColumns'] as Array<any>).map(SourceColumnFromJSON)),
+        'sourceColumns': json['sourceColumns'] == null ? undefined : ((json['sourceColumns'] as Array<any>).map(SourceColumnFromJSON)),
     };
 }
 
-export function SheetIngestRequestToJSON(value?: SheetIngestRequest | null): any {
-    if (value === undefined) {
-        return undefined;
+export function SheetIngestRequestToJSON(json: any): SheetIngestRequest {
+    return SheetIngestRequestToJSONTyped(json, false);
+}
+
+export function SheetIngestRequestToJSONTyped(value?: SheetIngestRequest | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'fileDef': FileDefToJSON(value.fileDef),
-        'sourceColumns': value.sourceColumns === undefined ? undefined : (value.sourceColumns === null ? null : (value.sourceColumns as Array<any>).map(SourceColumnToJSON)),
+        'fileDef': FileDefToJSON(value['fileDef']),
+        'sourceColumns': value['sourceColumns'] == null ? undefined : ((value['sourceColumns'] as Array<any>).map(SourceColumnToJSON)),
     };
 }
 

@@ -26,6 +26,17 @@ export enum ProjectRole {
 }
 
 
+export function instanceOfProjectRole(value: any): boolean {
+    for (const key in ProjectRole) {
+        if (Object.prototype.hasOwnProperty.call(ProjectRole, key)) {
+            if (ProjectRole[key as keyof typeof ProjectRole] === value) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 export function ProjectRoleFromJSON(json: any): ProjectRole {
     return ProjectRoleFromJSONTyped(json, false);
 }
@@ -36,5 +47,9 @@ export function ProjectRoleFromJSONTyped(json: any, ignoreDiscriminator: boolean
 
 export function ProjectRoleToJSON(value?: ProjectRole | null): any {
     return value as any;
+}
+
+export function ProjectRoleToJSONTyped(value: any, ignoreDiscriminator: boolean): ProjectRole {
+    return value as ProjectRole;
 }
 

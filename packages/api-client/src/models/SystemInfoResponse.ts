@@ -12,25 +12,28 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { AuthInfo } from './AuthInfo';
 import {
     AuthInfoFromJSON,
     AuthInfoFromJSONTyped,
     AuthInfoToJSON,
+    AuthInfoToJSONTyped,
 } from './AuthInfo';
-import type { ResourcesInfo } from './ResourcesInfo';
-import {
-    ResourcesInfoFromJSON,
-    ResourcesInfoFromJSONTyped,
-    ResourcesInfoToJSON,
-} from './ResourcesInfo';
 import type { TenantInfo } from './TenantInfo';
 import {
     TenantInfoFromJSON,
     TenantInfoFromJSONTyped,
     TenantInfoToJSON,
+    TenantInfoToJSONTyped,
 } from './TenantInfo';
+import type { ResourcesInfo } from './ResourcesInfo';
+import {
+    ResourcesInfoFromJSON,
+    ResourcesInfoFromJSONTyped,
+    ResourcesInfoToJSON,
+    ResourcesInfoToJSONTyped,
+} from './ResourcesInfo';
 
 /**
  * 
@@ -115,22 +118,20 @@ export interface SystemInfoResponse {
 /**
  * Check if a given object implements the SystemInfoResponse interface.
  */
-export function instanceOfSystemInfoResponse(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "resourcesBucket" in value;
-    isInstance = isInstance && "referencesBucket" in value;
-    isInstance = isInstance && "liveEndpoint" in value;
-    isInstance = isInstance && "agentEndpoint" in value;
-    isInstance = isInstance && "region" in value;
-    isInstance = isInstance && "systemMessage" in value;
-    isInstance = isInstance && "maintenanceModeEnabled" in value;
-    isInstance = isInstance && "commitHash" in value;
-    isInstance = isInstance && "version" in value;
-    isInstance = isInstance && "resourcesInfo" in value;
-    isInstance = isInstance && "tenantInfo" in value;
-    isInstance = isInstance && "auth" in value;
-
-    return isInstance;
+export function instanceOfSystemInfoResponse(value: object): value is SystemInfoResponse {
+    if (!('resourcesBucket' in value) || value['resourcesBucket'] === undefined) return false;
+    if (!('referencesBucket' in value) || value['referencesBucket'] === undefined) return false;
+    if (!('liveEndpoint' in value) || value['liveEndpoint'] === undefined) return false;
+    if (!('agentEndpoint' in value) || value['agentEndpoint'] === undefined) return false;
+    if (!('region' in value) || value['region'] === undefined) return false;
+    if (!('systemMessage' in value) || value['systemMessage'] === undefined) return false;
+    if (!('maintenanceModeEnabled' in value) || value['maintenanceModeEnabled'] === undefined) return false;
+    if (!('commitHash' in value) || value['commitHash'] === undefined) return false;
+    if (!('version' in value) || value['version'] === undefined) return false;
+    if (!('resourcesInfo' in value) || value['resourcesInfo'] === undefined) return false;
+    if (!('tenantInfo' in value) || value['tenantInfo'] === undefined) return false;
+    if (!('auth' in value) || value['auth'] === undefined) return false;
+    return true;
 }
 
 export function SystemInfoResponseFromJSON(json: any): SystemInfoResponse {
@@ -138,7 +139,7 @@ export function SystemInfoResponseFromJSON(json: any): SystemInfoResponse {
 }
 
 export function SystemInfoResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): SystemInfoResponse {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -158,27 +159,29 @@ export function SystemInfoResponseFromJSONTyped(json: any, ignoreDiscriminator: 
     };
 }
 
-export function SystemInfoResponseToJSON(value?: SystemInfoResponse | null): any {
-    if (value === undefined) {
-        return undefined;
+export function SystemInfoResponseToJSON(json: any): SystemInfoResponse {
+    return SystemInfoResponseToJSONTyped(json, false);
+}
+
+export function SystemInfoResponseToJSONTyped(value?: SystemInfoResponse | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'resourcesBucket': value.resourcesBucket,
-        'referencesBucket': value.referencesBucket,
-        'liveEndpoint': value.liveEndpoint,
-        'agentEndpoint': value.agentEndpoint,
-        'region': value.region,
-        'systemMessage': value.systemMessage,
-        'maintenanceModeEnabled': value.maintenanceModeEnabled,
-        'commitHash': value.commitHash,
-        'version': value.version,
-        'resourcesInfo': ResourcesInfoToJSON(value.resourcesInfo),
-        'tenantInfo': TenantInfoToJSON(value.tenantInfo),
-        'auth': AuthInfoToJSON(value.auth),
+        'resourcesBucket': value['resourcesBucket'],
+        'referencesBucket': value['referencesBucket'],
+        'liveEndpoint': value['liveEndpoint'],
+        'agentEndpoint': value['agentEndpoint'],
+        'region': value['region'],
+        'systemMessage': value['systemMessage'],
+        'maintenanceModeEnabled': value['maintenanceModeEnabled'],
+        'commitHash': value['commitHash'],
+        'version': value['version'],
+        'resourcesInfo': ResourcesInfoToJSON(value['resourcesInfo']),
+        'tenantInfo': TenantInfoToJSON(value['tenantInfo']),
+        'auth': AuthInfoToJSON(value['auth']),
     };
 }
 

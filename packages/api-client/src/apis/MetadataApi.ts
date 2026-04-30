@@ -12,24 +12,27 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  FormSchema,
-  PaginatedResponseSampleDto,
-  Sample,
-  SampleRequest,
-} from '../models/index';
 import {
+    type FormSchema,
     FormSchemaFromJSON,
     FormSchemaToJSON,
+} from '../models/FormSchema';
+import {
+    type PaginatedResponseSampleDto,
     PaginatedResponseSampleDtoFromJSON,
     PaginatedResponseSampleDtoToJSON,
+} from '../models/PaginatedResponseSampleDto';
+import {
+    type Sample,
     SampleFromJSON,
     SampleToJSON,
+} from '../models/Sample';
+import {
+    type SampleRequest,
     SampleRequestFromJSON,
     SampleRequestToJSON,
-} from '../models/index';
+} from '../models/SampleRequest';
 
 export interface GetDatasetSamplesRequest {
     projectId: string;
@@ -68,16 +71,21 @@ export interface UpdateSampleRequest {
 export class MetadataApi extends runtime.BaseAPI {
 
     /**
-     * Retrieves a list of samples associated with a dataset along with their metadata
-     * Get dataset samples
+     * Creates request options for getDatasetSamples without sending the request
      */
-    async getDatasetSamplesRaw(requestParameters: GetDatasetSamplesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<Sample>>> {
-        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
-            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling getDatasetSamples.');
+    async getDatasetSamplesRequestOpts(requestParameters: GetDatasetSamplesRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling getDatasetSamples().'
+            );
         }
 
-        if (requestParameters.datasetId === null || requestParameters.datasetId === undefined) {
-            throw new runtime.RequiredError('datasetId','Required parameter requestParameters.datasetId was null or undefined when calling getDatasetSamples.');
+        if (requestParameters['datasetId'] == null) {
+            throw new runtime.RequiredError(
+                'datasetId',
+                'Required parameter "datasetId" was null or undefined when calling getDatasetSamples().'
+            );
         }
 
         const queryParameters: any = {};
@@ -92,12 +100,26 @@ export class MetadataApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/projects/{projectId}/datasets/{datasetId}/samples`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))).replace(`{${"datasetId"}}`, encodeURIComponent(String(requestParameters.datasetId))),
+
+        let urlPath = `/projects/{projectId}/datasets/{datasetId}/samples`;
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+        urlPath = urlPath.replace('{datasetId}', encodeURIComponent(String(requestParameters['datasetId'])));
+
+        return {
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Retrieves a list of samples associated with a dataset along with their metadata
+     * Get dataset samples
+     */
+    async getDatasetSamplesRaw(requestParameters: GetDatasetSamplesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<Sample>>> {
+        const requestOptions = await this.getDatasetSamplesRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(SampleFromJSON));
     }
@@ -112,22 +134,24 @@ export class MetadataApi extends runtime.BaseAPI {
     }
 
     /**
-     * Retrieves a list of samples associated with a project along with their metadata
-     * Get project samples
+     * Creates request options for getProjectSamples without sending the request
      */
-    async getProjectSamplesRaw(requestParameters: GetProjectSamplesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PaginatedResponseSampleDto>> {
-        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
-            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling getProjectSamples.');
+    async getProjectSamplesRequestOpts(requestParameters: GetProjectSamplesRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling getProjectSamples().'
+            );
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters.limit !== undefined) {
-            queryParameters['limit'] = requestParameters.limit;
+        if (requestParameters['limit'] != null) {
+            queryParameters['limit'] = requestParameters['limit'];
         }
 
-        if (requestParameters.nextToken !== undefined) {
-            queryParameters['nextToken'] = requestParameters.nextToken;
+        if (requestParameters['nextToken'] != null) {
+            queryParameters['nextToken'] = requestParameters['nextToken'];
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -140,12 +164,25 @@ export class MetadataApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/projects/{projectId}/samples`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))),
+
+        let urlPath = `/projects/{projectId}/samples`;
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+
+        return {
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Retrieves a list of samples associated with a project along with their metadata
+     * Get project samples
+     */
+    async getProjectSamplesRaw(requestParameters: GetProjectSamplesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PaginatedResponseSampleDto>> {
+        const requestOptions = await this.getProjectSamplesRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => PaginatedResponseSampleDtoFromJSON(jsonValue));
     }
@@ -160,11 +197,14 @@ export class MetadataApi extends runtime.BaseAPI {
     }
 
     /**
-     * Get project metadata schema
+     * Creates request options for getProjectSchema without sending the request
      */
-    async getProjectSchemaRaw(requestParameters: GetProjectSchemaRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FormSchema>> {
-        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
-            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling getProjectSchema.');
+    async getProjectSchemaRequestOpts(requestParameters: GetProjectSchemaRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling getProjectSchema().'
+            );
         }
 
         const queryParameters: any = {};
@@ -179,12 +219,24 @@ export class MetadataApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/projects/{projectId}/schema`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))),
+
+        let urlPath = `/projects/{projectId}/schema`;
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+
+        return {
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Get project metadata schema
+     */
+    async getProjectSchemaRaw(requestParameters: GetProjectSchemaRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FormSchema>> {
+        const requestOptions = await this.getProjectSchemaRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => FormSchemaFromJSON(jsonValue));
     }
@@ -198,16 +250,21 @@ export class MetadataApi extends runtime.BaseAPI {
     }
 
     /**
-     * Retrieves a sample by its ID along with its metadata
-     * Get sample by ID
+     * Creates request options for getSampleById without sending the request
      */
-    async getSampleByIdRaw(requestParameters: GetSampleByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Sample>> {
-        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
-            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling getSampleById.');
+    async getSampleByIdRequestOpts(requestParameters: GetSampleByIdRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling getSampleById().'
+            );
         }
 
-        if (requestParameters.sampleId === null || requestParameters.sampleId === undefined) {
-            throw new runtime.RequiredError('sampleId','Required parameter requestParameters.sampleId was null or undefined when calling getSampleById.');
+        if (requestParameters['sampleId'] == null) {
+            throw new runtime.RequiredError(
+                'sampleId',
+                'Required parameter "sampleId" was null or undefined when calling getSampleById().'
+            );
         }
 
         const queryParameters: any = {};
@@ -222,12 +279,26 @@ export class MetadataApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/projects/{projectId}/samples/{sampleId}`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))).replace(`{${"sampleId"}}`, encodeURIComponent(String(requestParameters.sampleId))),
+
+        let urlPath = `/projects/{projectId}/samples/{sampleId}`;
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+        urlPath = urlPath.replace('{sampleId}', encodeURIComponent(String(requestParameters['sampleId'])));
+
+        return {
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Retrieves a sample by its ID along with its metadata
+     * Get sample by ID
+     */
+    async getSampleByIdRaw(requestParameters: GetSampleByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Sample>> {
+        const requestOptions = await this.getSampleByIdRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => SampleFromJSON(jsonValue));
     }
@@ -242,15 +313,21 @@ export class MetadataApi extends runtime.BaseAPI {
     }
 
     /**
-     * Update project metadata schema
+     * Creates request options for updateProjectSchema without sending the request
      */
-    async updateProjectSchemaRaw(requestParameters: UpdateProjectSchemaRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
-            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling updateProjectSchema.');
+    async updateProjectSchemaRequestOpts(requestParameters: UpdateProjectSchemaRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling updateProjectSchema().'
+            );
         }
 
-        if (requestParameters.formSchema === null || requestParameters.formSchema === undefined) {
-            throw new runtime.RequiredError('formSchema','Required parameter requestParameters.formSchema was null or undefined when calling updateProjectSchema.');
+        if (requestParameters['formSchema'] == null) {
+            throw new runtime.RequiredError(
+                'formSchema',
+                'Required parameter "formSchema" was null or undefined when calling updateProjectSchema().'
+            );
         }
 
         const queryParameters: any = {};
@@ -267,13 +344,25 @@ export class MetadataApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/projects/{projectId}/schema`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))),
+
+        let urlPath = `/projects/{projectId}/schema`;
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+
+        return {
+            path: urlPath,
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: FormSchemaToJSON(requestParameters.formSchema),
-        }, initOverrides);
+            body: FormSchemaToJSON(requestParameters['formSchema']),
+        };
+    }
+
+    /**
+     * Update project metadata schema
+     */
+    async updateProjectSchemaRaw(requestParameters: UpdateProjectSchemaRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.updateProjectSchemaRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -286,20 +375,28 @@ export class MetadataApi extends runtime.BaseAPI {
     }
 
     /**
-     * Updates metadata on a sample
-     * Update sample
+     * Creates request options for updateSample without sending the request
      */
-    async updateSampleRaw(requestParameters: UpdateSampleRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Sample>> {
-        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
-            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling updateSample.');
+    async updateSampleRequestOpts(requestParameters: UpdateSampleRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling updateSample().'
+            );
         }
 
-        if (requestParameters.sampleId === null || requestParameters.sampleId === undefined) {
-            throw new runtime.RequiredError('sampleId','Required parameter requestParameters.sampleId was null or undefined when calling updateSample.');
+        if (requestParameters['sampleId'] == null) {
+            throw new runtime.RequiredError(
+                'sampleId',
+                'Required parameter "sampleId" was null or undefined when calling updateSample().'
+            );
         }
 
-        if (requestParameters.sampleRequest === null || requestParameters.sampleRequest === undefined) {
-            throw new runtime.RequiredError('sampleRequest','Required parameter requestParameters.sampleRequest was null or undefined when calling updateSample.');
+        if (requestParameters['sampleRequest'] == null) {
+            throw new runtime.RequiredError(
+                'sampleRequest',
+                'Required parameter "sampleRequest" was null or undefined when calling updateSample().'
+            );
         }
 
         const queryParameters: any = {};
@@ -316,13 +413,27 @@ export class MetadataApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/projects/{projectId}/samples/{sampleId}`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))).replace(`{${"sampleId"}}`, encodeURIComponent(String(requestParameters.sampleId))),
+
+        let urlPath = `/projects/{projectId}/samples/{sampleId}`;
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+        urlPath = urlPath.replace('{sampleId}', encodeURIComponent(String(requestParameters['sampleId'])));
+
+        return {
+            path: urlPath,
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: SampleRequestToJSON(requestParameters.sampleRequest),
-        }, initOverrides);
+            body: SampleRequestToJSON(requestParameters['sampleRequest']),
+        };
+    }
+
+    /**
+     * Updates metadata on a sample
+     * Update sample
+     */
+    async updateSampleRaw(requestParameters: UpdateSampleRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Sample>> {
+        const requestOptions = await this.updateSampleRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => SampleFromJSON(jsonValue));
     }

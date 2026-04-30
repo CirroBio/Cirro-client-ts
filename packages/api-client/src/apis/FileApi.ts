@@ -12,27 +12,32 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  AWSCredentials,
-  GenerateSftpCredentialsRequest,
-  GovernanceFileAccessRequest,
-  ProjectFileAccessRequest,
-  SftpCredentials,
-} from '../models/index';
 import {
+    type AWSCredentials,
     AWSCredentialsFromJSON,
     AWSCredentialsToJSON,
+} from '../models/AWSCredentials';
+import {
+    type GenerateSftpCredentialsRequest,
     GenerateSftpCredentialsRequestFromJSON,
     GenerateSftpCredentialsRequestToJSON,
+} from '../models/GenerateSftpCredentialsRequest';
+import {
+    type GovernanceFileAccessRequest,
     GovernanceFileAccessRequestFromJSON,
     GovernanceFileAccessRequestToJSON,
+} from '../models/GovernanceFileAccessRequest';
+import {
+    type ProjectFileAccessRequest,
     ProjectFileAccessRequestFromJSON,
     ProjectFileAccessRequestToJSON,
+} from '../models/ProjectFileAccessRequest';
+import {
+    type SftpCredentials,
     SftpCredentialsFromJSON,
     SftpCredentialsToJSON,
-} from '../models/index';
+} from '../models/SftpCredentials';
 
 export interface GenerateGovernanceFileAccessTokenRequest {
     requirementId: string;
@@ -55,16 +60,21 @@ export interface GenerateProjectSftpTokenRequest {
 export class FileApi extends runtime.BaseAPI {
 
     /**
-     * Generates credentials used for connecting via S3
-     * Create governance file access token
+     * Creates request options for generateGovernanceFileAccessToken without sending the request
      */
-    async generateGovernanceFileAccessTokenRaw(requestParameters: GenerateGovernanceFileAccessTokenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AWSCredentials>> {
-        if (requestParameters.requirementId === null || requestParameters.requirementId === undefined) {
-            throw new runtime.RequiredError('requirementId','Required parameter requestParameters.requirementId was null or undefined when calling generateGovernanceFileAccessToken.');
+    async generateGovernanceFileAccessTokenRequestOpts(requestParameters: GenerateGovernanceFileAccessTokenRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['requirementId'] == null) {
+            throw new runtime.RequiredError(
+                'requirementId',
+                'Required parameter "requirementId" was null or undefined when calling generateGovernanceFileAccessToken().'
+            );
         }
 
-        if (requestParameters.governanceFileAccessRequest === null || requestParameters.governanceFileAccessRequest === undefined) {
-            throw new runtime.RequiredError('governanceFileAccessRequest','Required parameter requestParameters.governanceFileAccessRequest was null or undefined when calling generateGovernanceFileAccessToken.');
+        if (requestParameters['governanceFileAccessRequest'] == null) {
+            throw new runtime.RequiredError(
+                'governanceFileAccessRequest',
+                'Required parameter "governanceFileAccessRequest" was null or undefined when calling generateGovernanceFileAccessToken().'
+            );
         }
 
         const queryParameters: any = {};
@@ -81,13 +91,26 @@ export class FileApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/governance/requirements/{requirementId}/s3-token`.replace(`{${"requirementId"}}`, encodeURIComponent(String(requestParameters.requirementId))),
+
+        let urlPath = `/governance/requirements/{requirementId}/s3-token`;
+        urlPath = urlPath.replace('{requirementId}', encodeURIComponent(String(requestParameters['requirementId'])));
+
+        return {
+            path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: GovernanceFileAccessRequestToJSON(requestParameters.governanceFileAccessRequest),
-        }, initOverrides);
+            body: GovernanceFileAccessRequestToJSON(requestParameters['governanceFileAccessRequest']),
+        };
+    }
+
+    /**
+     * Generates credentials used for connecting via S3
+     * Create governance file access token
+     */
+    async generateGovernanceFileAccessTokenRaw(requestParameters: GenerateGovernanceFileAccessTokenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AWSCredentials>> {
+        const requestOptions = await this.generateGovernanceFileAccessTokenRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => AWSCredentialsFromJSON(jsonValue));
     }
@@ -102,16 +125,21 @@ export class FileApi extends runtime.BaseAPI {
     }
 
     /**
-     * Generates credentials used for connecting via S3
-     * Create project file access token
+     * Creates request options for generateProjectFileAccessToken without sending the request
      */
-    async generateProjectFileAccessTokenRaw(requestParameters: GenerateProjectFileAccessTokenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AWSCredentials>> {
-        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
-            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling generateProjectFileAccessToken.');
+    async generateProjectFileAccessTokenRequestOpts(requestParameters: GenerateProjectFileAccessTokenRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling generateProjectFileAccessToken().'
+            );
         }
 
-        if (requestParameters.projectFileAccessRequest === null || requestParameters.projectFileAccessRequest === undefined) {
-            throw new runtime.RequiredError('projectFileAccessRequest','Required parameter requestParameters.projectFileAccessRequest was null or undefined when calling generateProjectFileAccessToken.');
+        if (requestParameters['projectFileAccessRequest'] == null) {
+            throw new runtime.RequiredError(
+                'projectFileAccessRequest',
+                'Required parameter "projectFileAccessRequest" was null or undefined when calling generateProjectFileAccessToken().'
+            );
         }
 
         const queryParameters: any = {};
@@ -128,13 +156,26 @@ export class FileApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/projects/{projectId}/s3-token`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))),
+
+        let urlPath = `/projects/{projectId}/s3-token`;
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+
+        return {
+            path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: ProjectFileAccessRequestToJSON(requestParameters.projectFileAccessRequest),
-        }, initOverrides);
+            body: ProjectFileAccessRequestToJSON(requestParameters['projectFileAccessRequest']),
+        };
+    }
+
+    /**
+     * Generates credentials used for connecting via S3
+     * Create project file access token
+     */
+    async generateProjectFileAccessTokenRaw(requestParameters: GenerateProjectFileAccessTokenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AWSCredentials>> {
+        const requestOptions = await this.generateProjectFileAccessTokenRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => AWSCredentialsFromJSON(jsonValue));
     }
@@ -149,16 +190,21 @@ export class FileApi extends runtime.BaseAPI {
     }
 
     /**
-     * Generates credentials used for connecting via SFTP
-     * Create project SFTP Token
+     * Creates request options for generateProjectSftpToken without sending the request
      */
-    async generateProjectSftpTokenRaw(requestParameters: GenerateProjectSftpTokenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SftpCredentials>> {
-        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
-            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling generateProjectSftpToken.');
+    async generateProjectSftpTokenRequestOpts(requestParameters: GenerateProjectSftpTokenRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling generateProjectSftpToken().'
+            );
         }
 
-        if (requestParameters.generateSftpCredentialsRequest === null || requestParameters.generateSftpCredentialsRequest === undefined) {
-            throw new runtime.RequiredError('generateSftpCredentialsRequest','Required parameter requestParameters.generateSftpCredentialsRequest was null or undefined when calling generateProjectSftpToken.');
+        if (requestParameters['generateSftpCredentialsRequest'] == null) {
+            throw new runtime.RequiredError(
+                'generateSftpCredentialsRequest',
+                'Required parameter "generateSftpCredentialsRequest" was null or undefined when calling generateProjectSftpToken().'
+            );
         }
 
         const queryParameters: any = {};
@@ -175,13 +221,26 @@ export class FileApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/projects/{projectId}/sftp-token`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))),
+
+        let urlPath = `/projects/{projectId}/sftp-token`;
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+
+        return {
+            path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: GenerateSftpCredentialsRequestToJSON(requestParameters.generateSftpCredentialsRequest),
-        }, initOverrides);
+            body: GenerateSftpCredentialsRequestToJSON(requestParameters['generateSftpCredentialsRequest']),
+        };
+    }
+
+    /**
+     * Generates credentials used for connecting via SFTP
+     * Create project SFTP Token
+     */
+    async generateProjectSftpTokenRaw(requestParameters: GenerateProjectSftpTokenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SftpCredentials>> {
+        const requestOptions = await this.generateProjectSftpTokenRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => SftpCredentialsFromJSON(jsonValue));
     }

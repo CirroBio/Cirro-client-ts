@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -48,14 +48,12 @@ export interface ResourcesInfo {
 /**
  * Check if a given object implements the ResourcesInfo interface.
  */
-export function instanceOfResourcesInfo(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "commit" in value;
-    isInstance = isInstance && "date" in value;
-    isInstance = isInstance && "repository" in value;
-    isInstance = isInstance && "sourceVersion" in value;
-
-    return isInstance;
+export function instanceOfResourcesInfo(value: object): value is ResourcesInfo {
+    if (!('commit' in value) || value['commit'] === undefined) return false;
+    if (!('date' in value) || value['date'] === undefined) return false;
+    if (!('repository' in value) || value['repository'] === undefined) return false;
+    if (!('sourceVersion' in value) || value['sourceVersion'] === undefined) return false;
+    return true;
 }
 
 export function ResourcesInfoFromJSON(json: any): ResourcesInfo {
@@ -63,7 +61,7 @@ export function ResourcesInfoFromJSON(json: any): ResourcesInfo {
 }
 
 export function ResourcesInfoFromJSONTyped(json: any, ignoreDiscriminator: boolean): ResourcesInfo {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -75,19 +73,21 @@ export function ResourcesInfoFromJSONTyped(json: any, ignoreDiscriminator: boole
     };
 }
 
-export function ResourcesInfoToJSON(value?: ResourcesInfo | null): any {
-    if (value === undefined) {
-        return undefined;
+export function ResourcesInfoToJSON(json: any): ResourcesInfo {
+    return ResourcesInfoToJSONTyped(json, false);
+}
+
+export function ResourcesInfoToJSONTyped(value?: ResourcesInfo | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'commit': value.commit,
-        'date': (value.date.toISOString()),
-        'repository': value.repository,
-        'sourceVersion': value.sourceVersion,
+        'commit': value['commit'],
+        'date': value['date'].toISOString(),
+        'repository': value['repository'],
+        'sourceVersion': value['sourceVersion'],
     };
 }
 

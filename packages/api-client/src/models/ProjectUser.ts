@@ -12,12 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { ProjectRole } from './ProjectRole';
 import {
     ProjectRoleFromJSON,
     ProjectRoleFromJSONTyped,
     ProjectRoleToJSON,
+    ProjectRoleToJSONTyped,
 } from './ProjectRole';
 
 /**
@@ -70,20 +71,20 @@ export interface ProjectUser {
     role: ProjectRole;
 }
 
+
+
 /**
  * Check if a given object implements the ProjectUser interface.
  */
-export function instanceOfProjectUser(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "username" in value;
-    isInstance = isInstance && "organization" in value;
-    isInstance = isInstance && "department" in value;
-    isInstance = isInstance && "email" in value;
-    isInstance = isInstance && "jobTitle" in value;
-    isInstance = isInstance && "role" in value;
-
-    return isInstance;
+export function instanceOfProjectUser(value: object): value is ProjectUser {
+    if (!('name' in value) || value['name'] === undefined) return false;
+    if (!('username' in value) || value['username'] === undefined) return false;
+    if (!('organization' in value) || value['organization'] === undefined) return false;
+    if (!('department' in value) || value['department'] === undefined) return false;
+    if (!('email' in value) || value['email'] === undefined) return false;
+    if (!('jobTitle' in value) || value['jobTitle'] === undefined) return false;
+    if (!('role' in value) || value['role'] === undefined) return false;
+    return true;
 }
 
 export function ProjectUserFromJSON(json: any): ProjectUser {
@@ -91,7 +92,7 @@ export function ProjectUserFromJSON(json: any): ProjectUser {
 }
 
 export function ProjectUserFromJSONTyped(json: any, ignoreDiscriminator: boolean): ProjectUser {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -106,22 +107,24 @@ export function ProjectUserFromJSONTyped(json: any, ignoreDiscriminator: boolean
     };
 }
 
-export function ProjectUserToJSON(value?: ProjectUser | null): any {
-    if (value === undefined) {
-        return undefined;
+export function ProjectUserToJSON(json: any): ProjectUser {
+    return ProjectUserToJSONTyped(json, false);
+}
+
+export function ProjectUserToJSONTyped(value?: ProjectUser | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'name': value.name,
-        'username': value.username,
-        'organization': value.organization,
-        'department': value.department,
-        'email': value.email,
-        'jobTitle': value.jobTitle,
-        'role': ProjectRoleToJSON(value.role),
+        'name': value['name'],
+        'username': value['username'],
+        'organization': value['organization'],
+        'department': value['department'],
+        'email': value['email'],
+        'jobTitle': value['jobTitle'],
+        'role': ProjectRoleToJSON(value['role']),
     };
 }
 

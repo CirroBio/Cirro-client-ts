@@ -12,18 +12,20 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { AgentRegistration } from './AgentRegistration';
 import {
     AgentRegistrationFromJSON,
     AgentRegistrationFromJSONTyped,
     AgentRegistrationToJSON,
+    AgentRegistrationToJSONTyped,
 } from './AgentRegistration';
 import type { AgentStatus } from './AgentStatus';
 import {
     AgentStatusFromJSON,
     AgentStatusFromJSONTyped,
     AgentStatusToJSON,
+    AgentStatusToJSONTyped,
 } from './AgentStatus';
 
 /**
@@ -94,20 +96,20 @@ export interface AgentDetail {
     updatedAt: Date;
 }
 
+
+
 /**
  * Check if a given object implements the AgentDetail interface.
  */
-export function instanceOfAgentDetail(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "id" in value;
-    isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "agentRoleArn" in value;
-    isInstance = isInstance && "status" in value;
-    isInstance = isInstance && "createdBy" in value;
-    isInstance = isInstance && "createdAt" in value;
-    isInstance = isInstance && "updatedAt" in value;
-
-    return isInstance;
+export function instanceOfAgentDetail(value: object): value is AgentDetail {
+    if (!('id' in value) || value['id'] === undefined) return false;
+    if (!('name' in value) || value['name'] === undefined) return false;
+    if (!('agentRoleArn' in value) || value['agentRoleArn'] === undefined) return false;
+    if (!('status' in value) || value['status'] === undefined) return false;
+    if (!('createdBy' in value) || value['createdBy'] === undefined) return false;
+    if (!('createdAt' in value) || value['createdAt'] === undefined) return false;
+    if (!('updatedAt' in value) || value['updatedAt'] === undefined) return false;
+    return true;
 }
 
 export function AgentDetailFromJSON(json: any): AgentDetail {
@@ -115,7 +117,7 @@ export function AgentDetailFromJSON(json: any): AgentDetail {
 }
 
 export function AgentDetailFromJSONTyped(json: any, ignoreDiscriminator: boolean): AgentDetail {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -124,34 +126,36 @@ export function AgentDetailFromJSONTyped(json: any, ignoreDiscriminator: boolean
         'name': json['name'],
         'agentRoleArn': json['agentRoleArn'],
         'status': AgentStatusFromJSON(json['status']),
-        'registration': !exists(json, 'registration') ? undefined : AgentRegistrationFromJSON(json['registration']),
-        'tags': !exists(json, 'tags') ? undefined : json['tags'],
-        'environmentConfiguration': !exists(json, 'environmentConfiguration') ? undefined : json['environmentConfiguration'],
+        'registration': json['registration'] == null ? undefined : AgentRegistrationFromJSON(json['registration']),
+        'tags': json['tags'] == null ? undefined : json['tags'],
+        'environmentConfiguration': json['environmentConfiguration'] == null ? undefined : json['environmentConfiguration'],
         'createdBy': json['createdBy'],
         'createdAt': (new Date(json['createdAt'])),
         'updatedAt': (new Date(json['updatedAt'])),
     };
 }
 
-export function AgentDetailToJSON(value?: AgentDetail | null): any {
-    if (value === undefined) {
-        return undefined;
+export function AgentDetailToJSON(json: any): AgentDetail {
+    return AgentDetailToJSONTyped(json, false);
+}
+
+export function AgentDetailToJSONTyped(value?: AgentDetail | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'id': value.id,
-        'name': value.name,
-        'agentRoleArn': value.agentRoleArn,
-        'status': AgentStatusToJSON(value.status),
-        'registration': AgentRegistrationToJSON(value.registration),
-        'tags': value.tags,
-        'environmentConfiguration': value.environmentConfiguration,
-        'createdBy': value.createdBy,
-        'createdAt': (value.createdAt.toISOString()),
-        'updatedAt': (value.updatedAt.toISOString()),
+        'id': value['id'],
+        'name': value['name'],
+        'agentRoleArn': value['agentRoleArn'],
+        'status': AgentStatusToJSON(value['status']),
+        'registration': AgentRegistrationToJSON(value['registration']),
+        'tags': value['tags'],
+        'environmentConfiguration': value['environmentConfiguration'],
+        'createdBy': value['createdBy'],
+        'createdAt': value['createdAt'].toISOString(),
+        'updatedAt': value['updatedAt'].toISOString(),
     };
 }
 

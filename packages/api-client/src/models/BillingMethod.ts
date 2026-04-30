@@ -24,6 +24,17 @@ export enum BillingMethod {
 }
 
 
+export function instanceOfBillingMethod(value: any): boolean {
+    for (const key in BillingMethod) {
+        if (Object.prototype.hasOwnProperty.call(BillingMethod, key)) {
+            if (BillingMethod[key as keyof typeof BillingMethod] === value) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 export function BillingMethodFromJSON(json: any): BillingMethod {
     return BillingMethodFromJSONTyped(json, false);
 }
@@ -34,5 +45,9 @@ export function BillingMethodFromJSONTyped(json: any, ignoreDiscriminator: boole
 
 export function BillingMethodToJSON(value?: BillingMethod | null): any {
     return value as any;
+}
+
+export function BillingMethodToJSONTyped(value: any, ignoreDiscriminator: boolean): BillingMethod {
+    return value as BillingMethod;
 }
 

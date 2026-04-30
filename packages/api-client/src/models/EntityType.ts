@@ -32,6 +32,17 @@ export enum EntityType {
 }
 
 
+export function instanceOfEntityType(value: any): boolean {
+    for (const key in EntityType) {
+        if (Object.prototype.hasOwnProperty.call(EntityType, key)) {
+            if (EntityType[key as keyof typeof EntityType] === value) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 export function EntityTypeFromJSON(json: any): EntityType {
     return EntityTypeFromJSONTyped(json, false);
 }
@@ -42,5 +53,9 @@ export function EntityTypeFromJSONTyped(json: any, ignoreDiscriminator: boolean)
 
 export function EntityTypeToJSON(value?: EntityType | null): any {
     return value as any;
+}
+
+export function EntityTypeToJSONTyped(value: any, ignoreDiscriminator: boolean): EntityType {
+    return value as EntityType;
 }
 

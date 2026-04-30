@@ -12,12 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { QueryColumn } from './QueryColumn';
 import {
     QueryColumnFromJSON,
     QueryColumnFromJSONTyped,
     QueryColumnToJSON,
+    QueryColumnToJSONTyped,
 } from './QueryColumn';
 
 /**
@@ -49,13 +50,11 @@ export interface SheetQueryResponse {
 /**
  * Check if a given object implements the SheetQueryResponse interface.
  */
-export function instanceOfSheetQueryResponse(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "columns" in value;
-    isInstance = isInstance && "rows" in value;
-    isInstance = isInstance && "totalRowCount" in value;
-
-    return isInstance;
+export function instanceOfSheetQueryResponse(value: object): value is SheetQueryResponse {
+    if (!('columns' in value) || value['columns'] === undefined) return false;
+    if (!('rows' in value) || value['rows'] === undefined) return false;
+    if (!('totalRowCount' in value) || value['totalRowCount'] === undefined) return false;
+    return true;
 }
 
 export function SheetQueryResponseFromJSON(json: any): SheetQueryResponse {
@@ -63,7 +62,7 @@ export function SheetQueryResponseFromJSON(json: any): SheetQueryResponse {
 }
 
 export function SheetQueryResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): SheetQueryResponse {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -74,18 +73,20 @@ export function SheetQueryResponseFromJSONTyped(json: any, ignoreDiscriminator: 
     };
 }
 
-export function SheetQueryResponseToJSON(value?: SheetQueryResponse | null): any {
-    if (value === undefined) {
-        return undefined;
+export function SheetQueryResponseToJSON(json: any): SheetQueryResponse {
+    return SheetQueryResponseToJSONTyped(json, false);
+}
+
+export function SheetQueryResponseToJSONTyped(value?: SheetQueryResponse | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'columns': ((value.columns as Array<any>).map(QueryColumnToJSON)),
-        'rows': value.rows,
-        'totalRowCount': value.totalRowCount,
+        'columns': ((value['columns'] as Array<any>).map(QueryColumnToJSON)),
+        'rows': value['rows'],
+        'totalRowCount': value['totalRowCount'],
     };
 }
 

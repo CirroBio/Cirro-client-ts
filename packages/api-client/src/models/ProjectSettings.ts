@@ -12,12 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { BudgetPeriod } from './BudgetPeriod';
 import {
     BudgetPeriodFromJSON,
     BudgetPeriodFromJSONTyped,
     BudgetPeriodToJSON,
+    BudgetPeriodToJSONTyped,
 } from './BudgetPeriod';
 
 /**
@@ -196,15 +197,15 @@ export interface ProjectSettings {
     hasSharedFilesystemsEnabled?: boolean | null;
 }
 
+
+
 /**
  * Check if a given object implements the ProjectSettings interface.
  */
-export function instanceOfProjectSettings(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "budgetAmount" in value;
-    isInstance = isInstance && "budgetPeriod" in value;
-
-    return isInstance;
+export function instanceOfProjectSettings(value: object): value is ProjectSettings {
+    if (!('budgetAmount' in value) || value['budgetAmount'] === undefined) return false;
+    if (!('budgetPeriod' in value) || value['budgetPeriod'] === undefined) return false;
+    return true;
 }
 
 export function ProjectSettingsFromJSON(json: any): ProjectSettings {
@@ -212,79 +213,81 @@ export function ProjectSettingsFromJSON(json: any): ProjectSettings {
 }
 
 export function ProjectSettingsFromJSONTyped(json: any, ignoreDiscriminator: boolean): ProjectSettings {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
         'budgetAmount': json['budgetAmount'],
         'budgetPeriod': BudgetPeriodFromJSON(json['budgetPeriod']),
-        'enableBackup': !exists(json, 'enableBackup') ? undefined : json['enableBackup'],
-        'enableSftp': !exists(json, 'enableSftp') ? undefined : json['enableSftp'],
-        'serviceConnections': !exists(json, 'serviceConnections') ? undefined : json['serviceConnections'],
-        'kmsArn': !exists(json, 'kmsArn') ? undefined : json['kmsArn'],
-        'retentionPolicyDays': !exists(json, 'retentionPolicyDays') ? undefined : json['retentionPolicyDays'],
-        'temporaryStorageLifetimeDays': !exists(json, 'temporaryStorageLifetimeDays') ? undefined : json['temporaryStorageLifetimeDays'],
-        'vpcId': !exists(json, 'vpcId') ? undefined : json['vpcId'],
-        'batchSubnets': !exists(json, 'batchSubnets') ? undefined : json['batchSubnets'],
-        'workspaceSubnets': !exists(json, 'workspaceSubnets') ? undefined : json['workspaceSubnets'],
-        'maxSpotVCPU': !exists(json, 'maxSpotVCPU') ? undefined : json['maxSpotVCPU'],
-        'maxFPGAVCPU': !exists(json, 'maxFPGAVCPU') ? undefined : json['maxFPGAVCPU'],
-        'maxGPUVCPU': !exists(json, 'maxGPUVCPU') ? undefined : json['maxGPUVCPU'],
-        'enableDragen': !exists(json, 'enableDragen') ? undefined : json['enableDragen'],
-        'dragenAmi': !exists(json, 'dragenAmi') ? undefined : json['dragenAmi'],
-        'maxWorkspacesVCPU': !exists(json, 'maxWorkspacesVCPU') ? undefined : json['maxWorkspacesVCPU'],
-        'maxWorkspacesGPUVCPU': !exists(json, 'maxWorkspacesGPUVCPU') ? undefined : json['maxWorkspacesGPUVCPU'],
-        'maxWorkspacesPerUser': !exists(json, 'maxWorkspacesPerUser') ? undefined : json['maxWorkspacesPerUser'],
-        'enableAdvancedGpuConfig': !exists(json, 'enableAdvancedGpuConfig') ? undefined : json['enableAdvancedGpuConfig'],
-        'enableCustomWorkspaceRoles': !exists(json, 'enableCustomWorkspaceRoles') ? undefined : json['enableCustomWorkspaceRoles'],
-        'maxSharedFilesystems': !exists(json, 'maxSharedFilesystems') ? undefined : json['maxSharedFilesystems'],
-        'isDiscoverable': !exists(json, 'isDiscoverable') ? undefined : json['isDiscoverable'],
-        'isShareable': !exists(json, 'isShareable') ? undefined : json['isShareable'],
-        'isAiEnabled': !exists(json, 'isAiEnabled') ? undefined : json['isAiEnabled'],
-        'hasPipelinesEnabled': !exists(json, 'hasPipelinesEnabled') ? undefined : json['hasPipelinesEnabled'],
-        'hasWorkspacesEnabled': !exists(json, 'hasWorkspacesEnabled') ? undefined : json['hasWorkspacesEnabled'],
-        'hasSharedFilesystemsEnabled': !exists(json, 'hasSharedFilesystemsEnabled') ? undefined : json['hasSharedFilesystemsEnabled'],
+        'enableBackup': json['enableBackup'] == null ? undefined : json['enableBackup'],
+        'enableSftp': json['enableSftp'] == null ? undefined : json['enableSftp'],
+        'serviceConnections': json['serviceConnections'] == null ? undefined : json['serviceConnections'],
+        'kmsArn': json['kmsArn'] == null ? undefined : json['kmsArn'],
+        'retentionPolicyDays': json['retentionPolicyDays'] == null ? undefined : json['retentionPolicyDays'],
+        'temporaryStorageLifetimeDays': json['temporaryStorageLifetimeDays'] == null ? undefined : json['temporaryStorageLifetimeDays'],
+        'vpcId': json['vpcId'] == null ? undefined : json['vpcId'],
+        'batchSubnets': json['batchSubnets'] == null ? undefined : json['batchSubnets'],
+        'workspaceSubnets': json['workspaceSubnets'] == null ? undefined : json['workspaceSubnets'],
+        'maxSpotVCPU': json['maxSpotVCPU'] == null ? undefined : json['maxSpotVCPU'],
+        'maxFPGAVCPU': json['maxFPGAVCPU'] == null ? undefined : json['maxFPGAVCPU'],
+        'maxGPUVCPU': json['maxGPUVCPU'] == null ? undefined : json['maxGPUVCPU'],
+        'enableDragen': json['enableDragen'] == null ? undefined : json['enableDragen'],
+        'dragenAmi': json['dragenAmi'] == null ? undefined : json['dragenAmi'],
+        'maxWorkspacesVCPU': json['maxWorkspacesVCPU'] == null ? undefined : json['maxWorkspacesVCPU'],
+        'maxWorkspacesGPUVCPU': json['maxWorkspacesGPUVCPU'] == null ? undefined : json['maxWorkspacesGPUVCPU'],
+        'maxWorkspacesPerUser': json['maxWorkspacesPerUser'] == null ? undefined : json['maxWorkspacesPerUser'],
+        'enableAdvancedGpuConfig': json['enableAdvancedGpuConfig'] == null ? undefined : json['enableAdvancedGpuConfig'],
+        'enableCustomWorkspaceRoles': json['enableCustomWorkspaceRoles'] == null ? undefined : json['enableCustomWorkspaceRoles'],
+        'maxSharedFilesystems': json['maxSharedFilesystems'] == null ? undefined : json['maxSharedFilesystems'],
+        'isDiscoverable': json['isDiscoverable'] == null ? undefined : json['isDiscoverable'],
+        'isShareable': json['isShareable'] == null ? undefined : json['isShareable'],
+        'isAiEnabled': json['isAiEnabled'] == null ? undefined : json['isAiEnabled'],
+        'hasPipelinesEnabled': json['hasPipelinesEnabled'] == null ? undefined : json['hasPipelinesEnabled'],
+        'hasWorkspacesEnabled': json['hasWorkspacesEnabled'] == null ? undefined : json['hasWorkspacesEnabled'],
+        'hasSharedFilesystemsEnabled': json['hasSharedFilesystemsEnabled'] == null ? undefined : json['hasSharedFilesystemsEnabled'],
     };
 }
 
-export function ProjectSettingsToJSON(value?: ProjectSettings | null): any {
-    if (value === undefined) {
-        return undefined;
+export function ProjectSettingsToJSON(json: any): ProjectSettings {
+    return ProjectSettingsToJSONTyped(json, false);
+}
+
+export function ProjectSettingsToJSONTyped(value?: ProjectSettings | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'budgetAmount': value.budgetAmount,
-        'budgetPeriod': BudgetPeriodToJSON(value.budgetPeriod),
-        'enableBackup': value.enableBackup,
-        'enableSftp': value.enableSftp,
-        'serviceConnections': value.serviceConnections,
-        'kmsArn': value.kmsArn,
-        'retentionPolicyDays': value.retentionPolicyDays,
-        'temporaryStorageLifetimeDays': value.temporaryStorageLifetimeDays,
-        'vpcId': value.vpcId,
-        'batchSubnets': value.batchSubnets,
-        'workspaceSubnets': value.workspaceSubnets,
-        'maxSpotVCPU': value.maxSpotVCPU,
-        'maxFPGAVCPU': value.maxFPGAVCPU,
-        'maxGPUVCPU': value.maxGPUVCPU,
-        'enableDragen': value.enableDragen,
-        'dragenAmi': value.dragenAmi,
-        'maxWorkspacesVCPU': value.maxWorkspacesVCPU,
-        'maxWorkspacesGPUVCPU': value.maxWorkspacesGPUVCPU,
-        'maxWorkspacesPerUser': value.maxWorkspacesPerUser,
-        'enableAdvancedGpuConfig': value.enableAdvancedGpuConfig,
-        'enableCustomWorkspaceRoles': value.enableCustomWorkspaceRoles,
-        'maxSharedFilesystems': value.maxSharedFilesystems,
-        'isDiscoverable': value.isDiscoverable,
-        'isShareable': value.isShareable,
-        'isAiEnabled': value.isAiEnabled,
-        'hasPipelinesEnabled': value.hasPipelinesEnabled,
-        'hasWorkspacesEnabled': value.hasWorkspacesEnabled,
-        'hasSharedFilesystemsEnabled': value.hasSharedFilesystemsEnabled,
+        'budgetAmount': value['budgetAmount'],
+        'budgetPeriod': BudgetPeriodToJSON(value['budgetPeriod']),
+        'enableBackup': value['enableBackup'],
+        'enableSftp': value['enableSftp'],
+        'serviceConnections': value['serviceConnections'],
+        'kmsArn': value['kmsArn'],
+        'retentionPolicyDays': value['retentionPolicyDays'],
+        'temporaryStorageLifetimeDays': value['temporaryStorageLifetimeDays'],
+        'vpcId': value['vpcId'],
+        'batchSubnets': value['batchSubnets'],
+        'workspaceSubnets': value['workspaceSubnets'],
+        'maxSpotVCPU': value['maxSpotVCPU'],
+        'maxFPGAVCPU': value['maxFPGAVCPU'],
+        'maxGPUVCPU': value['maxGPUVCPU'],
+        'enableDragen': value['enableDragen'],
+        'dragenAmi': value['dragenAmi'],
+        'maxWorkspacesVCPU': value['maxWorkspacesVCPU'],
+        'maxWorkspacesGPUVCPU': value['maxWorkspacesGPUVCPU'],
+        'maxWorkspacesPerUser': value['maxWorkspacesPerUser'],
+        'enableAdvancedGpuConfig': value['enableAdvancedGpuConfig'],
+        'enableCustomWorkspaceRoles': value['enableCustomWorkspaceRoles'],
+        'maxSharedFilesystems': value['maxSharedFilesystems'],
+        'isDiscoverable': value['isDiscoverable'],
+        'isShareable': value['isShareable'],
+        'isAiEnabled': value['isAiEnabled'],
+        'hasPipelinesEnabled': value['hasPipelinesEnabled'],
+        'hasWorkspacesEnabled': value['hasWorkspacesEnabled'],
+        'hasSharedFilesystemsEnabled': value['hasSharedFilesystemsEnabled'],
     };
 }
 

@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -36,11 +36,9 @@ export interface MessageInput {
 /**
  * Check if a given object implements the MessageInput interface.
  */
-export function instanceOfMessageInput(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "message" in value;
-
-    return isInstance;
+export function instanceOfMessageInput(value: object): value is MessageInput {
+    if (!('message' in value) || value['message'] === undefined) return false;
+    return true;
 }
 
 export function MessageInputFromJSON(json: any): MessageInput {
@@ -48,27 +46,29 @@ export function MessageInputFromJSON(json: any): MessageInput {
 }
 
 export function MessageInputFromJSONTyped(json: any, ignoreDiscriminator: boolean): MessageInput {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'parentMessageId': !exists(json, 'parentMessageId') ? undefined : json['parentMessageId'],
+        'parentMessageId': json['parentMessageId'] == null ? undefined : json['parentMessageId'],
         'message': json['message'],
     };
 }
 
-export function MessageInputToJSON(value?: MessageInput | null): any {
-    if (value === undefined) {
-        return undefined;
+export function MessageInputToJSON(json: any): MessageInput {
+    return MessageInputToJSONTyped(json, false);
+}
+
+export function MessageInputToJSONTyped(value?: MessageInput | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'parentMessageId': value.parentMessageId,
-        'message': value.message,
+        'parentMessageId': value['parentMessageId'],
+        'message': value['message'],
     };
 }
 

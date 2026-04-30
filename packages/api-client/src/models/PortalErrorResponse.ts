@@ -12,12 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { ErrorMessage } from './ErrorMessage';
 import {
     ErrorMessageFromJSON,
     ErrorMessageFromJSONTyped,
     ErrorMessageToJSON,
+    ErrorMessageToJSONTyped,
 } from './ErrorMessage';
 
 /**
@@ -55,14 +56,12 @@ export interface PortalErrorResponse {
 /**
  * Check if a given object implements the PortalErrorResponse interface.
  */
-export function instanceOfPortalErrorResponse(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "statusCode" in value;
-    isInstance = isInstance && "errorCode" in value;
-    isInstance = isInstance && "errorDetail" in value;
-    isInstance = isInstance && "errors" in value;
-
-    return isInstance;
+export function instanceOfPortalErrorResponse(value: object): value is PortalErrorResponse {
+    if (!('statusCode' in value) || value['statusCode'] === undefined) return false;
+    if (!('errorCode' in value) || value['errorCode'] === undefined) return false;
+    if (!('errorDetail' in value) || value['errorDetail'] === undefined) return false;
+    if (!('errors' in value) || value['errors'] === undefined) return false;
+    return true;
 }
 
 export function PortalErrorResponseFromJSON(json: any): PortalErrorResponse {
@@ -70,7 +69,7 @@ export function PortalErrorResponseFromJSON(json: any): PortalErrorResponse {
 }
 
 export function PortalErrorResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): PortalErrorResponse {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -82,19 +81,21 @@ export function PortalErrorResponseFromJSONTyped(json: any, ignoreDiscriminator:
     };
 }
 
-export function PortalErrorResponseToJSON(value?: PortalErrorResponse | null): any {
-    if (value === undefined) {
-        return undefined;
+export function PortalErrorResponseToJSON(json: any): PortalErrorResponse {
+    return PortalErrorResponseToJSONTyped(json, false);
+}
+
+export function PortalErrorResponseToJSONTyped(value?: PortalErrorResponse | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'statusCode': value.statusCode,
-        'errorCode': value.errorCode,
-        'errorDetail': value.errorDetail,
-        'errors': ((value.errors as Array<any>).map(ErrorMessageToJSON)),
+        'statusCode': value['statusCode'],
+        'errorCode': value['errorCode'],
+        'errorDetail': value['errorDetail'],
+        'errors': ((value['errors'] as Array<any>).map(ErrorMessageToJSON)),
     };
 }
 

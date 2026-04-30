@@ -25,6 +25,17 @@ export enum EnvironmentType {
 }
 
 
+export function instanceOfEnvironmentType(value: any): boolean {
+    for (const key in EnvironmentType) {
+        if (Object.prototype.hasOwnProperty.call(EnvironmentType, key)) {
+            if (EnvironmentType[key as keyof typeof EnvironmentType] === value) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 export function EnvironmentTypeFromJSON(json: any): EnvironmentType {
     return EnvironmentTypeFromJSONTyped(json, false);
 }
@@ -35,5 +46,9 @@ export function EnvironmentTypeFromJSONTyped(json: any, ignoreDiscriminator: boo
 
 export function EnvironmentTypeToJSON(value?: EnvironmentType | null): any {
     return value as any;
+}
+
+export function EnvironmentTypeToJSONTyped(value: any, ignoreDiscriminator: boolean): EnvironmentType {
+    return value as EnvironmentType;
 }
 

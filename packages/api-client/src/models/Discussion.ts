@@ -12,19 +12,21 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
-import type { DiscussionType } from './DiscussionType';
-import {
-    DiscussionTypeFromJSON,
-    DiscussionTypeFromJSONTyped,
-    DiscussionTypeToJSON,
-} from './DiscussionType';
+import { mapValues } from '../runtime';
 import type { Entity } from './Entity';
 import {
     EntityFromJSON,
     EntityFromJSONTyped,
     EntityToJSON,
+    EntityToJSONTyped,
 } from './Entity';
+import type { DiscussionType } from './DiscussionType';
+import {
+    DiscussionTypeFromJSON,
+    DiscussionTypeFromJSONTyped,
+    DiscussionTypeToJSON,
+    DiscussionTypeToJSONTyped,
+} from './DiscussionType';
 
 /**
  * 
@@ -94,22 +96,22 @@ export interface Discussion {
     updatedAt: Date;
 }
 
+
+
 /**
  * Check if a given object implements the Discussion interface.
  */
-export function instanceOfDiscussion(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "id" in value;
-    isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "description" in value;
-    isInstance = isInstance && "entity" in value;
-    isInstance = isInstance && "type" in value;
-    isInstance = isInstance && "projectId" in value;
-    isInstance = isInstance && "createdBy" in value;
-    isInstance = isInstance && "createdAt" in value;
-    isInstance = isInstance && "updatedAt" in value;
-
-    return isInstance;
+export function instanceOfDiscussion(value: object): value is Discussion {
+    if (!('id' in value) || value['id'] === undefined) return false;
+    if (!('name' in value) || value['name'] === undefined) return false;
+    if (!('description' in value) || value['description'] === undefined) return false;
+    if (!('entity' in value) || value['entity'] === undefined) return false;
+    if (!('type' in value) || value['type'] === undefined) return false;
+    if (!('projectId' in value) || value['projectId'] === undefined) return false;
+    if (!('createdBy' in value) || value['createdBy'] === undefined) return false;
+    if (!('createdAt' in value) || value['createdAt'] === undefined) return false;
+    if (!('updatedAt' in value) || value['updatedAt'] === undefined) return false;
+    return true;
 }
 
 export function DiscussionFromJSON(json: any): Discussion {
@@ -117,7 +119,7 @@ export function DiscussionFromJSON(json: any): Discussion {
 }
 
 export function DiscussionFromJSONTyped(json: any, ignoreDiscriminator: boolean): Discussion {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -129,31 +131,33 @@ export function DiscussionFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'type': DiscussionTypeFromJSON(json['type']),
         'projectId': json['projectId'],
         'createdBy': json['createdBy'],
-        'lastMessageTime': !exists(json, 'lastMessageTime') ? undefined : (json['lastMessageTime'] === null ? null : new Date(json['lastMessageTime'])),
+        'lastMessageTime': json['lastMessageTime'] == null ? undefined : (new Date(json['lastMessageTime'])),
         'createdAt': (new Date(json['createdAt'])),
         'updatedAt': (new Date(json['updatedAt'])),
     };
 }
 
-export function DiscussionToJSON(value?: Discussion | null): any {
-    if (value === undefined) {
-        return undefined;
+export function DiscussionToJSON(json: any): Discussion {
+    return DiscussionToJSONTyped(json, false);
+}
+
+export function DiscussionToJSONTyped(value?: Discussion | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'id': value.id,
-        'name': value.name,
-        'description': value.description,
-        'entity': EntityToJSON(value.entity),
-        'type': DiscussionTypeToJSON(value.type),
-        'projectId': value.projectId,
-        'createdBy': value.createdBy,
-        'lastMessageTime': value.lastMessageTime === undefined ? undefined : (value.lastMessageTime === null ? null : value.lastMessageTime.toISOString()),
-        'createdAt': (value.createdAt.toISOString()),
-        'updatedAt': (value.updatedAt.toISOString()),
+        'id': value['id'],
+        'name': value['name'],
+        'description': value['description'],
+        'entity': EntityToJSON(value['entity']),
+        'type': DiscussionTypeToJSON(value['type']),
+        'projectId': value['projectId'],
+        'createdBy': value['createdBy'],
+        'lastMessageTime': value['lastMessageTime'] == null ? value['lastMessageTime'] : value['lastMessageTime'].toISOString(),
+        'createdAt': value['createdAt'].toISOString(),
+        'updatedAt': value['updatedAt'].toISOString(),
     };
 }
 

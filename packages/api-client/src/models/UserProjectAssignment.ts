@@ -12,12 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { ProjectRole } from './ProjectRole';
 import {
     ProjectRoleFromJSON,
     ProjectRoleFromJSONTyped,
     ProjectRoleToJSON,
+    ProjectRoleToJSONTyped,
 } from './ProjectRole';
 
 /**
@@ -52,16 +53,16 @@ export interface UserProjectAssignment {
     createdAt?: Date | null;
 }
 
+
+
 /**
  * Check if a given object implements the UserProjectAssignment interface.
  */
-export function instanceOfUserProjectAssignment(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "projectId" in value;
-    isInstance = isInstance && "role" in value;
-    isInstance = isInstance && "createdBy" in value;
-
-    return isInstance;
+export function instanceOfUserProjectAssignment(value: object): value is UserProjectAssignment {
+    if (!('projectId' in value) || value['projectId'] === undefined) return false;
+    if (!('role' in value) || value['role'] === undefined) return false;
+    if (!('createdBy' in value) || value['createdBy'] === undefined) return false;
+    return true;
 }
 
 export function UserProjectAssignmentFromJSON(json: any): UserProjectAssignment {
@@ -69,7 +70,7 @@ export function UserProjectAssignmentFromJSON(json: any): UserProjectAssignment 
 }
 
 export function UserProjectAssignmentFromJSONTyped(json: any, ignoreDiscriminator: boolean): UserProjectAssignment {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -77,23 +78,25 @@ export function UserProjectAssignmentFromJSONTyped(json: any, ignoreDiscriminato
         'projectId': json['projectId'],
         'role': ProjectRoleFromJSON(json['role']),
         'createdBy': json['createdBy'],
-        'createdAt': !exists(json, 'createdAt') ? undefined : (json['createdAt'] === null ? null : new Date(json['createdAt'])),
+        'createdAt': json['createdAt'] == null ? undefined : (new Date(json['createdAt'])),
     };
 }
 
-export function UserProjectAssignmentToJSON(value?: UserProjectAssignment | null): any {
-    if (value === undefined) {
-        return undefined;
+export function UserProjectAssignmentToJSON(json: any): UserProjectAssignment {
+    return UserProjectAssignmentToJSONTyped(json, false);
+}
+
+export function UserProjectAssignmentToJSONTyped(value?: UserProjectAssignment | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'projectId': value.projectId,
-        'role': ProjectRoleToJSON(value.role),
-        'createdBy': value.createdBy,
-        'createdAt': value.createdAt === undefined ? undefined : (value.createdAt === null ? null : value.createdAt.toISOString()),
+        'projectId': value['projectId'],
+        'role': ProjectRoleToJSON(value['role']),
+        'createdBy': value['createdBy'],
+        'createdAt': value['createdAt'] == null ? value['createdAt'] : value['createdAt'].toISOString(),
     };
 }
 

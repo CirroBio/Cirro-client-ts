@@ -12,12 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { ArtifactType } from './ArtifactType';
 import {
     ArtifactTypeFromJSON,
     ArtifactTypeFromJSONTyped,
     ArtifactTypeToJSON,
+    ArtifactTypeToJSONTyped,
 } from './ArtifactType';
 
 /**
@@ -40,15 +41,15 @@ export interface Artifact {
     path: string;
 }
 
+
+
 /**
  * Check if a given object implements the Artifact interface.
  */
-export function instanceOfArtifact(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "type" in value;
-    isInstance = isInstance && "path" in value;
-
-    return isInstance;
+export function instanceOfArtifact(value: object): value is Artifact {
+    if (!('type' in value) || value['type'] === undefined) return false;
+    if (!('path' in value) || value['path'] === undefined) return false;
+    return true;
 }
 
 export function ArtifactFromJSON(json: any): Artifact {
@@ -56,7 +57,7 @@ export function ArtifactFromJSON(json: any): Artifact {
 }
 
 export function ArtifactFromJSONTyped(json: any, ignoreDiscriminator: boolean): Artifact {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -66,17 +67,19 @@ export function ArtifactFromJSONTyped(json: any, ignoreDiscriminator: boolean): 
     };
 }
 
-export function ArtifactToJSON(value?: Artifact | null): any {
-    if (value === undefined) {
-        return undefined;
+export function ArtifactToJSON(json: any): Artifact {
+    return ArtifactToJSONTyped(json, false);
+}
+
+export function ArtifactToJSONTyped(value?: Artifact | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'type': ArtifactTypeToJSON(value.type),
-        'path': value.path,
+        'type': ArtifactTypeToJSON(value['type']),
+        'path': value['path'],
     };
 }
 

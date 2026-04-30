@@ -12,12 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { ColumnDefinition } from './ColumnDefinition';
 import {
     ColumnDefinitionFromJSON,
     ColumnDefinitionFromJSONTyped,
     ColumnDefinitionToJSON,
+    ColumnDefinitionToJSONTyped,
 } from './ColumnDefinition';
 
 /**
@@ -67,11 +68,9 @@ export interface Table {
 /**
  * Check if a given object implements the Table interface.
  */
-export function instanceOfTable(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "desc" in value;
-
-    return isInstance;
+export function instanceOfTable(value: object): value is Table {
+    if (!('desc' in value) || value['desc'] === undefined) return false;
+    return true;
 }
 
 export function TableFromJSON(json: any): Table {
@@ -79,35 +78,37 @@ export function TableFromJSON(json: any): Table {
 }
 
 export function TableFromJSONTyped(json: any, ignoreDiscriminator: boolean): Table {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'name': !exists(json, 'name') ? undefined : json['name'],
+        'name': json['name'] == null ? undefined : json['name'],
         'desc': json['desc'],
-        'type': !exists(json, 'type') ? undefined : json['type'],
-        'rows': !exists(json, 'rows') ? undefined : json['rows'],
-        'path': !exists(json, 'path') ? undefined : json['path'],
-        'cols': !exists(json, 'cols') ? undefined : (json['cols'] === null ? null : (json['cols'] as Array<any>).map(ColumnDefinitionFromJSON)),
+        'type': json['type'] == null ? undefined : json['type'],
+        'rows': json['rows'] == null ? undefined : json['rows'],
+        'path': json['path'] == null ? undefined : json['path'],
+        'cols': json['cols'] == null ? undefined : ((json['cols'] as Array<any>).map(ColumnDefinitionFromJSON)),
     };
 }
 
-export function TableToJSON(value?: Table | null): any {
-    if (value === undefined) {
-        return undefined;
+export function TableToJSON(json: any): Table {
+    return TableToJSONTyped(json, false);
+}
+
+export function TableToJSONTyped(value?: Table | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'name': value.name,
-        'desc': value.desc,
-        'type': value.type,
-        'rows': value.rows,
-        'path': value.path,
-        'cols': value.cols === undefined ? undefined : (value.cols === null ? null : (value.cols as Array<any>).map(ColumnDefinitionToJSON)),
+        'name': value['name'],
+        'desc': value['desc'],
+        'type': value['type'],
+        'rows': value['rows'],
+        'path': value['path'],
+        'cols': value['cols'] == null ? undefined : ((value['cols'] as Array<any>).map(ColumnDefinitionToJSON)),
     };
 }
 

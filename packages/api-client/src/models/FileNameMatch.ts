@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -42,13 +42,11 @@ export interface FileNameMatch {
 /**
  * Check if a given object implements the FileNameMatch interface.
  */
-export function instanceOfFileNameMatch(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "fileName" in value;
-    isInstance = isInstance && "sampleName" in value;
-    isInstance = isInstance && "regexPatternMatch" in value;
-
-    return isInstance;
+export function instanceOfFileNameMatch(value: object): value is FileNameMatch {
+    if (!('fileName' in value) || value['fileName'] === undefined) return false;
+    if (!('sampleName' in value) || value['sampleName'] === undefined) return false;
+    if (!('regexPatternMatch' in value) || value['regexPatternMatch'] === undefined) return false;
+    return true;
 }
 
 export function FileNameMatchFromJSON(json: any): FileNameMatch {
@@ -56,7 +54,7 @@ export function FileNameMatchFromJSON(json: any): FileNameMatch {
 }
 
 export function FileNameMatchFromJSONTyped(json: any, ignoreDiscriminator: boolean): FileNameMatch {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -67,18 +65,20 @@ export function FileNameMatchFromJSONTyped(json: any, ignoreDiscriminator: boole
     };
 }
 
-export function FileNameMatchToJSON(value?: FileNameMatch | null): any {
-    if (value === undefined) {
-        return undefined;
+export function FileNameMatchToJSON(json: any): FileNameMatch {
+    return FileNameMatchToJSONTyped(json, false);
+}
+
+export function FileNameMatchToJSONTyped(value?: FileNameMatch | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'fileName': value.fileName,
-        'sampleName': value.sampleName,
-        'regexPatternMatch': value.regexPatternMatch,
+        'fileName': value['fileName'],
+        'sampleName': value['sampleName'],
+        'regexPatternMatch': value['regexPatternMatch'],
     };
 }
 

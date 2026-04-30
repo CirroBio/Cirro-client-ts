@@ -12,42 +12,57 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  ClassificationInput,
-  ContactInput,
-  FulfillmentResponse,
-  GovernanceClassification,
-  GovernanceContact,
-  GovernanceFileInput,
-  GovernanceRequirement,
-  ProjectRequirement,
-  RequirementFulfillmentInput,
-  RequirementInput,
-} from '../models/index';
 import {
+    type ClassificationInput,
     ClassificationInputFromJSON,
     ClassificationInputToJSON,
+} from '../models/ClassificationInput';
+import {
+    type ContactInput,
     ContactInputFromJSON,
     ContactInputToJSON,
+} from '../models/ContactInput';
+import {
+    type FulfillmentResponse,
     FulfillmentResponseFromJSON,
     FulfillmentResponseToJSON,
+} from '../models/FulfillmentResponse';
+import {
+    type GovernanceClassification,
     GovernanceClassificationFromJSON,
     GovernanceClassificationToJSON,
+} from '../models/GovernanceClassification';
+import {
+    type GovernanceContact,
     GovernanceContactFromJSON,
     GovernanceContactToJSON,
+} from '../models/GovernanceContact';
+import {
+    type GovernanceFileInput,
     GovernanceFileInputFromJSON,
     GovernanceFileInputToJSON,
+} from '../models/GovernanceFileInput';
+import {
+    type GovernanceRequirement,
     GovernanceRequirementFromJSON,
     GovernanceRequirementToJSON,
+} from '../models/GovernanceRequirement';
+import {
+    type ProjectRequirement,
     ProjectRequirementFromJSON,
     ProjectRequirementToJSON,
+} from '../models/ProjectRequirement';
+import {
+    type RequirementFulfillmentInput,
     RequirementFulfillmentInputFromJSON,
     RequirementFulfillmentInputToJSON,
+} from '../models/RequirementFulfillmentInput';
+import {
+    type RequirementInput,
     RequirementInputFromJSON,
     RequirementInputToJSON,
-} from '../models/index';
+} from '../models/RequirementInput';
 
 export interface CreateClassificationRequest {
     classificationInput: ClassificationInput;
@@ -127,12 +142,14 @@ export interface UpdateRequirementFileForProjectRequest {
 export class GovernanceApi extends runtime.BaseAPI {
 
     /**
-     * Creates a classification
-     * Create classification
+     * Creates request options for createClassification without sending the request
      */
-    async createClassificationRaw(requestParameters: CreateClassificationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GovernanceClassification>> {
-        if (requestParameters.classificationInput === null || requestParameters.classificationInput === undefined) {
-            throw new runtime.RequiredError('classificationInput','Required parameter requestParameters.classificationInput was null or undefined when calling createClassification.');
+    async createClassificationRequestOpts(requestParameters: CreateClassificationRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['classificationInput'] == null) {
+            throw new runtime.RequiredError(
+                'classificationInput',
+                'Required parameter "classificationInput" was null or undefined when calling createClassification().'
+            );
         }
 
         const queryParameters: any = {};
@@ -149,13 +166,25 @@ export class GovernanceApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/governance/classifications`,
+
+        let urlPath = `/governance/classifications`;
+
+        return {
+            path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: ClassificationInputToJSON(requestParameters.classificationInput),
-        }, initOverrides);
+            body: ClassificationInputToJSON(requestParameters['classificationInput']),
+        };
+    }
+
+    /**
+     * Creates a classification
+     * Create classification
+     */
+    async createClassificationRaw(requestParameters: CreateClassificationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GovernanceClassification>> {
+        const requestOptions = await this.createClassificationRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => GovernanceClassificationFromJSON(jsonValue));
     }
@@ -170,12 +199,14 @@ export class GovernanceApi extends runtime.BaseAPI {
     }
 
     /**
-     * Creates a contact
-     * Create contact
+     * Creates request options for createContact without sending the request
      */
-    async createContactRaw(requestParameters: CreateContactRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GovernanceContact>> {
-        if (requestParameters.contactInput === null || requestParameters.contactInput === undefined) {
-            throw new runtime.RequiredError('contactInput','Required parameter requestParameters.contactInput was null or undefined when calling createContact.');
+    async createContactRequestOpts(requestParameters: CreateContactRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['contactInput'] == null) {
+            throw new runtime.RequiredError(
+                'contactInput',
+                'Required parameter "contactInput" was null or undefined when calling createContact().'
+            );
         }
 
         const queryParameters: any = {};
@@ -192,13 +223,25 @@ export class GovernanceApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/governance/contacts`,
+
+        let urlPath = `/governance/contacts`;
+
+        return {
+            path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: ContactInputToJSON(requestParameters.contactInput),
-        }, initOverrides);
+            body: ContactInputToJSON(requestParameters['contactInput']),
+        };
+    }
+
+    /**
+     * Creates a contact
+     * Create contact
+     */
+    async createContactRaw(requestParameters: CreateContactRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GovernanceContact>> {
+        const requestOptions = await this.createContactRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => GovernanceContactFromJSON(jsonValue));
     }
@@ -213,12 +256,14 @@ export class GovernanceApi extends runtime.BaseAPI {
     }
 
     /**
-     * Creates a requirement
-     * Create requirement
+     * Creates request options for createRequirement without sending the request
      */
-    async createRequirementRaw(requestParameters: CreateRequirementRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GovernanceRequirement>> {
-        if (requestParameters.requirementInput === null || requestParameters.requirementInput === undefined) {
-            throw new runtime.RequiredError('requirementInput','Required parameter requestParameters.requirementInput was null or undefined when calling createRequirement.');
+    async createRequirementRequestOpts(requestParameters: CreateRequirementRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['requirementInput'] == null) {
+            throw new runtime.RequiredError(
+                'requirementInput',
+                'Required parameter "requirementInput" was null or undefined when calling createRequirement().'
+            );
         }
 
         const queryParameters: any = {};
@@ -235,13 +280,25 @@ export class GovernanceApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/governance/requirements`,
+
+        let urlPath = `/governance/requirements`;
+
+        return {
+            path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: RequirementInputToJSON(requestParameters.requirementInput),
-        }, initOverrides);
+            body: RequirementInputToJSON(requestParameters['requirementInput']),
+        };
+    }
+
+    /**
+     * Creates a requirement
+     * Create requirement
+     */
+    async createRequirementRaw(requestParameters: CreateRequirementRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GovernanceRequirement>> {
+        const requestOptions = await this.createRequirementRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => GovernanceRequirementFromJSON(jsonValue));
     }
@@ -256,12 +313,14 @@ export class GovernanceApi extends runtime.BaseAPI {
     }
 
     /**
-     * Deletes the classification, and removes it from all projects.
-     * Delete a classification
+     * Creates request options for deleteClassification without sending the request
      */
-    async deleteClassificationRaw(requestParameters: DeleteClassificationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.classificationId === null || requestParameters.classificationId === undefined) {
-            throw new runtime.RequiredError('classificationId','Required parameter requestParameters.classificationId was null or undefined when calling deleteClassification.');
+    async deleteClassificationRequestOpts(requestParameters: DeleteClassificationRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['classificationId'] == null) {
+            throw new runtime.RequiredError(
+                'classificationId',
+                'Required parameter "classificationId" was null or undefined when calling deleteClassification().'
+            );
         }
 
         const queryParameters: any = {};
@@ -276,12 +335,25 @@ export class GovernanceApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/governance/classifications/{classificationId}`.replace(`{${"classificationId"}}`, encodeURIComponent(String(requestParameters.classificationId))),
+
+        let urlPath = `/governance/classifications/{classificationId}`;
+        urlPath = urlPath.replace('{classificationId}', encodeURIComponent(String(requestParameters['classificationId'])));
+
+        return {
+            path: urlPath,
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Deletes the classification, and removes it from all projects.
+     * Delete a classification
+     */
+    async deleteClassificationRaw(requestParameters: DeleteClassificationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.deleteClassificationRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -295,12 +367,14 @@ export class GovernanceApi extends runtime.BaseAPI {
     }
 
     /**
-     * Deletes the contact, and removes it from all governance requirements.
-     * Delete a contact
+     * Creates request options for deleteContact without sending the request
      */
-    async deleteContactRaw(requestParameters: DeleteContactRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.contactId === null || requestParameters.contactId === undefined) {
-            throw new runtime.RequiredError('contactId','Required parameter requestParameters.contactId was null or undefined when calling deleteContact.');
+    async deleteContactRequestOpts(requestParameters: DeleteContactRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['contactId'] == null) {
+            throw new runtime.RequiredError(
+                'contactId',
+                'Required parameter "contactId" was null or undefined when calling deleteContact().'
+            );
         }
 
         const queryParameters: any = {};
@@ -315,12 +389,25 @@ export class GovernanceApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/governance/contacts/{contactId}`.replace(`{${"contactId"}}`, encodeURIComponent(String(requestParameters.contactId))),
+
+        let urlPath = `/governance/contacts/{contactId}`;
+        urlPath = urlPath.replace('{contactId}', encodeURIComponent(String(requestParameters['contactId'])));
+
+        return {
+            path: urlPath,
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Deletes the contact, and removes it from all governance requirements.
+     * Delete a contact
+     */
+    async deleteContactRaw(requestParameters: DeleteContactRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.deleteContactRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -334,12 +421,14 @@ export class GovernanceApi extends runtime.BaseAPI {
     }
 
     /**
-     * Deletes the requirement, and removes it from all governance fulfillments and classifications.
-     * Delete a requirement
+     * Creates request options for deleteRequirement without sending the request
      */
-    async deleteRequirementRaw(requestParameters: DeleteRequirementRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.requirementId === null || requestParameters.requirementId === undefined) {
-            throw new runtime.RequiredError('requirementId','Required parameter requestParameters.requirementId was null or undefined when calling deleteRequirement.');
+    async deleteRequirementRequestOpts(requestParameters: DeleteRequirementRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['requirementId'] == null) {
+            throw new runtime.RequiredError(
+                'requirementId',
+                'Required parameter "requirementId" was null or undefined when calling deleteRequirement().'
+            );
         }
 
         const queryParameters: any = {};
@@ -354,12 +443,25 @@ export class GovernanceApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/governance/requirements/{requirementId}`.replace(`{${"requirementId"}}`, encodeURIComponent(String(requestParameters.requirementId))),
+
+        let urlPath = `/governance/requirements/{requirementId}`;
+        urlPath = urlPath.replace('{requirementId}', encodeURIComponent(String(requestParameters['requirementId'])));
+
+        return {
+            path: urlPath,
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Deletes the requirement, and removes it from all governance fulfillments and classifications.
+     * Delete a requirement
+     */
+    async deleteRequirementRaw(requestParameters: DeleteRequirementRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.deleteRequirementRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -373,20 +475,28 @@ export class GovernanceApi extends runtime.BaseAPI {
     }
 
     /**
-     * Saves a record of the fulfillment of a governance requirement
-     * Fulfill a project\'s requirement
+     * Creates request options for fulfillRequirement without sending the request
      */
-    async fulfillRequirementRaw(requestParameters: FulfillRequirementRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FulfillmentResponse>> {
-        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
-            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling fulfillRequirement.');
+    async fulfillRequirementRequestOpts(requestParameters: FulfillRequirementRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling fulfillRequirement().'
+            );
         }
 
-        if (requestParameters.requirementId === null || requestParameters.requirementId === undefined) {
-            throw new runtime.RequiredError('requirementId','Required parameter requestParameters.requirementId was null or undefined when calling fulfillRequirement.');
+        if (requestParameters['requirementId'] == null) {
+            throw new runtime.RequiredError(
+                'requirementId',
+                'Required parameter "requirementId" was null or undefined when calling fulfillRequirement().'
+            );
         }
 
-        if (requestParameters.requirementFulfillmentInput === null || requestParameters.requirementFulfillmentInput === undefined) {
-            throw new runtime.RequiredError('requirementFulfillmentInput','Required parameter requestParameters.requirementFulfillmentInput was null or undefined when calling fulfillRequirement.');
+        if (requestParameters['requirementFulfillmentInput'] == null) {
+            throw new runtime.RequiredError(
+                'requirementFulfillmentInput',
+                'Required parameter "requirementFulfillmentInput" was null or undefined when calling fulfillRequirement().'
+            );
         }
 
         const queryParameters: any = {};
@@ -403,13 +513,27 @@ export class GovernanceApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/governance/projects/{projectId}/requirements/{requirementId}:fulfill`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))).replace(`{${"requirementId"}}`, encodeURIComponent(String(requestParameters.requirementId))),
+
+        let urlPath = `/governance/projects/{projectId}/requirements/{requirementId}:fulfill`;
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+        urlPath = urlPath.replace('{requirementId}', encodeURIComponent(String(requestParameters['requirementId'])));
+
+        return {
+            path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: RequirementFulfillmentInputToJSON(requestParameters.requirementFulfillmentInput),
-        }, initOverrides);
+            body: RequirementFulfillmentInputToJSON(requestParameters['requirementFulfillmentInput']),
+        };
+    }
+
+    /**
+     * Saves a record of the fulfillment of a governance requirement
+     * Fulfill a project\'s requirement
+     */
+    async fulfillRequirementRaw(requestParameters: FulfillRequirementRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FulfillmentResponse>> {
+        const requestOptions = await this.fulfillRequirementRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => FulfillmentResponseFromJSON(jsonValue));
     }
@@ -424,12 +548,14 @@ export class GovernanceApi extends runtime.BaseAPI {
     }
 
     /**
-     * Retrieve a data classification
-     * Get a classification
+     * Creates request options for getClassification without sending the request
      */
-    async getClassificationRaw(requestParameters: GetClassificationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GovernanceClassification>> {
-        if (requestParameters.classificationId === null || requestParameters.classificationId === undefined) {
-            throw new runtime.RequiredError('classificationId','Required parameter requestParameters.classificationId was null or undefined when calling getClassification.');
+    async getClassificationRequestOpts(requestParameters: GetClassificationRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['classificationId'] == null) {
+            throw new runtime.RequiredError(
+                'classificationId',
+                'Required parameter "classificationId" was null or undefined when calling getClassification().'
+            );
         }
 
         const queryParameters: any = {};
@@ -444,12 +570,25 @@ export class GovernanceApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/governance/classifications/{classificationId}`.replace(`{${"classificationId"}}`, encodeURIComponent(String(requestParameters.classificationId))),
+
+        let urlPath = `/governance/classifications/{classificationId}`;
+        urlPath = urlPath.replace('{classificationId}', encodeURIComponent(String(requestParameters['classificationId'])));
+
+        return {
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Retrieve a data classification
+     * Get a classification
+     */
+    async getClassificationRaw(requestParameters: GetClassificationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GovernanceClassification>> {
+        const requestOptions = await this.getClassificationRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => GovernanceClassificationFromJSON(jsonValue));
     }
@@ -464,10 +603,9 @@ export class GovernanceApi extends runtime.BaseAPI {
     }
 
     /**
-     * Retrieve a list of data classifications
-     * Get classifications
+     * Creates request options for getClassifications without sending the request
      */
-    async getClassificationsRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<GovernanceClassification>>> {
+    async getClassificationsRequestOpts(): Promise<runtime.RequestOpts> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -480,12 +618,24 @@ export class GovernanceApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/governance/classifications`,
+
+        let urlPath = `/governance/classifications`;
+
+        return {
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Retrieve a list of data classifications
+     * Get classifications
+     */
+    async getClassificationsRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<GovernanceClassification>>> {
+        const requestOptions = await this.getClassificationsRequestOpts();
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(GovernanceClassificationFromJSON));
     }
@@ -500,12 +650,14 @@ export class GovernanceApi extends runtime.BaseAPI {
     }
 
     /**
-     * Retrieve a governance contact
-     * Get a contact
+     * Creates request options for getContact without sending the request
      */
-    async getContactRaw(requestParameters: GetContactRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GovernanceContact>> {
-        if (requestParameters.contactId === null || requestParameters.contactId === undefined) {
-            throw new runtime.RequiredError('contactId','Required parameter requestParameters.contactId was null or undefined when calling getContact.');
+    async getContactRequestOpts(requestParameters: GetContactRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['contactId'] == null) {
+            throw new runtime.RequiredError(
+                'contactId',
+                'Required parameter "contactId" was null or undefined when calling getContact().'
+            );
         }
 
         const queryParameters: any = {};
@@ -520,12 +672,25 @@ export class GovernanceApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/governance/contacts/{contactId}`.replace(`{${"contactId"}}`, encodeURIComponent(String(requestParameters.contactId))),
+
+        let urlPath = `/governance/contacts/{contactId}`;
+        urlPath = urlPath.replace('{contactId}', encodeURIComponent(String(requestParameters['contactId'])));
+
+        return {
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Retrieve a governance contact
+     * Get a contact
+     */
+    async getContactRaw(requestParameters: GetContactRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GovernanceContact>> {
+        const requestOptions = await this.getContactRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => GovernanceContactFromJSON(jsonValue));
     }
@@ -540,10 +705,9 @@ export class GovernanceApi extends runtime.BaseAPI {
     }
 
     /**
-     * Retrieve a list of governance contacts
-     * Get contacts
+     * Creates request options for getContacts without sending the request
      */
-    async getContactsRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<GovernanceContact>>> {
+    async getContactsRequestOpts(): Promise<runtime.RequestOpts> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -556,12 +720,24 @@ export class GovernanceApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/governance/contacts`,
+
+        let urlPath = `/governance/contacts`;
+
+        return {
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Retrieve a list of governance contacts
+     * Get contacts
+     */
+    async getContactsRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<GovernanceContact>>> {
+        const requestOptions = await this.getContactsRequestOpts();
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(GovernanceContactFromJSON));
     }
@@ -576,12 +752,14 @@ export class GovernanceApi extends runtime.BaseAPI {
     }
 
     /**
-     * Retrieve a governance requirement
-     * Get a requirement
+     * Creates request options for getRequirement without sending the request
      */
-    async getRequirementRaw(requestParameters: GetRequirementRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GovernanceRequirement>> {
-        if (requestParameters.requirementId === null || requestParameters.requirementId === undefined) {
-            throw new runtime.RequiredError('requirementId','Required parameter requestParameters.requirementId was null or undefined when calling getRequirement.');
+    async getRequirementRequestOpts(requestParameters: GetRequirementRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['requirementId'] == null) {
+            throw new runtime.RequiredError(
+                'requirementId',
+                'Required parameter "requirementId" was null or undefined when calling getRequirement().'
+            );
         }
 
         const queryParameters: any = {};
@@ -596,12 +774,25 @@ export class GovernanceApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/governance/requirements/{requirementId}`.replace(`{${"requirementId"}}`, encodeURIComponent(String(requestParameters.requirementId))),
+
+        let urlPath = `/governance/requirements/{requirementId}`;
+        urlPath = urlPath.replace('{requirementId}', encodeURIComponent(String(requestParameters['requirementId'])));
+
+        return {
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Retrieve a governance requirement
+     * Get a requirement
+     */
+    async getRequirementRaw(requestParameters: GetRequirementRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GovernanceRequirement>> {
+        const requestOptions = await this.getRequirementRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => GovernanceRequirementFromJSON(jsonValue));
     }
@@ -616,14 +807,13 @@ export class GovernanceApi extends runtime.BaseAPI {
     }
 
     /**
-     * Retrieve a list of governance requirements
-     * Get requirements
+     * Creates request options for getRequirements without sending the request
      */
-    async getRequirementsRaw(requestParameters: GetRequirementsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<GovernanceRequirement>>> {
+    async getRequirementsRequestOpts(requestParameters: GetRequirementsRequest): Promise<runtime.RequestOpts> {
         const queryParameters: any = {};
 
-        if (requestParameters.projectId !== undefined) {
-            queryParameters['projectId'] = requestParameters.projectId;
+        if (requestParameters['projectId'] != null) {
+            queryParameters['projectId'] = requestParameters['projectId'];
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -636,12 +826,24 @@ export class GovernanceApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/governance/requirements`,
+
+        let urlPath = `/governance/requirements`;
+
+        return {
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Retrieve a list of governance requirements
+     * Get requirements
+     */
+    async getRequirementsRaw(requestParameters: GetRequirementsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<GovernanceRequirement>>> {
+        const requestOptions = await this.getRequirementsRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(GovernanceRequirementFromJSON));
     }
@@ -656,18 +858,20 @@ export class GovernanceApi extends runtime.BaseAPI {
     }
 
     /**
-     * Retrieve governance requirements for a project with fulfillment information for the current user
-     * Get project requirements
+     * Creates request options for getRequirementsByProject without sending the request
      */
-    async getRequirementsByProjectRaw(requestParameters: GetRequirementsByProjectRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<ProjectRequirement>>> {
-        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
-            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling getRequirementsByProject.');
+    async getRequirementsByProjectRequestOpts(requestParameters: GetRequirementsByProjectRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling getRequirementsByProject().'
+            );
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters.username !== undefined) {
-            queryParameters['username'] = requestParameters.username;
+        if (requestParameters['username'] != null) {
+            queryParameters['username'] = requestParameters['username'];
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -680,12 +884,25 @@ export class GovernanceApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/governance/projects/{projectId}/requirements`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))),
+
+        let urlPath = `/governance/projects/{projectId}/requirements`;
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+
+        return {
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Retrieve governance requirements for a project with fulfillment information for the current user
+     * Get project requirements
+     */
+    async getRequirementsByProjectRaw(requestParameters: GetRequirementsByProjectRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<ProjectRequirement>>> {
+        const requestOptions = await this.getRequirementsByProjectRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(ProjectRequirementFromJSON));
     }
@@ -700,16 +917,21 @@ export class GovernanceApi extends runtime.BaseAPI {
     }
 
     /**
-     * Updates a classification
-     * Update classification
+     * Creates request options for updateClassification without sending the request
      */
-    async updateClassificationRaw(requestParameters: UpdateClassificationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GovernanceClassification>> {
-        if (requestParameters.classificationId === null || requestParameters.classificationId === undefined) {
-            throw new runtime.RequiredError('classificationId','Required parameter requestParameters.classificationId was null or undefined when calling updateClassification.');
+    async updateClassificationRequestOpts(requestParameters: UpdateClassificationRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['classificationId'] == null) {
+            throw new runtime.RequiredError(
+                'classificationId',
+                'Required parameter "classificationId" was null or undefined when calling updateClassification().'
+            );
         }
 
-        if (requestParameters.classificationInput === null || requestParameters.classificationInput === undefined) {
-            throw new runtime.RequiredError('classificationInput','Required parameter requestParameters.classificationInput was null or undefined when calling updateClassification.');
+        if (requestParameters['classificationInput'] == null) {
+            throw new runtime.RequiredError(
+                'classificationInput',
+                'Required parameter "classificationInput" was null or undefined when calling updateClassification().'
+            );
         }
 
         const queryParameters: any = {};
@@ -726,13 +948,26 @@ export class GovernanceApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/governance/classifications/{classificationId}`.replace(`{${"classificationId"}}`, encodeURIComponent(String(requestParameters.classificationId))),
+
+        let urlPath = `/governance/classifications/{classificationId}`;
+        urlPath = urlPath.replace('{classificationId}', encodeURIComponent(String(requestParameters['classificationId'])));
+
+        return {
+            path: urlPath,
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: ClassificationInputToJSON(requestParameters.classificationInput),
-        }, initOverrides);
+            body: ClassificationInputToJSON(requestParameters['classificationInput']),
+        };
+    }
+
+    /**
+     * Updates a classification
+     * Update classification
+     */
+    async updateClassificationRaw(requestParameters: UpdateClassificationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GovernanceClassification>> {
+        const requestOptions = await this.updateClassificationRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => GovernanceClassificationFromJSON(jsonValue));
     }
@@ -747,16 +982,21 @@ export class GovernanceApi extends runtime.BaseAPI {
     }
 
     /**
-     * Updates a contact
-     * Update contact
+     * Creates request options for updateContact without sending the request
      */
-    async updateContactRaw(requestParameters: UpdateContactRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GovernanceContact>> {
-        if (requestParameters.contactId === null || requestParameters.contactId === undefined) {
-            throw new runtime.RequiredError('contactId','Required parameter requestParameters.contactId was null or undefined when calling updateContact.');
+    async updateContactRequestOpts(requestParameters: UpdateContactRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['contactId'] == null) {
+            throw new runtime.RequiredError(
+                'contactId',
+                'Required parameter "contactId" was null or undefined when calling updateContact().'
+            );
         }
 
-        if (requestParameters.contactInput === null || requestParameters.contactInput === undefined) {
-            throw new runtime.RequiredError('contactInput','Required parameter requestParameters.contactInput was null or undefined when calling updateContact.');
+        if (requestParameters['contactInput'] == null) {
+            throw new runtime.RequiredError(
+                'contactInput',
+                'Required parameter "contactInput" was null or undefined when calling updateContact().'
+            );
         }
 
         const queryParameters: any = {};
@@ -773,13 +1013,26 @@ export class GovernanceApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/governance/contacts/{contactId}`.replace(`{${"contactId"}}`, encodeURIComponent(String(requestParameters.contactId))),
+
+        let urlPath = `/governance/contacts/{contactId}`;
+        urlPath = urlPath.replace('{contactId}', encodeURIComponent(String(requestParameters['contactId'])));
+
+        return {
+            path: urlPath,
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: ContactInputToJSON(requestParameters.contactInput),
-        }, initOverrides);
+            body: ContactInputToJSON(requestParameters['contactInput']),
+        };
+    }
+
+    /**
+     * Updates a contact
+     * Update contact
+     */
+    async updateContactRaw(requestParameters: UpdateContactRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GovernanceContact>> {
+        const requestOptions = await this.updateContactRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => GovernanceContactFromJSON(jsonValue));
     }
@@ -794,16 +1047,21 @@ export class GovernanceApi extends runtime.BaseAPI {
     }
 
     /**
-     * Updates a requirement
-     * Update requirement
+     * Creates request options for updateRequirement without sending the request
      */
-    async updateRequirementRaw(requestParameters: UpdateRequirementRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GovernanceRequirement>> {
-        if (requestParameters.requirementId === null || requestParameters.requirementId === undefined) {
-            throw new runtime.RequiredError('requirementId','Required parameter requestParameters.requirementId was null or undefined when calling updateRequirement.');
+    async updateRequirementRequestOpts(requestParameters: UpdateRequirementRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['requirementId'] == null) {
+            throw new runtime.RequiredError(
+                'requirementId',
+                'Required parameter "requirementId" was null or undefined when calling updateRequirement().'
+            );
         }
 
-        if (requestParameters.requirementInput === null || requestParameters.requirementInput === undefined) {
-            throw new runtime.RequiredError('requirementInput','Required parameter requestParameters.requirementInput was null or undefined when calling updateRequirement.');
+        if (requestParameters['requirementInput'] == null) {
+            throw new runtime.RequiredError(
+                'requirementInput',
+                'Required parameter "requirementInput" was null or undefined when calling updateRequirement().'
+            );
         }
 
         const queryParameters: any = {};
@@ -820,13 +1078,26 @@ export class GovernanceApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/governance/requirements/{requirementId}`.replace(`{${"requirementId"}}`, encodeURIComponent(String(requestParameters.requirementId))),
+
+        let urlPath = `/governance/requirements/{requirementId}`;
+        urlPath = urlPath.replace('{requirementId}', encodeURIComponent(String(requestParameters['requirementId'])));
+
+        return {
+            path: urlPath,
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: RequirementInputToJSON(requestParameters.requirementInput),
-        }, initOverrides);
+            body: RequirementInputToJSON(requestParameters['requirementInput']),
+        };
+    }
+
+    /**
+     * Updates a requirement
+     * Update requirement
+     */
+    async updateRequirementRaw(requestParameters: UpdateRequirementRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GovernanceRequirement>> {
+        const requestOptions = await this.updateRequirementRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => GovernanceRequirementFromJSON(jsonValue));
     }
@@ -841,20 +1112,28 @@ export class GovernanceApi extends runtime.BaseAPI {
     }
 
     /**
-     * Updates the project-specific file for a requirement
-     * Update the project file for a requirement
+     * Creates request options for updateRequirementFileForProject without sending the request
      */
-    async updateRequirementFileForProjectRaw(requestParameters: UpdateRequirementFileForProjectRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.requirementId === null || requestParameters.requirementId === undefined) {
-            throw new runtime.RequiredError('requirementId','Required parameter requestParameters.requirementId was null or undefined when calling updateRequirementFileForProject.');
+    async updateRequirementFileForProjectRequestOpts(requestParameters: UpdateRequirementFileForProjectRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['requirementId'] == null) {
+            throw new runtime.RequiredError(
+                'requirementId',
+                'Required parameter "requirementId" was null or undefined when calling updateRequirementFileForProject().'
+            );
         }
 
-        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
-            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling updateRequirementFileForProject.');
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling updateRequirementFileForProject().'
+            );
         }
 
-        if (requestParameters.governanceFileInput === null || requestParameters.governanceFileInput === undefined) {
-            throw new runtime.RequiredError('governanceFileInput','Required parameter requestParameters.governanceFileInput was null or undefined when calling updateRequirementFileForProject.');
+        if (requestParameters['governanceFileInput'] == null) {
+            throw new runtime.RequiredError(
+                'governanceFileInput',
+                'Required parameter "governanceFileInput" was null or undefined when calling updateRequirementFileForProject().'
+            );
         }
 
         const queryParameters: any = {};
@@ -871,13 +1150,27 @@ export class GovernanceApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/governance/requirements/{requirementId}/projects/{projectId}`.replace(`{${"requirementId"}}`, encodeURIComponent(String(requestParameters.requirementId))).replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))),
+
+        let urlPath = `/governance/requirements/{requirementId}/projects/{projectId}`;
+        urlPath = urlPath.replace('{requirementId}', encodeURIComponent(String(requestParameters['requirementId'])));
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+
+        return {
+            path: urlPath,
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: GovernanceFileInputToJSON(requestParameters.governanceFileInput),
-        }, initOverrides);
+            body: GovernanceFileInputToJSON(requestParameters['governanceFileInput']),
+        };
+    }
+
+    /**
+     * Updates the project-specific file for a requirement
+     * Update the project file for a requirement
+     */
+    async updateRequirementFileForProjectRaw(requestParameters: UpdateRequirementFileForProjectRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.updateRequirementFileForProjectRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }

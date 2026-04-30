@@ -23,6 +23,17 @@ export enum GovernanceFileType {
 }
 
 
+export function instanceOfGovernanceFileType(value: any): boolean {
+    for (const key in GovernanceFileType) {
+        if (Object.prototype.hasOwnProperty.call(GovernanceFileType, key)) {
+            if (GovernanceFileType[key as keyof typeof GovernanceFileType] === value) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 export function GovernanceFileTypeFromJSON(json: any): GovernanceFileType {
     return GovernanceFileTypeFromJSONTyped(json, false);
 }
@@ -33,5 +44,9 @@ export function GovernanceFileTypeFromJSONTyped(json: any, ignoreDiscriminator: 
 
 export function GovernanceFileTypeToJSON(value?: GovernanceFileType | null): any {
     return value as any;
+}
+
+export function GovernanceFileTypeToJSONTyped(value: any, ignoreDiscriminator: boolean): GovernanceFileType {
+    return value as GovernanceFileType;
 }
 

@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -30,11 +30,9 @@ export interface InviteUserResponse {
 /**
  * Check if a given object implements the InviteUserResponse interface.
  */
-export function instanceOfInviteUserResponse(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "message" in value;
-
-    return isInstance;
+export function instanceOfInviteUserResponse(value: object): value is InviteUserResponse {
+    if (!('message' in value) || value['message'] === undefined) return false;
+    return true;
 }
 
 export function InviteUserResponseFromJSON(json: any): InviteUserResponse {
@@ -42,7 +40,7 @@ export function InviteUserResponseFromJSON(json: any): InviteUserResponse {
 }
 
 export function InviteUserResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): InviteUserResponse {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -51,16 +49,18 @@ export function InviteUserResponseFromJSONTyped(json: any, ignoreDiscriminator: 
     };
 }
 
-export function InviteUserResponseToJSON(value?: InviteUserResponse | null): any {
-    if (value === undefined) {
-        return undefined;
+export function InviteUserResponseToJSON(json: any): InviteUserResponse {
+    return InviteUserResponseToJSONTyped(json, false);
+}
+
+export function InviteUserResponseToJSONTyped(value?: InviteUserResponse | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'message': value.message,
+        'message': value['message'],
     };
 }
 

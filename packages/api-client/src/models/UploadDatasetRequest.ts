@@ -12,12 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { Tag } from './Tag';
 import {
     TagFromJSON,
     TagFromJSONTyped,
     TagToJSON,
+    TagToJSONTyped,
 } from './Tag';
 
 /**
@@ -61,13 +62,11 @@ export interface UploadDatasetRequest {
 /**
  * Check if a given object implements the UploadDatasetRequest interface.
  */
-export function instanceOfUploadDatasetRequest(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "processId" in value;
-    isInstance = isInstance && "expectedFiles" in value;
-
-    return isInstance;
+export function instanceOfUploadDatasetRequest(value: object): value is UploadDatasetRequest {
+    if (!('name' in value) || value['name'] === undefined) return false;
+    if (!('processId' in value) || value['processId'] === undefined) return false;
+    if (!('expectedFiles' in value) || value['expectedFiles'] === undefined) return false;
+    return true;
 }
 
 export function UploadDatasetRequestFromJSON(json: any): UploadDatasetRequest {
@@ -75,33 +74,35 @@ export function UploadDatasetRequestFromJSON(json: any): UploadDatasetRequest {
 }
 
 export function UploadDatasetRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): UploadDatasetRequest {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
         'name': json['name'],
-        'description': !exists(json, 'description') ? undefined : json['description'],
+        'description': json['description'] == null ? undefined : json['description'],
         'processId': json['processId'],
         'expectedFiles': json['expectedFiles'],
-        'tags': !exists(json, 'tags') ? undefined : (json['tags'] === null ? null : (json['tags'] as Array<any>).map(TagFromJSON)),
+        'tags': json['tags'] == null ? undefined : ((json['tags'] as Array<any>).map(TagFromJSON)),
     };
 }
 
-export function UploadDatasetRequestToJSON(value?: UploadDatasetRequest | null): any {
-    if (value === undefined) {
-        return undefined;
+export function UploadDatasetRequestToJSON(json: any): UploadDatasetRequest {
+    return UploadDatasetRequestToJSONTyped(json, false);
+}
+
+export function UploadDatasetRequestToJSONTyped(value?: UploadDatasetRequest | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'name': value.name,
-        'description': value.description,
-        'processId': value.processId,
-        'expectedFiles': value.expectedFiles,
-        'tags': value.tags === undefined ? undefined : (value.tags === null ? null : (value.tags as Array<any>).map(TagToJSON)),
+        'name': value['name'],
+        'description': value['description'],
+        'processId': value['processId'],
+        'expectedFiles': value['expectedFiles'],
+        'tags': value['tags'] == null ? undefined : ((value['tags'] as Array<any>).map(TagToJSON)),
     };
 }
 

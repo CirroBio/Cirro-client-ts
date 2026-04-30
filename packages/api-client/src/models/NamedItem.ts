@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -36,12 +36,10 @@ export interface NamedItem {
 /**
  * Check if a given object implements the NamedItem interface.
  */
-export function instanceOfNamedItem(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "id" in value;
-    isInstance = isInstance && "name" in value;
-
-    return isInstance;
+export function instanceOfNamedItem(value: object): value is NamedItem {
+    if (!('id' in value) || value['id'] === undefined) return false;
+    if (!('name' in value) || value['name'] === undefined) return false;
+    return true;
 }
 
 export function NamedItemFromJSON(json: any): NamedItem {
@@ -49,7 +47,7 @@ export function NamedItemFromJSON(json: any): NamedItem {
 }
 
 export function NamedItemFromJSONTyped(json: any, ignoreDiscriminator: boolean): NamedItem {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -59,17 +57,19 @@ export function NamedItemFromJSONTyped(json: any, ignoreDiscriminator: boolean):
     };
 }
 
-export function NamedItemToJSON(value?: NamedItem | null): any {
-    if (value === undefined) {
-        return undefined;
+export function NamedItemToJSON(json: any): NamedItem {
+    return NamedItemToJSONTyped(json, false);
+}
+
+export function NamedItemToJSONTyped(value?: NamedItem | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'id': value.id,
-        'name': value.name,
+        'id': value['id'],
+        'name': value['name'],
     };
 }
 

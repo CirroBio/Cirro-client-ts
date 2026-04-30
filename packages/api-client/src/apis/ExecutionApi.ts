@@ -12,30 +12,37 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  CostResponse,
-  CreateResponse,
-  GetExecutionLogsResponse,
-  RunAnalysisRequest,
-  StopExecutionResponse,
-  Task,
-} from '../models/index';
 import {
+    type CostResponse,
     CostResponseFromJSON,
     CostResponseToJSON,
+} from '../models/CostResponse';
+import {
+    type CreateResponse,
     CreateResponseFromJSON,
     CreateResponseToJSON,
+} from '../models/CreateResponse';
+import {
+    type GetExecutionLogsResponse,
     GetExecutionLogsResponseFromJSON,
     GetExecutionLogsResponseToJSON,
+} from '../models/GetExecutionLogsResponse';
+import {
+    type RunAnalysisRequest,
     RunAnalysisRequestFromJSON,
     RunAnalysisRequestToJSON,
+} from '../models/RunAnalysisRequest';
+import {
+    type StopExecutionResponse,
     StopExecutionResponseFromJSON,
     StopExecutionResponseToJSON,
+} from '../models/StopExecutionResponse';
+import {
+    type Task,
     TaskFromJSON,
     TaskToJSON,
-} from '../models/index';
+} from '../models/Task';
 
 export interface CalculateCostRequest {
     projectId: string;
@@ -89,16 +96,21 @@ export interface StopAnalysisRequest {
 export class ExecutionApi extends runtime.BaseAPI {
 
     /**
-     * Calculate cost of an execution run
-     * Calculate cost
+     * Creates request options for calculateCost without sending the request
      */
-    async calculateCostRaw(requestParameters: CalculateCostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CostResponse>> {
-        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
-            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling calculateCost.');
+    async calculateCostRequestOpts(requestParameters: CalculateCostRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling calculateCost().'
+            );
         }
 
-        if (requestParameters.datasetId === null || requestParameters.datasetId === undefined) {
-            throw new runtime.RequiredError('datasetId','Required parameter requestParameters.datasetId was null or undefined when calling calculateCost.');
+        if (requestParameters['datasetId'] == null) {
+            throw new runtime.RequiredError(
+                'datasetId',
+                'Required parameter "datasetId" was null or undefined when calling calculateCost().'
+            );
         }
 
         const queryParameters: any = {};
@@ -113,12 +125,26 @@ export class ExecutionApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/projects/{projectId}/execution/{datasetId}/cost`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))).replace(`{${"datasetId"}}`, encodeURIComponent(String(requestParameters.datasetId))),
+
+        let urlPath = `/projects/{projectId}/execution/{datasetId}/cost`;
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+        urlPath = urlPath.replace('{datasetId}', encodeURIComponent(String(requestParameters['datasetId'])));
+
+        return {
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Calculate cost of an execution run
+     * Calculate cost
+     */
+    async calculateCostRaw(requestParameters: CalculateCostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CostResponse>> {
+        const requestOptions = await this.calculateCostRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => CostResponseFromJSON(jsonValue));
     }
@@ -133,22 +159,27 @@ export class ExecutionApi extends runtime.BaseAPI {
     }
 
     /**
-     * Gets live logs from main execution task
-     * Get execution logs
+     * Creates request options for getExecutionLogs without sending the request
      */
-    async getExecutionLogsRaw(requestParameters: GetExecutionLogsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetExecutionLogsResponse>> {
-        if (requestParameters.datasetId === null || requestParameters.datasetId === undefined) {
-            throw new runtime.RequiredError('datasetId','Required parameter requestParameters.datasetId was null or undefined when calling getExecutionLogs.');
+    async getExecutionLogsRequestOpts(requestParameters: GetExecutionLogsRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['datasetId'] == null) {
+            throw new runtime.RequiredError(
+                'datasetId',
+                'Required parameter "datasetId" was null or undefined when calling getExecutionLogs().'
+            );
         }
 
-        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
-            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling getExecutionLogs.');
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling getExecutionLogs().'
+            );
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters.forceLive !== undefined) {
-            queryParameters['forceLive'] = requestParameters.forceLive;
+        if (requestParameters['forceLive'] != null) {
+            queryParameters['forceLive'] = requestParameters['forceLive'];
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -161,12 +192,26 @@ export class ExecutionApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/projects/{projectId}/execution/{datasetId}/logs`.replace(`{${"datasetId"}}`, encodeURIComponent(String(requestParameters.datasetId))).replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))),
+
+        let urlPath = `/projects/{projectId}/execution/{datasetId}/logs`;
+        urlPath = urlPath.replace('{datasetId}', encodeURIComponent(String(requestParameters['datasetId'])));
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+
+        return {
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Gets live logs from main execution task
+     * Get execution logs
+     */
+    async getExecutionLogsRaw(requestParameters: GetExecutionLogsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetExecutionLogsResponse>> {
+        const requestOptions = await this.getExecutionLogsRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => GetExecutionLogsResponseFromJSON(jsonValue));
     }
@@ -181,18 +226,20 @@ export class ExecutionApi extends runtime.BaseAPI {
     }
 
     /**
-     * Gets an overview of the executions currently running in the project
-     * Get execution summary
+     * Creates request options for getProjectSummary without sending the request
      */
-    async getProjectSummaryRaw(requestParameters: GetProjectSummaryRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<{ [key: string]: Array<Task>; }>> {
-        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
-            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling getProjectSummary.');
+    async getProjectSummaryRequestOpts(requestParameters: GetProjectSummaryRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling getProjectSummary().'
+            );
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters.numberOfDays !== undefined) {
-            queryParameters['numberOfDays'] = requestParameters.numberOfDays;
+        if (requestParameters['numberOfDays'] != null) {
+            queryParameters['numberOfDays'] = requestParameters['numberOfDays'];
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -205,12 +252,25 @@ export class ExecutionApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/projects/{projectId}/execution`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))),
+
+        let urlPath = `/projects/{projectId}/execution`;
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+
+        return {
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Gets an overview of the executions currently running in the project
+     * Get execution summary
+     */
+    async getProjectSummaryRaw(requestParameters: GetProjectSummaryRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<{ [key: string]: Array<Task>; }>> {
+        const requestOptions = await this.getProjectSummaryRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse<any>(response);
     }
@@ -225,26 +285,34 @@ export class ExecutionApi extends runtime.BaseAPI {
     }
 
     /**
-     * Gets detailed information on the individual task
-     * Get task
+     * Creates request options for getTask without sending the request
      */
-    async getTaskRaw(requestParameters: GetTaskRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Task>> {
-        if (requestParameters.datasetId === null || requestParameters.datasetId === undefined) {
-            throw new runtime.RequiredError('datasetId','Required parameter requestParameters.datasetId was null or undefined when calling getTask.');
+    async getTaskRequestOpts(requestParameters: GetTaskRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['datasetId'] == null) {
+            throw new runtime.RequiredError(
+                'datasetId',
+                'Required parameter "datasetId" was null or undefined when calling getTask().'
+            );
         }
 
-        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
-            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling getTask.');
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling getTask().'
+            );
         }
 
-        if (requestParameters.taskId === null || requestParameters.taskId === undefined) {
-            throw new runtime.RequiredError('taskId','Required parameter requestParameters.taskId was null or undefined when calling getTask.');
+        if (requestParameters['taskId'] == null) {
+            throw new runtime.RequiredError(
+                'taskId',
+                'Required parameter "taskId" was null or undefined when calling getTask().'
+            );
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters.forceLive !== undefined) {
-            queryParameters['forceLive'] = requestParameters.forceLive;
+        if (requestParameters['forceLive'] != null) {
+            queryParameters['forceLive'] = requestParameters['forceLive'];
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -257,12 +325,27 @@ export class ExecutionApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/projects/{projectId}/execution/{datasetId}/tasks/{taskId}`.replace(`{${"datasetId"}}`, encodeURIComponent(String(requestParameters.datasetId))).replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))).replace(`{${"taskId"}}`, encodeURIComponent(String(requestParameters.taskId))),
+
+        let urlPath = `/projects/{projectId}/execution/{datasetId}/tasks/{taskId}`;
+        urlPath = urlPath.replace('{datasetId}', encodeURIComponent(String(requestParameters['datasetId'])));
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+        urlPath = urlPath.replace('{taskId}', encodeURIComponent(String(requestParameters['taskId'])));
+
+        return {
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Gets detailed information on the individual task
+     * Get task
+     */
+    async getTaskRaw(requestParameters: GetTaskRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Task>> {
+        const requestOptions = await this.getTaskRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => TaskFromJSON(jsonValue));
     }
@@ -277,26 +360,34 @@ export class ExecutionApi extends runtime.BaseAPI {
     }
 
     /**
-     * Gets the log output from an individual task
-     * Get task logs
+     * Creates request options for getTaskLogs without sending the request
      */
-    async getTaskLogsRaw(requestParameters: GetTaskLogsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetExecutionLogsResponse>> {
-        if (requestParameters.datasetId === null || requestParameters.datasetId === undefined) {
-            throw new runtime.RequiredError('datasetId','Required parameter requestParameters.datasetId was null or undefined when calling getTaskLogs.');
+    async getTaskLogsRequestOpts(requestParameters: GetTaskLogsRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['datasetId'] == null) {
+            throw new runtime.RequiredError(
+                'datasetId',
+                'Required parameter "datasetId" was null or undefined when calling getTaskLogs().'
+            );
         }
 
-        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
-            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling getTaskLogs.');
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling getTaskLogs().'
+            );
         }
 
-        if (requestParameters.taskId === null || requestParameters.taskId === undefined) {
-            throw new runtime.RequiredError('taskId','Required parameter requestParameters.taskId was null or undefined when calling getTaskLogs.');
+        if (requestParameters['taskId'] == null) {
+            throw new runtime.RequiredError(
+                'taskId',
+                'Required parameter "taskId" was null or undefined when calling getTaskLogs().'
+            );
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters.forceLive !== undefined) {
-            queryParameters['forceLive'] = requestParameters.forceLive;
+        if (requestParameters['forceLive'] != null) {
+            queryParameters['forceLive'] = requestParameters['forceLive'];
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -309,12 +400,27 @@ export class ExecutionApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/projects/{projectId}/execution/{datasetId}/tasks/{taskId}/logs`.replace(`{${"datasetId"}}`, encodeURIComponent(String(requestParameters.datasetId))).replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))).replace(`{${"taskId"}}`, encodeURIComponent(String(requestParameters.taskId))),
+
+        let urlPath = `/projects/{projectId}/execution/{datasetId}/tasks/{taskId}/logs`;
+        urlPath = urlPath.replace('{datasetId}', encodeURIComponent(String(requestParameters['datasetId'])));
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+        urlPath = urlPath.replace('{taskId}', encodeURIComponent(String(requestParameters['taskId'])));
+
+        return {
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Gets the log output from an individual task
+     * Get task logs
+     */
+    async getTaskLogsRaw(requestParameters: GetTaskLogsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetExecutionLogsResponse>> {
+        const requestOptions = await this.getTaskLogsRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => GetExecutionLogsResponseFromJSON(jsonValue));
     }
@@ -329,22 +435,27 @@ export class ExecutionApi extends runtime.BaseAPI {
     }
 
     /**
-     * Gets the tasks submitted by the workflow execution
-     * Get execution tasks
+     * Creates request options for getTasksForExecution without sending the request
      */
-    async getTasksForExecutionRaw(requestParameters: GetTasksForExecutionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<Task>>> {
-        if (requestParameters.datasetId === null || requestParameters.datasetId === undefined) {
-            throw new runtime.RequiredError('datasetId','Required parameter requestParameters.datasetId was null or undefined when calling getTasksForExecution.');
+    async getTasksForExecutionRequestOpts(requestParameters: GetTasksForExecutionRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['datasetId'] == null) {
+            throw new runtime.RequiredError(
+                'datasetId',
+                'Required parameter "datasetId" was null or undefined when calling getTasksForExecution().'
+            );
         }
 
-        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
-            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling getTasksForExecution.');
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling getTasksForExecution().'
+            );
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters.forceLive !== undefined) {
-            queryParameters['forceLive'] = requestParameters.forceLive;
+        if (requestParameters['forceLive'] != null) {
+            queryParameters['forceLive'] = requestParameters['forceLive'];
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -357,12 +468,26 @@ export class ExecutionApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/projects/{projectId}/execution/{datasetId}/tasks`.replace(`{${"datasetId"}}`, encodeURIComponent(String(requestParameters.datasetId))).replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))),
+
+        let urlPath = `/projects/{projectId}/execution/{datasetId}/tasks`;
+        urlPath = urlPath.replace('{datasetId}', encodeURIComponent(String(requestParameters['datasetId'])));
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+
+        return {
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Gets the tasks submitted by the workflow execution
+     * Get execution tasks
+     */
+    async getTasksForExecutionRaw(requestParameters: GetTasksForExecutionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<Task>>> {
+        const requestOptions = await this.getTasksForExecutionRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(TaskFromJSON));
     }
@@ -377,16 +502,21 @@ export class ExecutionApi extends runtime.BaseAPI {
     }
 
     /**
-     * Run analysis
-     * Run analysis
+     * Creates request options for runAnalysis without sending the request
      */
-    async runAnalysisRaw(requestParameters: RunAnalysisOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateResponse>> {
-        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
-            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling runAnalysis.');
+    async runAnalysisRequestOpts(requestParameters: RunAnalysisOperationRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling runAnalysis().'
+            );
         }
 
-        if (requestParameters.runAnalysisRequest === null || requestParameters.runAnalysisRequest === undefined) {
-            throw new runtime.RequiredError('runAnalysisRequest','Required parameter requestParameters.runAnalysisRequest was null or undefined when calling runAnalysis.');
+        if (requestParameters['runAnalysisRequest'] == null) {
+            throw new runtime.RequiredError(
+                'runAnalysisRequest',
+                'Required parameter "runAnalysisRequest" was null or undefined when calling runAnalysis().'
+            );
         }
 
         const queryParameters: any = {};
@@ -403,13 +533,26 @@ export class ExecutionApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/projects/{projectId}/execution`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))),
+
+        let urlPath = `/projects/{projectId}/execution`;
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+
+        return {
+            path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: RunAnalysisRequestToJSON(requestParameters.runAnalysisRequest),
-        }, initOverrides);
+            body: RunAnalysisRequestToJSON(requestParameters['runAnalysisRequest']),
+        };
+    }
+
+    /**
+     * Run analysis
+     * Run analysis
+     */
+    async runAnalysisRaw(requestParameters: RunAnalysisOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateResponse>> {
+        const requestOptions = await this.runAnalysisRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => CreateResponseFromJSON(jsonValue));
     }
@@ -424,16 +567,21 @@ export class ExecutionApi extends runtime.BaseAPI {
     }
 
     /**
-     * Terminates all analysis jobs related to this execution
-     * Stop execution
+     * Creates request options for stopAnalysis without sending the request
      */
-    async stopAnalysisRaw(requestParameters: StopAnalysisRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<StopExecutionResponse>> {
-        if (requestParameters.datasetId === null || requestParameters.datasetId === undefined) {
-            throw new runtime.RequiredError('datasetId','Required parameter requestParameters.datasetId was null or undefined when calling stopAnalysis.');
+    async stopAnalysisRequestOpts(requestParameters: StopAnalysisRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['datasetId'] == null) {
+            throw new runtime.RequiredError(
+                'datasetId',
+                'Required parameter "datasetId" was null or undefined when calling stopAnalysis().'
+            );
         }
 
-        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
-            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling stopAnalysis.');
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling stopAnalysis().'
+            );
         }
 
         const queryParameters: any = {};
@@ -448,12 +596,26 @@ export class ExecutionApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/projects/{projectId}/execution/{datasetId}/stop`.replace(`{${"datasetId"}}`, encodeURIComponent(String(requestParameters.datasetId))).replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))),
+
+        let urlPath = `/projects/{projectId}/execution/{datasetId}/stop`;
+        urlPath = urlPath.replace('{datasetId}', encodeURIComponent(String(requestParameters['datasetId'])));
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+
+        return {
+            path: urlPath,
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Terminates all analysis jobs related to this execution
+     * Stop execution
+     */
+    async stopAnalysisRaw(requestParameters: StopAnalysisRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<StopExecutionResponse>> {
+        const requestOptions = await this.stopAnalysisRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => StopExecutionResponseFromJSON(jsonValue));
     }

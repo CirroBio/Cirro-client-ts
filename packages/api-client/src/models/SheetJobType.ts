@@ -26,6 +26,17 @@ export enum SheetJobType {
 }
 
 
+export function instanceOfSheetJobType(value: any): boolean {
+    for (const key in SheetJobType) {
+        if (Object.prototype.hasOwnProperty.call(SheetJobType, key)) {
+            if (SheetJobType[key as keyof typeof SheetJobType] === value) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 export function SheetJobTypeFromJSON(json: any): SheetJobType {
     return SheetJobTypeFromJSONTyped(json, false);
 }
@@ -36,5 +47,9 @@ export function SheetJobTypeFromJSONTyped(json: any, ignoreDiscriminator: boolea
 
 export function SheetJobTypeToJSON(value?: SheetJobType | null): any {
     return value as any;
+}
+
+export function SheetJobTypeToJSONTyped(value: any, ignoreDiscriminator: boolean): SheetJobType {
+    return value as SheetJobType;
 }
 

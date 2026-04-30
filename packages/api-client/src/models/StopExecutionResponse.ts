@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -36,10 +36,8 @@ export interface StopExecutionResponse {
 /**
  * Check if a given object implements the StopExecutionResponse interface.
  */
-export function instanceOfStopExecutionResponse(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfStopExecutionResponse(value: object): value is StopExecutionResponse {
+    return true;
 }
 
 export function StopExecutionResponseFromJSON(json: any): StopExecutionResponse {
@@ -47,27 +45,29 @@ export function StopExecutionResponseFromJSON(json: any): StopExecutionResponse 
 }
 
 export function StopExecutionResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): StopExecutionResponse {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'success': !exists(json, 'success') ? undefined : json['success'],
-        'failed': !exists(json, 'failed') ? undefined : json['failed'],
+        'success': json['success'] == null ? undefined : json['success'],
+        'failed': json['failed'] == null ? undefined : json['failed'],
     };
 }
 
-export function StopExecutionResponseToJSON(value?: StopExecutionResponse | null): any {
-    if (value === undefined) {
-        return undefined;
+export function StopExecutionResponseToJSON(json: any): StopExecutionResponse {
+    return StopExecutionResponseToJSONTyped(json, false);
+}
+
+export function StopExecutionResponseToJSONTyped(value?: StopExecutionResponse | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'success': value.success,
-        'failed': value.failed,
+        'success': value['success'],
+        'failed': value['failed'],
     };
 }
 

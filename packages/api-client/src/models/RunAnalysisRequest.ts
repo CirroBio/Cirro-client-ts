@@ -12,12 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { Tag } from './Tag';
 import {
     TagFromJSON,
     TagFromJSONTyped,
     TagToJSON,
+    TagToJSONTyped,
 } from './Tag';
 
 /**
@@ -97,15 +98,13 @@ export interface RunAnalysisRequest {
 /**
  * Check if a given object implements the RunAnalysisRequest interface.
  */
-export function instanceOfRunAnalysisRequest(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "processId" in value;
-    isInstance = isInstance && "sourceDatasetIds" in value;
-    isInstance = isInstance && "params" in value;
-    isInstance = isInstance && "notificationEmails" in value;
-
-    return isInstance;
+export function instanceOfRunAnalysisRequest(value: object): value is RunAnalysisRequest {
+    if (!('name' in value) || value['name'] === undefined) return false;
+    if (!('processId' in value) || value['processId'] === undefined) return false;
+    if (!('sourceDatasetIds' in value) || value['sourceDatasetIds'] === undefined) return false;
+    if (!('params' in value) || value['params'] === undefined) return false;
+    if (!('notificationEmails' in value) || value['notificationEmails'] === undefined) return false;
+    return true;
 }
 
 export function RunAnalysisRequestFromJSON(json: any): RunAnalysisRequest {
@@ -113,45 +112,47 @@ export function RunAnalysisRequestFromJSON(json: any): RunAnalysisRequest {
 }
 
 export function RunAnalysisRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): RunAnalysisRequest {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
         'name': json['name'],
-        'description': !exists(json, 'description') ? undefined : json['description'],
+        'description': json['description'] == null ? undefined : json['description'],
         'processId': json['processId'],
         'sourceDatasetIds': json['sourceDatasetIds'],
-        'sourceSampleIds': !exists(json, 'sourceSampleIds') ? undefined : json['sourceSampleIds'],
-        'sourceSampleFilesMap': !exists(json, 'sourceSampleFilesMap') ? undefined : json['sourceSampleFilesMap'],
-        'resumeDatasetId': !exists(json, 'resumeDatasetId') ? undefined : json['resumeDatasetId'],
+        'sourceSampleIds': json['sourceSampleIds'] == null ? undefined : json['sourceSampleIds'],
+        'sourceSampleFilesMap': json['sourceSampleFilesMap'] == null ? undefined : json['sourceSampleFilesMap'],
+        'resumeDatasetId': json['resumeDatasetId'] == null ? undefined : json['resumeDatasetId'],
         'params': json['params'],
         'notificationEmails': json['notificationEmails'],
-        'computeEnvironmentId': !exists(json, 'computeEnvironmentId') ? undefined : json['computeEnvironmentId'],
-        'tags': !exists(json, 'tags') ? undefined : (json['tags'] === null ? null : (json['tags'] as Array<any>).map(TagFromJSON)),
+        'computeEnvironmentId': json['computeEnvironmentId'] == null ? undefined : json['computeEnvironmentId'],
+        'tags': json['tags'] == null ? undefined : ((json['tags'] as Array<any>).map(TagFromJSON)),
     };
 }
 
-export function RunAnalysisRequestToJSON(value?: RunAnalysisRequest | null): any {
-    if (value === undefined) {
-        return undefined;
+export function RunAnalysisRequestToJSON(json: any): RunAnalysisRequest {
+    return RunAnalysisRequestToJSONTyped(json, false);
+}
+
+export function RunAnalysisRequestToJSONTyped(value?: RunAnalysisRequest | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'name': value.name,
-        'description': value.description,
-        'processId': value.processId,
-        'sourceDatasetIds': value.sourceDatasetIds,
-        'sourceSampleIds': value.sourceSampleIds,
-        'sourceSampleFilesMap': value.sourceSampleFilesMap,
-        'resumeDatasetId': value.resumeDatasetId,
-        'params': value.params,
-        'notificationEmails': value.notificationEmails,
-        'computeEnvironmentId': value.computeEnvironmentId,
-        'tags': value.tags === undefined ? undefined : (value.tags === null ? null : (value.tags as Array<any>).map(TagToJSON)),
+        'name': value['name'],
+        'description': value['description'],
+        'processId': value['processId'],
+        'sourceDatasetIds': value['sourceDatasetIds'],
+        'sourceSampleIds': value['sourceSampleIds'],
+        'sourceSampleFilesMap': value['sourceSampleFilesMap'],
+        'resumeDatasetId': value['resumeDatasetId'],
+        'params': value['params'],
+        'notificationEmails': value['notificationEmails'],
+        'computeEnvironmentId': value['computeEnvironmentId'],
+        'tags': value['tags'] == null ? undefined : ((value['tags'] as Array<any>).map(TagToJSON)),
     };
 }
 

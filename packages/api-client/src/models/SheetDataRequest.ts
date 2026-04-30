@@ -12,19 +12,21 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
-import type { SheetDataRequestFilter } from './SheetDataRequestFilter';
+import { mapValues } from '../runtime';
+import type { Filter } from './Filter';
 import {
-    SheetDataRequestFilterFromJSON,
-    SheetDataRequestFilterFromJSONTyped,
-    SheetDataRequestFilterToJSON,
-} from './SheetDataRequestFilter';
-import type { SheetDataRequestSort } from './SheetDataRequestSort';
+    FilterFromJSON,
+    FilterFromJSONTyped,
+    FilterToJSON,
+    FilterToJSONTyped,
+} from './Filter';
+import type { SheetSort } from './SheetSort';
 import {
-    SheetDataRequestSortFromJSON,
-    SheetDataRequestSortFromJSONTyped,
-    SheetDataRequestSortToJSON,
-} from './SheetDataRequestSort';
+    SheetSortFromJSON,
+    SheetSortFromJSONTyped,
+    SheetSortToJSON,
+    SheetSortToJSONTyped,
+} from './SheetSort';
 
 /**
  * Paginated sheet data query with optional sort and filter
@@ -45,26 +47,24 @@ export interface SheetDataRequest {
      */
     page?: number | null;
     /**
-     * 
-     * @type {SheetDataRequestSort}
+     * Sort by column and direction.
+     * @type {SheetSort}
      * @memberof SheetDataRequest
      */
-    sort?: SheetDataRequestSort | null;
+    sort?: SheetSort | null;
     /**
-     * 
-     * @type {SheetDataRequestFilter}
+     * Filter tree.
+     * @type {Filter}
      * @memberof SheetDataRequest
      */
-    filter?: SheetDataRequestFilter | null;
+    filter?: Filter | null;
 }
 
 /**
  * Check if a given object implements the SheetDataRequest interface.
  */
-export function instanceOfSheetDataRequest(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfSheetDataRequest(value: object): value is SheetDataRequest {
+    return true;
 }
 
 export function SheetDataRequestFromJSON(json: any): SheetDataRequest {
@@ -72,31 +72,33 @@ export function SheetDataRequestFromJSON(json: any): SheetDataRequest {
 }
 
 export function SheetDataRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): SheetDataRequest {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'limit': !exists(json, 'limit') ? undefined : json['limit'],
-        'page': !exists(json, 'page') ? undefined : json['page'],
-        'sort': !exists(json, 'sort') ? undefined : SheetDataRequestSortFromJSON(json['sort']),
-        'filter': !exists(json, 'filter') ? undefined : SheetDataRequestFilterFromJSON(json['filter']),
+        'limit': json['limit'] == null ? undefined : json['limit'],
+        'page': json['page'] == null ? undefined : json['page'],
+        'sort': json['sort'] == null ? undefined : SheetSortFromJSON(json['sort']),
+        'filter': json['filter'] == null ? undefined : FilterFromJSON(json['filter']),
     };
 }
 
-export function SheetDataRequestToJSON(value?: SheetDataRequest | null): any {
-    if (value === undefined) {
-        return undefined;
+export function SheetDataRequestToJSON(json: any): SheetDataRequest {
+    return SheetDataRequestToJSONTyped(json, false);
+}
+
+export function SheetDataRequestToJSONTyped(value?: SheetDataRequest | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'limit': value.limit,
-        'page': value.page,
-        'sort': SheetDataRequestSortToJSON(value.sort),
-        'filter': SheetDataRequestFilterToJSON(value.filter),
+        'limit': value['limit'],
+        'page': value['page'],
+        'sort': SheetSortToJSON(value['sort']),
+        'filter': FilterToJSON(value['filter']),
     };
 }
 

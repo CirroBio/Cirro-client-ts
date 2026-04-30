@@ -12,12 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { MetricRecord } from './MetricRecord';
 import {
     MetricRecordFromJSON,
     MetricRecordFromJSONTyped,
     MetricRecordToJSON,
+    MetricRecordToJSONTyped,
 } from './MetricRecord';
 
 /**
@@ -49,11 +50,9 @@ export interface ProjectMetrics {
 /**
  * Check if a given object implements the ProjectMetrics interface.
  */
-export function instanceOfProjectMetrics(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "projectId" in value;
-
-    return isInstance;
+export function instanceOfProjectMetrics(value: object): value is ProjectMetrics {
+    if (!('projectId' in value) || value['projectId'] === undefined) return false;
+    return true;
 }
 
 export function ProjectMetricsFromJSON(json: any): ProjectMetrics {
@@ -61,29 +60,31 @@ export function ProjectMetricsFromJSON(json: any): ProjectMetrics {
 }
 
 export function ProjectMetricsFromJSONTyped(json: any, ignoreDiscriminator: boolean): ProjectMetrics {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
         'projectId': json['projectId'],
-        'costs': !exists(json, 'costs') ? undefined : ((json['costs'] as Array<any>).map(MetricRecordFromJSON)),
-        'storageMetrics': !exists(json, 'storageMetrics') ? undefined : ((json['storageMetrics'] as Array<any>).map(MetricRecordFromJSON)),
+        'costs': json['costs'] == null ? undefined : ((json['costs'] as Array<any>).map(MetricRecordFromJSON)),
+        'storageMetrics': json['storageMetrics'] == null ? undefined : ((json['storageMetrics'] as Array<any>).map(MetricRecordFromJSON)),
     };
 }
 
-export function ProjectMetricsToJSON(value?: ProjectMetrics | null): any {
-    if (value === undefined) {
-        return undefined;
+export function ProjectMetricsToJSON(json: any): ProjectMetrics {
+    return ProjectMetricsToJSONTyped(json, false);
+}
+
+export function ProjectMetricsToJSONTyped(value?: ProjectMetrics | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'projectId': value.projectId,
-        'costs': value.costs === undefined ? undefined : ((value.costs as Array<any>).map(MetricRecordToJSON)),
-        'storageMetrics': value.storageMetrics === undefined ? undefined : ((value.storageMetrics as Array<any>).map(MetricRecordToJSON)),
+        'projectId': value['projectId'],
+        'costs': value['costs'] == null ? undefined : ((value['costs'] as Array<any>).map(MetricRecordToJSON)),
+        'storageMetrics': value['storageMetrics'] == null ? undefined : ((value['storageMetrics'] as Array<any>).map(MetricRecordToJSON)),
     };
 }
 

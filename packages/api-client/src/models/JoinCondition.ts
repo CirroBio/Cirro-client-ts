@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -36,12 +36,10 @@ export interface JoinCondition {
 /**
  * Check if a given object implements the JoinCondition interface.
  */
-export function instanceOfJoinCondition(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "leftColumn" in value;
-    isInstance = isInstance && "rightColumn" in value;
-
-    return isInstance;
+export function instanceOfJoinCondition(value: object): value is JoinCondition {
+    if (!('leftColumn' in value) || value['leftColumn'] === undefined) return false;
+    if (!('rightColumn' in value) || value['rightColumn'] === undefined) return false;
+    return true;
 }
 
 export function JoinConditionFromJSON(json: any): JoinCondition {
@@ -49,7 +47,7 @@ export function JoinConditionFromJSON(json: any): JoinCondition {
 }
 
 export function JoinConditionFromJSONTyped(json: any, ignoreDiscriminator: boolean): JoinCondition {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -59,17 +57,19 @@ export function JoinConditionFromJSONTyped(json: any, ignoreDiscriminator: boole
     };
 }
 
-export function JoinConditionToJSON(value?: JoinCondition | null): any {
-    if (value === undefined) {
-        return undefined;
+export function JoinConditionToJSON(json: any): JoinCondition {
+    return JoinConditionToJSONTyped(json, false);
+}
+
+export function JoinConditionToJSONTyped(value?: JoinCondition | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'leftColumn': value.leftColumn,
-        'rightColumn': value.rightColumn,
+        'leftColumn': value['leftColumn'],
+        'rightColumn': value['rightColumn'],
     };
 }
 

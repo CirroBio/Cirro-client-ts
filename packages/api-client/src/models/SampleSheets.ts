@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -36,10 +36,8 @@ export interface SampleSheets {
 /**
  * Check if a given object implements the SampleSheets interface.
  */
-export function instanceOfSampleSheets(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfSampleSheets(value: object): value is SampleSheets {
+    return true;
 }
 
 export function SampleSheetsFromJSON(json: any): SampleSheets {
@@ -47,27 +45,29 @@ export function SampleSheetsFromJSON(json: any): SampleSheets {
 }
 
 export function SampleSheetsFromJSONTyped(json: any, ignoreDiscriminator: boolean): SampleSheets {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'samples': !exists(json, 'samples') ? undefined : json['samples'],
-        'files': !exists(json, 'files') ? undefined : json['files'],
+        'samples': json['samples'] == null ? undefined : json['samples'],
+        'files': json['files'] == null ? undefined : json['files'],
     };
 }
 
-export function SampleSheetsToJSON(value?: SampleSheets | null): any {
-    if (value === undefined) {
-        return undefined;
+export function SampleSheetsToJSON(json: any): SampleSheets {
+    return SampleSheetsToJSONTyped(json, false);
+}
+
+export function SampleSheetsToJSONTyped(value?: SampleSheets | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'samples': value.samples,
-        'files': value.files,
+        'samples': value['samples'],
+        'files': value['files'],
     };
 }
 

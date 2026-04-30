@@ -12,19 +12,21 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
-import type { NamedItem } from './NamedItem';
-import {
-    NamedItemFromJSON,
-    NamedItemFromJSONTyped,
-    NamedItemToJSON,
-} from './NamedItem';
+import { mapValues } from '../runtime';
 import type { Status } from './Status';
 import {
     StatusFromJSON,
     StatusFromJSONTyped,
     StatusToJSON,
+    StatusToJSONTyped,
 } from './Status';
+import type { NamedItem } from './NamedItem';
+import {
+    NamedItemFromJSON,
+    NamedItemFromJSONTyped,
+    NamedItemToJSON,
+    NamedItemToJSONTyped,
+} from './NamedItem';
 
 /**
  * 
@@ -112,21 +114,21 @@ export interface SharedFilesystem {
     usedByCount?: number;
 }
 
+
+
 /**
  * Check if a given object implements the SharedFilesystem interface.
  */
-export function instanceOfSharedFilesystem(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "id" in value;
-    isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "description" in value;
-    isInstance = isInstance && "projectId" in value;
-    isInstance = isInstance && "status" in value;
-    isInstance = isInstance && "createdBy" in value;
-    isInstance = isInstance && "createdAt" in value;
-    isInstance = isInstance && "updatedAt" in value;
-
-    return isInstance;
+export function instanceOfSharedFilesystem(value: object): value is SharedFilesystem {
+    if (!('id' in value) || value['id'] === undefined) return false;
+    if (!('name' in value) || value['name'] === undefined) return false;
+    if (!('description' in value) || value['description'] === undefined) return false;
+    if (!('projectId' in value) || value['projectId'] === undefined) return false;
+    if (!('status' in value) || value['status'] === undefined) return false;
+    if (!('createdBy' in value) || value['createdBy'] === undefined) return false;
+    if (!('createdAt' in value) || value['createdAt'] === undefined) return false;
+    if (!('updatedAt' in value) || value['updatedAt'] === undefined) return false;
+    return true;
 }
 
 export function SharedFilesystemFromJSON(json: any): SharedFilesystem {
@@ -134,7 +136,7 @@ export function SharedFilesystemFromJSON(json: any): SharedFilesystem {
 }
 
 export function SharedFilesystemFromJSONTyped(json: any, ignoreDiscriminator: boolean): SharedFilesystem {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -144,39 +146,41 @@ export function SharedFilesystemFromJSONTyped(json: any, ignoreDiscriminator: bo
         'description': json['description'],
         'projectId': json['projectId'],
         'status': StatusFromJSON(json['status']),
-        'statusMessage': !exists(json, 'statusMessage') ? undefined : json['statusMessage'],
-        'sizeInBytes': !exists(json, 'sizeInBytes') ? undefined : json['sizeInBytes'],
-        'warningThresholdBytes': !exists(json, 'warningThresholdBytes') ? undefined : json['warningThresholdBytes'],
-        'usedByWorkspaces': !exists(json, 'usedByWorkspaces') ? undefined : ((json['usedByWorkspaces'] as Array<any>).map(NamedItemFromJSON)),
+        'statusMessage': json['statusMessage'] == null ? undefined : json['statusMessage'],
+        'sizeInBytes': json['sizeInBytes'] == null ? undefined : json['sizeInBytes'],
+        'warningThresholdBytes': json['warningThresholdBytes'] == null ? undefined : json['warningThresholdBytes'],
+        'usedByWorkspaces': json['usedByWorkspaces'] == null ? undefined : ((json['usedByWorkspaces'] as Array<any>).map(NamedItemFromJSON)),
         'createdBy': json['createdBy'],
         'createdAt': (new Date(json['createdAt'])),
         'updatedAt': (new Date(json['updatedAt'])),
-        'usedByCount': !exists(json, 'usedByCount') ? undefined : json['usedByCount'],
+        'usedByCount': json['usedByCount'] == null ? undefined : json['usedByCount'],
     };
 }
 
-export function SharedFilesystemToJSON(value?: SharedFilesystem | null): any {
-    if (value === undefined) {
-        return undefined;
+export function SharedFilesystemToJSON(json: any): SharedFilesystem {
+    return SharedFilesystemToJSONTyped(json, false);
+}
+
+export function SharedFilesystemToJSONTyped(value?: SharedFilesystem | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'id': value.id,
-        'name': value.name,
-        'description': value.description,
-        'projectId': value.projectId,
-        'status': StatusToJSON(value.status),
-        'statusMessage': value.statusMessage,
-        'sizeInBytes': value.sizeInBytes,
-        'warningThresholdBytes': value.warningThresholdBytes,
-        'usedByWorkspaces': value.usedByWorkspaces === undefined ? undefined : ((value.usedByWorkspaces as Array<any>).map(NamedItemToJSON)),
-        'createdBy': value.createdBy,
-        'createdAt': (value.createdAt.toISOString()),
-        'updatedAt': (value.updatedAt.toISOString()),
-        'usedByCount': value.usedByCount,
+        'id': value['id'],
+        'name': value['name'],
+        'description': value['description'],
+        'projectId': value['projectId'],
+        'status': StatusToJSON(value['status']),
+        'statusMessage': value['statusMessage'],
+        'sizeInBytes': value['sizeInBytes'],
+        'warningThresholdBytes': value['warningThresholdBytes'],
+        'usedByWorkspaces': value['usedByWorkspaces'] == null ? undefined : ((value['usedByWorkspaces'] as Array<any>).map(NamedItemToJSON)),
+        'createdBy': value['createdBy'],
+        'createdAt': value['createdAt'].toISOString(),
+        'updatedAt': value['updatedAt'].toISOString(),
+        'usedByCount': value['usedByCount'],
     };
 }
 

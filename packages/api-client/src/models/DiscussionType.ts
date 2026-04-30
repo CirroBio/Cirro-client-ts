@@ -23,6 +23,17 @@ export enum DiscussionType {
 }
 
 
+export function instanceOfDiscussionType(value: any): boolean {
+    for (const key in DiscussionType) {
+        if (Object.prototype.hasOwnProperty.call(DiscussionType, key)) {
+            if (DiscussionType[key as keyof typeof DiscussionType] === value) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 export function DiscussionTypeFromJSON(json: any): DiscussionType {
     return DiscussionTypeFromJSONTyped(json, false);
 }
@@ -33,5 +44,9 @@ export function DiscussionTypeFromJSONTyped(json: any, ignoreDiscriminator: bool
 
 export function DiscussionTypeToJSON(value?: DiscussionType | null): any {
     return value as any;
+}
+
+export function DiscussionTypeToJSONTyped(value: any, ignoreDiscriminator: boolean): DiscussionType {
+    return value as DiscussionType;
 }
 
