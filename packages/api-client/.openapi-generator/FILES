@@ -194,6 +194,7 @@ src/models/SheetIngestRequest.ts
 src/models/SheetInput.ts
 src/models/SheetJob.ts
 src/models/SheetJobType.ts
+src/models/SheetQueryRequest.ts
 src/models/SheetQueryResponse.ts
 src/models/SheetSort.ts
 src/models/SheetType.ts
