@@ -126,12 +126,6 @@ export interface DatasetDetail {
      */
     tags: Array<Tag>;
     /**
-     * Folder(s) that contain the dataset
-     * @type {Array<string>}
-     * @memberof DatasetDetail
-     */
-    folders: Array<string>;
-    /**
      * 
      * @type {{ [key: string]: any; }}
      * @memberof DatasetDetail
@@ -205,7 +199,6 @@ export function instanceOfDatasetDetail(value: object): value is DatasetDetail {
     if (!('status' in value) || value['status'] === undefined) return false;
     if (!('statusMessage' in value) || value['statusMessage'] === undefined) return false;
     if (!('tags' in value) || value['tags'] === undefined) return false;
-    if (!('folders' in value) || value['folders'] === undefined) return false;
     if (!('params' in value) || value['params'] === undefined) return false;
     if (!('info' in value) || value['info'] === undefined) return false;
     if (!('isViewRestricted' in value) || value['isViewRestricted'] === undefined) return false;
@@ -239,7 +232,6 @@ export function DatasetDetailFromJSONTyped(json: any, ignoreDiscriminator: boole
         'status': StatusFromJSON(json['status']),
         'statusMessage': json['statusMessage'],
         'tags': ((json['tags'] as Array<any>).map(TagFromJSON)),
-        'folders': json['folders'],
         'params': json['params'],
         'info': json['info'],
         'share': json['share'] == null ? undefined : NamedItemFromJSON(json['share']),
@@ -277,7 +269,6 @@ export function DatasetDetailToJSONTyped(value?: DatasetDetail | null, ignoreDis
         'status': StatusToJSON(value['status']),
         'statusMessage': value['statusMessage'],
         'tags': ((value['tags'] as Array<any>).map(TagToJSON)),
-        'folders': value['folders'],
         'params': value['params'],
         'info': value['info'],
         'share': NamedItemToJSON(value['share']),

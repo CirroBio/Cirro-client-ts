@@ -83,12 +83,6 @@ export interface Dataset {
      */
     tags: Array<Tag>;
     /**
-     * Folder(s) that contain the dataset
-     * @type {Array<string>}
-     * @memberof Dataset
-     */
-    folders: Array<string>;
-    /**
      * User who created the dataset
      * @type {string}
      * @memberof Dataset
@@ -121,7 +115,6 @@ export function instanceOfDataset(value: object): value is Dataset {
     if (!('sourceDatasetIds' in value) || value['sourceDatasetIds'] === undefined) return false;
     if (!('status' in value) || value['status'] === undefined) return false;
     if (!('tags' in value) || value['tags'] === undefined) return false;
-    if (!('folders' in value) || value['folders'] === undefined) return false;
     if (!('createdBy' in value) || value['createdBy'] === undefined) return false;
     if (!('createdAt' in value) || value['createdAt'] === undefined) return false;
     if (!('updatedAt' in value) || value['updatedAt'] === undefined) return false;
@@ -146,7 +139,6 @@ export function DatasetFromJSONTyped(json: any, ignoreDiscriminator: boolean): D
         'sourceDatasetIds': json['sourceDatasetIds'],
         'status': StatusFromJSON(json['status']),
         'tags': ((json['tags'] as Array<any>).map(TagFromJSON)),
-        'folders': json['folders'],
         'createdBy': json['createdBy'],
         'createdAt': (new Date(json['createdAt'])),
         'updatedAt': (new Date(json['updatedAt'])),
@@ -172,7 +164,6 @@ export function DatasetToJSONTyped(value?: Dataset | null, ignoreDiscriminator: 
         'sourceDatasetIds': value['sourceDatasetIds'],
         'status': StatusToJSON(value['status']),
         'tags': ((value['tags'] as Array<any>).map(TagToJSON)),
-        'folders': value['folders'],
         'createdBy': value['createdBy'],
         'createdAt': value['createdAt'].toISOString(),
         'updatedAt': value['updatedAt'].toISOString(),
