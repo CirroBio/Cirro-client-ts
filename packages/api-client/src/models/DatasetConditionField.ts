@@ -25,6 +25,17 @@ export enum DatasetConditionField {
 }
 
 
+export function instanceOfDatasetConditionField(value: any): boolean {
+    for (const key in DatasetConditionField) {
+        if (Object.prototype.hasOwnProperty.call(DatasetConditionField, key)) {
+            if (DatasetConditionField[key as keyof typeof DatasetConditionField] === value) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 export function DatasetConditionFieldFromJSON(json: any): DatasetConditionField {
     return DatasetConditionFieldFromJSONTyped(json, false);
 }
@@ -35,5 +46,9 @@ export function DatasetConditionFieldFromJSONTyped(json: any, ignoreDiscriminato
 
 export function DatasetConditionFieldToJSON(value?: DatasetConditionField | null): any {
     return value as any;
+}
+
+export function DatasetConditionFieldToJSONTyped(value: any, ignoreDiscriminator: boolean): DatasetConditionField {
+    return value as DatasetConditionField;
 }
 

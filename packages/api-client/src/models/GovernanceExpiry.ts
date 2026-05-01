@@ -12,12 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { GovernanceExpiryType } from './GovernanceExpiryType';
 import {
     GovernanceExpiryTypeFromJSON,
     GovernanceExpiryTypeFromJSONTyped,
     GovernanceExpiryTypeToJSON,
+    GovernanceExpiryTypeToJSONTyped,
 } from './GovernanceExpiryType';
 
 /**
@@ -27,7 +28,7 @@ import {
  */
 export interface GovernanceExpiry {
     /**
-     * 
+     * The type of expiration date
      * @type {GovernanceExpiryType}
      * @memberof GovernanceExpiry
      */
@@ -46,13 +47,13 @@ export interface GovernanceExpiry {
     date?: Date | null;
 }
 
+
+
 /**
  * Check if a given object implements the GovernanceExpiry interface.
  */
-export function instanceOfGovernanceExpiry(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfGovernanceExpiry(value: object): value is GovernanceExpiry {
+    return true;
 }
 
 export function GovernanceExpiryFromJSON(json: any): GovernanceExpiry {
@@ -60,29 +61,31 @@ export function GovernanceExpiryFromJSON(json: any): GovernanceExpiry {
 }
 
 export function GovernanceExpiryFromJSONTyped(json: any, ignoreDiscriminator: boolean): GovernanceExpiry {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'type': !exists(json, 'type') ? undefined : GovernanceExpiryTypeFromJSON(json['type']),
-        'days': !exists(json, 'days') ? undefined : json['days'],
-        'date': !exists(json, 'date') ? undefined : (json['date'] === null ? null : new Date(json['date'])),
+        'type': json['type'] == null ? undefined : GovernanceExpiryTypeFromJSON(json['type']),
+        'days': json['days'] == null ? undefined : json['days'],
+        'date': json['date'] == null ? undefined : (new Date(json['date'])),
     };
 }
 
-export function GovernanceExpiryToJSON(value?: GovernanceExpiry | null): any {
-    if (value === undefined) {
-        return undefined;
+export function GovernanceExpiryToJSON(json: any): GovernanceExpiry {
+    return GovernanceExpiryToJSONTyped(json, false);
+}
+
+export function GovernanceExpiryToJSONTyped(value?: GovernanceExpiry | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'type': GovernanceExpiryTypeToJSON(value.type),
-        'days': value.days,
-        'date': value.date === undefined ? undefined : (value.date === null ? null : value.date.toISOString()),
+        'type': GovernanceExpiryTypeToJSON(value['type']),
+        'days': value['days'],
+        'date': value['date'] == null ? value['date'] : value['date'].toISOString(),
     };
 }
 

@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * Additional settings for the user
  * @export
@@ -31,11 +31,9 @@ export interface UserSettings {
 /**
  * Check if a given object implements the UserSettings interface.
  */
-export function instanceOfUserSettings(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "analysisUpdateNotificationsEnabled" in value;
-
-    return isInstance;
+export function instanceOfUserSettings(value: object): value is UserSettings {
+    if (!('analysisUpdateNotificationsEnabled' in value) || value['analysisUpdateNotificationsEnabled'] === undefined) return false;
+    return true;
 }
 
 export function UserSettingsFromJSON(json: any): UserSettings {
@@ -43,7 +41,7 @@ export function UserSettingsFromJSON(json: any): UserSettings {
 }
 
 export function UserSettingsFromJSONTyped(json: any, ignoreDiscriminator: boolean): UserSettings {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -53,17 +51,19 @@ export function UserSettingsFromJSONTyped(json: any, ignoreDiscriminator: boolea
     };
 }
 
-export function UserSettingsToJSON(value?: UserSettings | null): any {
-    if (value === undefined) {
-        return undefined;
+export function UserSettingsToJSON(json: any): UserSettings {
+    return UserSettingsToJSONTyped(json, false);
+}
+
+export function UserSettingsToJSONTyped(value?: UserSettings | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
             ...value,
-        'analysisUpdateNotificationsEnabled': value.analysisUpdateNotificationsEnabled,
+        'analysisUpdateNotificationsEnabled': value['analysisUpdateNotificationsEnabled'],
     };
 }
 

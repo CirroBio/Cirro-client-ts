@@ -12,12 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { DatasetConditionField } from './DatasetConditionField';
 import {
     DatasetConditionFieldFromJSON,
     DatasetConditionFieldFromJSONTyped,
     DatasetConditionFieldToJSON,
+    DatasetConditionFieldToJSONTyped,
 } from './DatasetConditionField';
 
 /**
@@ -40,15 +41,15 @@ export interface DatasetCondition {
     value: string;
 }
 
+
+
 /**
  * Check if a given object implements the DatasetCondition interface.
  */
-export function instanceOfDatasetCondition(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "field" in value;
-    isInstance = isInstance && "value" in value;
-
-    return isInstance;
+export function instanceOfDatasetCondition(value: object): value is DatasetCondition {
+    if (!('field' in value) || value['field'] === undefined) return false;
+    if (!('value' in value) || value['value'] === undefined) return false;
+    return true;
 }
 
 export function DatasetConditionFromJSON(json: any): DatasetCondition {
@@ -56,7 +57,7 @@ export function DatasetConditionFromJSON(json: any): DatasetCondition {
 }
 
 export function DatasetConditionFromJSONTyped(json: any, ignoreDiscriminator: boolean): DatasetCondition {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -66,17 +67,19 @@ export function DatasetConditionFromJSONTyped(json: any, ignoreDiscriminator: bo
     };
 }
 
-export function DatasetConditionToJSON(value?: DatasetCondition | null): any {
-    if (value === undefined) {
-        return undefined;
+export function DatasetConditionToJSON(json: any): DatasetCondition {
+    return DatasetConditionToJSONTyped(json, false);
+}
+
+export function DatasetConditionToJSONTyped(value?: DatasetCondition | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'field': DatasetConditionFieldToJSON(value.field),
-        'value': value.value,
+        'field': DatasetConditionFieldToJSON(value['field']),
+        'value': value['value'],
     };
 }
 

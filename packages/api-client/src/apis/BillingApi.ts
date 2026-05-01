@@ -12,21 +12,22 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  BillingAccount,
-  BillingAccountRequest,
-  CreateResponse,
-} from '../models/index';
 import {
+    type BillingAccount,
     BillingAccountFromJSON,
     BillingAccountToJSON,
+} from '../models/BillingAccount';
+import {
+    type BillingAccountRequest,
     BillingAccountRequestFromJSON,
     BillingAccountRequestToJSON,
+} from '../models/BillingAccountRequest';
+import {
+    type CreateResponse,
     CreateResponseFromJSON,
     CreateResponseToJSON,
-} from '../models/index';
+} from '../models/CreateResponse';
 
 export interface CreateBillingAccountRequest {
     billingAccountRequest: BillingAccountRequest;
@@ -51,12 +52,14 @@ export interface UpdateBillingAccountRequest {
 export class BillingApi extends runtime.BaseAPI {
 
     /**
-     * Creates a billing account
-     * Create billing account
+     * Creates request options for createBillingAccount without sending the request
      */
-    async createBillingAccountRaw(requestParameters: CreateBillingAccountRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateResponse>> {
-        if (requestParameters.billingAccountRequest === null || requestParameters.billingAccountRequest === undefined) {
-            throw new runtime.RequiredError('billingAccountRequest','Required parameter requestParameters.billingAccountRequest was null or undefined when calling createBillingAccount.');
+    async createBillingAccountRequestOpts(requestParameters: CreateBillingAccountRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['billingAccountRequest'] == null) {
+            throw new runtime.RequiredError(
+                'billingAccountRequest',
+                'Required parameter "billingAccountRequest" was null or undefined when calling createBillingAccount().'
+            );
         }
 
         const queryParameters: any = {};
@@ -73,13 +76,25 @@ export class BillingApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/billing`,
+
+        let urlPath = `/billing`;
+
+        return {
+            path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: BillingAccountRequestToJSON(requestParameters.billingAccountRequest),
-        }, initOverrides);
+            body: BillingAccountRequestToJSON(requestParameters['billingAccountRequest']),
+        };
+    }
+
+    /**
+     * Creates a billing account
+     * Create billing account
+     */
+    async createBillingAccountRaw(requestParameters: CreateBillingAccountRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateResponse>> {
+        const requestOptions = await this.createBillingAccountRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => CreateResponseFromJSON(jsonValue));
     }
@@ -94,12 +109,14 @@ export class BillingApi extends runtime.BaseAPI {
     }
 
     /**
-     * Deletes a billing account
-     * Delete billing account
+     * Creates request options for deleteBillingAccount without sending the request
      */
-    async deleteBillingAccountRaw(requestParameters: DeleteBillingAccountRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.billingAccountId === null || requestParameters.billingAccountId === undefined) {
-            throw new runtime.RequiredError('billingAccountId','Required parameter requestParameters.billingAccountId was null or undefined when calling deleteBillingAccount.');
+    async deleteBillingAccountRequestOpts(requestParameters: DeleteBillingAccountRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['billingAccountId'] == null) {
+            throw new runtime.RequiredError(
+                'billingAccountId',
+                'Required parameter "billingAccountId" was null or undefined when calling deleteBillingAccount().'
+            );
         }
 
         const queryParameters: any = {};
@@ -114,12 +131,25 @@ export class BillingApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/billing/{billingAccountId}`.replace(`{${"billingAccountId"}}`, encodeURIComponent(String(requestParameters.billingAccountId))),
+
+        let urlPath = `/billing/{billingAccountId}`;
+        urlPath = urlPath.replace('{billingAccountId}', encodeURIComponent(String(requestParameters['billingAccountId'])));
+
+        return {
+            path: urlPath,
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Deletes a billing account
+     * Delete billing account
+     */
+    async deleteBillingAccountRaw(requestParameters: DeleteBillingAccountRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.deleteBillingAccountRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -133,14 +163,13 @@ export class BillingApi extends runtime.BaseAPI {
     }
 
     /**
-     * Gets a list of billing accounts the current user has access to
-     * List billing accounts
+     * Creates request options for getBillingAccounts without sending the request
      */
-    async getBillingAccountsRaw(requestParameters: GetBillingAccountsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<BillingAccount>>> {
+    async getBillingAccountsRequestOpts(requestParameters: GetBillingAccountsRequest): Promise<runtime.RequestOpts> {
         const queryParameters: any = {};
 
-        if (requestParameters.includeArchived !== undefined) {
-            queryParameters['includeArchived'] = requestParameters.includeArchived;
+        if (requestParameters['includeArchived'] != null) {
+            queryParameters['includeArchived'] = requestParameters['includeArchived'];
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -153,12 +182,24 @@ export class BillingApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/billing`,
+
+        let urlPath = `/billing`;
+
+        return {
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Gets a list of billing accounts the current user has access to
+     * List billing accounts
+     */
+    async getBillingAccountsRaw(requestParameters: GetBillingAccountsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<BillingAccount>>> {
+        const requestOptions = await this.getBillingAccountsRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(BillingAccountFromJSON));
     }
@@ -173,16 +214,21 @@ export class BillingApi extends runtime.BaseAPI {
     }
 
     /**
-     * Updates a billing account
-     * Update billing account
+     * Creates request options for updateBillingAccount without sending the request
      */
-    async updateBillingAccountRaw(requestParameters: UpdateBillingAccountRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.billingAccountId === null || requestParameters.billingAccountId === undefined) {
-            throw new runtime.RequiredError('billingAccountId','Required parameter requestParameters.billingAccountId was null or undefined when calling updateBillingAccount.');
+    async updateBillingAccountRequestOpts(requestParameters: UpdateBillingAccountRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['billingAccountId'] == null) {
+            throw new runtime.RequiredError(
+                'billingAccountId',
+                'Required parameter "billingAccountId" was null or undefined when calling updateBillingAccount().'
+            );
         }
 
-        if (requestParameters.billingAccountRequest === null || requestParameters.billingAccountRequest === undefined) {
-            throw new runtime.RequiredError('billingAccountRequest','Required parameter requestParameters.billingAccountRequest was null or undefined when calling updateBillingAccount.');
+        if (requestParameters['billingAccountRequest'] == null) {
+            throw new runtime.RequiredError(
+                'billingAccountRequest',
+                'Required parameter "billingAccountRequest" was null or undefined when calling updateBillingAccount().'
+            );
         }
 
         const queryParameters: any = {};
@@ -199,13 +245,26 @@ export class BillingApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/billing/{billingAccountId}`.replace(`{${"billingAccountId"}}`, encodeURIComponent(String(requestParameters.billingAccountId))),
+
+        let urlPath = `/billing/{billingAccountId}`;
+        urlPath = urlPath.replace('{billingAccountId}', encodeURIComponent(String(requestParameters['billingAccountId'])));
+
+        return {
+            path: urlPath,
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: BillingAccountRequestToJSON(requestParameters.billingAccountRequest),
-        }, initOverrides);
+            body: BillingAccountRequestToJSON(requestParameters['billingAccountRequest']),
+        };
+    }
+
+    /**
+     * Updates a billing account
+     * Update billing account
+     */
+    async updateBillingAccountRaw(requestParameters: UpdateBillingAccountRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.updateBillingAccountRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }

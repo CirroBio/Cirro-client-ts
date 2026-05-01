@@ -12,18 +12,20 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { ProjectRole } from './ProjectRole';
 import {
     ProjectRoleFromJSON,
     ProjectRoleFromJSONTyped,
     ProjectRoleToJSON,
+    ProjectRoleToJSONTyped,
 } from './ProjectRole';
 import type { RequestStatus } from './RequestStatus';
 import {
     RequestStatusFromJSON,
     RequestStatusFromJSONTyped,
     RequestStatusToJSON,
+    RequestStatusToJSONTyped,
 } from './RequestStatus';
 
 /**
@@ -88,22 +90,22 @@ export interface ProjectAccessRequest {
     expiry: Date;
 }
 
+
+
 /**
  * Check if a given object implements the ProjectAccessRequest interface.
  */
-export function instanceOfProjectAccessRequest(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "id" in value;
-    isInstance = isInstance && "username" in value;
-    isInstance = isInstance && "projectId" in value;
-    isInstance = isInstance && "role" in value;
-    isInstance = isInstance && "message" in value;
-    isInstance = isInstance && "status" in value;
-    isInstance = isInstance && "reviewerUsername" in value;
-    isInstance = isInstance && "createdAt" in value;
-    isInstance = isInstance && "expiry" in value;
-
-    return isInstance;
+export function instanceOfProjectAccessRequest(value: object): value is ProjectAccessRequest {
+    if (!('id' in value) || value['id'] === undefined) return false;
+    if (!('username' in value) || value['username'] === undefined) return false;
+    if (!('projectId' in value) || value['projectId'] === undefined) return false;
+    if (!('role' in value) || value['role'] === undefined) return false;
+    if (!('message' in value) || value['message'] === undefined) return false;
+    if (!('status' in value) || value['status'] === undefined) return false;
+    if (!('reviewerUsername' in value) || value['reviewerUsername'] === undefined) return false;
+    if (!('createdAt' in value) || value['createdAt'] === undefined) return false;
+    if (!('expiry' in value) || value['expiry'] === undefined) return false;
+    return true;
 }
 
 export function ProjectAccessRequestFromJSON(json: any): ProjectAccessRequest {
@@ -111,7 +113,7 @@ export function ProjectAccessRequestFromJSON(json: any): ProjectAccessRequest {
 }
 
 export function ProjectAccessRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): ProjectAccessRequest {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -128,24 +130,26 @@ export function ProjectAccessRequestFromJSONTyped(json: any, ignoreDiscriminator
     };
 }
 
-export function ProjectAccessRequestToJSON(value?: ProjectAccessRequest | null): any {
-    if (value === undefined) {
-        return undefined;
+export function ProjectAccessRequestToJSON(json: any): ProjectAccessRequest {
+    return ProjectAccessRequestToJSONTyped(json, false);
+}
+
+export function ProjectAccessRequestToJSONTyped(value?: ProjectAccessRequest | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'id': value.id,
-        'username': value.username,
-        'projectId': value.projectId,
-        'role': ProjectRoleToJSON(value.role),
-        'message': value.message,
-        'status': RequestStatusToJSON(value.status),
-        'reviewerUsername': value.reviewerUsername,
-        'createdAt': (value.createdAt.toISOString()),
-        'expiry': (value.expiry.toISOString()),
+        'id': value['id'],
+        'username': value['username'],
+        'projectId': value['projectId'],
+        'role': ProjectRoleToJSON(value['role']),
+        'message': value['message'],
+        'status': RequestStatusToJSON(value['status']),
+        'reviewerUsername': value['reviewerUsername'],
+        'createdAt': value['createdAt'].toISOString(),
+        'expiry': value['expiry'].toISOString(),
     };
 }
 

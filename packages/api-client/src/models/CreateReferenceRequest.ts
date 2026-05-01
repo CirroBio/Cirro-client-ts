@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -48,14 +48,12 @@ export interface CreateReferenceRequest {
 /**
  * Check if a given object implements the CreateReferenceRequest interface.
  */
-export function instanceOfCreateReferenceRequest(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "description" in value;
-    isInstance = isInstance && "type" in value;
-    isInstance = isInstance && "expectedFiles" in value;
-
-    return isInstance;
+export function instanceOfCreateReferenceRequest(value: object): value is CreateReferenceRequest {
+    if (!('name' in value) || value['name'] === undefined) return false;
+    if (!('description' in value) || value['description'] === undefined) return false;
+    if (!('type' in value) || value['type'] === undefined) return false;
+    if (!('expectedFiles' in value) || value['expectedFiles'] === undefined) return false;
+    return true;
 }
 
 export function CreateReferenceRequestFromJSON(json: any): CreateReferenceRequest {
@@ -63,7 +61,7 @@ export function CreateReferenceRequestFromJSON(json: any): CreateReferenceReques
 }
 
 export function CreateReferenceRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): CreateReferenceRequest {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -75,19 +73,21 @@ export function CreateReferenceRequestFromJSONTyped(json: any, ignoreDiscriminat
     };
 }
 
-export function CreateReferenceRequestToJSON(value?: CreateReferenceRequest | null): any {
-    if (value === undefined) {
-        return undefined;
+export function CreateReferenceRequestToJSON(json: any): CreateReferenceRequest {
+    return CreateReferenceRequestToJSONTyped(json, false);
+}
+
+export function CreateReferenceRequestToJSONTyped(value?: CreateReferenceRequest | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'name': value.name,
-        'description': value.description,
-        'type': value.type,
-        'expectedFiles': value.expectedFiles,
+        'name': value['name'],
+        'description': value['description'],
+        'type': value['type'],
+        'expectedFiles': value['expectedFiles'],
     };
 }
 

@@ -12,30 +12,34 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { AppClientType } from './AppClientType';
 import {
     AppClientTypeFromJSON,
     AppClientTypeFromJSONTyped,
     AppClientTypeToJSON,
+    AppClientTypeToJSONTyped,
 } from './AppClientType';
 import type { AppPublisherType } from './AppPublisherType';
 import {
     AppPublisherTypeFromJSON,
     AppPublisherTypeFromJSONTyped,
     AppPublisherTypeToJSON,
+    AppPublisherTypeToJSONTyped,
 } from './AppPublisherType';
 import type { AppType } from './AppType';
 import {
     AppTypeFromJSON,
     AppTypeFromJSONTyped,
     AppTypeToJSON,
+    AppTypeToJSONTyped,
 } from './AppType';
 import type { PrincipalType } from './PrincipalType';
 import {
     PrincipalTypeFromJSON,
     PrincipalTypeFromJSONTyped,
     PrincipalTypeToJSON,
+    PrincipalTypeToJSONTyped,
 } from './PrincipalType';
 
 /**
@@ -160,31 +164,31 @@ export interface AppRegistration {
     createdBy: string;
 }
 
+
+
 /**
  * Check if a given object implements the AppRegistration interface.
  */
-export function instanceOfAppRegistration(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "id" in value;
-    isInstance = isInstance && "clientId" in value;
-    isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "description" in value;
-    isInstance = isInstance && "logoUrl" in value;
-    isInstance = isInstance && "appUrl" in value;
-    isInstance = isInstance && "publisher" in value;
-    isInstance = isInstance && "publisherType" in value;
-    isInstance = isInstance && "principalType" in value;
-    isInstance = isInstance && "type" in value;
-    isInstance = isInstance && "clientType" in value;
-    isInstance = isInstance && "isArchived" in value;
-    isInstance = isInstance && "requiresAdminConsent" in value;
-    isInstance = isInstance && "discoveryEnabled" in value;
-    isInstance = isInstance && "createdFromTemplate" in value;
-    isInstance = isInstance && "updatedAt" in value;
-    isInstance = isInstance && "createdAt" in value;
-    isInstance = isInstance && "createdBy" in value;
-
-    return isInstance;
+export function instanceOfAppRegistration(value: object): value is AppRegistration {
+    if (!('id' in value) || value['id'] === undefined) return false;
+    if (!('clientId' in value) || value['clientId'] === undefined) return false;
+    if (!('name' in value) || value['name'] === undefined) return false;
+    if (!('description' in value) || value['description'] === undefined) return false;
+    if (!('logoUrl' in value) || value['logoUrl'] === undefined) return false;
+    if (!('appUrl' in value) || value['appUrl'] === undefined) return false;
+    if (!('publisher' in value) || value['publisher'] === undefined) return false;
+    if (!('publisherType' in value) || value['publisherType'] === undefined) return false;
+    if (!('principalType' in value) || value['principalType'] === undefined) return false;
+    if (!('type' in value) || value['type'] === undefined) return false;
+    if (!('clientType' in value) || value['clientType'] === undefined) return false;
+    if (!('isArchived' in value) || value['isArchived'] === undefined) return false;
+    if (!('requiresAdminConsent' in value) || value['requiresAdminConsent'] === undefined) return false;
+    if (!('discoveryEnabled' in value) || value['discoveryEnabled'] === undefined) return false;
+    if (!('createdFromTemplate' in value) || value['createdFromTemplate'] === undefined) return false;
+    if (!('updatedAt' in value) || value['updatedAt'] === undefined) return false;
+    if (!('createdAt' in value) || value['createdAt'] === undefined) return false;
+    if (!('createdBy' in value) || value['createdBy'] === undefined) return false;
+    return true;
 }
 
 export function AppRegistrationFromJSON(json: any): AppRegistration {
@@ -192,7 +196,7 @@ export function AppRegistrationFromJSON(json: any): AppRegistration {
 }
 
 export function AppRegistrationFromJSONTyped(json: any, ignoreDiscriminator: boolean): AppRegistration {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -208,7 +212,7 @@ export function AppRegistrationFromJSONTyped(json: any, ignoreDiscriminator: boo
         'principalType': PrincipalTypeFromJSON(json['principalType']),
         'type': AppTypeFromJSON(json['type']),
         'clientType': AppClientTypeFromJSON(json['clientType']),
-        'secretExpiresAt': !exists(json, 'secretExpiresAt') ? undefined : (json['secretExpiresAt'] === null ? null : new Date(json['secretExpiresAt'])),
+        'secretExpiresAt': json['secretExpiresAt'] == null ? undefined : (new Date(json['secretExpiresAt'])),
         'isArchived': json['isArchived'],
         'requiresAdminConsent': json['requiresAdminConsent'],
         'discoveryEnabled': json['discoveryEnabled'],
@@ -219,34 +223,36 @@ export function AppRegistrationFromJSONTyped(json: any, ignoreDiscriminator: boo
     };
 }
 
-export function AppRegistrationToJSON(value?: AppRegistration | null): any {
-    if (value === undefined) {
-        return undefined;
+export function AppRegistrationToJSON(json: any): AppRegistration {
+    return AppRegistrationToJSONTyped(json, false);
+}
+
+export function AppRegistrationToJSONTyped(value?: AppRegistration | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'id': value.id,
-        'clientId': value.clientId,
-        'name': value.name,
-        'description': value.description,
-        'logoUrl': value.logoUrl,
-        'appUrl': value.appUrl,
-        'publisher': value.publisher,
-        'publisherType': AppPublisherTypeToJSON(value.publisherType),
-        'principalType': PrincipalTypeToJSON(value.principalType),
-        'type': AppTypeToJSON(value.type),
-        'clientType': AppClientTypeToJSON(value.clientType),
-        'secretExpiresAt': value.secretExpiresAt === undefined ? undefined : (value.secretExpiresAt === null ? null : value.secretExpiresAt.toISOString()),
-        'isArchived': value.isArchived,
-        'requiresAdminConsent': value.requiresAdminConsent,
-        'discoveryEnabled': value.discoveryEnabled,
-        'createdFromTemplate': value.createdFromTemplate,
-        'updatedAt': (value.updatedAt.toISOString()),
-        'createdAt': (value.createdAt.toISOString()),
-        'createdBy': value.createdBy,
+        'id': value['id'],
+        'clientId': value['clientId'],
+        'name': value['name'],
+        'description': value['description'],
+        'logoUrl': value['logoUrl'],
+        'appUrl': value['appUrl'],
+        'publisher': value['publisher'],
+        'publisherType': AppPublisherTypeToJSON(value['publisherType']),
+        'principalType': PrincipalTypeToJSON(value['principalType']),
+        'type': AppTypeToJSON(value['type']),
+        'clientType': AppClientTypeToJSON(value['clientType']),
+        'secretExpiresAt': value['secretExpiresAt'] == null ? value['secretExpiresAt'] : value['secretExpiresAt'].toISOString(),
+        'isArchived': value['isArchived'],
+        'requiresAdminConsent': value['requiresAdminConsent'],
+        'discoveryEnabled': value['discoveryEnabled'],
+        'createdFromTemplate': value['createdFromTemplate'],
+        'updatedAt': value['updatedAt'].toISOString(),
+        'createdAt': value['createdAt'].toISOString(),
+        'createdBy': value['createdBy'],
     };
 }
 

@@ -12,24 +12,27 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { ViewJoin } from './ViewJoin';
 import {
     ViewJoinFromJSON,
     ViewJoinFromJSONTyped,
     ViewJoinToJSON,
+    ViewJoinToJSONTyped,
 } from './ViewJoin';
-import type { ViewQueryRequestFilter } from './ViewQueryRequestFilter';
+import type { Filter } from './Filter';
 import {
-    ViewQueryRequestFilterFromJSON,
-    ViewQueryRequestFilterFromJSONTyped,
-    ViewQueryRequestFilterToJSON,
-} from './ViewQueryRequestFilter';
+    FilterFromJSON,
+    FilterFromJSONTyped,
+    FilterToJSON,
+    FilterToJSONTyped,
+} from './Filter';
 import type { ViewSheetRef } from './ViewSheetRef';
 import {
     ViewSheetRefFromJSON,
     ViewSheetRefFromJSONTyped,
     ViewSheetRefToJSON,
+    ViewSheetRefToJSONTyped,
 } from './ViewSheetRef';
 
 /**
@@ -57,21 +60,19 @@ export interface ViewQueryRequest {
      */
     columns?: Array<string> | null;
     /**
-     * 
-     * @type {ViewQueryRequestFilter}
+     * Filter conditions to apply
+     * @type {Filter}
      * @memberof ViewQueryRequest
      */
-    filter?: ViewQueryRequestFilter | null;
+    filter?: Filter | null;
 }
 
 /**
  * Check if a given object implements the ViewQueryRequest interface.
  */
-export function instanceOfViewQueryRequest(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "sheets" in value;
-
-    return isInstance;
+export function instanceOfViewQueryRequest(value: object): value is ViewQueryRequest {
+    if (!('sheets' in value) || value['sheets'] === undefined) return false;
+    return true;
 }
 
 export function ViewQueryRequestFromJSON(json: any): ViewQueryRequest {
@@ -79,31 +80,33 @@ export function ViewQueryRequestFromJSON(json: any): ViewQueryRequest {
 }
 
 export function ViewQueryRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): ViewQueryRequest {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
         'sheets': ((json['sheets'] as Array<any>).map(ViewSheetRefFromJSON)),
-        'joins': !exists(json, 'joins') ? undefined : (json['joins'] === null ? null : (json['joins'] as Array<any>).map(ViewJoinFromJSON)),
-        'columns': !exists(json, 'columns') ? undefined : json['columns'],
-        'filter': !exists(json, 'filter') ? undefined : ViewQueryRequestFilterFromJSON(json['filter']),
+        'joins': json['joins'] == null ? undefined : ((json['joins'] as Array<any>).map(ViewJoinFromJSON)),
+        'columns': json['columns'] == null ? undefined : json['columns'],
+        'filter': json['filter'] == null ? undefined : FilterFromJSON(json['filter']),
     };
 }
 
-export function ViewQueryRequestToJSON(value?: ViewQueryRequest | null): any {
-    if (value === undefined) {
-        return undefined;
+export function ViewQueryRequestToJSON(json: any): ViewQueryRequest {
+    return ViewQueryRequestToJSONTyped(json, false);
+}
+
+export function ViewQueryRequestToJSONTyped(value?: ViewQueryRequest | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'sheets': ((value.sheets as Array<any>).map(ViewSheetRefToJSON)),
-        'joins': value.joins === undefined ? undefined : (value.joins === null ? null : (value.joins as Array<any>).map(ViewJoinToJSON)),
-        'columns': value.columns,
-        'filter': ViewQueryRequestFilterToJSON(value.filter),
+        'sheets': ((value['sheets'] as Array<any>).map(ViewSheetRefToJSON)),
+        'joins': value['joins'] == null ? undefined : ((value['joins'] as Array<any>).map(ViewJoinToJSON)),
+        'columns': value['columns'],
+        'filter': FilterToJSON(value['filter']),
     };
 }
 

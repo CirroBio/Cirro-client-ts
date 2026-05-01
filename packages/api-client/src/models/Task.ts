@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -84,12 +84,10 @@ export interface Task {
 /**
  * Check if a given object implements the Task interface.
  */
-export function instanceOfTask(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "status" in value;
-
-    return isInstance;
+export function instanceOfTask(value: object): value is Task {
+    if (!('name' in value) || value['name'] === undefined) return false;
+    if (!('status' in value) || value['status'] === undefined) return false;
+    return true;
 }
 
 export function TaskFromJSON(json: any): Task {
@@ -97,43 +95,45 @@ export function TaskFromJSON(json: any): Task {
 }
 
 export function TaskFromJSONTyped(json: any, ignoreDiscriminator: boolean): Task {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
         'name': json['name'],
-        'nativeJobId': !exists(json, 'nativeJobId') ? undefined : json['nativeJobId'],
+        'nativeJobId': json['nativeJobId'] == null ? undefined : json['nativeJobId'],
         'status': json['status'],
-        'statusMessage': !exists(json, 'statusMessage') ? undefined : json['statusMessage'],
-        'requestedAt': !exists(json, 'requestedAt') ? undefined : (json['requestedAt'] === null ? null : new Date(json['requestedAt'])),
-        'startedAt': !exists(json, 'startedAt') ? undefined : (json['startedAt'] === null ? null : new Date(json['startedAt'])),
-        'stoppedAt': !exists(json, 'stoppedAt') ? undefined : (json['stoppedAt'] === null ? null : new Date(json['stoppedAt'])),
-        'containerImage': !exists(json, 'containerImage') ? undefined : json['containerImage'],
-        'commandLine': !exists(json, 'commandLine') ? undefined : json['commandLine'],
-        'logLocation': !exists(json, 'logLocation') ? undefined : json['logLocation'],
+        'statusMessage': json['statusMessage'] == null ? undefined : json['statusMessage'],
+        'requestedAt': json['requestedAt'] == null ? undefined : (new Date(json['requestedAt'])),
+        'startedAt': json['startedAt'] == null ? undefined : (new Date(json['startedAt'])),
+        'stoppedAt': json['stoppedAt'] == null ? undefined : (new Date(json['stoppedAt'])),
+        'containerImage': json['containerImage'] == null ? undefined : json['containerImage'],
+        'commandLine': json['commandLine'] == null ? undefined : json['commandLine'],
+        'logLocation': json['logLocation'] == null ? undefined : json['logLocation'],
     };
 }
 
-export function TaskToJSON(value?: Task | null): any {
-    if (value === undefined) {
-        return undefined;
+export function TaskToJSON(json: any): Task {
+    return TaskToJSONTyped(json, false);
+}
+
+export function TaskToJSONTyped(value?: Task | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'name': value.name,
-        'nativeJobId': value.nativeJobId,
-        'status': value.status,
-        'statusMessage': value.statusMessage,
-        'requestedAt': value.requestedAt === undefined ? undefined : (value.requestedAt === null ? null : value.requestedAt.toISOString()),
-        'startedAt': value.startedAt === undefined ? undefined : (value.startedAt === null ? null : value.startedAt.toISOString()),
-        'stoppedAt': value.stoppedAt === undefined ? undefined : (value.stoppedAt === null ? null : value.stoppedAt.toISOString()),
-        'containerImage': value.containerImage,
-        'commandLine': value.commandLine,
-        'logLocation': value.logLocation,
+        'name': value['name'],
+        'nativeJobId': value['nativeJobId'],
+        'status': value['status'],
+        'statusMessage': value['statusMessage'],
+        'requestedAt': value['requestedAt'] == null ? value['requestedAt'] : value['requestedAt'].toISOString(),
+        'startedAt': value['startedAt'] == null ? value['startedAt'] : value['startedAt'].toISOString(),
+        'stoppedAt': value['stoppedAt'] == null ? value['stoppedAt'] : value['stoppedAt'].toISOString(),
+        'containerImage': value['containerImage'],
+        'commandLine': value['commandLine'],
+        'logLocation': value['logLocation'],
     };
 }
 

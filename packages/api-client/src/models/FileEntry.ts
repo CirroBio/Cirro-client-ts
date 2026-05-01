@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -42,10 +42,8 @@ export interface FileEntry {
 /**
  * Check if a given object implements the FileEntry interface.
  */
-export function instanceOfFileEntry(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfFileEntry(value: object): value is FileEntry {
+    return true;
 }
 
 export function FileEntryFromJSON(json: any): FileEntry {
@@ -53,29 +51,31 @@ export function FileEntryFromJSON(json: any): FileEntry {
 }
 
 export function FileEntryFromJSONTyped(json: any, ignoreDiscriminator: boolean): FileEntry {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'path': !exists(json, 'path') ? undefined : json['path'],
-        'size': !exists(json, 'size') ? undefined : json['size'],
-        'metadata': !exists(json, 'metadata') ? undefined : json['metadata'],
+        'path': json['path'] == null ? undefined : json['path'],
+        'size': json['size'] == null ? undefined : json['size'],
+        'metadata': json['metadata'] == null ? undefined : json['metadata'],
     };
 }
 
-export function FileEntryToJSON(value?: FileEntry | null): any {
-    if (value === undefined) {
-        return undefined;
+export function FileEntryToJSON(json: any): FileEntry {
+    return FileEntryToJSONTyped(json, false);
+}
+
+export function FileEntryToJSONTyped(value?: FileEntry | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'path': value.path,
-        'size': value.size,
-        'metadata': value.metadata,
+        'path': value['path'],
+        'size': value['size'],
+        'metadata': value['metadata'],
     };
 }
 

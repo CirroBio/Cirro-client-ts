@@ -23,6 +23,17 @@ export enum SheetType {
 }
 
 
+export function instanceOfSheetType(value: any): boolean {
+    for (const key in SheetType) {
+        if (Object.prototype.hasOwnProperty.call(SheetType, key)) {
+            if (SheetType[key as keyof typeof SheetType] === value) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 export function SheetTypeFromJSON(json: any): SheetType {
     return SheetTypeFromJSONTyped(json, false);
 }
@@ -33,5 +44,9 @@ export function SheetTypeFromJSONTyped(json: any, ignoreDiscriminator: boolean):
 
 export function SheetTypeToJSON(value?: SheetType | null): any {
     return value as any;
+}
+
+export function SheetTypeToJSONTyped(value: any, ignoreDiscriminator: boolean): SheetType {
+    return value as SheetType;
 }
 

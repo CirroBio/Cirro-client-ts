@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -48,14 +48,12 @@ export interface TaskCost {
 /**
  * Check if a given object implements the TaskCost interface.
  */
-export function instanceOfTaskCost(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "taskId" in value;
-    isInstance = isInstance && "status" in value;
-    isInstance = isInstance && "cost" in value;
-
-    return isInstance;
+export function instanceOfTaskCost(value: object): value is TaskCost {
+    if (!('name' in value) || value['name'] === undefined) return false;
+    if (!('taskId' in value) || value['taskId'] === undefined) return false;
+    if (!('status' in value) || value['status'] === undefined) return false;
+    if (!('cost' in value) || value['cost'] === undefined) return false;
+    return true;
 }
 
 export function TaskCostFromJSON(json: any): TaskCost {
@@ -63,7 +61,7 @@ export function TaskCostFromJSON(json: any): TaskCost {
 }
 
 export function TaskCostFromJSONTyped(json: any, ignoreDiscriminator: boolean): TaskCost {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -75,19 +73,21 @@ export function TaskCostFromJSONTyped(json: any, ignoreDiscriminator: boolean): 
     };
 }
 
-export function TaskCostToJSON(value?: TaskCost | null): any {
-    if (value === undefined) {
-        return undefined;
+export function TaskCostToJSON(json: any): TaskCost {
+    return TaskCostToJSONTyped(json, false);
+}
+
+export function TaskCostToJSONTyped(value?: TaskCost | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'name': value.name,
-        'taskId': value.taskId,
-        'status': value.status,
-        'cost': value.cost,
+        'name': value['name'],
+        'taskId': value['taskId'],
+        'status': value['status'],
+        'cost': value['cost'],
     };
 }
 

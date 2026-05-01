@@ -24,6 +24,17 @@ export enum CustomerType {
 }
 
 
+export function instanceOfCustomerType(value: any): boolean {
+    for (const key in CustomerType) {
+        if (Object.prototype.hasOwnProperty.call(CustomerType, key)) {
+            if (CustomerType[key as keyof typeof CustomerType] === value) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 export function CustomerTypeFromJSON(json: any): CustomerType {
     return CustomerTypeFromJSONTyped(json, false);
 }
@@ -34,5 +45,9 @@ export function CustomerTypeFromJSONTyped(json: any, ignoreDiscriminator: boolea
 
 export function CustomerTypeToJSON(value?: CustomerType | null): any {
     return value as any;
+}
+
+export function CustomerTypeToJSONTyped(value: any, ignoreDiscriminator: boolean): CustomerType {
+    return value as CustomerType;
 }
 

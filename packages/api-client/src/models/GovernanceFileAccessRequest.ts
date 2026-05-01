@@ -12,12 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { GovernanceAccessType } from './GovernanceAccessType';
 import {
     GovernanceAccessTypeFromJSON,
     GovernanceAccessTypeFromJSONTyped,
     GovernanceAccessTypeToJSON,
+    GovernanceAccessTypeToJSONTyped,
 } from './GovernanceAccessType';
 
 /**
@@ -52,14 +53,14 @@ export interface GovernanceFileAccessRequest {
     tokenLifetimeHours?: number | null;
 }
 
+
+
 /**
  * Check if a given object implements the GovernanceFileAccessRequest interface.
  */
-export function instanceOfGovernanceFileAccessRequest(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "accessType" in value;
-
-    return isInstance;
+export function instanceOfGovernanceFileAccessRequest(value: object): value is GovernanceFileAccessRequest {
+    if (!('accessType' in value) || value['accessType'] === undefined) return false;
+    return true;
 }
 
 export function GovernanceFileAccessRequestFromJSON(json: any): GovernanceFileAccessRequest {
@@ -67,31 +68,33 @@ export function GovernanceFileAccessRequestFromJSON(json: any): GovernanceFileAc
 }
 
 export function GovernanceFileAccessRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): GovernanceFileAccessRequest {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
         'accessType': GovernanceAccessTypeFromJSON(json['accessType']),
-        'fulfillmentId': !exists(json, 'fulfillmentId') ? undefined : json['fulfillmentId'],
-        'projectId': !exists(json, 'projectId') ? undefined : json['projectId'],
-        'tokenLifetimeHours': !exists(json, 'tokenLifetimeHours') ? undefined : json['tokenLifetimeHours'],
+        'fulfillmentId': json['fulfillmentId'] == null ? undefined : json['fulfillmentId'],
+        'projectId': json['projectId'] == null ? undefined : json['projectId'],
+        'tokenLifetimeHours': json['tokenLifetimeHours'] == null ? undefined : json['tokenLifetimeHours'],
     };
 }
 
-export function GovernanceFileAccessRequestToJSON(value?: GovernanceFileAccessRequest | null): any {
-    if (value === undefined) {
-        return undefined;
+export function GovernanceFileAccessRequestToJSON(json: any): GovernanceFileAccessRequest {
+    return GovernanceFileAccessRequestToJSONTyped(json, false);
+}
+
+export function GovernanceFileAccessRequestToJSONTyped(value?: GovernanceFileAccessRequest | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'accessType': GovernanceAccessTypeToJSON(value.accessType),
-        'fulfillmentId': value.fulfillmentId,
-        'projectId': value.projectId,
-        'tokenLifetimeHours': value.tokenLifetimeHours,
+        'accessType': GovernanceAccessTypeToJSON(value['accessType']),
+        'fulfillmentId': value['fulfillmentId'],
+        'projectId': value['projectId'],
+        'tokenLifetimeHours': value['tokenLifetimeHours'],
     };
 }
 

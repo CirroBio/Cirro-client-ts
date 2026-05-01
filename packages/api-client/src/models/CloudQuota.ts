@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -66,16 +66,14 @@ export interface CloudQuota {
 /**
  * Check if a given object implements the CloudQuota interface.
  */
-export function instanceOfCloudQuota(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "description" in value;
-    isInstance = isInstance && "service" in value;
-    isInstance = isInstance && "code" in value;
-    isInstance = isInstance && "appliedQuota" in value;
-    isInstance = isInstance && "hasOpenRequest" in value;
-
-    return isInstance;
+export function instanceOfCloudQuota(value: object): value is CloudQuota {
+    if (!('name' in value) || value['name'] === undefined) return false;
+    if (!('description' in value) || value['description'] === undefined) return false;
+    if (!('service' in value) || value['service'] === undefined) return false;
+    if (!('code' in value) || value['code'] === undefined) return false;
+    if (!('appliedQuota' in value) || value['appliedQuota'] === undefined) return false;
+    if (!('hasOpenRequest' in value) || value['hasOpenRequest'] === undefined) return false;
+    return true;
 }
 
 export function CloudQuotaFromJSON(json: any): CloudQuota {
@@ -83,7 +81,7 @@ export function CloudQuotaFromJSON(json: any): CloudQuota {
 }
 
 export function CloudQuotaFromJSONTyped(json: any, ignoreDiscriminator: boolean): CloudQuota {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -93,27 +91,29 @@ export function CloudQuotaFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'service': json['service'],
         'code': json['code'],
         'appliedQuota': json['appliedQuota'],
-        'requestedQuota': !exists(json, 'requestedQuota') ? undefined : json['requestedQuota'],
+        'requestedQuota': json['requestedQuota'] == null ? undefined : json['requestedQuota'],
         'hasOpenRequest': json['hasOpenRequest'],
     };
 }
 
-export function CloudQuotaToJSON(value?: CloudQuota | null): any {
-    if (value === undefined) {
-        return undefined;
+export function CloudQuotaToJSON(json: any): CloudQuota {
+    return CloudQuotaToJSONTyped(json, false);
+}
+
+export function CloudQuotaToJSONTyped(value?: CloudQuota | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'name': value.name,
-        'description': value.description,
-        'service': value.service,
-        'code': value.code,
-        'appliedQuota': value.appliedQuota,
-        'requestedQuota': value.requestedQuota,
-        'hasOpenRequest': value.hasOpenRequest,
+        'name': value['name'],
+        'description': value['description'],
+        'service': value['service'],
+        'code': value['code'],
+        'appliedQuota': value['appliedQuota'],
+        'requestedQuota': value['requestedQuota'],
+        'hasOpenRequest': value['hasOpenRequest'],
     };
 }
 

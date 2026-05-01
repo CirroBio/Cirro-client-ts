@@ -12,19 +12,21 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
-import type { ColumnDef } from './ColumnDef';
-import {
-    ColumnDefFromJSON,
-    ColumnDefFromJSONTyped,
-    ColumnDefToJSON,
-} from './ColumnDef';
+import { mapValues } from '../runtime';
 import type { SheetCreationMode } from './SheetCreationMode';
 import {
     SheetCreationModeFromJSON,
     SheetCreationModeFromJSONTyped,
     SheetCreationModeToJSON,
+    SheetCreationModeToJSONTyped,
 } from './SheetCreationMode';
+import type { ColumnDef } from './ColumnDef';
+import {
+    ColumnDefFromJSON,
+    ColumnDefFromJSONTyped,
+    ColumnDefToJSON,
+    ColumnDefToJSONTyped,
+} from './ColumnDef';
 
 /**
  * 
@@ -63,7 +65,7 @@ export interface TableSheetInput {
      */
     auditReadAccess?: boolean;
     /**
-     * 
+     * How the table was initialized. Immutable after create.
      * @type {SheetCreationMode}
      * @memberof TableSheetInput
      */
@@ -75,6 +77,12 @@ export interface TableSheetInput {
      */
     columns: Array<ColumnDef>;
     /**
+     * Current table schema version (starts at 0). Used for optimistic concurrency control. New tables can omit this, but updates should include this to prevent overwriting due to stale table schema metadata.
+     * @type {number}
+     * @memberof TableSheetInput
+     */
+    schemaVersionId?: number | null;
+    /**
      * 
      * @type {string}
      * @memberof TableSheetInput
@@ -82,18 +90,18 @@ export interface TableSheetInput {
     sheetType?: string;
 }
 
+
+
 /**
  * Check if a given object implements the TableSheetInput interface.
  */
-export function instanceOfTableSheetInput(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "namespaceName" in value;
-    isInstance = isInstance && "tableName" in value;
-    isInstance = isInstance && "sheetCreationMode" in value;
-    isInstance = isInstance && "columns" in value;
-
-    return isInstance;
+export function instanceOfTableSheetInput(value: object): value is TableSheetInput {
+    if (!('name' in value) || value['name'] === undefined) return false;
+    if (!('namespaceName' in value) || value['namespaceName'] === undefined) return false;
+    if (!('tableName' in value) || value['tableName'] === undefined) return false;
+    if (!('sheetCreationMode' in value) || value['sheetCreationMode'] === undefined) return false;
+    if (!('columns' in value) || value['columns'] === undefined) return false;
+    return true;
 }
 
 export function TableSheetInputFromJSON(json: any): TableSheetInput {
@@ -101,39 +109,43 @@ export function TableSheetInputFromJSON(json: any): TableSheetInput {
 }
 
 export function TableSheetInputFromJSONTyped(json: any, ignoreDiscriminator: boolean): TableSheetInput {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
         'name': json['name'],
-        'description': !exists(json, 'description') ? undefined : json['description'],
+        'description': json['description'] == null ? undefined : json['description'],
         'namespaceName': json['namespaceName'],
         'tableName': json['tableName'],
-        'auditReadAccess': !exists(json, 'auditReadAccess') ? undefined : json['auditReadAccess'],
+        'auditReadAccess': json['auditReadAccess'] == null ? undefined : json['auditReadAccess'],
         'sheetCreationMode': SheetCreationModeFromJSON(json['sheetCreationMode']),
         'columns': ((json['columns'] as Array<any>).map(ColumnDefFromJSON)),
-        'sheetType': !exists(json, 'sheetType') ? undefined : json['sheetType'],
+        'schemaVersionId': json['schemaVersionId'] == null ? undefined : json['schemaVersionId'],
+        'sheetType': json['sheetType'] == null ? undefined : json['sheetType'],
     };
 }
 
-export function TableSheetInputToJSON(value?: TableSheetInput | null): any {
-    if (value === undefined) {
-        return undefined;
+export function TableSheetInputToJSON(json: any): TableSheetInput {
+    return TableSheetInputToJSONTyped(json, false);
+}
+
+export function TableSheetInputToJSONTyped(value?: TableSheetInput | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'name': value.name,
-        'description': value.description,
-        'namespaceName': value.namespaceName,
-        'tableName': value.tableName,
-        'auditReadAccess': value.auditReadAccess,
-        'sheetCreationMode': SheetCreationModeToJSON(value.sheetCreationMode),
-        'columns': ((value.columns as Array<any>).map(ColumnDefToJSON)),
-        'sheetType': value.sheetType,
+        'name': value['name'],
+        'description': value['description'],
+        'namespaceName': value['namespaceName'],
+        'tableName': value['tableName'],
+        'auditReadAccess': value['auditReadAccess'],
+        'sheetCreationMode': SheetCreationModeToJSON(value['sheetCreationMode']),
+        'columns': ((value['columns'] as Array<any>).map(ColumnDefToJSON)),
+        'schemaVersionId': value['schemaVersionId'],
+        'sheetType': value['sheetType'],
     };
 }
 

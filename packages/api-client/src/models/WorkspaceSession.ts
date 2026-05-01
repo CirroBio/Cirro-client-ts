@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -42,13 +42,11 @@ export interface WorkspaceSession {
 /**
  * Check if a given object implements the WorkspaceSession interface.
  */
-export function instanceOfWorkspaceSession(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "id" in value;
-    isInstance = isInstance && "user" in value;
-    isInstance = isInstance && "createdAt" in value;
-
-    return isInstance;
+export function instanceOfWorkspaceSession(value: object): value is WorkspaceSession {
+    if (!('id' in value) || value['id'] === undefined) return false;
+    if (!('user' in value) || value['user'] === undefined) return false;
+    if (!('createdAt' in value) || value['createdAt'] === undefined) return false;
+    return true;
 }
 
 export function WorkspaceSessionFromJSON(json: any): WorkspaceSession {
@@ -56,7 +54,7 @@ export function WorkspaceSessionFromJSON(json: any): WorkspaceSession {
 }
 
 export function WorkspaceSessionFromJSONTyped(json: any, ignoreDiscriminator: boolean): WorkspaceSession {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -67,18 +65,20 @@ export function WorkspaceSessionFromJSONTyped(json: any, ignoreDiscriminator: bo
     };
 }
 
-export function WorkspaceSessionToJSON(value?: WorkspaceSession | null): any {
-    if (value === undefined) {
-        return undefined;
+export function WorkspaceSessionToJSON(json: any): WorkspaceSession {
+    return WorkspaceSessionToJSONTyped(json, false);
+}
+
+export function WorkspaceSessionToJSONTyped(value?: WorkspaceSession | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'id': value.id,
-        'user': value.user,
-        'createdAt': (value.createdAt.toISOString()),
+        'id': value['id'],
+        'user': value['user'],
+        'createdAt': value['createdAt'].toISOString(),
     };
 }
 

@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -54,13 +54,11 @@ export interface DashboardRequest {
 /**
  * Check if a given object implements the DashboardRequest interface.
  */
-export function instanceOfDashboardRequest(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "description" in value;
-    isInstance = isInstance && "processIds" in value;
-
-    return isInstance;
+export function instanceOfDashboardRequest(value: object): value is DashboardRequest {
+    if (!('name' in value) || value['name'] === undefined) return false;
+    if (!('description' in value) || value['description'] === undefined) return false;
+    if (!('processIds' in value) || value['processIds'] === undefined) return false;
+    return true;
 }
 
 export function DashboardRequestFromJSON(json: any): DashboardRequest {
@@ -68,7 +66,7 @@ export function DashboardRequestFromJSON(json: any): DashboardRequest {
 }
 
 export function DashboardRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): DashboardRequest {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -76,25 +74,27 @@ export function DashboardRequestFromJSONTyped(json: any, ignoreDiscriminator: bo
         'name': json['name'],
         'description': json['description'],
         'processIds': json['processIds'],
-        'dashboardData': !exists(json, 'dashboardData') ? undefined : json['dashboardData'],
-        'info': !exists(json, 'info') ? undefined : json['info'],
+        'dashboardData': json['dashboardData'] == null ? undefined : json['dashboardData'],
+        'info': json['info'] == null ? undefined : json['info'],
     };
 }
 
-export function DashboardRequestToJSON(value?: DashboardRequest | null): any {
-    if (value === undefined) {
-        return undefined;
+export function DashboardRequestToJSON(json: any): DashboardRequest {
+    return DashboardRequestToJSONTyped(json, false);
+}
+
+export function DashboardRequestToJSONTyped(value?: DashboardRequest | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'name': value.name,
-        'description': value.description,
-        'processIds': value.processIds,
-        'dashboardData': value.dashboardData,
-        'info': value.info,
+        'name': value['name'],
+        'description': value['description'],
+        'processIds': value['processIds'],
+        'dashboardData': value['dashboardData'],
+        'info': value['info'],
     };
 }
 

@@ -96,6 +96,7 @@ src/models/FileRequirements.ts
 src/models/FileType.ts
 src/models/Filter.ts
 src/models/FilterOperator.ts
+src/models/FilterValuesInner.ts
 src/models/ForeignKeyRef.ts
 src/models/FormSchema.ts
 src/models/FulfillmentResponse.ts
@@ -188,10 +189,7 @@ src/models/SharingType.ts
 src/models/Sheet.ts
 src/models/SheetCreationMode.ts
 src/models/SheetDataRequest.ts
-src/models/SheetDataRequestFilter.ts
-src/models/SheetDataRequestSort.ts
 src/models/SheetDetail.ts
-src/models/SheetDetailViewDefinition.ts
 src/models/SheetIngestRequest.ts
 src/models/SheetInput.ts
 src/models/SheetJob.ts
@@ -227,7 +225,6 @@ src/models/ValidateFileRequirementsRequest.ts
 src/models/VersionSpecification.ts
 src/models/ViewJoin.ts
 src/models/ViewQueryRequest.ts
-src/models/ViewQueryRequestFilter.ts
 src/models/ViewSheetInput.ts
 src/models/ViewSheetRef.ts
 src/models/Workspace.ts

@@ -12,39 +12,52 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  CreateResponse,
-  DatasetAssetsManifest,
-  DatasetDetail,
-  ImportDataRequest,
-  PaginatedResponseDatasetListDto,
-  SampleSheets,
-  UpdateDatasetRequest,
-  UploadDatasetCreateResponse,
-  UploadDatasetRequest,
-} from '../models/index';
 import {
+    type CreateResponse,
     CreateResponseFromJSON,
     CreateResponseToJSON,
+} from '../models/CreateResponse';
+import {
+    type DatasetAssetsManifest,
     DatasetAssetsManifestFromJSON,
     DatasetAssetsManifestToJSON,
+} from '../models/DatasetAssetsManifest';
+import {
+    type DatasetDetail,
     DatasetDetailFromJSON,
     DatasetDetailToJSON,
+} from '../models/DatasetDetail';
+import {
+    type ImportDataRequest,
     ImportDataRequestFromJSON,
     ImportDataRequestToJSON,
+} from '../models/ImportDataRequest';
+import {
+    type PaginatedResponseDatasetListDto,
     PaginatedResponseDatasetListDtoFromJSON,
     PaginatedResponseDatasetListDtoToJSON,
+} from '../models/PaginatedResponseDatasetListDto';
+import {
+    type SampleSheets,
     SampleSheetsFromJSON,
     SampleSheetsToJSON,
+} from '../models/SampleSheets';
+import {
+    type UpdateDatasetRequest,
     UpdateDatasetRequestFromJSON,
     UpdateDatasetRequestToJSON,
+} from '../models/UpdateDatasetRequest';
+import {
+    type UploadDatasetCreateResponse,
     UploadDatasetCreateResponseFromJSON,
     UploadDatasetCreateResponseToJSON,
+} from '../models/UploadDatasetCreateResponse';
+import {
+    type UploadDatasetRequest,
     UploadDatasetRequestFromJSON,
     UploadDatasetRequestToJSON,
-} from '../models/index';
+} from '../models/UploadDatasetRequest';
 
 export interface DeleteDatasetRequest {
     projectId: string;
@@ -111,16 +124,21 @@ export interface UploadDatasetOperationRequest {
 export class DatasetsApi extends runtime.BaseAPI {
 
     /**
-     * Deletes the dataset, files are saved according to the project\'s retention time.
-     * Delete a dataset
+     * Creates request options for deleteDataset without sending the request
      */
-    async deleteDatasetRaw(requestParameters: DeleteDatasetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
-            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling deleteDataset.');
+    async deleteDatasetRequestOpts(requestParameters: DeleteDatasetRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling deleteDataset().'
+            );
         }
 
-        if (requestParameters.datasetId === null || requestParameters.datasetId === undefined) {
-            throw new runtime.RequiredError('datasetId','Required parameter requestParameters.datasetId was null or undefined when calling deleteDataset.');
+        if (requestParameters['datasetId'] == null) {
+            throw new runtime.RequiredError(
+                'datasetId',
+                'Required parameter "datasetId" was null or undefined when calling deleteDataset().'
+            );
         }
 
         const queryParameters: any = {};
@@ -135,12 +153,26 @@ export class DatasetsApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/projects/{projectId}/datasets/{datasetId}`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))).replace(`{${"datasetId"}}`, encodeURIComponent(String(requestParameters.datasetId))),
+
+        let urlPath = `/projects/{projectId}/datasets/{datasetId}`;
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+        urlPath = urlPath.replace('{datasetId}', encodeURIComponent(String(requestParameters['datasetId'])));
+
+        return {
+            path: urlPath,
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Deletes the dataset, files are saved according to the project\'s retention time.
+     * Delete a dataset
+     */
+    async deleteDatasetRaw(requestParameters: DeleteDatasetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.deleteDatasetRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -154,16 +186,21 @@ export class DatasetsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Gets detailed information about a dataset
-     * Get dataset
+     * Creates request options for getDataset without sending the request
      */
-    async getDatasetRaw(requestParameters: GetDatasetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<DatasetDetail>> {
-        if (requestParameters.datasetId === null || requestParameters.datasetId === undefined) {
-            throw new runtime.RequiredError('datasetId','Required parameter requestParameters.datasetId was null or undefined when calling getDataset.');
+    async getDatasetRequestOpts(requestParameters: GetDatasetRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['datasetId'] == null) {
+            throw new runtime.RequiredError(
+                'datasetId',
+                'Required parameter "datasetId" was null or undefined when calling getDataset().'
+            );
         }
 
-        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
-            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling getDataset.');
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling getDataset().'
+            );
         }
 
         const queryParameters: any = {};
@@ -178,12 +215,26 @@ export class DatasetsApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/projects/{projectId}/datasets/{datasetId}`.replace(`{${"datasetId"}}`, encodeURIComponent(String(requestParameters.datasetId))).replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))),
+
+        let urlPath = `/projects/{projectId}/datasets/{datasetId}`;
+        urlPath = urlPath.replace('{datasetId}', encodeURIComponent(String(requestParameters['datasetId'])));
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+
+        return {
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Gets detailed information about a dataset
+     * Get dataset
+     */
+    async getDatasetRaw(requestParameters: GetDatasetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<DatasetDetail>> {
+        const requestOptions = await this.getDatasetRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => DatasetDetailFromJSON(jsonValue));
     }
@@ -198,26 +249,31 @@ export class DatasetsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Gets a listing of files, charts, and other assets available for the dataset
-     * Get dataset manifest
+     * Creates request options for getDatasetManifest without sending the request
      */
-    async getDatasetManifestRaw(requestParameters: GetDatasetManifestRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<DatasetAssetsManifest>> {
-        if (requestParameters.datasetId === null || requestParameters.datasetId === undefined) {
-            throw new runtime.RequiredError('datasetId','Required parameter requestParameters.datasetId was null or undefined when calling getDatasetManifest.');
+    async getDatasetManifestRequestOpts(requestParameters: GetDatasetManifestRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['datasetId'] == null) {
+            throw new runtime.RequiredError(
+                'datasetId',
+                'Required parameter "datasetId" was null or undefined when calling getDatasetManifest().'
+            );
         }
 
-        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
-            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling getDatasetManifest.');
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling getDatasetManifest().'
+            );
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters.fileOffset !== undefined) {
-            queryParameters['fileOffset'] = requestParameters.fileOffset;
+        if (requestParameters['fileOffset'] != null) {
+            queryParameters['fileOffset'] = requestParameters['fileOffset'];
         }
 
-        if (requestParameters.fileLimit !== undefined) {
-            queryParameters['fileLimit'] = requestParameters.fileLimit;
+        if (requestParameters['fileLimit'] != null) {
+            queryParameters['fileLimit'] = requestParameters['fileLimit'];
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -230,12 +286,26 @@ export class DatasetsApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/projects/{projectId}/datasets/{datasetId}/files`.replace(`{${"datasetId"}}`, encodeURIComponent(String(requestParameters.datasetId))).replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))),
+
+        let urlPath = `/projects/{projectId}/datasets/{datasetId}/files`;
+        urlPath = urlPath.replace('{datasetId}', encodeURIComponent(String(requestParameters['datasetId'])));
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+
+        return {
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Gets a listing of files, charts, and other assets available for the dataset
+     * Get dataset manifest
+     */
+    async getDatasetManifestRaw(requestParameters: GetDatasetManifestRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<DatasetAssetsManifest>> {
+        const requestOptions = await this.getDatasetManifestRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => DatasetAssetsManifestFromJSON(jsonValue));
     }
@@ -250,22 +320,24 @@ export class DatasetsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Retrieves a list of datasets for a given project
-     * List datasets
+     * Creates request options for getDatasets without sending the request
      */
-    async getDatasetsRaw(requestParameters: GetDatasetsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PaginatedResponseDatasetListDto>> {
-        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
-            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling getDatasets.');
+    async getDatasetsRequestOpts(requestParameters: GetDatasetsRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling getDatasets().'
+            );
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters.limit !== undefined) {
-            queryParameters['limit'] = requestParameters.limit;
+        if (requestParameters['limit'] != null) {
+            queryParameters['limit'] = requestParameters['limit'];
         }
 
-        if (requestParameters.nextToken !== undefined) {
-            queryParameters['nextToken'] = requestParameters.nextToken;
+        if (requestParameters['nextToken'] != null) {
+            queryParameters['nextToken'] = requestParameters['nextToken'];
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -278,12 +350,25 @@ export class DatasetsApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/projects/{projectId}/datasets`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))),
+
+        let urlPath = `/projects/{projectId}/datasets`;
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+
+        return {
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Retrieves a list of datasets for a given project
+     * List datasets
+     */
+    async getDatasetsRaw(requestParameters: GetDatasetsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PaginatedResponseDatasetListDto>> {
+        const requestOptions = await this.getDatasetsRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => PaginatedResponseDatasetListDtoFromJSON(jsonValue));
     }
@@ -298,16 +383,21 @@ export class DatasetsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Generates the sample sheet output for this dataset, useful for debugging the preprocess script.
-     * Generate sample sheets
+     * Creates request options for getSampleSheets without sending the request
      */
-    async getSampleSheetsRaw(requestParameters: GetSampleSheetsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SampleSheets>> {
-        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
-            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling getSampleSheets.');
+    async getSampleSheetsRequestOpts(requestParameters: GetSampleSheetsRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling getSampleSheets().'
+            );
         }
 
-        if (requestParameters.datasetId === null || requestParameters.datasetId === undefined) {
-            throw new runtime.RequiredError('datasetId','Required parameter requestParameters.datasetId was null or undefined when calling getSampleSheets.');
+        if (requestParameters['datasetId'] == null) {
+            throw new runtime.RequiredError(
+                'datasetId',
+                'Required parameter "datasetId" was null or undefined when calling getSampleSheets().'
+            );
         }
 
         const queryParameters: any = {};
@@ -322,12 +412,26 @@ export class DatasetsApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/projects/{projectId}/datasets/{datasetId}/samplesheet`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))).replace(`{${"datasetId"}}`, encodeURIComponent(String(requestParameters.datasetId))),
+
+        let urlPath = `/projects/{projectId}/datasets/{datasetId}/samplesheet`;
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+        urlPath = urlPath.replace('{datasetId}', encodeURIComponent(String(requestParameters['datasetId'])));
+
+        return {
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Generates the sample sheet output for this dataset, useful for debugging the preprocess script.
+     * Generate sample sheets
+     */
+    async getSampleSheetsRaw(requestParameters: GetSampleSheetsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SampleSheets>> {
+        const requestOptions = await this.getSampleSheetsRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => SampleSheetsFromJSON(jsonValue));
     }
@@ -342,16 +446,21 @@ export class DatasetsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Download data from public repositories
-     * Import public dataset
+     * Creates request options for importPublicDataset without sending the request
      */
-    async importPublicDatasetRaw(requestParameters: ImportPublicDatasetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateResponse>> {
-        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
-            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling importPublicDataset.');
+    async importPublicDatasetRequestOpts(requestParameters: ImportPublicDatasetRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling importPublicDataset().'
+            );
         }
 
-        if (requestParameters.importDataRequest === null || requestParameters.importDataRequest === undefined) {
-            throw new runtime.RequiredError('importDataRequest','Required parameter requestParameters.importDataRequest was null or undefined when calling importPublicDataset.');
+        if (requestParameters['importDataRequest'] == null) {
+            throw new runtime.RequiredError(
+                'importDataRequest',
+                'Required parameter "importDataRequest" was null or undefined when calling importPublicDataset().'
+            );
         }
 
         const queryParameters: any = {};
@@ -368,13 +477,26 @@ export class DatasetsApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/projects/{projectId}/datasets/import`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))),
+
+        let urlPath = `/projects/{projectId}/datasets/import`;
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+
+        return {
+            path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: ImportDataRequestToJSON(requestParameters.importDataRequest),
-        }, initOverrides);
+            body: ImportDataRequestToJSON(requestParameters['importDataRequest']),
+        };
+    }
+
+    /**
+     * Download data from public repositories
+     * Import public dataset
+     */
+    async importPublicDatasetRaw(requestParameters: ImportPublicDatasetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateResponse>> {
+        const requestOptions = await this.importPublicDatasetRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => CreateResponseFromJSON(jsonValue));
     }
@@ -389,16 +511,21 @@ export class DatasetsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Rerun sample ingest.
-     * Rerun sample ingest
+     * Creates request options for ingestSamples without sending the request
      */
-    async ingestSamplesRaw(requestParameters: IngestSamplesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
-            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling ingestSamples.');
+    async ingestSamplesRequestOpts(requestParameters: IngestSamplesRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling ingestSamples().'
+            );
         }
 
-        if (requestParameters.datasetId === null || requestParameters.datasetId === undefined) {
-            throw new runtime.RequiredError('datasetId','Required parameter requestParameters.datasetId was null or undefined when calling ingestSamples.');
+        if (requestParameters['datasetId'] == null) {
+            throw new runtime.RequiredError(
+                'datasetId',
+                'Required parameter "datasetId" was null or undefined when calling ingestSamples().'
+            );
         }
 
         const queryParameters: any = {};
@@ -413,12 +540,26 @@ export class DatasetsApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/projects/{projectId}/datasets/{datasetId}/ingest-samples`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))).replace(`{${"datasetId"}}`, encodeURIComponent(String(requestParameters.datasetId))),
+
+        let urlPath = `/projects/{projectId}/datasets/{datasetId}/ingest-samples`;
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+        urlPath = urlPath.replace('{datasetId}', encodeURIComponent(String(requestParameters['datasetId'])));
+
+        return {
+            path: urlPath,
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Rerun sample ingest.
+     * Rerun sample ingest
+     */
+    async ingestSamplesRaw(requestParameters: IngestSamplesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.ingestSamplesRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -432,16 +573,21 @@ export class DatasetsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Regenerate dataset file listing.
-     * Regenerate dataset manifest
+     * Creates request options for regenerateManifest without sending the request
      */
-    async regenerateManifestRaw(requestParameters: RegenerateManifestRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
-            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling regenerateManifest.');
+    async regenerateManifestRequestOpts(requestParameters: RegenerateManifestRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling regenerateManifest().'
+            );
         }
 
-        if (requestParameters.datasetId === null || requestParameters.datasetId === undefined) {
-            throw new runtime.RequiredError('datasetId','Required parameter requestParameters.datasetId was null or undefined when calling regenerateManifest.');
+        if (requestParameters['datasetId'] == null) {
+            throw new runtime.RequiredError(
+                'datasetId',
+                'Required parameter "datasetId" was null or undefined when calling regenerateManifest().'
+            );
         }
 
         const queryParameters: any = {};
@@ -456,12 +602,26 @@ export class DatasetsApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/projects/{projectId}/datasets/{datasetId}/regenerate-manifest`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))).replace(`{${"datasetId"}}`, encodeURIComponent(String(requestParameters.datasetId))),
+
+        let urlPath = `/projects/{projectId}/datasets/{datasetId}/regenerate-manifest`;
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+        urlPath = urlPath.replace('{datasetId}', encodeURIComponent(String(requestParameters['datasetId'])));
+
+        return {
+            path: urlPath,
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Regenerate dataset file listing.
+     * Regenerate dataset manifest
+     */
+    async regenerateManifestRaw(requestParameters: RegenerateManifestRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.regenerateManifestRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -475,16 +635,21 @@ export class DatasetsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Rerun data transforms and web optimization.
-     * Rerun data transforms
+     * Creates request options for rerunTransform without sending the request
      */
-    async rerunTransformRaw(requestParameters: RerunTransformRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
-            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling rerunTransform.');
+    async rerunTransformRequestOpts(requestParameters: RerunTransformRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling rerunTransform().'
+            );
         }
 
-        if (requestParameters.datasetId === null || requestParameters.datasetId === undefined) {
-            throw new runtime.RequiredError('datasetId','Required parameter requestParameters.datasetId was null or undefined when calling rerunTransform.');
+        if (requestParameters['datasetId'] == null) {
+            throw new runtime.RequiredError(
+                'datasetId',
+                'Required parameter "datasetId" was null or undefined when calling rerunTransform().'
+            );
         }
 
         const queryParameters: any = {};
@@ -499,12 +664,26 @@ export class DatasetsApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/projects/{projectId}/datasets/{datasetId}/rerun-transform`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))).replace(`{${"datasetId"}}`, encodeURIComponent(String(requestParameters.datasetId))),
+
+        let urlPath = `/projects/{projectId}/datasets/{datasetId}/rerun-transform`;
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+        urlPath = urlPath.replace('{datasetId}', encodeURIComponent(String(requestParameters['datasetId'])));
+
+        return {
+            path: urlPath,
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Rerun data transforms and web optimization.
+     * Rerun data transforms
+     */
+    async rerunTransformRaw(requestParameters: RerunTransformRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.rerunTransformRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -518,20 +697,28 @@ export class DatasetsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Update info on a dataset
-     * Update dataset
+     * Creates request options for updateDataset without sending the request
      */
-    async updateDatasetRaw(requestParameters: UpdateDatasetOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<DatasetDetail>> {
-        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
-            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling updateDataset.');
+    async updateDatasetRequestOpts(requestParameters: UpdateDatasetOperationRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling updateDataset().'
+            );
         }
 
-        if (requestParameters.datasetId === null || requestParameters.datasetId === undefined) {
-            throw new runtime.RequiredError('datasetId','Required parameter requestParameters.datasetId was null or undefined when calling updateDataset.');
+        if (requestParameters['datasetId'] == null) {
+            throw new runtime.RequiredError(
+                'datasetId',
+                'Required parameter "datasetId" was null or undefined when calling updateDataset().'
+            );
         }
 
-        if (requestParameters.updateDatasetRequest === null || requestParameters.updateDatasetRequest === undefined) {
-            throw new runtime.RequiredError('updateDatasetRequest','Required parameter requestParameters.updateDatasetRequest was null or undefined when calling updateDataset.');
+        if (requestParameters['updateDatasetRequest'] == null) {
+            throw new runtime.RequiredError(
+                'updateDatasetRequest',
+                'Required parameter "updateDatasetRequest" was null or undefined when calling updateDataset().'
+            );
         }
 
         const queryParameters: any = {};
@@ -548,13 +735,27 @@ export class DatasetsApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/projects/{projectId}/datasets/{datasetId}`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))).replace(`{${"datasetId"}}`, encodeURIComponent(String(requestParameters.datasetId))),
+
+        let urlPath = `/projects/{projectId}/datasets/{datasetId}`;
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+        urlPath = urlPath.replace('{datasetId}', encodeURIComponent(String(requestParameters['datasetId'])));
+
+        return {
+            path: urlPath,
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: UpdateDatasetRequestToJSON(requestParameters.updateDatasetRequest),
-        }, initOverrides);
+            body: UpdateDatasetRequestToJSON(requestParameters['updateDatasetRequest']),
+        };
+    }
+
+    /**
+     * Update info on a dataset
+     * Update dataset
+     */
+    async updateDatasetRaw(requestParameters: UpdateDatasetOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<DatasetDetail>> {
+        const requestOptions = await this.updateDatasetRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => DatasetDetailFromJSON(jsonValue));
     }
@@ -569,16 +770,21 @@ export class DatasetsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Registers a dataset in the system that you upload files into
-     * Upload private dataset
+     * Creates request options for uploadDataset without sending the request
      */
-    async uploadDatasetRaw(requestParameters: UploadDatasetOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<UploadDatasetCreateResponse>> {
-        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
-            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling uploadDataset.');
+    async uploadDatasetRequestOpts(requestParameters: UploadDatasetOperationRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling uploadDataset().'
+            );
         }
 
-        if (requestParameters.uploadDatasetRequest === null || requestParameters.uploadDatasetRequest === undefined) {
-            throw new runtime.RequiredError('uploadDatasetRequest','Required parameter requestParameters.uploadDatasetRequest was null or undefined when calling uploadDataset.');
+        if (requestParameters['uploadDatasetRequest'] == null) {
+            throw new runtime.RequiredError(
+                'uploadDatasetRequest',
+                'Required parameter "uploadDatasetRequest" was null or undefined when calling uploadDataset().'
+            );
         }
 
         const queryParameters: any = {};
@@ -595,13 +801,26 @@ export class DatasetsApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/projects/{projectId}/datasets/upload`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))),
+
+        let urlPath = `/projects/{projectId}/datasets/upload`;
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+
+        return {
+            path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: UploadDatasetRequestToJSON(requestParameters.uploadDatasetRequest),
-        }, initOverrides);
+            body: UploadDatasetRequestToJSON(requestParameters['uploadDatasetRequest']),
+        };
+    }
+
+    /**
+     * Registers a dataset in the system that you upload files into
+     * Upload private dataset
+     */
+    async uploadDatasetRaw(requestParameters: UploadDatasetOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<UploadDatasetCreateResponse>> {
+        const requestOptions = await this.uploadDatasetRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => UploadDatasetCreateResponseFromJSON(jsonValue));
     }

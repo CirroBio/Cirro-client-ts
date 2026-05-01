@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -84,10 +84,8 @@ export interface AuditEvent {
 /**
  * Check if a given object implements the AuditEvent interface.
  */
-export function instanceOfAuditEvent(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfAuditEvent(value: object): value is AuditEvent {
+    return true;
 }
 
 export function AuditEventFromJSON(json: any): AuditEvent {
@@ -95,43 +93,45 @@ export function AuditEventFromJSON(json: any): AuditEvent {
 }
 
 export function AuditEventFromJSONTyped(json: any, ignoreDiscriminator: boolean): AuditEvent {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'id': !exists(json, 'id') ? undefined : json['id'],
-        'eventType': !exists(json, 'eventType') ? undefined : json['eventType'],
-        'projectId': !exists(json, 'projectId') ? undefined : json['projectId'],
-        'entityId': !exists(json, 'entityId') ? undefined : json['entityId'],
-        'entityType': !exists(json, 'entityType') ? undefined : json['entityType'],
-        'eventDetail': !exists(json, 'eventDetail') ? undefined : json['eventDetail'],
-        'changes': !exists(json, 'changes') ? undefined : json['changes'],
-        'username': !exists(json, 'username') ? undefined : json['username'],
-        'ipAddress': !exists(json, 'ipAddress') ? undefined : json['ipAddress'],
-        'createdAt': !exists(json, 'createdAt') ? undefined : (new Date(json['createdAt'])),
+        'id': json['id'] == null ? undefined : json['id'],
+        'eventType': json['eventType'] == null ? undefined : json['eventType'],
+        'projectId': json['projectId'] == null ? undefined : json['projectId'],
+        'entityId': json['entityId'] == null ? undefined : json['entityId'],
+        'entityType': json['entityType'] == null ? undefined : json['entityType'],
+        'eventDetail': json['eventDetail'] == null ? undefined : json['eventDetail'],
+        'changes': json['changes'] == null ? undefined : json['changes'],
+        'username': json['username'] == null ? undefined : json['username'],
+        'ipAddress': json['ipAddress'] == null ? undefined : json['ipAddress'],
+        'createdAt': json['createdAt'] == null ? undefined : (new Date(json['createdAt'])),
     };
 }
 
-export function AuditEventToJSON(value?: AuditEvent | null): any {
-    if (value === undefined) {
-        return undefined;
+export function AuditEventToJSON(json: any): AuditEvent {
+    return AuditEventToJSONTyped(json, false);
+}
+
+export function AuditEventToJSONTyped(value?: AuditEvent | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'id': value.id,
-        'eventType': value.eventType,
-        'projectId': value.projectId,
-        'entityId': value.entityId,
-        'entityType': value.entityType,
-        'eventDetail': value.eventDetail,
-        'changes': value.changes,
-        'username': value.username,
-        'ipAddress': value.ipAddress,
-        'createdAt': value.createdAt === undefined ? undefined : (value.createdAt.toISOString()),
+        'id': value['id'],
+        'eventType': value['eventType'],
+        'projectId': value['projectId'],
+        'entityId': value['entityId'],
+        'entityType': value['entityType'],
+        'eventDetail': value['eventDetail'],
+        'changes': value['changes'],
+        'username': value['username'],
+        'ipAddress': value['ipAddress'],
+        'createdAt': value['createdAt'] == null ? value['createdAt'] : value['createdAt'].toISOString(),
     };
 }
 

@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -48,14 +48,12 @@ export interface UploadDatasetCreateResponse {
 /**
  * Check if a given object implements the UploadDatasetCreateResponse interface.
  */
-export function instanceOfUploadDatasetCreateResponse(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "id" in value;
-    isInstance = isInstance && "message" in value;
-    isInstance = isInstance && "uploadPath" in value;
-    isInstance = isInstance && "bucket" in value;
-
-    return isInstance;
+export function instanceOfUploadDatasetCreateResponse(value: object): value is UploadDatasetCreateResponse {
+    if (!('id' in value) || value['id'] === undefined) return false;
+    if (!('message' in value) || value['message'] === undefined) return false;
+    if (!('uploadPath' in value) || value['uploadPath'] === undefined) return false;
+    if (!('bucket' in value) || value['bucket'] === undefined) return false;
+    return true;
 }
 
 export function UploadDatasetCreateResponseFromJSON(json: any): UploadDatasetCreateResponse {
@@ -63,7 +61,7 @@ export function UploadDatasetCreateResponseFromJSON(json: any): UploadDatasetCre
 }
 
 export function UploadDatasetCreateResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): UploadDatasetCreateResponse {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -75,19 +73,21 @@ export function UploadDatasetCreateResponseFromJSONTyped(json: any, ignoreDiscri
     };
 }
 
-export function UploadDatasetCreateResponseToJSON(value?: UploadDatasetCreateResponse | null): any {
-    if (value === undefined) {
-        return undefined;
+export function UploadDatasetCreateResponseToJSON(json: any): UploadDatasetCreateResponse {
+    return UploadDatasetCreateResponseToJSONTyped(json, false);
+}
+
+export function UploadDatasetCreateResponseToJSONTyped(value?: UploadDatasetCreateResponse | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'id': value.id,
-        'message': value.message,
-        'uploadPath': value.uploadPath,
-        'bucket': value.bucket,
+        'id': value['id'],
+        'message': value['message'],
+        'uploadPath': value['uploadPath'],
+        'bucket': value['bucket'],
     };
 }
 

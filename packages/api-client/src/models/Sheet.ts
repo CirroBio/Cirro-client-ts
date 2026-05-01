@@ -12,25 +12,28 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
+import type { Status } from './Status';
+import {
+    StatusFromJSON,
+    StatusFromJSONTyped,
+    StatusToJSON,
+    StatusToJSONTyped,
+} from './Status';
 import type { SheetCreationMode } from './SheetCreationMode';
 import {
     SheetCreationModeFromJSON,
     SheetCreationModeFromJSONTyped,
     SheetCreationModeToJSON,
+    SheetCreationModeToJSONTyped,
 } from './SheetCreationMode';
 import type { SheetType } from './SheetType';
 import {
     SheetTypeFromJSON,
     SheetTypeFromJSONTyped,
     SheetTypeToJSON,
+    SheetTypeToJSONTyped,
 } from './SheetType';
-import type { Status } from './Status';
-import {
-    StatusFromJSON,
-    StatusFromJSONTyped,
-    StatusToJSON,
-} from './Status';
 
 /**
  * 
@@ -106,24 +109,24 @@ export interface Sheet {
     totalRowCount: number;
 }
 
+
+
 /**
  * Check if a given object implements the Sheet interface.
  */
-export function instanceOfSheet(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "id" in value;
-    isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "description" in value;
-    isInstance = isInstance && "projectId" in value;
-    isInstance = isInstance && "sheetType" in value;
-    isInstance = isInstance && "sheetCreationMode" in value;
-    isInstance = isInstance && "status" in value;
-    isInstance = isInstance && "createdBy" in value;
-    isInstance = isInstance && "createdAt" in value;
-    isInstance = isInstance && "updatedAt" in value;
-    isInstance = isInstance && "totalRowCount" in value;
-
-    return isInstance;
+export function instanceOfSheet(value: object): value is Sheet {
+    if (!('id' in value) || value['id'] === undefined) return false;
+    if (!('name' in value) || value['name'] === undefined) return false;
+    if (!('description' in value) || value['description'] === undefined) return false;
+    if (!('projectId' in value) || value['projectId'] === undefined) return false;
+    if (!('sheetType' in value) || value['sheetType'] === undefined) return false;
+    if (!('sheetCreationMode' in value) || value['sheetCreationMode'] === undefined) return false;
+    if (!('status' in value) || value['status'] === undefined) return false;
+    if (!('createdBy' in value) || value['createdBy'] === undefined) return false;
+    if (!('createdAt' in value) || value['createdAt'] === undefined) return false;
+    if (!('updatedAt' in value) || value['updatedAt'] === undefined) return false;
+    if (!('totalRowCount' in value) || value['totalRowCount'] === undefined) return false;
+    return true;
 }
 
 export function SheetFromJSON(json: any): Sheet {
@@ -131,7 +134,7 @@ export function SheetFromJSON(json: any): Sheet {
 }
 
 export function SheetFromJSONTyped(json: any, ignoreDiscriminator: boolean): Sheet {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -150,26 +153,28 @@ export function SheetFromJSONTyped(json: any, ignoreDiscriminator: boolean): She
     };
 }
 
-export function SheetToJSON(value?: Sheet | null): any {
-    if (value === undefined) {
-        return undefined;
+export function SheetToJSON(json: any): Sheet {
+    return SheetToJSONTyped(json, false);
+}
+
+export function SheetToJSONTyped(value?: Sheet | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'id': value.id,
-        'name': value.name,
-        'description': value.description,
-        'projectId': value.projectId,
-        'sheetType': SheetTypeToJSON(value.sheetType),
-        'sheetCreationMode': SheetCreationModeToJSON(value.sheetCreationMode),
-        'status': StatusToJSON(value.status),
-        'createdBy': value.createdBy,
-        'createdAt': (value.createdAt.toISOString()),
-        'updatedAt': (value.updatedAt.toISOString()),
-        'totalRowCount': value.totalRowCount,
+        'id': value['id'],
+        'name': value['name'],
+        'description': value['description'],
+        'projectId': value['projectId'],
+        'sheetType': SheetTypeToJSON(value['sheetType']),
+        'sheetCreationMode': SheetCreationModeToJSON(value['sheetCreationMode']),
+        'status': StatusToJSON(value['status']),
+        'createdBy': value['createdBy'],
+        'createdAt': value['createdAt'].toISOString(),
+        'updatedAt': value['updatedAt'].toISOString(),
+        'totalRowCount': value['totalRowCount'],
     };
 }
 

@@ -12,18 +12,20 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { AppClientType } from './AppClientType';
 import {
     AppClientTypeFromJSON,
     AppClientTypeFromJSONTyped,
     AppClientTypeToJSON,
+    AppClientTypeToJSONTyped,
 } from './AppClientType';
 import type { PrincipalType } from './PrincipalType';
 import {
     PrincipalTypeFromJSON,
     PrincipalTypeFromJSONTyped,
     PrincipalTypeToJSON,
+    PrincipalTypeToJSONTyped,
 } from './PrincipalType';
 
 /**
@@ -88,22 +90,22 @@ export interface AppRegistrationTemplate {
     discoveryEnabled: boolean;
 }
 
+
+
 /**
  * Check if a given object implements the AppRegistrationTemplate interface.
  */
-export function instanceOfAppRegistrationTemplate(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "id" in value;
-    isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "publisher" in value;
-    isInstance = isInstance && "appUrl" in value;
-    isInstance = isInstance && "logoUrl" in value;
-    isInstance = isInstance && "redirectUris" in value;
-    isInstance = isInstance && "principalType" in value;
-    isInstance = isInstance && "clientType" in value;
-    isInstance = isInstance && "discoveryEnabled" in value;
-
-    return isInstance;
+export function instanceOfAppRegistrationTemplate(value: object): value is AppRegistrationTemplate {
+    if (!('id' in value) || value['id'] === undefined) return false;
+    if (!('name' in value) || value['name'] === undefined) return false;
+    if (!('publisher' in value) || value['publisher'] === undefined) return false;
+    if (!('appUrl' in value) || value['appUrl'] === undefined) return false;
+    if (!('logoUrl' in value) || value['logoUrl'] === undefined) return false;
+    if (!('redirectUris' in value) || value['redirectUris'] === undefined) return false;
+    if (!('principalType' in value) || value['principalType'] === undefined) return false;
+    if (!('clientType' in value) || value['clientType'] === undefined) return false;
+    if (!('discoveryEnabled' in value) || value['discoveryEnabled'] === undefined) return false;
+    return true;
 }
 
 export function AppRegistrationTemplateFromJSON(json: any): AppRegistrationTemplate {
@@ -111,7 +113,7 @@ export function AppRegistrationTemplateFromJSON(json: any): AppRegistrationTempl
 }
 
 export function AppRegistrationTemplateFromJSONTyped(json: any, ignoreDiscriminator: boolean): AppRegistrationTemplate {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -128,24 +130,26 @@ export function AppRegistrationTemplateFromJSONTyped(json: any, ignoreDiscrimina
     };
 }
 
-export function AppRegistrationTemplateToJSON(value?: AppRegistrationTemplate | null): any {
-    if (value === undefined) {
-        return undefined;
+export function AppRegistrationTemplateToJSON(json: any): AppRegistrationTemplate {
+    return AppRegistrationTemplateToJSONTyped(json, false);
+}
+
+export function AppRegistrationTemplateToJSONTyped(value?: AppRegistrationTemplate | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'id': value.id,
-        'name': value.name,
-        'publisher': value.publisher,
-        'appUrl': value.appUrl,
-        'logoUrl': value.logoUrl,
-        'redirectUris': value.redirectUris,
-        'principalType': PrincipalTypeToJSON(value.principalType),
-        'clientType': AppClientTypeToJSON(value.clientType),
-        'discoveryEnabled': value.discoveryEnabled,
+        'id': value['id'],
+        'name': value['name'],
+        'publisher': value['publisher'],
+        'appUrl': value['appUrl'],
+        'logoUrl': value['logoUrl'],
+        'redirectUris': value['redirectUris'],
+        'principalType': PrincipalTypeToJSON(value['principalType']),
+        'clientType': AppClientTypeToJSON(value['clientType']),
+        'discoveryEnabled': value['discoveryEnabled'],
     };
 }
 

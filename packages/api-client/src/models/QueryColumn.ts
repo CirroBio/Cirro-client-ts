@@ -12,12 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { ColumnDataType } from './ColumnDataType';
 import {
     ColumnDataTypeFromJSON,
     ColumnDataTypeFromJSONTyped,
     ColumnDataTypeToJSON,
+    ColumnDataTypeToJSONTyped,
 } from './ColumnDataType';
 
 /**
@@ -33,22 +34,22 @@ export interface QueryColumn {
      */
     name: string;
     /**
-     * 
+     * Column data type.
      * @type {ColumnDataType}
      * @memberof QueryColumn
      */
     dataType: ColumnDataType;
 }
 
+
+
 /**
  * Check if a given object implements the QueryColumn interface.
  */
-export function instanceOfQueryColumn(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "dataType" in value;
-
-    return isInstance;
+export function instanceOfQueryColumn(value: object): value is QueryColumn {
+    if (!('name' in value) || value['name'] === undefined) return false;
+    if (!('dataType' in value) || value['dataType'] === undefined) return false;
+    return true;
 }
 
 export function QueryColumnFromJSON(json: any): QueryColumn {
@@ -56,7 +57,7 @@ export function QueryColumnFromJSON(json: any): QueryColumn {
 }
 
 export function QueryColumnFromJSONTyped(json: any, ignoreDiscriminator: boolean): QueryColumn {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -66,17 +67,19 @@ export function QueryColumnFromJSONTyped(json: any, ignoreDiscriminator: boolean
     };
 }
 
-export function QueryColumnToJSON(value?: QueryColumn | null): any {
-    if (value === undefined) {
-        return undefined;
+export function QueryColumnToJSON(json: any): QueryColumn {
+    return QueryColumnToJSONTyped(json, false);
+}
+
+export function QueryColumnToJSONTyped(value?: QueryColumn | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'name': value.name,
-        'dataType': ColumnDataTypeToJSON(value.dataType),
+        'name': value['name'],
+        'dataType': ColumnDataTypeToJSON(value['dataType']),
     };
 }
 

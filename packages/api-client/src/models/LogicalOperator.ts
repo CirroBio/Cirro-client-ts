@@ -23,6 +23,17 @@ export enum LogicalOperator {
 }
 
 
+export function instanceOfLogicalOperator(value: any): boolean {
+    for (const key in LogicalOperator) {
+        if (Object.prototype.hasOwnProperty.call(LogicalOperator, key)) {
+            if (LogicalOperator[key as keyof typeof LogicalOperator] === value) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 export function LogicalOperatorFromJSON(json: any): LogicalOperator {
     return LogicalOperatorFromJSONTyped(json, false);
 }
@@ -33,5 +44,9 @@ export function LogicalOperatorFromJSONTyped(json: any, ignoreDiscriminator: boo
 
 export function LogicalOperatorToJSON(value?: LogicalOperator | null): any {
     return value as any;
+}
+
+export function LogicalOperatorToJSONTyped(value: any, ignoreDiscriminator: boolean): LogicalOperator {
+    return value as LogicalOperator;
 }
 

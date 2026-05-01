@@ -24,6 +24,17 @@ export enum PrincipalType {
 }
 
 
+export function instanceOfPrincipalType(value: any): boolean {
+    for (const key in PrincipalType) {
+        if (Object.prototype.hasOwnProperty.call(PrincipalType, key)) {
+            if (PrincipalType[key as keyof typeof PrincipalType] === value) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 export function PrincipalTypeFromJSON(json: any): PrincipalType {
     return PrincipalTypeFromJSONTyped(json, false);
 }
@@ -34,5 +45,9 @@ export function PrincipalTypeFromJSONTyped(json: any, ignoreDiscriminator: boole
 
 export function PrincipalTypeToJSON(value?: PrincipalType | null): any {
     return value as any;
+}
+
+export function PrincipalTypeToJSONTyped(value: any, ignoreDiscriminator: boolean): PrincipalType {
+    return value as PrincipalType;
 }
 

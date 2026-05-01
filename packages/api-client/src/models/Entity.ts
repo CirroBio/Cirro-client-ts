@@ -12,12 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { EntityType } from './EntityType';
 import {
     EntityTypeFromJSON,
     EntityTypeFromJSONTyped,
     EntityTypeToJSON,
+    EntityTypeToJSONTyped,
 } from './EntityType';
 
 /**
@@ -40,15 +41,15 @@ export interface Entity {
     id: string;
 }
 
+
+
 /**
  * Check if a given object implements the Entity interface.
  */
-export function instanceOfEntity(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "type" in value;
-    isInstance = isInstance && "id" in value;
-
-    return isInstance;
+export function instanceOfEntity(value: object): value is Entity {
+    if (!('type' in value) || value['type'] === undefined) return false;
+    if (!('id' in value) || value['id'] === undefined) return false;
+    return true;
 }
 
 export function EntityFromJSON(json: any): Entity {
@@ -56,7 +57,7 @@ export function EntityFromJSON(json: any): Entity {
 }
 
 export function EntityFromJSONTyped(json: any, ignoreDiscriminator: boolean): Entity {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -66,17 +67,19 @@ export function EntityFromJSONTyped(json: any, ignoreDiscriminator: boolean): En
     };
 }
 
-export function EntityToJSON(value?: Entity | null): any {
-    if (value === undefined) {
-        return undefined;
+export function EntityToJSON(json: any): Entity {
+    return EntityToJSONTyped(json, false);
+}
+
+export function EntityToJSONTyped(value?: Entity | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'type': EntityTypeToJSON(value.type),
-        'id': value.id,
+        'type': EntityTypeToJSON(value['type']),
+        'id': value['id'],
     };
 }
 

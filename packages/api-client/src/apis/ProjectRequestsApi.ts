@@ -12,18 +12,17 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  CreateResponse,
-  ProjectRequest,
-} from '../models/index';
 import {
+    type CreateResponse,
     CreateResponseFromJSON,
     CreateResponseToJSON,
+} from '../models/CreateResponse';
+import {
+    type ProjectRequest,
     ProjectRequestFromJSON,
     ProjectRequestToJSON,
-} from '../models/index';
+} from '../models/ProjectRequest';
 
 export interface CreateProjectRequestRequest {
     projectRequest: ProjectRequest;
@@ -35,12 +34,14 @@ export interface CreateProjectRequestRequest {
 export class ProjectRequestsApi extends runtime.BaseAPI {
 
     /**
-     * Request a new project to be created
-     * Create project request
+     * Creates request options for createProjectRequest without sending the request
      */
-    async createProjectRequestRaw(requestParameters: CreateProjectRequestRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateResponse>> {
-        if (requestParameters.projectRequest === null || requestParameters.projectRequest === undefined) {
-            throw new runtime.RequiredError('projectRequest','Required parameter requestParameters.projectRequest was null or undefined when calling createProjectRequest.');
+    async createProjectRequestRequestOpts(requestParameters: CreateProjectRequestRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['projectRequest'] == null) {
+            throw new runtime.RequiredError(
+                'projectRequest',
+                'Required parameter "projectRequest" was null or undefined when calling createProjectRequest().'
+            );
         }
 
         const queryParameters: any = {};
@@ -57,13 +58,25 @@ export class ProjectRequestsApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/project-requests`,
+
+        let urlPath = `/project-requests`;
+
+        return {
+            path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: ProjectRequestToJSON(requestParameters.projectRequest),
-        }, initOverrides);
+            body: ProjectRequestToJSON(requestParameters['projectRequest']),
+        };
+    }
+
+    /**
+     * Request a new project to be created
+     * Create project request
+     */
+    async createProjectRequestRaw(requestParameters: CreateProjectRequestRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateResponse>> {
+        const requestOptions = await this.createProjectRequestRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => CreateResponseFromJSON(jsonValue));
     }

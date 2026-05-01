@@ -12,19 +12,21 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
-import type { GroupCost } from './GroupCost';
-import {
-    GroupCostFromJSON,
-    GroupCostFromJSONTyped,
-    GroupCostToJSON,
-} from './GroupCost';
+import { mapValues } from '../runtime';
 import type { TaskCost } from './TaskCost';
 import {
     TaskCostFromJSON,
     TaskCostFromJSONTyped,
     TaskCostToJSON,
+    TaskCostToJSONTyped,
 } from './TaskCost';
+import type { GroupCost } from './GroupCost';
+import {
+    GroupCostFromJSON,
+    GroupCostFromJSONTyped,
+    GroupCostToJSON,
+    GroupCostToJSONTyped,
+} from './GroupCost';
 
 /**
  * 
@@ -61,10 +63,8 @@ export interface CostResponse {
 /**
  * Check if a given object implements the CostResponse interface.
  */
-export function instanceOfCostResponse(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfCostResponse(value: object): value is CostResponse {
+    return true;
 }
 
 export function CostResponseFromJSON(json: any): CostResponse {
@@ -72,31 +72,33 @@ export function CostResponseFromJSON(json: any): CostResponse {
 }
 
 export function CostResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): CostResponse {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'totalCost': !exists(json, 'totalCost') ? undefined : json['totalCost'],
-        'groups': !exists(json, 'groups') ? undefined : ((json['groups'] as Array<any>).map(GroupCostFromJSON)),
-        'tasks': !exists(json, 'tasks') ? undefined : ((json['tasks'] as Array<any>).map(TaskCostFromJSON)),
-        'isEstimate': !exists(json, 'isEstimate') ? undefined : json['isEstimate'],
+        'totalCost': json['totalCost'] == null ? undefined : json['totalCost'],
+        'groups': json['groups'] == null ? undefined : ((json['groups'] as Array<any>).map(GroupCostFromJSON)),
+        'tasks': json['tasks'] == null ? undefined : ((json['tasks'] as Array<any>).map(TaskCostFromJSON)),
+        'isEstimate': json['isEstimate'] == null ? undefined : json['isEstimate'],
     };
 }
 
-export function CostResponseToJSON(value?: CostResponse | null): any {
-    if (value === undefined) {
-        return undefined;
+export function CostResponseToJSON(json: any): CostResponse {
+    return CostResponseToJSONTyped(json, false);
+}
+
+export function CostResponseToJSONTyped(value?: CostResponse | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'totalCost': value.totalCost,
-        'groups': value.groups === undefined ? undefined : ((value.groups as Array<any>).map(GroupCostToJSON)),
-        'tasks': value.tasks === undefined ? undefined : ((value.tasks as Array<any>).map(TaskCostToJSON)),
-        'isEstimate': value.isEstimate,
+        'totalCost': value['totalCost'],
+        'groups': value['groups'] == null ? undefined : ((value['groups'] as Array<any>).map(GroupCostToJSON)),
+        'tasks': value['tasks'] == null ? undefined : ((value['tasks'] as Array<any>).map(TaskCostToJSON)),
+        'isEstimate': value['isEstimate'],
     };
 }
 

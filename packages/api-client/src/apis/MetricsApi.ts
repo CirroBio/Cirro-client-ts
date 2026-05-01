@@ -12,15 +12,12 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  ProjectMetrics,
-} from '../models/index';
 import {
+    type ProjectMetrics,
     ProjectMetricsFromJSON,
     ProjectMetricsToJSON,
-} from '../models/index';
+} from '../models/ProjectMetrics';
 
 export interface GetProjectMetricsRequest {
     projectId: string;
@@ -32,10 +29,9 @@ export interface GetProjectMetricsRequest {
 export class MetricsApi extends runtime.BaseAPI {
 
     /**
-     * Retrieves metrics for all projects.
-     * Get all project metrics
+     * Creates request options for getAllMetrics without sending the request
      */
-    async getAllMetricsRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<ProjectMetrics>>> {
+    async getAllMetricsRequestOpts(): Promise<runtime.RequestOpts> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -48,12 +44,24 @@ export class MetricsApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/metrics`,
+
+        let urlPath = `/metrics`;
+
+        return {
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Retrieves metrics for all projects.
+     * Get all project metrics
+     */
+    async getAllMetricsRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<ProjectMetrics>>> {
+        const requestOptions = await this.getAllMetricsRequestOpts();
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(ProjectMetricsFromJSON));
     }
@@ -68,12 +76,14 @@ export class MetricsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Retrieves metrics about a project.
-     * Get project metrics
+     * Creates request options for getProjectMetrics without sending the request
      */
-    async getProjectMetricsRaw(requestParameters: GetProjectMetricsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ProjectMetrics>> {
-        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
-            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling getProjectMetrics.');
+    async getProjectMetricsRequestOpts(requestParameters: GetProjectMetricsRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling getProjectMetrics().'
+            );
         }
 
         const queryParameters: any = {};
@@ -88,12 +98,25 @@ export class MetricsApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/projects/{projectId}/metrics`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))),
+
+        let urlPath = `/projects/{projectId}/metrics`;
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+
+        return {
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Retrieves metrics about a project.
+     * Get project metrics
+     */
+    async getProjectMetricsRaw(requestParameters: GetProjectMetricsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ProjectMetrics>> {
+        const requestOptions = await this.getProjectMetricsRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => ProjectMetricsFromJSON(jsonValue));
     }

@@ -12,12 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { AppRegistration } from './AppRegistration';
 import {
     AppRegistrationFromJSON,
     AppRegistrationFromJSONTyped,
     AppRegistrationToJSON,
+    AppRegistrationToJSONTyped,
 } from './AppRegistration';
 
 /**
@@ -43,12 +44,10 @@ export interface PaginatedResponseAppRegistrationDto {
 /**
  * Check if a given object implements the PaginatedResponseAppRegistrationDto interface.
  */
-export function instanceOfPaginatedResponseAppRegistrationDto(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "data" in value;
-    isInstance = isInstance && "nextToken" in value;
-
-    return isInstance;
+export function instanceOfPaginatedResponseAppRegistrationDto(value: object): value is PaginatedResponseAppRegistrationDto {
+    if (!('data' in value) || value['data'] === undefined) return false;
+    if (!('nextToken' in value) || value['nextToken'] === undefined) return false;
+    return true;
 }
 
 export function PaginatedResponseAppRegistrationDtoFromJSON(json: any): PaginatedResponseAppRegistrationDto {
@@ -56,7 +55,7 @@ export function PaginatedResponseAppRegistrationDtoFromJSON(json: any): Paginate
 }
 
 export function PaginatedResponseAppRegistrationDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): PaginatedResponseAppRegistrationDto {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -66,17 +65,19 @@ export function PaginatedResponseAppRegistrationDtoFromJSONTyped(json: any, igno
     };
 }
 
-export function PaginatedResponseAppRegistrationDtoToJSON(value?: PaginatedResponseAppRegistrationDto | null): any {
-    if (value === undefined) {
-        return undefined;
+export function PaginatedResponseAppRegistrationDtoToJSON(json: any): PaginatedResponseAppRegistrationDto {
+    return PaginatedResponseAppRegistrationDtoToJSONTyped(json, false);
+}
+
+export function PaginatedResponseAppRegistrationDtoToJSONTyped(value?: PaginatedResponseAppRegistrationDto | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'data': ((value.data as Array<any>).map(AppRegistrationToJSON)),
-        'nextToken': value.nextToken,
+        'data': ((value['data'] as Array<any>).map(AppRegistrationToJSON)),
+        'nextToken': value['nextToken'],
     };
 }
 

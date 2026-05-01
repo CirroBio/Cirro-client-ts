@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -78,17 +78,15 @@ export interface Dashboard {
 /**
  * Check if a given object implements the Dashboard interface.
  */
-export function instanceOfDashboard(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "id" in value;
-    isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "description" in value;
-    isInstance = isInstance && "processIds" in value;
-    isInstance = isInstance && "createdBy" in value;
-    isInstance = isInstance && "createdAt" in value;
-    isInstance = isInstance && "updatedAt" in value;
-
-    return isInstance;
+export function instanceOfDashboard(value: object): value is Dashboard {
+    if (!('id' in value) || value['id'] === undefined) return false;
+    if (!('name' in value) || value['name'] === undefined) return false;
+    if (!('description' in value) || value['description'] === undefined) return false;
+    if (!('processIds' in value) || value['processIds'] === undefined) return false;
+    if (!('createdBy' in value) || value['createdBy'] === undefined) return false;
+    if (!('createdAt' in value) || value['createdAt'] === undefined) return false;
+    if (!('updatedAt' in value) || value['updatedAt'] === undefined) return false;
+    return true;
 }
 
 export function DashboardFromJSON(json: any): Dashboard {
@@ -96,7 +94,7 @@ export function DashboardFromJSON(json: any): Dashboard {
 }
 
 export function DashboardFromJSONTyped(json: any, ignoreDiscriminator: boolean): Dashboard {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -105,32 +103,34 @@ export function DashboardFromJSONTyped(json: any, ignoreDiscriminator: boolean):
         'name': json['name'],
         'description': json['description'],
         'processIds': json['processIds'],
-        'dashboardData': !exists(json, 'dashboardData') ? undefined : json['dashboardData'],
-        'info': !exists(json, 'info') ? undefined : json['info'],
+        'dashboardData': json['dashboardData'] == null ? undefined : json['dashboardData'],
+        'info': json['info'] == null ? undefined : json['info'],
         'createdBy': json['createdBy'],
         'createdAt': (new Date(json['createdAt'])),
         'updatedAt': (new Date(json['updatedAt'])),
     };
 }
 
-export function DashboardToJSON(value?: Dashboard | null): any {
-    if (value === undefined) {
-        return undefined;
+export function DashboardToJSON(json: any): Dashboard {
+    return DashboardToJSONTyped(json, false);
+}
+
+export function DashboardToJSONTyped(value?: Dashboard | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'id': value.id,
-        'name': value.name,
-        'description': value.description,
-        'processIds': value.processIds,
-        'dashboardData': value.dashboardData,
-        'info': value.info,
-        'createdBy': value.createdBy,
-        'createdAt': (value.createdAt.toISOString()),
-        'updatedAt': (value.updatedAt.toISOString()),
+        'id': value['id'],
+        'name': value['name'],
+        'description': value['description'],
+        'processIds': value['processIds'],
+        'dashboardData': value['dashboardData'],
+        'info': value['info'],
+        'createdBy': value['createdBy'],
+        'createdAt': value['createdAt'].toISOString(),
+        'updatedAt': value['updatedAt'].toISOString(),
     };
 }
 

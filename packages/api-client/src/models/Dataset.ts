@@ -12,18 +12,20 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { Status } from './Status';
 import {
     StatusFromJSON,
     StatusFromJSONTyped,
     StatusToJSON,
+    StatusToJSONTyped,
 } from './Status';
 import type { Tag } from './Tag';
 import {
     TagFromJSON,
     TagFromJSONTyped,
     TagToJSON,
+    TagToJSONTyped,
 } from './Tag';
 
 /**
@@ -33,91 +35,90 @@ import {
  */
 export interface Dataset {
     /**
-     * 
+     * Dataset ID
      * @type {string}
      * @memberof Dataset
      */
     id: string;
     /**
-     * 
+     * Dataset name
      * @type {string}
      * @memberof Dataset
      */
     name: string;
     /**
-     * 
+     * Dataset description
      * @type {string}
      * @memberof Dataset
      */
-    description: string;
+    description?: string;
     /**
-     * 
+     * Project ID
      * @type {string}
      * @memberof Dataset
      */
     projectId: string;
     /**
-     * 
+     * Process ID
      * @type {string}
      * @memberof Dataset
      */
     processId: string;
     /**
-     * 
+     * Source dataset IDs
      * @type {Array<string>}
      * @memberof Dataset
      */
     sourceDatasetIds: Array<string>;
     /**
-     * 
+     * Dataset status
      * @type {Status}
      * @memberof Dataset
      */
     status: Status;
     /**
-     * 
+     * Tags
      * @type {Array<Tag>}
      * @memberof Dataset
      */
     tags: Array<Tag>;
     /**
-     * 
+     * User who created the dataset
      * @type {string}
      * @memberof Dataset
      */
     createdBy: string;
     /**
-     * 
+     * Timestamp when the dataset was created
      * @type {Date}
      * @memberof Dataset
      */
     createdAt: Date;
     /**
-     * 
+     * Timestamp when the dataset was last updated
      * @type {Date}
      * @memberof Dataset
      */
     updatedAt: Date;
 }
 
+
+
 /**
  * Check if a given object implements the Dataset interface.
  */
-export function instanceOfDataset(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "id" in value;
-    isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "description" in value;
-    isInstance = isInstance && "projectId" in value;
-    isInstance = isInstance && "processId" in value;
-    isInstance = isInstance && "sourceDatasetIds" in value;
-    isInstance = isInstance && "status" in value;
-    isInstance = isInstance && "tags" in value;
-    isInstance = isInstance && "createdBy" in value;
-    isInstance = isInstance && "createdAt" in value;
-    isInstance = isInstance && "updatedAt" in value;
-
-    return isInstance;
+export function instanceOfDataset(value: object): value is Dataset {
+    if (!('id' in value) || value['id'] === undefined) return false;
+    if (!('name' in value) || value['name'] === undefined) return false;
+    if (!('projectId' in value) || value['projectId'] === undefined) return false;
+    if (!('processId' in value) || value['processId'] === undefined) return false;
+    if (!('sourceDatasetIds' in value) || value['sourceDatasetIds'] === undefined) return false;
+    if (!('status' in value) || value['status'] === undefined) return false;
+    if (!('tags' in value) || value['tags'] === undefined) return false;
+    if (!('createdBy' in value) || value['createdBy'] === undefined) return false;
+    if (!('createdAt' in value) || value['createdAt'] === undefined) return false;
+    if (!('updatedAt' in value) || value['updatedAt'] === undefined) return false;
+    return true;
 }
 
 export function DatasetFromJSON(json: any): Dataset {
@@ -125,14 +126,14 @@ export function DatasetFromJSON(json: any): Dataset {
 }
 
 export function DatasetFromJSONTyped(json: any, ignoreDiscriminator: boolean): Dataset {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
         'id': json['id'],
         'name': json['name'],
-        'description': json['description'],
+        'description': json['description'] == null ? undefined : json['description'],
         'projectId': json['projectId'],
         'processId': json['processId'],
         'sourceDatasetIds': json['sourceDatasetIds'],
@@ -144,26 +145,28 @@ export function DatasetFromJSONTyped(json: any, ignoreDiscriminator: boolean): D
     };
 }
 
-export function DatasetToJSON(value?: Dataset | null): any {
-    if (value === undefined) {
-        return undefined;
+export function DatasetToJSON(json: any): Dataset {
+    return DatasetToJSONTyped(json, false);
+}
+
+export function DatasetToJSONTyped(value?: Dataset | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'id': value.id,
-        'name': value.name,
-        'description': value.description,
-        'projectId': value.projectId,
-        'processId': value.processId,
-        'sourceDatasetIds': value.sourceDatasetIds,
-        'status': StatusToJSON(value.status),
-        'tags': ((value.tags as Array<any>).map(TagToJSON)),
-        'createdBy': value.createdBy,
-        'createdAt': (value.createdAt.toISOString()),
-        'updatedAt': (value.updatedAt.toISOString()),
+        'id': value['id'],
+        'name': value['name'],
+        'description': value['description'],
+        'projectId': value['projectId'],
+        'processId': value['processId'],
+        'sourceDatasetIds': value['sourceDatasetIds'],
+        'status': StatusToJSON(value['status']),
+        'tags': ((value['tags'] as Array<any>).map(TagToJSON)),
+        'createdBy': value['createdBy'],
+        'createdAt': value['createdAt'].toISOString(),
+        'updatedAt': value['updatedAt'].toISOString(),
     };
 }
 

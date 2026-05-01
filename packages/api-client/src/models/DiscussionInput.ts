@@ -12,19 +12,21 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
-import type { DiscussionType } from './DiscussionType';
-import {
-    DiscussionTypeFromJSON,
-    DiscussionTypeFromJSONTyped,
-    DiscussionTypeToJSON,
-} from './DiscussionType';
+import { mapValues } from '../runtime';
 import type { Entity } from './Entity';
 import {
     EntityFromJSON,
     EntityFromJSONTyped,
     EntityToJSON,
+    EntityToJSONTyped,
 } from './Entity';
+import type { DiscussionType } from './DiscussionType';
+import {
+    DiscussionTypeFromJSON,
+    DiscussionTypeFromJSONTyped,
+    DiscussionTypeToJSON,
+    DiscussionTypeToJSONTyped,
+} from './DiscussionType';
 
 /**
  * 
@@ -64,18 +66,18 @@ export interface DiscussionInput {
     projectId: string;
 }
 
+
+
 /**
  * Check if a given object implements the DiscussionInput interface.
  */
-export function instanceOfDiscussionInput(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "description" in value;
-    isInstance = isInstance && "entity" in value;
-    isInstance = isInstance && "type" in value;
-    isInstance = isInstance && "projectId" in value;
-
-    return isInstance;
+export function instanceOfDiscussionInput(value: object): value is DiscussionInput {
+    if (!('name' in value) || value['name'] === undefined) return false;
+    if (!('description' in value) || value['description'] === undefined) return false;
+    if (!('entity' in value) || value['entity'] === undefined) return false;
+    if (!('type' in value) || value['type'] === undefined) return false;
+    if (!('projectId' in value) || value['projectId'] === undefined) return false;
+    return true;
 }
 
 export function DiscussionInputFromJSON(json: any): DiscussionInput {
@@ -83,7 +85,7 @@ export function DiscussionInputFromJSON(json: any): DiscussionInput {
 }
 
 export function DiscussionInputFromJSONTyped(json: any, ignoreDiscriminator: boolean): DiscussionInput {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -96,20 +98,22 @@ export function DiscussionInputFromJSONTyped(json: any, ignoreDiscriminator: boo
     };
 }
 
-export function DiscussionInputToJSON(value?: DiscussionInput | null): any {
-    if (value === undefined) {
-        return undefined;
+export function DiscussionInputToJSON(json: any): DiscussionInput {
+    return DiscussionInputToJSONTyped(json, false);
+}
+
+export function DiscussionInputToJSONTyped(value?: DiscussionInput | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'name': value.name,
-        'description': value.description,
-        'entity': EntityToJSON(value.entity),
-        'type': DiscussionTypeToJSON(value.type),
-        'projectId': value.projectId,
+        'name': value['name'],
+        'description': value['description'],
+        'entity': EntityToJSON(value['entity']),
+        'type': DiscussionTypeToJSON(value['type']),
+        'projectId': value['projectId'],
     };
 }
 

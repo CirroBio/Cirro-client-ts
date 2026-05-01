@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -66,17 +66,15 @@ export interface GovernanceClassification {
 /**
  * Check if a given object implements the GovernanceClassification interface.
  */
-export function instanceOfGovernanceClassification(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "id" in value;
-    isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "description" in value;
-    isInstance = isInstance && "requirementIds" in value;
-    isInstance = isInstance && "createdBy" in value;
-    isInstance = isInstance && "createdAt" in value;
-    isInstance = isInstance && "updatedAt" in value;
-
-    return isInstance;
+export function instanceOfGovernanceClassification(value: object): value is GovernanceClassification {
+    if (!('id' in value) || value['id'] === undefined) return false;
+    if (!('name' in value) || value['name'] === undefined) return false;
+    if (!('description' in value) || value['description'] === undefined) return false;
+    if (!('requirementIds' in value) || value['requirementIds'] === undefined) return false;
+    if (!('createdBy' in value) || value['createdBy'] === undefined) return false;
+    if (!('createdAt' in value) || value['createdAt'] === undefined) return false;
+    if (!('updatedAt' in value) || value['updatedAt'] === undefined) return false;
+    return true;
 }
 
 export function GovernanceClassificationFromJSON(json: any): GovernanceClassification {
@@ -84,7 +82,7 @@ export function GovernanceClassificationFromJSON(json: any): GovernanceClassific
 }
 
 export function GovernanceClassificationFromJSONTyped(json: any, ignoreDiscriminator: boolean): GovernanceClassification {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -99,22 +97,24 @@ export function GovernanceClassificationFromJSONTyped(json: any, ignoreDiscrimin
     };
 }
 
-export function GovernanceClassificationToJSON(value?: GovernanceClassification | null): any {
-    if (value === undefined) {
-        return undefined;
+export function GovernanceClassificationToJSON(json: any): GovernanceClassification {
+    return GovernanceClassificationToJSONTyped(json, false);
+}
+
+export function GovernanceClassificationToJSONTyped(value?: GovernanceClassification | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'id': value.id,
-        'name': value.name,
-        'description': value.description,
-        'requirementIds': value.requirementIds,
-        'createdBy': value.createdBy,
-        'createdAt': (value.createdAt.toISOString()),
-        'updatedAt': (value.updatedAt.toISOString()),
+        'id': value['id'],
+        'name': value['name'],
+        'description': value['description'],
+        'requirementIds': value['requirementIds'],
+        'createdBy': value['createdBy'],
+        'createdAt': value['createdAt'].toISOString(),
+        'updatedAt': value['updatedAt'].toISOString(),
     };
 }
 

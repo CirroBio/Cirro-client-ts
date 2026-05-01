@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -36,12 +36,10 @@ export interface ValidateFileNamePatternsRequest {
 /**
  * Check if a given object implements the ValidateFileNamePatternsRequest interface.
  */
-export function instanceOfValidateFileNamePatternsRequest(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "fileNames" in value;
-    isInstance = isInstance && "fileNamePatterns" in value;
-
-    return isInstance;
+export function instanceOfValidateFileNamePatternsRequest(value: object): value is ValidateFileNamePatternsRequest {
+    if (!('fileNames' in value) || value['fileNames'] === undefined) return false;
+    if (!('fileNamePatterns' in value) || value['fileNamePatterns'] === undefined) return false;
+    return true;
 }
 
 export function ValidateFileNamePatternsRequestFromJSON(json: any): ValidateFileNamePatternsRequest {
@@ -49,7 +47,7 @@ export function ValidateFileNamePatternsRequestFromJSON(json: any): ValidateFile
 }
 
 export function ValidateFileNamePatternsRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): ValidateFileNamePatternsRequest {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -59,17 +57,19 @@ export function ValidateFileNamePatternsRequestFromJSONTyped(json: any, ignoreDi
     };
 }
 
-export function ValidateFileNamePatternsRequestToJSON(value?: ValidateFileNamePatternsRequest | null): any {
-    if (value === undefined) {
-        return undefined;
+export function ValidateFileNamePatternsRequestToJSON(json: any): ValidateFileNamePatternsRequest {
+    return ValidateFileNamePatternsRequestToJSONTyped(json, false);
+}
+
+export function ValidateFileNamePatternsRequestToJSONTyped(value?: ValidateFileNamePatternsRequest | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'fileNames': value.fileNames,
-        'fileNamePatterns': value.fileNamePatterns,
+        'fileNames': value['fileNames'],
+        'fileNamePatterns': value['fileNamePatterns'],
     };
 }
 

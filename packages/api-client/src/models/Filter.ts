@@ -12,18 +12,27 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { FilterOperator } from './FilterOperator';
 import {
     FilterOperatorFromJSON,
     FilterOperatorFromJSONTyped,
     FilterOperatorToJSON,
+    FilterOperatorToJSONTyped,
 } from './FilterOperator';
+import type { FilterValuesInner } from './FilterValuesInner';
+import {
+    FilterValuesInnerFromJSON,
+    FilterValuesInnerFromJSONTyped,
+    FilterValuesInnerToJSON,
+    FilterValuesInnerToJSONTyped,
+} from './FilterValuesInner';
 import type { LogicalOperator } from './LogicalOperator';
 import {
     LogicalOperatorFromJSON,
     LogicalOperatorFromJSONTyped,
     LogicalOperatorToJSON,
+    LogicalOperatorToJSONTyped,
 } from './LogicalOperator';
 
 /**
@@ -33,7 +42,7 @@ import {
  */
 export interface Filter {
     /**
-     * 
+     * Set for group nodes to combine child conditions
      * @type {LogicalOperator}
      * @memberof Filter
      */
@@ -51,26 +60,26 @@ export interface Filter {
      */
     column?: string | null;
     /**
-     * 
+     * Comparison operator (for leaf nodes)
      * @type {FilterOperator}
      * @memberof Filter
      */
     operator?: FilterOperator | null;
     /**
      * Values for the filter. Single-element list for comparison operators (EQUALS, GREATER_THAN, etc.), multi-element for IN/NOT_IN. Null or empty for IS_NULL/IS_NOT_NULL.
-     * @type {Array<object>}
+     * @type {Array<FilterValuesInner>}
      * @memberof Filter
      */
-    values?: Array<object> | null;
+    values?: Array<FilterValuesInner> | null;
 }
+
+
 
 /**
  * Check if a given object implements the Filter interface.
  */
-export function instanceOfFilter(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfFilter(value: object): value is Filter {
+    return true;
 }
 
 export function FilterFromJSON(json: any): Filter {
@@ -78,33 +87,35 @@ export function FilterFromJSON(json: any): Filter {
 }
 
 export function FilterFromJSONTyped(json: any, ignoreDiscriminator: boolean): Filter {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'logicalOperator': !exists(json, 'logicalOperator') ? undefined : LogicalOperatorFromJSON(json['logicalOperator']),
-        'conditions': !exists(json, 'conditions') ? undefined : (json['conditions'] === null ? null : (json['conditions'] as Array<any>).map(FilterFromJSON)),
-        'column': !exists(json, 'column') ? undefined : json['column'],
-        'operator': !exists(json, 'operator') ? undefined : FilterOperatorFromJSON(json['operator']),
-        'values': !exists(json, 'values') ? undefined : json['values'],
+        'logicalOperator': json['logicalOperator'] == null ? undefined : LogicalOperatorFromJSON(json['logicalOperator']),
+        'conditions': json['conditions'] == null ? undefined : ((json['conditions'] as Array<any>).map(FilterFromJSON)),
+        'column': json['column'] == null ? undefined : json['column'],
+        'operator': json['operator'] == null ? undefined : FilterOperatorFromJSON(json['operator']),
+        'values': json['values'] == null ? undefined : ((json['values'] as Array<any>).map(FilterValuesInnerFromJSON)),
     };
 }
 
-export function FilterToJSON(value?: Filter | null): any {
-    if (value === undefined) {
-        return undefined;
+export function FilterToJSON(json: any): Filter {
+    return FilterToJSONTyped(json, false);
+}
+
+export function FilterToJSONTyped(value?: Filter | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'logicalOperator': LogicalOperatorToJSON(value.logicalOperator),
-        'conditions': value.conditions === undefined ? undefined : (value.conditions === null ? null : (value.conditions as Array<any>).map(FilterToJSON)),
-        'column': value.column,
-        'operator': FilterOperatorToJSON(value.operator),
-        'values': value.values,
+        'logicalOperator': LogicalOperatorToJSON(value['logicalOperator']),
+        'conditions': value['conditions'] == null ? undefined : ((value['conditions'] as Array<any>).map(FilterToJSON)),
+        'column': value['column'],
+        'operator': FilterOperatorToJSON(value['operator']),
+        'values': value['values'] == null ? undefined : ((value['values'] as Array<any>).map(FilterValuesInnerToJSON)),
     };
 }
 

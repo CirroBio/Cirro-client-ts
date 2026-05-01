@@ -24,6 +24,17 @@ export enum BudgetPeriod {
 }
 
 
+export function instanceOfBudgetPeriod(value: any): boolean {
+    for (const key in BudgetPeriod) {
+        if (Object.prototype.hasOwnProperty.call(BudgetPeriod, key)) {
+            if (BudgetPeriod[key as keyof typeof BudgetPeriod] === value) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 export function BudgetPeriodFromJSON(json: any): BudgetPeriod {
     return BudgetPeriodFromJSONTyped(json, false);
 }
@@ -34,5 +45,9 @@ export function BudgetPeriodFromJSONTyped(json: any, ignoreDiscriminator: boolea
 
 export function BudgetPeriodToJSON(value?: BudgetPeriod | null): any {
     return value as any;
+}
+
+export function BudgetPeriodToJSONTyped(value: any, ignoreDiscriminator: boolean): BudgetPeriod {
+    return value as BudgetPeriod;
 }
 

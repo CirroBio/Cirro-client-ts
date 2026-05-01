@@ -12,36 +12,41 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { GovernanceExpiry } from './GovernanceExpiry';
 import {
     GovernanceExpiryFromJSON,
     GovernanceExpiryFromJSONTyped,
     GovernanceExpiryToJSON,
+    GovernanceExpiryToJSONTyped,
 } from './GovernanceExpiry';
 import type { GovernanceFile } from './GovernanceFile';
 import {
     GovernanceFileFromJSON,
     GovernanceFileFromJSONTyped,
     GovernanceFileToJSON,
+    GovernanceFileToJSONTyped,
 } from './GovernanceFile';
 import type { GovernanceScope } from './GovernanceScope';
 import {
     GovernanceScopeFromJSON,
     GovernanceScopeFromJSONTyped,
     GovernanceScopeToJSON,
+    GovernanceScopeToJSONTyped,
 } from './GovernanceScope';
 import type { GovernanceTrainingVerification } from './GovernanceTrainingVerification';
 import {
     GovernanceTrainingVerificationFromJSON,
     GovernanceTrainingVerificationFromJSONTyped,
     GovernanceTrainingVerificationToJSON,
+    GovernanceTrainingVerificationToJSONTyped,
 } from './GovernanceTrainingVerification';
 import type { GovernanceType } from './GovernanceType';
 import {
     GovernanceTypeFromJSON,
     GovernanceTypeFromJSONTyped,
     GovernanceTypeToJSON,
+    GovernanceTypeToJSONTyped,
 } from './GovernanceType';
 
 /**
@@ -130,19 +135,19 @@ export interface RequirementInput {
     verificationMethod?: GovernanceTrainingVerification | null;
 }
 
+
+
 /**
  * Check if a given object implements the RequirementInput interface.
  */
-export function instanceOfRequirementInput(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "description" in value;
-    isInstance = isInstance && "type" in value;
-    isInstance = isInstance && "scope" in value;
-    isInstance = isInstance && "contactIds" in value;
-    isInstance = isInstance && "expiration" in value;
-
-    return isInstance;
+export function instanceOfRequirementInput(value: object): value is RequirementInput {
+    if (!('name' in value) || value['name'] === undefined) return false;
+    if (!('description' in value) || value['description'] === undefined) return false;
+    if (!('type' in value) || value['type'] === undefined) return false;
+    if (!('scope' in value) || value['scope'] === undefined) return false;
+    if (!('contactIds' in value) || value['contactIds'] === undefined) return false;
+    if (!('expiration' in value) || value['expiration'] === undefined) return false;
+    return true;
 }
 
 export function RequirementInputFromJSON(json: any): RequirementInput {
@@ -150,7 +155,7 @@ export function RequirementInputFromJSON(json: any): RequirementInput {
 }
 
 export function RequirementInputFromJSONTyped(json: any, ignoreDiscriminator: boolean): RequirementInput {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -159,40 +164,42 @@ export function RequirementInputFromJSONTyped(json: any, ignoreDiscriminator: bo
         'description': json['description'],
         'type': GovernanceTypeFromJSON(json['type']),
         'scope': GovernanceScopeFromJSON(json['scope']),
-        'projectId': !exists(json, 'projectId') ? undefined : json['projectId'],
-        'acceptance': !exists(json, 'acceptance') ? undefined : GovernanceScopeFromJSON(json['acceptance']),
+        'projectId': json['projectId'] == null ? undefined : json['projectId'],
+        'acceptance': json['acceptance'] == null ? undefined : GovernanceScopeFromJSON(json['acceptance']),
         'contactIds': json['contactIds'],
         'expiration': GovernanceExpiryFromJSON(json['expiration']),
-        'enactmentDate': !exists(json, 'enactmentDate') ? undefined : (json['enactmentDate'] === null ? null : new Date(json['enactmentDate'])),
-        'supplementalDocs': !exists(json, 'supplementalDocs') ? undefined : (json['supplementalDocs'] === null ? null : (json['supplementalDocs'] as Array<any>).map(GovernanceFileFromJSON)),
-        'file': !exists(json, 'file') ? undefined : GovernanceFileFromJSON(json['file']),
-        'authorship': !exists(json, 'authorship') ? undefined : GovernanceScopeFromJSON(json['authorship']),
-        'verificationMethod': !exists(json, 'verificationMethod') ? undefined : GovernanceTrainingVerificationFromJSON(json['verificationMethod']),
+        'enactmentDate': json['enactmentDate'] == null ? undefined : (new Date(json['enactmentDate'])),
+        'supplementalDocs': json['supplementalDocs'] == null ? undefined : ((json['supplementalDocs'] as Array<any>).map(GovernanceFileFromJSON)),
+        'file': json['file'] == null ? undefined : GovernanceFileFromJSON(json['file']),
+        'authorship': json['authorship'] == null ? undefined : GovernanceScopeFromJSON(json['authorship']),
+        'verificationMethod': json['verificationMethod'] == null ? undefined : GovernanceTrainingVerificationFromJSON(json['verificationMethod']),
     };
 }
 
-export function RequirementInputToJSON(value?: RequirementInput | null): any {
-    if (value === undefined) {
-        return undefined;
+export function RequirementInputToJSON(json: any): RequirementInput {
+    return RequirementInputToJSONTyped(json, false);
+}
+
+export function RequirementInputToJSONTyped(value?: RequirementInput | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'name': value.name,
-        'description': value.description,
-        'type': GovernanceTypeToJSON(value.type),
-        'scope': GovernanceScopeToJSON(value.scope),
-        'projectId': value.projectId,
-        'acceptance': GovernanceScopeToJSON(value.acceptance),
-        'contactIds': value.contactIds,
-        'expiration': GovernanceExpiryToJSON(value.expiration),
-        'enactmentDate': value.enactmentDate === undefined ? undefined : (value.enactmentDate === null ? null : value.enactmentDate.toISOString()),
-        'supplementalDocs': value.supplementalDocs === undefined ? undefined : (value.supplementalDocs === null ? null : (value.supplementalDocs as Array<any>).map(GovernanceFileToJSON)),
-        'file': GovernanceFileToJSON(value.file),
-        'authorship': GovernanceScopeToJSON(value.authorship),
-        'verificationMethod': GovernanceTrainingVerificationToJSON(value.verificationMethod),
+        'name': value['name'],
+        'description': value['description'],
+        'type': GovernanceTypeToJSON(value['type']),
+        'scope': GovernanceScopeToJSON(value['scope']),
+        'projectId': value['projectId'],
+        'acceptance': GovernanceScopeToJSON(value['acceptance']),
+        'contactIds': value['contactIds'],
+        'expiration': GovernanceExpiryToJSON(value['expiration']),
+        'enactmentDate': value['enactmentDate'] == null ? value['enactmentDate'] : value['enactmentDate'].toISOString(),
+        'supplementalDocs': value['supplementalDocs'] == null ? undefined : ((value['supplementalDocs'] as Array<any>).map(GovernanceFileToJSON)),
+        'file': GovernanceFileToJSON(value['file']),
+        'authorship': GovernanceScopeToJSON(value['authorship']),
+        'verificationMethod': GovernanceTrainingVerificationToJSON(value['verificationMethod']),
     };
 }
 

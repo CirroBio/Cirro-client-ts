@@ -12,12 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { UserSettings } from './UserSettings';
 import {
     UserSettingsFromJSON,
     UserSettingsFromJSONTyped,
     UserSettingsToJSON,
+    UserSettingsToJSONTyped,
 } from './UserSettings';
 
 /**
@@ -86,12 +87,10 @@ export interface UpdateUserRequest {
 /**
  * Check if a given object implements the UpdateUserRequest interface.
  */
-export function instanceOfUpdateUserRequest(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "email" in value;
-
-    return isInstance;
+export function instanceOfUpdateUserRequest(value: object): value is UpdateUserRequest {
+    if (!('name' in value) || value['name'] === undefined) return false;
+    if (!('email' in value) || value['email'] === undefined) return false;
+    return true;
 }
 
 export function UpdateUserRequestFromJSON(json: any): UpdateUserRequest {
@@ -99,41 +98,43 @@ export function UpdateUserRequestFromJSON(json: any): UpdateUserRequest {
 }
 
 export function UpdateUserRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): UpdateUserRequest {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
         'name': json['name'],
         'email': json['email'],
-        'phone': !exists(json, 'phone') ? undefined : json['phone'],
-        'department': !exists(json, 'department') ? undefined : json['department'],
-        'jobTitle': !exists(json, 'jobTitle') ? undefined : json['jobTitle'],
-        'organization': !exists(json, 'organization') ? undefined : json['organization'],
-        'settings': !exists(json, 'settings') ? undefined : UserSettingsFromJSON(json['settings']),
-        'globalRoles': !exists(json, 'globalRoles') ? undefined : json['globalRoles'],
-        'groups': !exists(json, 'groups') ? undefined : json['groups'],
+        'phone': json['phone'] == null ? undefined : json['phone'],
+        'department': json['department'] == null ? undefined : json['department'],
+        'jobTitle': json['jobTitle'] == null ? undefined : json['jobTitle'],
+        'organization': json['organization'] == null ? undefined : json['organization'],
+        'settings': json['settings'] == null ? undefined : UserSettingsFromJSON(json['settings']),
+        'globalRoles': json['globalRoles'] == null ? undefined : json['globalRoles'],
+        'groups': json['groups'] == null ? undefined : json['groups'],
     };
 }
 
-export function UpdateUserRequestToJSON(value?: UpdateUserRequest | null): any {
-    if (value === undefined) {
-        return undefined;
+export function UpdateUserRequestToJSON(json: any): UpdateUserRequest {
+    return UpdateUserRequestToJSONTyped(json, false);
+}
+
+export function UpdateUserRequestToJSONTyped(value?: UpdateUserRequest | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'name': value.name,
-        'email': value.email,
-        'phone': value.phone,
-        'department': value.department,
-        'jobTitle': value.jobTitle,
-        'organization': value.organization,
-        'settings': UserSettingsToJSON(value.settings),
-        'globalRoles': value.globalRoles,
-        'groups': value.groups,
+        'name': value['name'],
+        'email': value['email'],
+        'phone': value['phone'],
+        'department': value['department'],
+        'jobTitle': value['jobTitle'],
+        'organization': value['organization'],
+        'settings': UserSettingsToJSON(value['settings']),
+        'globalRoles': value['globalRoles'],
+        'groups': value['groups'],
     };
 }
 

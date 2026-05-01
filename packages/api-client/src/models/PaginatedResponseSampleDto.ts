@@ -12,12 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { Sample } from './Sample';
 import {
     SampleFromJSON,
     SampleFromJSONTyped,
     SampleToJSON,
+    SampleToJSONTyped,
 } from './Sample';
 
 /**
@@ -43,12 +44,10 @@ export interface PaginatedResponseSampleDto {
 /**
  * Check if a given object implements the PaginatedResponseSampleDto interface.
  */
-export function instanceOfPaginatedResponseSampleDto(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "data" in value;
-    isInstance = isInstance && "nextToken" in value;
-
-    return isInstance;
+export function instanceOfPaginatedResponseSampleDto(value: object): value is PaginatedResponseSampleDto {
+    if (!('data' in value) || value['data'] === undefined) return false;
+    if (!('nextToken' in value) || value['nextToken'] === undefined) return false;
+    return true;
 }
 
 export function PaginatedResponseSampleDtoFromJSON(json: any): PaginatedResponseSampleDto {
@@ -56,7 +55,7 @@ export function PaginatedResponseSampleDtoFromJSON(json: any): PaginatedResponse
 }
 
 export function PaginatedResponseSampleDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): PaginatedResponseSampleDto {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -66,17 +65,19 @@ export function PaginatedResponseSampleDtoFromJSONTyped(json: any, ignoreDiscrim
     };
 }
 
-export function PaginatedResponseSampleDtoToJSON(value?: PaginatedResponseSampleDto | null): any {
-    if (value === undefined) {
-        return undefined;
+export function PaginatedResponseSampleDtoToJSON(json: any): PaginatedResponseSampleDto {
+    return PaginatedResponseSampleDtoToJSONTyped(json, false);
+}
+
+export function PaginatedResponseSampleDtoToJSONTyped(value?: PaginatedResponseSampleDto | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'data': ((value.data as Array<any>).map(SampleToJSON)),
-        'nextToken': value.nextToken,
+        'data': ((value['data'] as Array<any>).map(SampleToJSON)),
+        'nextToken': value['nextToken'],
     };
 }
 

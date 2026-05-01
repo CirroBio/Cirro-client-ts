@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -43,11 +43,9 @@ export interface Tag {
 /**
  * Check if a given object implements the Tag interface.
  */
-export function instanceOfTag(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "value" in value;
-
-    return isInstance;
+export function instanceOfTag(value: object): value is Tag {
+    if (!('value' in value) || value['value'] === undefined) return false;
+    return true;
 }
 
 export function TagFromJSON(json: any): Tag {
@@ -55,29 +53,31 @@ export function TagFromJSON(json: any): Tag {
 }
 
 export function TagFromJSONTyped(json: any, ignoreDiscriminator: boolean): Tag {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'editable': !exists(json, 'editable') ? undefined : json['editable'],
-        'key': !exists(json, 'key') ? undefined : json['key'],
+        'editable': json['editable'] == null ? undefined : json['editable'],
+        'key': json['key'] == null ? undefined : json['key'],
         'value': json['value'],
     };
 }
 
-export function TagToJSON(value?: Tag | null): any {
-    if (value === undefined) {
-        return undefined;
+export function TagToJSON(json: any): Tag {
+    return TagToJSONTyped(json, false);
+}
+
+export function TagToJSONTyped(value?: Tag | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'editable': value.editable,
-        'key': value.key,
-        'value': value.value,
+        'editable': value['editable'],
+        'key': value['key'],
+        'value': value['value'],
     };
 }
 

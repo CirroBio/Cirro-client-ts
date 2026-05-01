@@ -25,6 +25,17 @@ export enum RepositoryType {
 }
 
 
+export function instanceOfRepositoryType(value: any): boolean {
+    for (const key in RepositoryType) {
+        if (Object.prototype.hasOwnProperty.call(RepositoryType, key)) {
+            if (RepositoryType[key as keyof typeof RepositoryType] === value) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 export function RepositoryTypeFromJSON(json: any): RepositoryType {
     return RepositoryTypeFromJSONTyped(json, false);
 }
@@ -35,5 +46,9 @@ export function RepositoryTypeFromJSONTyped(json: any, ignoreDiscriminator: bool
 
 export function RepositoryTypeToJSON(value?: RepositoryType | null): any {
     return value as any;
+}
+
+export function RepositoryTypeToJSONTyped(value: any, ignoreDiscriminator: boolean): RepositoryType {
+    return value as RepositoryType;
 }
 

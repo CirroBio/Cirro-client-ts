@@ -24,6 +24,17 @@ export enum GovernanceType {
 }
 
 
+export function instanceOfGovernanceType(value: any): boolean {
+    for (const key in GovernanceType) {
+        if (Object.prototype.hasOwnProperty.call(GovernanceType, key)) {
+            if (GovernanceType[key as keyof typeof GovernanceType] === value) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 export function GovernanceTypeFromJSON(json: any): GovernanceType {
     return GovernanceTypeFromJSONTyped(json, false);
 }
@@ -34,5 +45,9 @@ export function GovernanceTypeFromJSONTyped(json: any, ignoreDiscriminator: bool
 
 export function GovernanceTypeToJSON(value?: GovernanceType | null): any {
     return value as any;
+}
+
+export function GovernanceTypeToJSONTyped(value: any, ignoreDiscriminator: boolean): GovernanceType {
+    return value as GovernanceType;
 }
 

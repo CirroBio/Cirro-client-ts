@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -78,19 +78,17 @@ export interface GovernanceContact {
 /**
  * Check if a given object implements the GovernanceContact interface.
  */
-export function instanceOfGovernanceContact(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "id" in value;
-    isInstance = isInstance && "title" in value;
-    isInstance = isInstance && "description" in value;
-    isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "phone" in value;
-    isInstance = isInstance && "email" in value;
-    isInstance = isInstance && "createdBy" in value;
-    isInstance = isInstance && "createdAt" in value;
-    isInstance = isInstance && "updatedAt" in value;
-
-    return isInstance;
+export function instanceOfGovernanceContact(value: object): value is GovernanceContact {
+    if (!('id' in value) || value['id'] === undefined) return false;
+    if (!('title' in value) || value['title'] === undefined) return false;
+    if (!('description' in value) || value['description'] === undefined) return false;
+    if (!('name' in value) || value['name'] === undefined) return false;
+    if (!('phone' in value) || value['phone'] === undefined) return false;
+    if (!('email' in value) || value['email'] === undefined) return false;
+    if (!('createdBy' in value) || value['createdBy'] === undefined) return false;
+    if (!('createdAt' in value) || value['createdAt'] === undefined) return false;
+    if (!('updatedAt' in value) || value['updatedAt'] === undefined) return false;
+    return true;
 }
 
 export function GovernanceContactFromJSON(json: any): GovernanceContact {
@@ -98,7 +96,7 @@ export function GovernanceContactFromJSON(json: any): GovernanceContact {
 }
 
 export function GovernanceContactFromJSONTyped(json: any, ignoreDiscriminator: boolean): GovernanceContact {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -115,24 +113,26 @@ export function GovernanceContactFromJSONTyped(json: any, ignoreDiscriminator: b
     };
 }
 
-export function GovernanceContactToJSON(value?: GovernanceContact | null): any {
-    if (value === undefined) {
-        return undefined;
+export function GovernanceContactToJSON(json: any): GovernanceContact {
+    return GovernanceContactToJSONTyped(json, false);
+}
+
+export function GovernanceContactToJSONTyped(value?: GovernanceContact | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'id': value.id,
-        'title': value.title,
-        'description': value.description,
-        'name': value.name,
-        'phone': value.phone,
-        'email': value.email,
-        'createdBy': value.createdBy,
-        'createdAt': (value.createdAt.toISOString()),
-        'updatedAt': (value.updatedAt.toISOString()),
+        'id': value['id'],
+        'title': value['title'],
+        'description': value['description'],
+        'name': value['name'],
+        'phone': value['phone'],
+        'email': value['email'],
+        'createdBy': value['createdBy'],
+        'createdAt': value['createdAt'].toISOString(),
+        'updatedAt': value['updatedAt'].toISOString(),
     };
 }
 

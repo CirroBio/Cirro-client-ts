@@ -23,6 +23,17 @@ export enum AppPublisherType {
 }
 
 
+export function instanceOfAppPublisherType(value: any): boolean {
+    for (const key in AppPublisherType) {
+        if (Object.prototype.hasOwnProperty.call(AppPublisherType, key)) {
+            if (AppPublisherType[key as keyof typeof AppPublisherType] === value) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 export function AppPublisherTypeFromJSON(json: any): AppPublisherType {
     return AppPublisherTypeFromJSONTyped(json, false);
 }
@@ -33,5 +44,9 @@ export function AppPublisherTypeFromJSONTyped(json: any, ignoreDiscriminator: bo
 
 export function AppPublisherTypeToJSON(value?: AppPublisherType | null): any {
     return value as any;
+}
+
+export function AppPublisherTypeToJSONTyped(value: any, ignoreDiscriminator: boolean): AppPublisherType {
+    return value as AppPublisherType;
 }
 

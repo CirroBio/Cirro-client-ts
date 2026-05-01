@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -42,13 +42,11 @@ export interface InviteUserRequest {
 /**
  * Check if a given object implements the InviteUserRequest interface.
  */
-export function instanceOfInviteUserRequest(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "organization" in value;
-    isInstance = isInstance && "email" in value;
-
-    return isInstance;
+export function instanceOfInviteUserRequest(value: object): value is InviteUserRequest {
+    if (!('name' in value) || value['name'] === undefined) return false;
+    if (!('organization' in value) || value['organization'] === undefined) return false;
+    if (!('email' in value) || value['email'] === undefined) return false;
+    return true;
 }
 
 export function InviteUserRequestFromJSON(json: any): InviteUserRequest {
@@ -56,7 +54,7 @@ export function InviteUserRequestFromJSON(json: any): InviteUserRequest {
 }
 
 export function InviteUserRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): InviteUserRequest {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -67,18 +65,20 @@ export function InviteUserRequestFromJSONTyped(json: any, ignoreDiscriminator: b
     };
 }
 
-export function InviteUserRequestToJSON(value?: InviteUserRequest | null): any {
-    if (value === undefined) {
-        return undefined;
+export function InviteUserRequestToJSON(json: any): InviteUserRequest {
+    return InviteUserRequestToJSONTyped(json, false);
+}
+
+export function InviteUserRequestToJSONTyped(value?: InviteUserRequest | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'name': value.name,
-        'organization': value.organization,
-        'email': value.email,
+        'name': value['name'],
+        'organization': value['organization'],
+        'email': value['email'],
     };
 }
 

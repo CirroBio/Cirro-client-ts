@@ -12,18 +12,20 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { Executor } from './Executor';
 import {
     ExecutorFromJSON,
     ExecutorFromJSONTyped,
     ExecutorToJSON,
+    ExecutorToJSONTyped,
 } from './Executor';
 import type { Tag } from './Tag';
 import {
     TagFromJSON,
     TagFromJSONTyped,
     TagToJSON,
+    TagToJSONTyped,
 } from './Tag';
 
 /**
@@ -154,26 +156,26 @@ export interface Process {
     tags: Array<Tag>;
 }
 
+
+
 /**
  * Check if a given object implements the Process interface.
  */
-export function instanceOfProcess(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "id" in value;
-    isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "description" in value;
-    isInstance = isInstance && "dataType" in value;
-    isInstance = isInstance && "executor" in value;
-    isInstance = isInstance && "childProcessIds" in value;
-    isInstance = isInstance && "parentProcessIds" in value;
-    isInstance = isInstance && "linkedProjectIds" in value;
-    isInstance = isInstance && "isTenantWide" in value;
-    isInstance = isInstance && "allowMultipleSources" in value;
-    isInstance = isInstance && "usesSampleSheet" in value;
-    isInstance = isInstance && "isArchived" in value;
-    isInstance = isInstance && "tags" in value;
-
-    return isInstance;
+export function instanceOfProcess(value: object): value is Process {
+    if (!('id' in value) || value['id'] === undefined) return false;
+    if (!('name' in value) || value['name'] === undefined) return false;
+    if (!('description' in value) || value['description'] === undefined) return false;
+    if (!('dataType' in value) || value['dataType'] === undefined) return false;
+    if (!('executor' in value) || value['executor'] === undefined) return false;
+    if (!('childProcessIds' in value) || value['childProcessIds'] === undefined) return false;
+    if (!('parentProcessIds' in value) || value['parentProcessIds'] === undefined) return false;
+    if (!('linkedProjectIds' in value) || value['linkedProjectIds'] === undefined) return false;
+    if (!('isTenantWide' in value) || value['isTenantWide'] === undefined) return false;
+    if (!('allowMultipleSources' in value) || value['allowMultipleSources'] === undefined) return false;
+    if (!('usesSampleSheet' in value) || value['usesSampleSheet'] === undefined) return false;
+    if (!('isArchived' in value) || value['isArchived'] === undefined) return false;
+    if (!('tags' in value) || value['tags'] === undefined) return false;
+    return true;
 }
 
 export function ProcessFromJSON(json: any): Process {
@@ -181,7 +183,7 @@ export function ProcessFromJSON(json: any): Process {
 }
 
 export function ProcessFromJSONTyped(json: any, ignoreDiscriminator: boolean): Process {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -191,53 +193,55 @@ export function ProcessFromJSONTyped(json: any, ignoreDiscriminator: boolean): P
         'description': json['description'],
         'dataType': json['dataType'],
         'executor': ExecutorFromJSON(json['executor']),
-        'category': !exists(json, 'category') ? undefined : json['category'],
-        'pipelineType': !exists(json, 'pipelineType') ? undefined : json['pipelineType'],
-        'documentationUrl': !exists(json, 'documentationUrl') ? undefined : json['documentationUrl'],
-        'fileRequirementsMessage': !exists(json, 'fileRequirementsMessage') ? undefined : json['fileRequirementsMessage'],
+        'category': json['category'] == null ? undefined : json['category'],
+        'pipelineType': json['pipelineType'] == null ? undefined : json['pipelineType'],
+        'documentationUrl': json['documentationUrl'] == null ? undefined : json['documentationUrl'],
+        'fileRequirementsMessage': json['fileRequirementsMessage'] == null ? undefined : json['fileRequirementsMessage'],
         'childProcessIds': json['childProcessIds'],
         'parentProcessIds': json['parentProcessIds'],
-        'owner': !exists(json, 'owner') ? undefined : json['owner'],
+        'owner': json['owner'] == null ? undefined : json['owner'],
         'linkedProjectIds': json['linkedProjectIds'],
         'isTenantWide': json['isTenantWide'],
         'allowMultipleSources': json['allowMultipleSources'],
         'usesSampleSheet': json['usesSampleSheet'],
         'isArchived': json['isArchived'],
-        'createdAt': !exists(json, 'createdAt') ? undefined : (new Date(json['createdAt'])),
-        'updatedAt': !exists(json, 'updatedAt') ? undefined : (new Date(json['updatedAt'])),
+        'createdAt': json['createdAt'] == null ? undefined : (new Date(json['createdAt'])),
+        'updatedAt': json['updatedAt'] == null ? undefined : (new Date(json['updatedAt'])),
         'tags': ((json['tags'] as Array<any>).map(TagFromJSON)),
     };
 }
 
-export function ProcessToJSON(value?: Process | null): any {
-    if (value === undefined) {
-        return undefined;
+export function ProcessToJSON(json: any): Process {
+    return ProcessToJSONTyped(json, false);
+}
+
+export function ProcessToJSONTyped(value?: Process | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'id': value.id,
-        'name': value.name,
-        'description': value.description,
-        'dataType': value.dataType,
-        'executor': ExecutorToJSON(value.executor),
-        'category': value.category,
-        'pipelineType': value.pipelineType,
-        'documentationUrl': value.documentationUrl,
-        'fileRequirementsMessage': value.fileRequirementsMessage,
-        'childProcessIds': value.childProcessIds,
-        'parentProcessIds': value.parentProcessIds,
-        'owner': value.owner,
-        'linkedProjectIds': value.linkedProjectIds,
-        'isTenantWide': value.isTenantWide,
-        'allowMultipleSources': value.allowMultipleSources,
-        'usesSampleSheet': value.usesSampleSheet,
-        'isArchived': value.isArchived,
-        'createdAt': value.createdAt === undefined ? undefined : (value.createdAt.toISOString()),
-        'updatedAt': value.updatedAt === undefined ? undefined : (value.updatedAt.toISOString()),
-        'tags': ((value.tags as Array<any>).map(TagToJSON)),
+        'id': value['id'],
+        'name': value['name'],
+        'description': value['description'],
+        'dataType': value['dataType'],
+        'executor': ExecutorToJSON(value['executor']),
+        'category': value['category'],
+        'pipelineType': value['pipelineType'],
+        'documentationUrl': value['documentationUrl'],
+        'fileRequirementsMessage': value['fileRequirementsMessage'],
+        'childProcessIds': value['childProcessIds'],
+        'parentProcessIds': value['parentProcessIds'],
+        'owner': value['owner'],
+        'linkedProjectIds': value['linkedProjectIds'],
+        'isTenantWide': value['isTenantWide'],
+        'allowMultipleSources': value['allowMultipleSources'],
+        'usesSampleSheet': value['usesSampleSheet'],
+        'isArchived': value['isArchived'],
+        'createdAt': value['createdAt'] == null ? value['createdAt'] : value['createdAt'].toISOString(),
+        'updatedAt': value['updatedAt'] == null ? value['updatedAt'] : value['updatedAt'].toISOString(),
+        'tags': ((value['tags'] as Array<any>).map(TagToJSON)),
     };
 }
 

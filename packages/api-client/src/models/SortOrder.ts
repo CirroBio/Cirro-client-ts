@@ -23,6 +23,17 @@ export enum SortOrder {
 }
 
 
+export function instanceOfSortOrder(value: any): boolean {
+    for (const key in SortOrder) {
+        if (Object.prototype.hasOwnProperty.call(SortOrder, key)) {
+            if (SortOrder[key as keyof typeof SortOrder] === value) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 export function SortOrderFromJSON(json: any): SortOrder {
     return SortOrderFromJSONTyped(json, false);
 }
@@ -33,5 +44,9 @@ export function SortOrderFromJSONTyped(json: any, ignoreDiscriminator: boolean):
 
 export function SortOrderToJSON(value?: SortOrder | null): any {
     return value as any;
+}
+
+export function SortOrderToJSONTyped(value: any, ignoreDiscriminator: boolean): SortOrder {
+    return value as SortOrder;
 }
 

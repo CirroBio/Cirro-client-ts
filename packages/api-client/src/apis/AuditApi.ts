@@ -12,15 +12,12 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  AuditEvent,
-} from '../models/index';
 import {
+    type AuditEvent,
     AuditEventFromJSON,
     AuditEventToJSON,
-} from '../models/index';
+} from '../models/AuditEvent';
 
 export interface GetEventRequest {
     auditEventId: string;
@@ -38,24 +35,39 @@ export interface ListEventsRequest {
 export class AuditApi extends runtime.BaseAPI {
 
     /**
-     * Get audit event detailed information
-     * Get audit event
+     * Creates request options for getEvent without sending the request
      */
-    async getEventRaw(requestParameters: GetEventRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AuditEvent>> {
-        if (requestParameters.auditEventId === null || requestParameters.auditEventId === undefined) {
-            throw new runtime.RequiredError('auditEventId','Required parameter requestParameters.auditEventId was null or undefined when calling getEvent.');
+    async getEventRequestOpts(requestParameters: GetEventRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['auditEventId'] == null) {
+            throw new runtime.RequiredError(
+                'auditEventId',
+                'Required parameter "auditEventId" was null or undefined when calling getEvent().'
+            );
         }
 
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-        const response = await this.request({
-            path: `/audit-events/{auditEventId}`.replace(`{${"auditEventId"}}`, encodeURIComponent(String(requestParameters.auditEventId))),
+
+        let urlPath = `/audit-events/{auditEventId}`;
+        urlPath = urlPath.replace('{auditEventId}', encodeURIComponent(String(requestParameters['auditEventId'])));
+
+        return {
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Get audit event detailed information
+     * Get audit event
+     */
+    async getEventRaw(requestParameters: GetEventRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AuditEvent>> {
+        const requestOptions = await this.getEventRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => AuditEventFromJSON(jsonValue));
     }
@@ -70,32 +82,43 @@ export class AuditApi extends runtime.BaseAPI {
     }
 
     /**
-     * Gets a list of audit events
-     * List audit events
+     * Creates request options for listEvents without sending the request
      */
-    async listEventsRaw(requestParameters: ListEventsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<AuditEvent>>> {
+    async listEventsRequestOpts(requestParameters: ListEventsRequest): Promise<runtime.RequestOpts> {
         const queryParameters: any = {};
 
-        if (requestParameters.username !== undefined) {
-            queryParameters['username'] = requestParameters.username;
+        if (requestParameters['username'] != null) {
+            queryParameters['username'] = requestParameters['username'];
         }
 
-        if (requestParameters.entityType !== undefined) {
-            queryParameters['entityType'] = requestParameters.entityType;
+        if (requestParameters['entityType'] != null) {
+            queryParameters['entityType'] = requestParameters['entityType'];
         }
 
-        if (requestParameters.entityId !== undefined) {
-            queryParameters['entityId'] = requestParameters.entityId;
+        if (requestParameters['entityId'] != null) {
+            queryParameters['entityId'] = requestParameters['entityId'];
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-        const response = await this.request({
-            path: `/audit-events`,
+
+        let urlPath = `/audit-events`;
+
+        return {
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Gets a list of audit events
+     * List audit events
+     */
+    async listEventsRaw(requestParameters: ListEventsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<AuditEvent>>> {
+        const requestOptions = await this.listEventsRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(AuditEventFromJSON));
     }

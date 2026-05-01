@@ -12,43 +12,49 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { AppClientType } from './AppClientType';
 import {
     AppClientTypeFromJSON,
     AppClientTypeFromJSONTyped,
     AppClientTypeToJSON,
+    AppClientTypeToJSONTyped,
 } from './AppClientType';
 import type { AppPublisherType } from './AppPublisherType';
 import {
     AppPublisherTypeFromJSON,
     AppPublisherTypeFromJSONTyped,
     AppPublisherTypeToJSON,
+    AppPublisherTypeToJSONTyped,
 } from './AppPublisherType';
-import type { AppType } from './AppType';
-import {
-    AppTypeFromJSON,
-    AppTypeFromJSONTyped,
-    AppTypeToJSON,
-} from './AppType';
 import type { Permission } from './Permission';
 import {
     PermissionFromJSON,
     PermissionFromJSONTyped,
     PermissionToJSON,
+    PermissionToJSONTyped,
 } from './Permission';
-import type { PrincipalType } from './PrincipalType';
-import {
-    PrincipalTypeFromJSON,
-    PrincipalTypeFromJSONTyped,
-    PrincipalTypeToJSON,
-} from './PrincipalType';
 import type { ProjectPermissionSet } from './ProjectPermissionSet';
 import {
     ProjectPermissionSetFromJSON,
     ProjectPermissionSetFromJSONTyped,
     ProjectPermissionSetToJSON,
+    ProjectPermissionSetToJSONTyped,
 } from './ProjectPermissionSet';
+import type { AppType } from './AppType';
+import {
+    AppTypeFromJSON,
+    AppTypeFromJSONTyped,
+    AppTypeToJSON,
+    AppTypeToJSONTyped,
+} from './AppType';
+import type { PrincipalType } from './PrincipalType';
+import {
+    PrincipalTypeFromJSON,
+    PrincipalTypeFromJSONTyped,
+    PrincipalTypeToJSON,
+    PrincipalTypeToJSONTyped,
+} from './PrincipalType';
 
 /**
  * 
@@ -226,33 +232,33 @@ export interface AppRegistrationDetail {
     createdBy: string;
 }
 
+
+
 /**
  * Check if a given object implements the AppRegistrationDetail interface.
  */
-export function instanceOfAppRegistrationDetail(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "id" in value;
-    isInstance = isInstance && "clientId" in value;
-    isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "description" in value;
-    isInstance = isInstance && "logoUrl" in value;
-    isInstance = isInstance && "appUrl" in value;
-    isInstance = isInstance && "publisher" in value;
-    isInstance = isInstance && "publisherType" in value;
-    isInstance = isInstance && "principalType" in value;
-    isInstance = isInstance && "type" in value;
-    isInstance = isInstance && "clientType" in value;
-    isInstance = isInstance && "projectPermissions" in value;
-    isInstance = isInstance && "globalPermissions" in value;
-    isInstance = isInstance && "isArchived" in value;
-    isInstance = isInstance && "requiresAdminConsent" in value;
-    isInstance = isInstance && "discoveryEnabled" in value;
-    isInstance = isInstance && "createdFromTemplate" in value;
-    isInstance = isInstance && "createdAt" in value;
-    isInstance = isInstance && "updatedAt" in value;
-    isInstance = isInstance && "createdBy" in value;
-
-    return isInstance;
+export function instanceOfAppRegistrationDetail(value: object): value is AppRegistrationDetail {
+    if (!('id' in value) || value['id'] === undefined) return false;
+    if (!('clientId' in value) || value['clientId'] === undefined) return false;
+    if (!('name' in value) || value['name'] === undefined) return false;
+    if (!('description' in value) || value['description'] === undefined) return false;
+    if (!('logoUrl' in value) || value['logoUrl'] === undefined) return false;
+    if (!('appUrl' in value) || value['appUrl'] === undefined) return false;
+    if (!('publisher' in value) || value['publisher'] === undefined) return false;
+    if (!('publisherType' in value) || value['publisherType'] === undefined) return false;
+    if (!('principalType' in value) || value['principalType'] === undefined) return false;
+    if (!('type' in value) || value['type'] === undefined) return false;
+    if (!('clientType' in value) || value['clientType'] === undefined) return false;
+    if (!('projectPermissions' in value) || value['projectPermissions'] === undefined) return false;
+    if (!('globalPermissions' in value) || value['globalPermissions'] === undefined) return false;
+    if (!('isArchived' in value) || value['isArchived'] === undefined) return false;
+    if (!('requiresAdminConsent' in value) || value['requiresAdminConsent'] === undefined) return false;
+    if (!('discoveryEnabled' in value) || value['discoveryEnabled'] === undefined) return false;
+    if (!('createdFromTemplate' in value) || value['createdFromTemplate'] === undefined) return false;
+    if (!('createdAt' in value) || value['createdAt'] === undefined) return false;
+    if (!('updatedAt' in value) || value['updatedAt'] === undefined) return false;
+    if (!('createdBy' in value) || value['createdBy'] === undefined) return false;
+    return true;
 }
 
 export function AppRegistrationDetailFromJSON(json: any): AppRegistrationDetail {
@@ -260,7 +266,7 @@ export function AppRegistrationDetailFromJSON(json: any): AppRegistrationDetail 
 }
 
 export function AppRegistrationDetailFromJSONTyped(json: any, ignoreDiscriminator: boolean): AppRegistrationDetail {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -276,63 +282,65 @@ export function AppRegistrationDetailFromJSONTyped(json: any, ignoreDiscriminato
         'principalType': PrincipalTypeFromJSON(json['principalType']),
         'type': AppTypeFromJSON(json['type']),
         'clientType': AppClientTypeFromJSON(json['clientType']),
-        'allowedIps': !exists(json, 'allowedIps') ? undefined : json['allowedIps'],
-        'redirectUris': !exists(json, 'redirectUris') ? undefined : json['redirectUris'],
-        'secretExpiresAt': !exists(json, 'secretExpiresAt') ? undefined : (json['secretExpiresAt'] === null ? null : new Date(json['secretExpiresAt'])),
-        'secretGeneratedAt': !exists(json, 'secretGeneratedAt') ? undefined : (json['secretGeneratedAt'] === null ? null : new Date(json['secretGeneratedAt'])),
-        'secretGeneratedBy': !exists(json, 'secretGeneratedBy') ? undefined : json['secretGeneratedBy'],
+        'allowedIps': json['allowedIps'] == null ? undefined : json['allowedIps'],
+        'redirectUris': json['redirectUris'] == null ? undefined : json['redirectUris'],
+        'secretExpiresAt': json['secretExpiresAt'] == null ? undefined : (new Date(json['secretExpiresAt'])),
+        'secretGeneratedAt': json['secretGeneratedAt'] == null ? undefined : (new Date(json['secretGeneratedAt'])),
+        'secretGeneratedBy': json['secretGeneratedBy'] == null ? undefined : json['secretGeneratedBy'],
         'projectPermissions': ((json['projectPermissions'] as Array<any>).map(ProjectPermissionSetFromJSON)),
         'globalPermissions': ((json['globalPermissions'] as Array<any>).map(PermissionFromJSON)),
         'isArchived': json['isArchived'],
         'requiresAdminConsent': json['requiresAdminConsent'],
         'discoveryEnabled': json['discoveryEnabled'],
         'createdFromTemplate': json['createdFromTemplate'],
-        'templateId': !exists(json, 'templateId') ? undefined : json['templateId'],
-        'approvedAt': !exists(json, 'approvedAt') ? undefined : (json['approvedAt'] === null ? null : new Date(json['approvedAt'])),
-        'approvedBy': !exists(json, 'approvedBy') ? undefined : json['approvedBy'],
+        'templateId': json['templateId'] == null ? undefined : json['templateId'],
+        'approvedAt': json['approvedAt'] == null ? undefined : (new Date(json['approvedAt'])),
+        'approvedBy': json['approvedBy'] == null ? undefined : json['approvedBy'],
         'createdAt': (new Date(json['createdAt'])),
         'updatedAt': (new Date(json['updatedAt'])),
         'createdBy': json['createdBy'],
     };
 }
 
-export function AppRegistrationDetailToJSON(value?: AppRegistrationDetail | null): any {
-    if (value === undefined) {
-        return undefined;
+export function AppRegistrationDetailToJSON(json: any): AppRegistrationDetail {
+    return AppRegistrationDetailToJSONTyped(json, false);
+}
+
+export function AppRegistrationDetailToJSONTyped(value?: AppRegistrationDetail | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'id': value.id,
-        'clientId': value.clientId,
-        'name': value.name,
-        'description': value.description,
-        'logoUrl': value.logoUrl,
-        'appUrl': value.appUrl,
-        'publisher': value.publisher,
-        'publisherType': AppPublisherTypeToJSON(value.publisherType),
-        'principalType': PrincipalTypeToJSON(value.principalType),
-        'type': AppTypeToJSON(value.type),
-        'clientType': AppClientTypeToJSON(value.clientType),
-        'allowedIps': value.allowedIps,
-        'redirectUris': value.redirectUris,
-        'secretExpiresAt': value.secretExpiresAt === undefined ? undefined : (value.secretExpiresAt === null ? null : value.secretExpiresAt.toISOString()),
-        'secretGeneratedAt': value.secretGeneratedAt === undefined ? undefined : (value.secretGeneratedAt === null ? null : value.secretGeneratedAt.toISOString()),
-        'secretGeneratedBy': value.secretGeneratedBy,
-        'projectPermissions': ((value.projectPermissions as Array<any>).map(ProjectPermissionSetToJSON)),
-        'globalPermissions': ((value.globalPermissions as Array<any>).map(PermissionToJSON)),
-        'isArchived': value.isArchived,
-        'requiresAdminConsent': value.requiresAdminConsent,
-        'discoveryEnabled': value.discoveryEnabled,
-        'createdFromTemplate': value.createdFromTemplate,
-        'templateId': value.templateId,
-        'approvedAt': value.approvedAt === undefined ? undefined : (value.approvedAt === null ? null : value.approvedAt.toISOString()),
-        'approvedBy': value.approvedBy,
-        'createdAt': (value.createdAt.toISOString()),
-        'updatedAt': (value.updatedAt.toISOString()),
-        'createdBy': value.createdBy,
+        'id': value['id'],
+        'clientId': value['clientId'],
+        'name': value['name'],
+        'description': value['description'],
+        'logoUrl': value['logoUrl'],
+        'appUrl': value['appUrl'],
+        'publisher': value['publisher'],
+        'publisherType': AppPublisherTypeToJSON(value['publisherType']),
+        'principalType': PrincipalTypeToJSON(value['principalType']),
+        'type': AppTypeToJSON(value['type']),
+        'clientType': AppClientTypeToJSON(value['clientType']),
+        'allowedIps': value['allowedIps'],
+        'redirectUris': value['redirectUris'],
+        'secretExpiresAt': value['secretExpiresAt'] == null ? value['secretExpiresAt'] : value['secretExpiresAt'].toISOString(),
+        'secretGeneratedAt': value['secretGeneratedAt'] == null ? value['secretGeneratedAt'] : value['secretGeneratedAt'].toISOString(),
+        'secretGeneratedBy': value['secretGeneratedBy'],
+        'projectPermissions': ((value['projectPermissions'] as Array<any>).map(ProjectPermissionSetToJSON)),
+        'globalPermissions': ((value['globalPermissions'] as Array<any>).map(PermissionToJSON)),
+        'isArchived': value['isArchived'],
+        'requiresAdminConsent': value['requiresAdminConsent'],
+        'discoveryEnabled': value['discoveryEnabled'],
+        'createdFromTemplate': value['createdFromTemplate'],
+        'templateId': value['templateId'],
+        'approvedAt': value['approvedAt'] == null ? value['approvedAt'] : value['approvedAt'].toISOString(),
+        'approvedBy': value['approvedBy'],
+        'createdAt': value['createdAt'].toISOString(),
+        'updatedAt': value['updatedAt'].toISOString(),
+        'createdBy': value['createdBy'],
     };
 }
 

@@ -12,12 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { Message } from './Message';
 import {
     MessageFromJSON,
     MessageFromJSONTyped,
     MessageToJSON,
+    MessageToJSONTyped,
 } from './Message';
 
 /**
@@ -43,12 +44,10 @@ export interface PaginatedResponseMessage {
 /**
  * Check if a given object implements the PaginatedResponseMessage interface.
  */
-export function instanceOfPaginatedResponseMessage(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "data" in value;
-    isInstance = isInstance && "nextToken" in value;
-
-    return isInstance;
+export function instanceOfPaginatedResponseMessage(value: object): value is PaginatedResponseMessage {
+    if (!('data' in value) || value['data'] === undefined) return false;
+    if (!('nextToken' in value) || value['nextToken'] === undefined) return false;
+    return true;
 }
 
 export function PaginatedResponseMessageFromJSON(json: any): PaginatedResponseMessage {
@@ -56,7 +55,7 @@ export function PaginatedResponseMessageFromJSON(json: any): PaginatedResponseMe
 }
 
 export function PaginatedResponseMessageFromJSONTyped(json: any, ignoreDiscriminator: boolean): PaginatedResponseMessage {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -66,17 +65,19 @@ export function PaginatedResponseMessageFromJSONTyped(json: any, ignoreDiscrimin
     };
 }
 
-export function PaginatedResponseMessageToJSON(value?: PaginatedResponseMessage | null): any {
-    if (value === undefined) {
-        return undefined;
+export function PaginatedResponseMessageToJSON(json: any): PaginatedResponseMessage {
+    return PaginatedResponseMessageToJSONTyped(json, false);
+}
+
+export function PaginatedResponseMessageToJSONTyped(value?: PaginatedResponseMessage | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'data': ((value.data as Array<any>).map(MessageToJSON)),
-        'nextToken': value.nextToken,
+        'data': ((value['data'] as Array<any>).map(MessageToJSON)),
+        'nextToken': value['nextToken'],
     };
 }
 

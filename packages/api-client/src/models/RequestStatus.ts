@@ -24,6 +24,17 @@ export enum RequestStatus {
 }
 
 
+export function instanceOfRequestStatus(value: any): boolean {
+    for (const key in RequestStatus) {
+        if (Object.prototype.hasOwnProperty.call(RequestStatus, key)) {
+            if (RequestStatus[key as keyof typeof RequestStatus] === value) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 export function RequestStatusFromJSON(json: any): RequestStatus {
     return RequestStatusFromJSONTyped(json, false);
 }
@@ -34,5 +45,9 @@ export function RequestStatusFromJSONTyped(json: any, ignoreDiscriminator: boole
 
 export function RequestStatusToJSON(value?: RequestStatus | null): any {
     return value as any;
+}
+
+export function RequestStatusToJSONTyped(value: any, ignoreDiscriminator: boolean): RequestStatus {
+    return value as RequestStatus;
 }
 

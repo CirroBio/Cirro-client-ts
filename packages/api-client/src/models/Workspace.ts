@@ -12,37 +12,42 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
-import type { MountedDataset } from './MountedDataset';
-import {
-    MountedDatasetFromJSON,
-    MountedDatasetFromJSONTyped,
-    MountedDatasetToJSON,
-} from './MountedDataset';
+import { mapValues } from '../runtime';
 import type { SharingType } from './SharingType';
 import {
     SharingTypeFromJSON,
     SharingTypeFromJSONTyped,
     SharingTypeToJSON,
+    SharingTypeToJSONTyped,
 } from './SharingType';
 import type { Status } from './Status';
 import {
     StatusFromJSON,
     StatusFromJSONTyped,
     StatusToJSON,
+    StatusToJSONTyped,
 } from './Status';
-import type { WorkspaceComputeConfig } from './WorkspaceComputeConfig';
-import {
-    WorkspaceComputeConfigFromJSON,
-    WorkspaceComputeConfigFromJSONTyped,
-    WorkspaceComputeConfigToJSON,
-} from './WorkspaceComputeConfig';
 import type { WorkspaceSession } from './WorkspaceSession';
 import {
     WorkspaceSessionFromJSON,
     WorkspaceSessionFromJSONTyped,
     WorkspaceSessionToJSON,
+    WorkspaceSessionToJSONTyped,
 } from './WorkspaceSession';
+import type { MountedDataset } from './MountedDataset';
+import {
+    MountedDatasetFromJSON,
+    MountedDatasetFromJSONTyped,
+    MountedDatasetToJSON,
+    MountedDatasetToJSONTyped,
+} from './MountedDataset';
+import type { WorkspaceComputeConfig } from './WorkspaceComputeConfig';
+import {
+    WorkspaceComputeConfigFromJSON,
+    WorkspaceComputeConfigFromJSONTyped,
+    WorkspaceComputeConfigToJSON,
+    WorkspaceComputeConfigToJSONTyped,
+} from './WorkspaceComputeConfig';
 
 /**
  * 
@@ -154,26 +159,26 @@ export interface Workspace {
     updatedAt: Date;
 }
 
+
+
 /**
  * Check if a given object implements the Workspace interface.
  */
-export function instanceOfWorkspace(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "id" in value;
-    isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "description" in value;
-    isInstance = isInstance && "projectId" in value;
-    isInstance = isInstance && "status" in value;
-    isInstance = isInstance && "statusMessage" in value;
-    isInstance = isInstance && "environmentId" in value;
-    isInstance = isInstance && "mountedDatasets" in value;
-    isInstance = isInstance && "computeConfig" in value;
-    isInstance = isInstance && "sharingType" in value;
-    isInstance = isInstance && "createdBy" in value;
-    isInstance = isInstance && "createdAt" in value;
-    isInstance = isInstance && "updatedAt" in value;
-
-    return isInstance;
+export function instanceOfWorkspace(value: object): value is Workspace {
+    if (!('id' in value) || value['id'] === undefined) return false;
+    if (!('name' in value) || value['name'] === undefined) return false;
+    if (!('description' in value) || value['description'] === undefined) return false;
+    if (!('projectId' in value) || value['projectId'] === undefined) return false;
+    if (!('status' in value) || value['status'] === undefined) return false;
+    if (!('statusMessage' in value) || value['statusMessage'] === undefined) return false;
+    if (!('environmentId' in value) || value['environmentId'] === undefined) return false;
+    if (!('mountedDatasets' in value) || value['mountedDatasets'] === undefined) return false;
+    if (!('computeConfig' in value) || value['computeConfig'] === undefined) return false;
+    if (!('sharingType' in value) || value['sharingType'] === undefined) return false;
+    if (!('createdBy' in value) || value['createdBy'] === undefined) return false;
+    if (!('createdAt' in value) || value['createdAt'] === undefined) return false;
+    if (!('updatedAt' in value) || value['updatedAt'] === undefined) return false;
+    return true;
 }
 
 export function WorkspaceFromJSON(json: any): Workspace {
@@ -181,7 +186,7 @@ export function WorkspaceFromJSON(json: any): Workspace {
 }
 
 export function WorkspaceFromJSONTyped(json: any, ignoreDiscriminator: boolean): Workspace {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -196,42 +201,44 @@ export function WorkspaceFromJSONTyped(json: any, ignoreDiscriminator: boolean):
         'mountedDatasets': ((json['mountedDatasets'] as Array<any>).map(MountedDatasetFromJSON)),
         'computeConfig': WorkspaceComputeConfigFromJSON(json['computeConfig']),
         'sharingType': SharingTypeFromJSON(json['sharingType']),
-        'autoStopTimeout': !exists(json, 'autoStopTimeout') ? undefined : json['autoStopTimeout'],
-        'sessions': !exists(json, 'sessions') ? undefined : (json['sessions'] === null ? null : (json['sessions'] as Array<any>).map(WorkspaceSessionFromJSON)),
+        'autoStopTimeout': json['autoStopTimeout'] == null ? undefined : json['autoStopTimeout'],
+        'sessions': json['sessions'] == null ? undefined : ((json['sessions'] as Array<any>).map(WorkspaceSessionFromJSON)),
         'createdBy': json['createdBy'],
         'createdAt': (new Date(json['createdAt'])),
-        'startedAt': !exists(json, 'startedAt') ? undefined : (json['startedAt'] === null ? null : new Date(json['startedAt'])),
-        'autoStopTime': !exists(json, 'autoStopTime') ? undefined : (json['autoStopTime'] === null ? null : new Date(json['autoStopTime'])),
+        'startedAt': json['startedAt'] == null ? undefined : (new Date(json['startedAt'])),
+        'autoStopTime': json['autoStopTime'] == null ? undefined : (new Date(json['autoStopTime'])),
         'updatedAt': (new Date(json['updatedAt'])),
     };
 }
 
-export function WorkspaceToJSON(value?: Workspace | null): any {
-    if (value === undefined) {
-        return undefined;
+export function WorkspaceToJSON(json: any): Workspace {
+    return WorkspaceToJSONTyped(json, false);
+}
+
+export function WorkspaceToJSONTyped(value?: Workspace | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'id': value.id,
-        'name': value.name,
-        'description': value.description,
-        'projectId': value.projectId,
-        'status': StatusToJSON(value.status),
-        'statusMessage': value.statusMessage,
-        'environmentId': value.environmentId,
-        'mountedDatasets': ((value.mountedDatasets as Array<any>).map(MountedDatasetToJSON)),
-        'computeConfig': WorkspaceComputeConfigToJSON(value.computeConfig),
-        'sharingType': SharingTypeToJSON(value.sharingType),
-        'autoStopTimeout': value.autoStopTimeout,
-        'sessions': value.sessions === undefined ? undefined : (value.sessions === null ? null : (value.sessions as Array<any>).map(WorkspaceSessionToJSON)),
-        'createdBy': value.createdBy,
-        'createdAt': (value.createdAt.toISOString()),
-        'startedAt': value.startedAt === undefined ? undefined : (value.startedAt === null ? null : value.startedAt.toISOString()),
-        'autoStopTime': value.autoStopTime === undefined ? undefined : (value.autoStopTime === null ? null : value.autoStopTime.toISOString()),
-        'updatedAt': (value.updatedAt.toISOString()),
+        'id': value['id'],
+        'name': value['name'],
+        'description': value['description'],
+        'projectId': value['projectId'],
+        'status': StatusToJSON(value['status']),
+        'statusMessage': value['statusMessage'],
+        'environmentId': value['environmentId'],
+        'mountedDatasets': ((value['mountedDatasets'] as Array<any>).map(MountedDatasetToJSON)),
+        'computeConfig': WorkspaceComputeConfigToJSON(value['computeConfig']),
+        'sharingType': SharingTypeToJSON(value['sharingType']),
+        'autoStopTimeout': value['autoStopTimeout'],
+        'sessions': value['sessions'] == null ? undefined : ((value['sessions'] as Array<any>).map(WorkspaceSessionToJSON)),
+        'createdBy': value['createdBy'],
+        'createdAt': value['createdAt'].toISOString(),
+        'startedAt': value['startedAt'] == null ? value['startedAt'] : value['startedAt'].toISOString(),
+        'autoStopTime': value['autoStopTime'] == null ? value['autoStopTime'] : value['autoStopTime'].toISOString(),
+        'updatedAt': value['updatedAt'].toISOString(),
     };
 }
 

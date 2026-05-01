@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -36,10 +36,8 @@ export interface GroupCost {
 /**
  * Check if a given object implements the GroupCost interface.
  */
-export function instanceOfGroupCost(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfGroupCost(value: object): value is GroupCost {
+    return true;
 }
 
 export function GroupCostFromJSON(json: any): GroupCost {
@@ -47,27 +45,29 @@ export function GroupCostFromJSON(json: any): GroupCost {
 }
 
 export function GroupCostFromJSONTyped(json: any, ignoreDiscriminator: boolean): GroupCost {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'name': !exists(json, 'name') ? undefined : json['name'],
-        'cost': !exists(json, 'cost') ? undefined : json['cost'],
+        'name': json['name'] == null ? undefined : json['name'],
+        'cost': json['cost'] == null ? undefined : json['cost'],
     };
 }
 
-export function GroupCostToJSON(value?: GroupCost | null): any {
-    if (value === undefined) {
-        return undefined;
+export function GroupCostToJSON(json: any): GroupCost {
+    return GroupCostToJSONTyped(json, false);
+}
+
+export function GroupCostToJSONTyped(value?: GroupCost | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'name': value.name,
-        'cost': value.cost,
+        'name': value['name'],
+        'cost': value['cost'],
     };
 }
 

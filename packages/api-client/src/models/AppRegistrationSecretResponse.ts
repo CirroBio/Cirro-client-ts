@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -48,14 +48,12 @@ export interface AppRegistrationSecretResponse {
 /**
  * Check if a given object implements the AppRegistrationSecretResponse interface.
  */
-export function instanceOfAppRegistrationSecretResponse(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "id" in value;
-    isInstance = isInstance && "clientId" in value;
-    isInstance = isInstance && "clientSecret" in value;
-    isInstance = isInstance && "secretGeneratedAt" in value;
-
-    return isInstance;
+export function instanceOfAppRegistrationSecretResponse(value: object): value is AppRegistrationSecretResponse {
+    if (!('id' in value) || value['id'] === undefined) return false;
+    if (!('clientId' in value) || value['clientId'] === undefined) return false;
+    if (!('clientSecret' in value) || value['clientSecret'] === undefined) return false;
+    if (!('secretGeneratedAt' in value) || value['secretGeneratedAt'] === undefined) return false;
+    return true;
 }
 
 export function AppRegistrationSecretResponseFromJSON(json: any): AppRegistrationSecretResponse {
@@ -63,7 +61,7 @@ export function AppRegistrationSecretResponseFromJSON(json: any): AppRegistratio
 }
 
 export function AppRegistrationSecretResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): AppRegistrationSecretResponse {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -75,19 +73,21 @@ export function AppRegistrationSecretResponseFromJSONTyped(json: any, ignoreDisc
     };
 }
 
-export function AppRegistrationSecretResponseToJSON(value?: AppRegistrationSecretResponse | null): any {
-    if (value === undefined) {
-        return undefined;
+export function AppRegistrationSecretResponseToJSON(json: any): AppRegistrationSecretResponse {
+    return AppRegistrationSecretResponseToJSONTyped(json, false);
+}
+
+export function AppRegistrationSecretResponseToJSONTyped(value?: AppRegistrationSecretResponse | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'id': value.id,
-        'clientId': value.clientId,
-        'clientSecret': value.clientSecret,
-        'secretGeneratedAt': (value.secretGeneratedAt.toISOString()),
+        'id': value['id'],
+        'clientId': value['clientId'],
+        'clientSecret': value['clientSecret'],
+        'secretGeneratedAt': value['secretGeneratedAt'].toISOString(),
     };
 }
 

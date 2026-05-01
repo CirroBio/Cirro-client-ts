@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -42,13 +42,11 @@ export interface RequestQuotaIncreaseCommand {
 /**
  * Check if a given object implements the RequestQuotaIncreaseCommand interface.
  */
-export function instanceOfRequestQuotaIncreaseCommand(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "serviceCode" in value;
-    isInstance = isInstance && "quotaCode" in value;
-    isInstance = isInstance && "value" in value;
-
-    return isInstance;
+export function instanceOfRequestQuotaIncreaseCommand(value: object): value is RequestQuotaIncreaseCommand {
+    if (!('serviceCode' in value) || value['serviceCode'] === undefined) return false;
+    if (!('quotaCode' in value) || value['quotaCode'] === undefined) return false;
+    if (!('value' in value) || value['value'] === undefined) return false;
+    return true;
 }
 
 export function RequestQuotaIncreaseCommandFromJSON(json: any): RequestQuotaIncreaseCommand {
@@ -56,7 +54,7 @@ export function RequestQuotaIncreaseCommandFromJSON(json: any): RequestQuotaIncr
 }
 
 export function RequestQuotaIncreaseCommandFromJSONTyped(json: any, ignoreDiscriminator: boolean): RequestQuotaIncreaseCommand {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -67,18 +65,20 @@ export function RequestQuotaIncreaseCommandFromJSONTyped(json: any, ignoreDiscri
     };
 }
 
-export function RequestQuotaIncreaseCommandToJSON(value?: RequestQuotaIncreaseCommand | null): any {
-    if (value === undefined) {
-        return undefined;
+export function RequestQuotaIncreaseCommandToJSON(json: any): RequestQuotaIncreaseCommand {
+    return RequestQuotaIncreaseCommandToJSONTyped(json, false);
+}
+
+export function RequestQuotaIncreaseCommandToJSONTyped(value?: RequestQuotaIncreaseCommand | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'serviceCode': value.serviceCode,
-        'quotaCode': value.quotaCode,
-        'value': value.value,
+        'serviceCode': value['serviceCode'],
+        'quotaCode': value['quotaCode'],
+        'value': value['value'],
     };
 }
 

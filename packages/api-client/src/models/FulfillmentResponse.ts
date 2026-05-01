@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -36,12 +36,10 @@ export interface FulfillmentResponse {
 /**
  * Check if a given object implements the FulfillmentResponse interface.
  */
-export function instanceOfFulfillmentResponse(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "fulfillmentId" in value;
-    isInstance = isInstance && "path" in value;
-
-    return isInstance;
+export function instanceOfFulfillmentResponse(value: object): value is FulfillmentResponse {
+    if (!('fulfillmentId' in value) || value['fulfillmentId'] === undefined) return false;
+    if (!('path' in value) || value['path'] === undefined) return false;
+    return true;
 }
 
 export function FulfillmentResponseFromJSON(json: any): FulfillmentResponse {
@@ -49,7 +47,7 @@ export function FulfillmentResponseFromJSON(json: any): FulfillmentResponse {
 }
 
 export function FulfillmentResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): FulfillmentResponse {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -59,17 +57,19 @@ export function FulfillmentResponseFromJSONTyped(json: any, ignoreDiscriminator:
     };
 }
 
-export function FulfillmentResponseToJSON(value?: FulfillmentResponse | null): any {
-    if (value === undefined) {
-        return undefined;
+export function FulfillmentResponseToJSON(json: any): FulfillmentResponse {
+    return FulfillmentResponseToJSONTyped(json, false);
+}
+
+export function FulfillmentResponseToJSONTyped(value?: FulfillmentResponse | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'fulfillmentId': value.fulfillmentId,
-        'path': value.path,
+        'fulfillmentId': value['fulfillmentId'],
+        'path': value['path'],
     };
 }
 

@@ -12,18 +12,20 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { ColumnDataType } from './ColumnDataType';
 import {
     ColumnDataTypeFromJSON,
     ColumnDataTypeFromJSONTyped,
     ColumnDataTypeToJSON,
+    ColumnDataTypeToJSONTyped,
 } from './ColumnDataType';
 import type { ForeignKeyRef } from './ForeignKeyRef';
 import {
     ForeignKeyRefFromJSON,
     ForeignKeyRefFromJSONTyped,
     ForeignKeyRefToJSON,
+    ForeignKeyRefToJSONTyped,
 } from './ForeignKeyRef';
 
 /**
@@ -70,15 +72,15 @@ export interface ColumnDef {
     required?: boolean;
 }
 
+
+
 /**
  * Check if a given object implements the ColumnDef interface.
  */
-export function instanceOfColumnDef(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "dataType" in value;
-
-    return isInstance;
+export function instanceOfColumnDef(value: object): value is ColumnDef {
+    if (!('name' in value) || value['name'] === undefined) return false;
+    if (!('dataType' in value) || value['dataType'] === undefined) return false;
+    return true;
 }
 
 export function ColumnDefFromJSON(json: any): ColumnDef {
@@ -86,35 +88,37 @@ export function ColumnDefFromJSON(json: any): ColumnDef {
 }
 
 export function ColumnDefFromJSONTyped(json: any, ignoreDiscriminator: boolean): ColumnDef {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'id': !exists(json, 'id') ? undefined : json['id'],
+        'id': json['id'] == null ? undefined : json['id'],
         'name': json['name'],
         'dataType': ColumnDataTypeFromJSON(json['dataType']),
-        'description': !exists(json, 'description') ? undefined : json['description'],
-        'foreignKey': !exists(json, 'foreignKey') ? undefined : ForeignKeyRefFromJSON(json['foreignKey']),
-        'required': !exists(json, 'required') ? undefined : json['required'],
+        'description': json['description'] == null ? undefined : json['description'],
+        'foreignKey': json['foreignKey'] == null ? undefined : ForeignKeyRefFromJSON(json['foreignKey']),
+        'required': json['required'] == null ? undefined : json['required'],
     };
 }
 
-export function ColumnDefToJSON(value?: ColumnDef | null): any {
-    if (value === undefined) {
-        return undefined;
+export function ColumnDefToJSON(json: any): ColumnDef {
+    return ColumnDefToJSONTyped(json, false);
+}
+
+export function ColumnDefToJSONTyped(value?: ColumnDef | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'id': value.id,
-        'name': value.name,
-        'dataType': ColumnDataTypeToJSON(value.dataType),
-        'description': value.description,
-        'foreignKey': ForeignKeyRefToJSON(value.foreignKey),
-        'required': value.required,
+        'id': value['id'],
+        'name': value['name'],
+        'dataType': ColumnDataTypeToJSON(value['dataType']),
+        'description': value['description'],
+        'foreignKey': ForeignKeyRefToJSON(value['foreignKey']),
+        'required': value['required'],
     };
 }
 

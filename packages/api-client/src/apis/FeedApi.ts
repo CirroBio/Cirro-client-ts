@@ -12,33 +12,42 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  Discussion,
-  DiscussionInput,
-  EntityType,
-  MessageInput,
-  PaginatedResponseDiscussion,
-  PaginatedResponseMessage,
-  SortOrder,
-} from '../models/index';
 import {
+    type Discussion,
     DiscussionFromJSON,
     DiscussionToJSON,
+} from '../models/Discussion';
+import {
+    type DiscussionInput,
     DiscussionInputFromJSON,
     DiscussionInputToJSON,
+} from '../models/DiscussionInput';
+import {
+    type EntityType,
     EntityTypeFromJSON,
     EntityTypeToJSON,
+} from '../models/EntityType';
+import {
+    type MessageInput,
     MessageInputFromJSON,
     MessageInputToJSON,
+} from '../models/MessageInput';
+import {
+    type PaginatedResponseDiscussion,
     PaginatedResponseDiscussionFromJSON,
     PaginatedResponseDiscussionToJSON,
+} from '../models/PaginatedResponseDiscussion';
+import {
+    type PaginatedResponseMessage,
     PaginatedResponseMessageFromJSON,
     PaginatedResponseMessageToJSON,
+} from '../models/PaginatedResponseMessage';
+import {
+    type SortOrder,
     SortOrderFromJSON,
     SortOrderToJSON,
-} from '../models/index';
+} from '../models/SortOrder';
 
 export interface CreateDiscussionRequest {
     discussionInput: DiscussionInput;
@@ -95,12 +104,14 @@ export interface UpdateMessageRequest {
 export class FeedApi extends runtime.BaseAPI {
 
     /**
-     * Creates a new discussion for an entity
-     * Create a discussion
+     * Creates request options for createDiscussion without sending the request
      */
-    async createDiscussionRaw(requestParameters: CreateDiscussionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Discussion>> {
-        if (requestParameters.discussionInput === null || requestParameters.discussionInput === undefined) {
-            throw new runtime.RequiredError('discussionInput','Required parameter requestParameters.discussionInput was null or undefined when calling createDiscussion.');
+    async createDiscussionRequestOpts(requestParameters: CreateDiscussionRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['discussionInput'] == null) {
+            throw new runtime.RequiredError(
+                'discussionInput',
+                'Required parameter "discussionInput" was null or undefined when calling createDiscussion().'
+            );
         }
 
         const queryParameters: any = {};
@@ -117,13 +128,25 @@ export class FeedApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/discussions`,
+
+        let urlPath = `/discussions`;
+
+        return {
+            path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: DiscussionInputToJSON(requestParameters.discussionInput),
-        }, initOverrides);
+            body: DiscussionInputToJSON(requestParameters['discussionInput']),
+        };
+    }
+
+    /**
+     * Creates a new discussion for an entity
+     * Create a discussion
+     */
+    async createDiscussionRaw(requestParameters: CreateDiscussionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Discussion>> {
+        const requestOptions = await this.createDiscussionRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => DiscussionFromJSON(jsonValue));
     }
@@ -138,12 +161,14 @@ export class FeedApi extends runtime.BaseAPI {
     }
 
     /**
-     * Deletes an existing discussion and all associated messages
-     * Delete a discussion
+     * Creates request options for deleteDiscussion without sending the request
      */
-    async deleteDiscussionRaw(requestParameters: DeleteDiscussionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.discussionId === null || requestParameters.discussionId === undefined) {
-            throw new runtime.RequiredError('discussionId','Required parameter requestParameters.discussionId was null or undefined when calling deleteDiscussion.');
+    async deleteDiscussionRequestOpts(requestParameters: DeleteDiscussionRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['discussionId'] == null) {
+            throw new runtime.RequiredError(
+                'discussionId',
+                'Required parameter "discussionId" was null or undefined when calling deleteDiscussion().'
+            );
         }
 
         const queryParameters: any = {};
@@ -158,12 +183,25 @@ export class FeedApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/discussions/{discussionId}`.replace(`{${"discussionId"}}`, encodeURIComponent(String(requestParameters.discussionId))),
+
+        let urlPath = `/discussions/{discussionId}`;
+        urlPath = urlPath.replace('{discussionId}', encodeURIComponent(String(requestParameters['discussionId'])));
+
+        return {
+            path: urlPath,
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Deletes an existing discussion and all associated messages
+     * Delete a discussion
+     */
+    async deleteDiscussionRaw(requestParameters: DeleteDiscussionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.deleteDiscussionRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -177,16 +215,21 @@ export class FeedApi extends runtime.BaseAPI {
     }
 
     /**
-     * Deletes a message from a discussion
-     * Delete a message
+     * Creates request options for deleteMessage without sending the request
      */
-    async deleteMessageRaw(requestParameters: DeleteMessageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.discussionId === null || requestParameters.discussionId === undefined) {
-            throw new runtime.RequiredError('discussionId','Required parameter requestParameters.discussionId was null or undefined when calling deleteMessage.');
+    async deleteMessageRequestOpts(requestParameters: DeleteMessageRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['discussionId'] == null) {
+            throw new runtime.RequiredError(
+                'discussionId',
+                'Required parameter "discussionId" was null or undefined when calling deleteMessage().'
+            );
         }
 
-        if (requestParameters.messageId === null || requestParameters.messageId === undefined) {
-            throw new runtime.RequiredError('messageId','Required parameter requestParameters.messageId was null or undefined when calling deleteMessage.');
+        if (requestParameters['messageId'] == null) {
+            throw new runtime.RequiredError(
+                'messageId',
+                'Required parameter "messageId" was null or undefined when calling deleteMessage().'
+            );
         }
 
         const queryParameters: any = {};
@@ -201,12 +244,26 @@ export class FeedApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/discussions/{discussionId}/messages/{messageId}`.replace(`{${"discussionId"}}`, encodeURIComponent(String(requestParameters.discussionId))).replace(`{${"messageId"}}`, encodeURIComponent(String(requestParameters.messageId))),
+
+        let urlPath = `/discussions/{discussionId}/messages/{messageId}`;
+        urlPath = urlPath.replace('{discussionId}', encodeURIComponent(String(requestParameters['discussionId'])));
+        urlPath = urlPath.replace('{messageId}', encodeURIComponent(String(requestParameters['messageId'])));
+
+        return {
+            path: urlPath,
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Deletes a message from a discussion
+     * Delete a message
+     */
+    async deleteMessageRaw(requestParameters: DeleteMessageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.deleteMessageRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -220,12 +277,14 @@ export class FeedApi extends runtime.BaseAPI {
     }
 
     /**
-     * Retrieves a discussion by its ID
-     * Get a discussion
+     * Creates request options for getDiscussion without sending the request
      */
-    async getDiscussionRaw(requestParameters: GetDiscussionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Discussion>> {
-        if (requestParameters.discussionId === null || requestParameters.discussionId === undefined) {
-            throw new runtime.RequiredError('discussionId','Required parameter requestParameters.discussionId was null or undefined when calling getDiscussion.');
+    async getDiscussionRequestOpts(requestParameters: GetDiscussionRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['discussionId'] == null) {
+            throw new runtime.RequiredError(
+                'discussionId',
+                'Required parameter "discussionId" was null or undefined when calling getDiscussion().'
+            );
         }
 
         const queryParameters: any = {};
@@ -240,12 +299,25 @@ export class FeedApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/discussions/{discussionId}`.replace(`{${"discussionId"}}`, encodeURIComponent(String(requestParameters.discussionId))),
+
+        let urlPath = `/discussions/{discussionId}`;
+        urlPath = urlPath.replace('{discussionId}', encodeURIComponent(String(requestParameters['discussionId'])));
+
+        return {
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Retrieves a discussion by its ID
+     * Get a discussion
+     */
+    async getDiscussionRaw(requestParameters: GetDiscussionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Discussion>> {
+        const requestOptions = await this.getDiscussionRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => DiscussionFromJSON(jsonValue));
     }
@@ -260,38 +332,43 @@ export class FeedApi extends runtime.BaseAPI {
     }
 
     /**
-     * Retrieves a paginated list of discussions for a specific entity type and ID
-     * Get discussions for an entity
+     * Creates request options for getDiscussionsForEntity without sending the request
      */
-    async getDiscussionsForEntityRaw(requestParameters: GetDiscussionsForEntityRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PaginatedResponseDiscussion>> {
-        if (requestParameters.entityType === null || requestParameters.entityType === undefined) {
-            throw new runtime.RequiredError('entityType','Required parameter requestParameters.entityType was null or undefined when calling getDiscussionsForEntity.');
+    async getDiscussionsForEntityRequestOpts(requestParameters: GetDiscussionsForEntityRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['entityType'] == null) {
+            throw new runtime.RequiredError(
+                'entityType',
+                'Required parameter "entityType" was null or undefined when calling getDiscussionsForEntity().'
+            );
         }
 
-        if (requestParameters.entityId === null || requestParameters.entityId === undefined) {
-            throw new runtime.RequiredError('entityId','Required parameter requestParameters.entityId was null or undefined when calling getDiscussionsForEntity.');
+        if (requestParameters['entityId'] == null) {
+            throw new runtime.RequiredError(
+                'entityId',
+                'Required parameter "entityId" was null or undefined when calling getDiscussionsForEntity().'
+            );
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters.entityType !== undefined) {
-            queryParameters['entityType'] = requestParameters.entityType;
+        if (requestParameters['entityType'] != null) {
+            queryParameters['entityType'] = requestParameters['entityType'];
         }
 
-        if (requestParameters.entityId !== undefined) {
-            queryParameters['entityId'] = requestParameters.entityId;
+        if (requestParameters['entityId'] != null) {
+            queryParameters['entityId'] = requestParameters['entityId'];
         }
 
-        if (requestParameters.nextToken !== undefined) {
-            queryParameters['nextToken'] = requestParameters.nextToken;
+        if (requestParameters['nextToken'] != null) {
+            queryParameters['nextToken'] = requestParameters['nextToken'];
         }
 
-        if (requestParameters.limit !== undefined) {
-            queryParameters['limit'] = requestParameters.limit;
+        if (requestParameters['limit'] != null) {
+            queryParameters['limit'] = requestParameters['limit'];
         }
 
-        if (requestParameters.order !== undefined) {
-            queryParameters['order'] = requestParameters.order;
+        if (requestParameters['order'] != null) {
+            queryParameters['order'] = requestParameters['order'];
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -304,12 +381,24 @@ export class FeedApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/discussions`,
+
+        let urlPath = `/discussions`;
+
+        return {
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Retrieves a paginated list of discussions for a specific entity type and ID
+     * Get discussions for an entity
+     */
+    async getDiscussionsForEntityRaw(requestParameters: GetDiscussionsForEntityRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PaginatedResponseDiscussion>> {
+        const requestOptions = await this.getDiscussionsForEntityRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => PaginatedResponseDiscussionFromJSON(jsonValue));
     }
@@ -324,30 +413,32 @@ export class FeedApi extends runtime.BaseAPI {
     }
 
     /**
-     * Retrieves all messages associated with a specific discussion
-     * Get messages for a discussion
+     * Creates request options for getMessagesForDiscussion without sending the request
      */
-    async getMessagesForDiscussionRaw(requestParameters: GetMessagesForDiscussionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PaginatedResponseMessage>> {
-        if (requestParameters.discussionId === null || requestParameters.discussionId === undefined) {
-            throw new runtime.RequiredError('discussionId','Required parameter requestParameters.discussionId was null or undefined when calling getMessagesForDiscussion.');
+    async getMessagesForDiscussionRequestOpts(requestParameters: GetMessagesForDiscussionRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['discussionId'] == null) {
+            throw new runtime.RequiredError(
+                'discussionId',
+                'Required parameter "discussionId" was null or undefined when calling getMessagesForDiscussion().'
+            );
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters.nextToken !== undefined) {
-            queryParameters['nextToken'] = requestParameters.nextToken;
+        if (requestParameters['nextToken'] != null) {
+            queryParameters['nextToken'] = requestParameters['nextToken'];
         }
 
-        if (requestParameters.limit !== undefined) {
-            queryParameters['limit'] = requestParameters.limit;
+        if (requestParameters['limit'] != null) {
+            queryParameters['limit'] = requestParameters['limit'];
         }
 
-        if (requestParameters.threadId !== undefined) {
-            queryParameters['threadId'] = requestParameters.threadId;
+        if (requestParameters['threadId'] != null) {
+            queryParameters['threadId'] = requestParameters['threadId'];
         }
 
-        if (requestParameters.order !== undefined) {
-            queryParameters['order'] = requestParameters.order;
+        if (requestParameters['order'] != null) {
+            queryParameters['order'] = requestParameters['order'];
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -360,12 +451,25 @@ export class FeedApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/discussions/{discussionId}/messages`.replace(`{${"discussionId"}}`, encodeURIComponent(String(requestParameters.discussionId))),
+
+        let urlPath = `/discussions/{discussionId}/messages`;
+        urlPath = urlPath.replace('{discussionId}', encodeURIComponent(String(requestParameters['discussionId'])));
+
+        return {
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Retrieves all messages associated with a specific discussion
+     * Get messages for a discussion
+     */
+    async getMessagesForDiscussionRaw(requestParameters: GetMessagesForDiscussionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PaginatedResponseMessage>> {
+        const requestOptions = await this.getMessagesForDiscussionRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => PaginatedResponseMessageFromJSON(jsonValue));
     }
@@ -380,16 +484,21 @@ export class FeedApi extends runtime.BaseAPI {
     }
 
     /**
-     * Posts a new message to a discussion
-     * Post a message
+     * Creates request options for postMessage without sending the request
      */
-    async postMessageRaw(requestParameters: PostMessageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.discussionId === null || requestParameters.discussionId === undefined) {
-            throw new runtime.RequiredError('discussionId','Required parameter requestParameters.discussionId was null or undefined when calling postMessage.');
+    async postMessageRequestOpts(requestParameters: PostMessageRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['discussionId'] == null) {
+            throw new runtime.RequiredError(
+                'discussionId',
+                'Required parameter "discussionId" was null or undefined when calling postMessage().'
+            );
         }
 
-        if (requestParameters.messageInput === null || requestParameters.messageInput === undefined) {
-            throw new runtime.RequiredError('messageInput','Required parameter requestParameters.messageInput was null or undefined when calling postMessage.');
+        if (requestParameters['messageInput'] == null) {
+            throw new runtime.RequiredError(
+                'messageInput',
+                'Required parameter "messageInput" was null or undefined when calling postMessage().'
+            );
         }
 
         const queryParameters: any = {};
@@ -406,13 +515,26 @@ export class FeedApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/discussions/{discussionId}/messages`.replace(`{${"discussionId"}}`, encodeURIComponent(String(requestParameters.discussionId))),
+
+        let urlPath = `/discussions/{discussionId}/messages`;
+        urlPath = urlPath.replace('{discussionId}', encodeURIComponent(String(requestParameters['discussionId'])));
+
+        return {
+            path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: MessageInputToJSON(requestParameters.messageInput),
-        }, initOverrides);
+            body: MessageInputToJSON(requestParameters['messageInput']),
+        };
+    }
+
+    /**
+     * Posts a new message to a discussion
+     * Post a message
+     */
+    async postMessageRaw(requestParameters: PostMessageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.postMessageRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -426,16 +548,21 @@ export class FeedApi extends runtime.BaseAPI {
     }
 
     /**
-     * Updates an existing discussion with new details
-     * Update a discussion
+     * Creates request options for updateDiscussion without sending the request
      */
-    async updateDiscussionRaw(requestParameters: UpdateDiscussionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.discussionId === null || requestParameters.discussionId === undefined) {
-            throw new runtime.RequiredError('discussionId','Required parameter requestParameters.discussionId was null or undefined when calling updateDiscussion.');
+    async updateDiscussionRequestOpts(requestParameters: UpdateDiscussionRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['discussionId'] == null) {
+            throw new runtime.RequiredError(
+                'discussionId',
+                'Required parameter "discussionId" was null or undefined when calling updateDiscussion().'
+            );
         }
 
-        if (requestParameters.discussionInput === null || requestParameters.discussionInput === undefined) {
-            throw new runtime.RequiredError('discussionInput','Required parameter requestParameters.discussionInput was null or undefined when calling updateDiscussion.');
+        if (requestParameters['discussionInput'] == null) {
+            throw new runtime.RequiredError(
+                'discussionInput',
+                'Required parameter "discussionInput" was null or undefined when calling updateDiscussion().'
+            );
         }
 
         const queryParameters: any = {};
@@ -452,13 +579,26 @@ export class FeedApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/discussions/{discussionId}`.replace(`{${"discussionId"}}`, encodeURIComponent(String(requestParameters.discussionId))),
+
+        let urlPath = `/discussions/{discussionId}`;
+        urlPath = urlPath.replace('{discussionId}', encodeURIComponent(String(requestParameters['discussionId'])));
+
+        return {
+            path: urlPath,
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: DiscussionInputToJSON(requestParameters.discussionInput),
-        }, initOverrides);
+            body: DiscussionInputToJSON(requestParameters['discussionInput']),
+        };
+    }
+
+    /**
+     * Updates an existing discussion with new details
+     * Update a discussion
+     */
+    async updateDiscussionRaw(requestParameters: UpdateDiscussionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.updateDiscussionRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -472,20 +612,28 @@ export class FeedApi extends runtime.BaseAPI {
     }
 
     /**
-     * Updates an existing message in a discussion
-     * Update a message
+     * Creates request options for updateMessage without sending the request
      */
-    async updateMessageRaw(requestParameters: UpdateMessageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.discussionId === null || requestParameters.discussionId === undefined) {
-            throw new runtime.RequiredError('discussionId','Required parameter requestParameters.discussionId was null or undefined when calling updateMessage.');
+    async updateMessageRequestOpts(requestParameters: UpdateMessageRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['discussionId'] == null) {
+            throw new runtime.RequiredError(
+                'discussionId',
+                'Required parameter "discussionId" was null or undefined when calling updateMessage().'
+            );
         }
 
-        if (requestParameters.messageId === null || requestParameters.messageId === undefined) {
-            throw new runtime.RequiredError('messageId','Required parameter requestParameters.messageId was null or undefined when calling updateMessage.');
+        if (requestParameters['messageId'] == null) {
+            throw new runtime.RequiredError(
+                'messageId',
+                'Required parameter "messageId" was null or undefined when calling updateMessage().'
+            );
         }
 
-        if (requestParameters.messageInput === null || requestParameters.messageInput === undefined) {
-            throw new runtime.RequiredError('messageInput','Required parameter requestParameters.messageInput was null or undefined when calling updateMessage.');
+        if (requestParameters['messageInput'] == null) {
+            throw new runtime.RequiredError(
+                'messageInput',
+                'Required parameter "messageInput" was null or undefined when calling updateMessage().'
+            );
         }
 
         const queryParameters: any = {};
@@ -502,13 +650,27 @@ export class FeedApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/discussions/{discussionId}/messages/{messageId}`.replace(`{${"discussionId"}}`, encodeURIComponent(String(requestParameters.discussionId))).replace(`{${"messageId"}}`, encodeURIComponent(String(requestParameters.messageId))),
+
+        let urlPath = `/discussions/{discussionId}/messages/{messageId}`;
+        urlPath = urlPath.replace('{discussionId}', encodeURIComponent(String(requestParameters['discussionId'])));
+        urlPath = urlPath.replace('{messageId}', encodeURIComponent(String(requestParameters['messageId'])));
+
+        return {
+            path: urlPath,
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: MessageInputToJSON(requestParameters.messageInput),
-        }, initOverrides);
+            body: MessageInputToJSON(requestParameters['messageInput']),
+        };
+    }
+
+    /**
+     * Updates an existing message in a discussion
+     * Update a message
+     */
+    async updateMessageRaw(requestParameters: UpdateMessageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.updateMessageRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }

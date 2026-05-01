@@ -12,12 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { ProjectRole } from './ProjectRole';
 import {
     ProjectRoleFromJSON,
     ProjectRoleFromJSONTyped,
     ProjectRoleToJSON,
+    ProjectRoleToJSONTyped,
 } from './ProjectRole';
 
 /**
@@ -46,15 +47,15 @@ export interface SetUserProjectRoleRequest {
     suppressNotification?: boolean;
 }
 
+
+
 /**
  * Check if a given object implements the SetUserProjectRoleRequest interface.
  */
-export function instanceOfSetUserProjectRoleRequest(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "username" in value;
-    isInstance = isInstance && "role" in value;
-
-    return isInstance;
+export function instanceOfSetUserProjectRoleRequest(value: object): value is SetUserProjectRoleRequest {
+    if (!('username' in value) || value['username'] === undefined) return false;
+    if (!('role' in value) || value['role'] === undefined) return false;
+    return true;
 }
 
 export function SetUserProjectRoleRequestFromJSON(json: any): SetUserProjectRoleRequest {
@@ -62,29 +63,31 @@ export function SetUserProjectRoleRequestFromJSON(json: any): SetUserProjectRole
 }
 
 export function SetUserProjectRoleRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): SetUserProjectRoleRequest {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
         'username': json['username'],
         'role': ProjectRoleFromJSON(json['role']),
-        'suppressNotification': !exists(json, 'suppressNotification') ? undefined : json['suppressNotification'],
+        'suppressNotification': json['suppressNotification'] == null ? undefined : json['suppressNotification'],
     };
 }
 
-export function SetUserProjectRoleRequestToJSON(value?: SetUserProjectRoleRequest | null): any {
-    if (value === undefined) {
-        return undefined;
+export function SetUserProjectRoleRequestToJSON(json: any): SetUserProjectRoleRequest {
+    return SetUserProjectRoleRequestToJSONTyped(json, false);
+}
+
+export function SetUserProjectRoleRequestToJSONTyped(value?: SetUserProjectRoleRequest | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'username': value.username,
-        'role': ProjectRoleToJSON(value.role),
-        'suppressNotification': value.suppressNotification,
+        'username': value['username'],
+        'role': ProjectRoleToJSON(value['role']),
+        'suppressNotification': value['suppressNotification'],
     };
 }
 

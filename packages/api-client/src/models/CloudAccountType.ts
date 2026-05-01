@@ -23,6 +23,17 @@ export enum CloudAccountType {
 }
 
 
+export function instanceOfCloudAccountType(value: any): boolean {
+    for (const key in CloudAccountType) {
+        if (Object.prototype.hasOwnProperty.call(CloudAccountType, key)) {
+            if (CloudAccountType[key as keyof typeof CloudAccountType] === value) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 export function CloudAccountTypeFromJSON(json: any): CloudAccountType {
     return CloudAccountTypeFromJSONTyped(json, false);
 }
@@ -33,5 +44,9 @@ export function CloudAccountTypeFromJSONTyped(json: any, ignoreDiscriminator: bo
 
 export function CloudAccountTypeToJSON(value?: CloudAccountType | null): any {
     return value as any;
+}
+
+export function CloudAccountTypeToJSONTyped(value: any, ignoreDiscriminator: boolean): CloudAccountType {
+    return value as CloudAccountType;
 }
 

@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -48,14 +48,12 @@ export interface ReferenceType {
 /**
  * Check if a given object implements the ReferenceType interface.
  */
-export function instanceOfReferenceType(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "description" in value;
-    isInstance = isInstance && "directory" in value;
-    isInstance = isInstance && "validation" in value;
-
-    return isInstance;
+export function instanceOfReferenceType(value: object): value is ReferenceType {
+    if (!('name' in value) || value['name'] === undefined) return false;
+    if (!('description' in value) || value['description'] === undefined) return false;
+    if (!('directory' in value) || value['directory'] === undefined) return false;
+    if (!('validation' in value) || value['validation'] === undefined) return false;
+    return true;
 }
 
 export function ReferenceTypeFromJSON(json: any): ReferenceType {
@@ -63,7 +61,7 @@ export function ReferenceTypeFromJSON(json: any): ReferenceType {
 }
 
 export function ReferenceTypeFromJSONTyped(json: any, ignoreDiscriminator: boolean): ReferenceType {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -75,19 +73,21 @@ export function ReferenceTypeFromJSONTyped(json: any, ignoreDiscriminator: boole
     };
 }
 
-export function ReferenceTypeToJSON(value?: ReferenceType | null): any {
-    if (value === undefined) {
-        return undefined;
+export function ReferenceTypeToJSON(json: any): ReferenceType {
+    return ReferenceTypeToJSONTyped(json, false);
+}
+
+export function ReferenceTypeToJSONTyped(value?: ReferenceType | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'name': value.name,
-        'description': value.description,
-        'directory': value.directory,
-        'validation': value.validation,
+        'name': value['name'],
+        'description': value['description'],
+        'directory': value['directory'],
+        'validation': value['validation'],
     };
 }
 

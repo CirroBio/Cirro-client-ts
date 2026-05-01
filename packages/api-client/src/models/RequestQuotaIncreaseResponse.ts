@@ -12,12 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { CloudQuota } from './CloudQuota';
 import {
     CloudQuotaFromJSON,
     CloudQuotaFromJSONTyped,
     CloudQuotaToJSON,
+    CloudQuotaToJSONTyped,
 } from './CloudQuota';
 
 /**
@@ -37,11 +38,9 @@ export interface RequestQuotaIncreaseResponse {
 /**
  * Check if a given object implements the RequestQuotaIncreaseResponse interface.
  */
-export function instanceOfRequestQuotaIncreaseResponse(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "quota" in value;
-
-    return isInstance;
+export function instanceOfRequestQuotaIncreaseResponse(value: object): value is RequestQuotaIncreaseResponse {
+    if (!('quota' in value) || value['quota'] === undefined) return false;
+    return true;
 }
 
 export function RequestQuotaIncreaseResponseFromJSON(json: any): RequestQuotaIncreaseResponse {
@@ -49,7 +48,7 @@ export function RequestQuotaIncreaseResponseFromJSON(json: any): RequestQuotaInc
 }
 
 export function RequestQuotaIncreaseResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): RequestQuotaIncreaseResponse {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -58,16 +57,18 @@ export function RequestQuotaIncreaseResponseFromJSONTyped(json: any, ignoreDiscr
     };
 }
 
-export function RequestQuotaIncreaseResponseToJSON(value?: RequestQuotaIncreaseResponse | null): any {
-    if (value === undefined) {
-        return undefined;
+export function RequestQuotaIncreaseResponseToJSON(json: any): RequestQuotaIncreaseResponse {
+    return RequestQuotaIncreaseResponseToJSONTyped(json, false);
+}
+
+export function RequestQuotaIncreaseResponseToJSONTyped(value?: RequestQuotaIncreaseResponse | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'quota': CloudQuotaToJSON(value.quota),
+        'quota': CloudQuotaToJSON(value['quota']),
     };
 }
 

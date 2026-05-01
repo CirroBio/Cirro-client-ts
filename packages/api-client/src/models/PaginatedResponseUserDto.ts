@@ -12,12 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { User } from './User';
 import {
     UserFromJSON,
     UserFromJSONTyped,
     UserToJSON,
+    UserToJSONTyped,
 } from './User';
 
 /**
@@ -43,12 +44,10 @@ export interface PaginatedResponseUserDto {
 /**
  * Check if a given object implements the PaginatedResponseUserDto interface.
  */
-export function instanceOfPaginatedResponseUserDto(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "data" in value;
-    isInstance = isInstance && "nextToken" in value;
-
-    return isInstance;
+export function instanceOfPaginatedResponseUserDto(value: object): value is PaginatedResponseUserDto {
+    if (!('data' in value) || value['data'] === undefined) return false;
+    if (!('nextToken' in value) || value['nextToken'] === undefined) return false;
+    return true;
 }
 
 export function PaginatedResponseUserDtoFromJSON(json: any): PaginatedResponseUserDto {
@@ -56,7 +55,7 @@ export function PaginatedResponseUserDtoFromJSON(json: any): PaginatedResponseUs
 }
 
 export function PaginatedResponseUserDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): PaginatedResponseUserDto {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -66,17 +65,19 @@ export function PaginatedResponseUserDtoFromJSONTyped(json: any, ignoreDiscrimin
     };
 }
 
-export function PaginatedResponseUserDtoToJSON(value?: PaginatedResponseUserDto | null): any {
-    if (value === undefined) {
-        return undefined;
+export function PaginatedResponseUserDtoToJSON(json: any): PaginatedResponseUserDto {
+    return PaginatedResponseUserDtoToJSONTyped(json, false);
+}
+
+export function PaginatedResponseUserDtoToJSONTyped(value?: PaginatedResponseUserDto | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'data': ((value.data as Array<any>).map(UserToJSON)),
-        'nextToken': value.nextToken,
+        'data': ((value['data'] as Array<any>).map(UserToJSON)),
+        'nextToken': value['nextToken'],
     };
 }
 

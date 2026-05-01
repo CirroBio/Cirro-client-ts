@@ -12,12 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { SheetDetail } from './SheetDetail';
 import {
     SheetDetailFromJSON,
     SheetDetailFromJSONTyped,
     SheetDetailToJSON,
+    SheetDetailToJSONTyped,
 } from './SheetDetail';
 
 /**
@@ -27,7 +28,7 @@ import {
  */
 export interface SheetUpdateResponse {
     /**
-     * 
+     * Updated sheet state after the PUT completes. For dry-run, reflects the current (unchanged) state.
      * @type {SheetDetail}
      * @memberof SheetUpdateResponse
      */
@@ -38,15 +39,19 @@ export interface SheetUpdateResponse {
      * @memberof SheetUpdateResponse
      */
     sqlStatements?: Array<string>;
+    /**
+     * Human-readable summary of the changes applied (or that would be applied for dryRun). Suitable for showing to users unfamiliar with SQL. Empty for metadata-only and VIEW updates.
+     * @type {Array<string>}
+     * @memberof SheetUpdateResponse
+     */
+    changes?: Array<string>;
 }
 
 /**
  * Check if a given object implements the SheetUpdateResponse interface.
  */
-export function instanceOfSheetUpdateResponse(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfSheetUpdateResponse(value: object): value is SheetUpdateResponse {
+    return true;
 }
 
 export function SheetUpdateResponseFromJSON(json: any): SheetUpdateResponse {
@@ -54,27 +59,31 @@ export function SheetUpdateResponseFromJSON(json: any): SheetUpdateResponse {
 }
 
 export function SheetUpdateResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): SheetUpdateResponse {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'sheet': !exists(json, 'sheet') ? undefined : SheetDetailFromJSON(json['sheet']),
-        'sqlStatements': !exists(json, 'sqlStatements') ? undefined : json['sqlStatements'],
+        'sheet': json['sheet'] == null ? undefined : SheetDetailFromJSON(json['sheet']),
+        'sqlStatements': json['sqlStatements'] == null ? undefined : json['sqlStatements'],
+        'changes': json['changes'] == null ? undefined : json['changes'],
     };
 }
 
-export function SheetUpdateResponseToJSON(value?: SheetUpdateResponse | null): any {
-    if (value === undefined) {
-        return undefined;
+export function SheetUpdateResponseToJSON(json: any): SheetUpdateResponse {
+    return SheetUpdateResponseToJSONTyped(json, false);
+}
+
+export function SheetUpdateResponseToJSONTyped(value?: SheetUpdateResponse | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'sheet': SheetDetailToJSON(value.sheet),
-        'sqlStatements': value.sqlStatements,
+        'sheet': SheetDetailToJSON(value['sheet']),
+        'sqlStatements': value['sqlStatements'],
+        'changes': value['changes'],
     };
 }
 

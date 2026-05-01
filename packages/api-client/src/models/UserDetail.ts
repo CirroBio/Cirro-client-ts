@@ -12,19 +12,21 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
-import type { UserProjectAssignment } from './UserProjectAssignment';
-import {
-    UserProjectAssignmentFromJSON,
-    UserProjectAssignmentFromJSONTyped,
-    UserProjectAssignmentToJSON,
-} from './UserProjectAssignment';
+import { mapValues } from '../runtime';
 import type { UserSettings } from './UserSettings';
 import {
     UserSettingsFromJSON,
     UserSettingsFromJSONTyped,
     UserSettingsToJSON,
+    UserSettingsToJSONTyped,
 } from './UserSettings';
+import type { UserProjectAssignment } from './UserProjectAssignment';
+import {
+    UserProjectAssignmentFromJSON,
+    UserProjectAssignmentFromJSONTyped,
+    UserProjectAssignmentToJSON,
+    UserProjectAssignmentToJSONTyped,
+} from './UserProjectAssignment';
 
 /**
  * 
@@ -122,21 +124,19 @@ export interface UserDetail {
 /**
  * Check if a given object implements the UserDetail interface.
  */
-export function instanceOfUserDetail(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "username" in value;
-    isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "phone" in value;
-    isInstance = isInstance && "email" in value;
-    isInstance = isInstance && "organization" in value;
-    isInstance = isInstance && "jobTitle" in value;
-    isInstance = isInstance && "department" in value;
-    isInstance = isInstance && "invitedBy" in value;
-    isInstance = isInstance && "projectAssignments" in value;
-    isInstance = isInstance && "globalRoles" in value;
-    isInstance = isInstance && "settings" in value;
-
-    return isInstance;
+export function instanceOfUserDetail(value: object): value is UserDetail {
+    if (!('username' in value) || value['username'] === undefined) return false;
+    if (!('name' in value) || value['name'] === undefined) return false;
+    if (!('phone' in value) || value['phone'] === undefined) return false;
+    if (!('email' in value) || value['email'] === undefined) return false;
+    if (!('organization' in value) || value['organization'] === undefined) return false;
+    if (!('jobTitle' in value) || value['jobTitle'] === undefined) return false;
+    if (!('department' in value) || value['department'] === undefined) return false;
+    if (!('invitedBy' in value) || value['invitedBy'] === undefined) return false;
+    if (!('projectAssignments' in value) || value['projectAssignments'] === undefined) return false;
+    if (!('globalRoles' in value) || value['globalRoles'] === undefined) return false;
+    if (!('settings' in value) || value['settings'] === undefined) return false;
+    return true;
 }
 
 export function UserDetailFromJSON(json: any): UserDetail {
@@ -144,7 +144,7 @@ export function UserDetailFromJSON(json: any): UserDetail {
 }
 
 export function UserDetailFromJSONTyped(json: any, ignoreDiscriminator: boolean): UserDetail {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -157,38 +157,40 @@ export function UserDetailFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'jobTitle': json['jobTitle'],
         'department': json['department'],
         'invitedBy': json['invitedBy'],
-        'signUpTime': !exists(json, 'signUpTime') ? undefined : (json['signUpTime'] === null ? null : new Date(json['signUpTime'])),
-        'lastSignedIn': !exists(json, 'lastSignedIn') ? undefined : (json['lastSignedIn'] === null ? null : new Date(json['lastSignedIn'])),
+        'signUpTime': json['signUpTime'] == null ? undefined : (new Date(json['signUpTime'])),
+        'lastSignedIn': json['lastSignedIn'] == null ? undefined : (new Date(json['lastSignedIn'])),
         'projectAssignments': ((json['projectAssignments'] as Array<any>).map(UserProjectAssignmentFromJSON)),
         'globalRoles': json['globalRoles'],
-        'groups': !exists(json, 'groups') ? undefined : json['groups'],
+        'groups': json['groups'] == null ? undefined : json['groups'],
         'settings': UserSettingsFromJSON(json['settings']),
     };
 }
 
-export function UserDetailToJSON(value?: UserDetail | null): any {
-    if (value === undefined) {
-        return undefined;
+export function UserDetailToJSON(json: any): UserDetail {
+    return UserDetailToJSONTyped(json, false);
+}
+
+export function UserDetailToJSONTyped(value?: UserDetail | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'username': value.username,
-        'name': value.name,
-        'phone': value.phone,
-        'email': value.email,
-        'organization': value.organization,
-        'jobTitle': value.jobTitle,
-        'department': value.department,
-        'invitedBy': value.invitedBy,
-        'signUpTime': value.signUpTime === undefined ? undefined : (value.signUpTime === null ? null : value.signUpTime.toISOString()),
-        'lastSignedIn': value.lastSignedIn === undefined ? undefined : (value.lastSignedIn === null ? null : value.lastSignedIn.toISOString()),
-        'projectAssignments': ((value.projectAssignments as Array<any>).map(UserProjectAssignmentToJSON)),
-        'globalRoles': value.globalRoles,
-        'groups': value.groups,
-        'settings': UserSettingsToJSON(value.settings),
+        'username': value['username'],
+        'name': value['name'],
+        'phone': value['phone'],
+        'email': value['email'],
+        'organization': value['organization'],
+        'jobTitle': value['jobTitle'],
+        'department': value['department'],
+        'invitedBy': value['invitedBy'],
+        'signUpTime': value['signUpTime'] == null ? value['signUpTime'] : value['signUpTime'].toISOString(),
+        'lastSignedIn': value['lastSignedIn'] == null ? value['lastSignedIn'] : value['lastSignedIn'].toISOString(),
+        'projectAssignments': ((value['projectAssignments'] as Array<any>).map(UserProjectAssignmentToJSON)),
+        'globalRoles': value['globalRoles'],
+        'groups': value['groups'],
+        'settings': UserSettingsToJSON(value['settings']),
     };
 }
 

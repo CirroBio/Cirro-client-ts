@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -36,12 +36,10 @@ export interface ProjectPermissionSet {
 /**
  * Check if a given object implements the ProjectPermissionSet interface.
  */
-export function instanceOfProjectPermissionSet(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "projectId" in value;
-    isInstance = isInstance && "permissions" in value;
-
-    return isInstance;
+export function instanceOfProjectPermissionSet(value: object): value is ProjectPermissionSet {
+    if (!('projectId' in value) || value['projectId'] === undefined) return false;
+    if (!('permissions' in value) || value['permissions'] === undefined) return false;
+    return true;
 }
 
 export function ProjectPermissionSetFromJSON(json: any): ProjectPermissionSet {
@@ -49,7 +47,7 @@ export function ProjectPermissionSetFromJSON(json: any): ProjectPermissionSet {
 }
 
 export function ProjectPermissionSetFromJSONTyped(json: any, ignoreDiscriminator: boolean): ProjectPermissionSet {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -59,17 +57,19 @@ export function ProjectPermissionSetFromJSONTyped(json: any, ignoreDiscriminator
     };
 }
 
-export function ProjectPermissionSetToJSON(value?: ProjectPermissionSet | null): any {
-    if (value === undefined) {
-        return undefined;
+export function ProjectPermissionSetToJSON(json: any): ProjectPermissionSet {
+    return ProjectPermissionSetToJSONTyped(json, false);
+}
+
+export function ProjectPermissionSetToJSONTyped(value?: ProjectPermissionSet | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'projectId': value.projectId,
-        'permissions': value.permissions,
+        'projectId': value['projectId'],
+        'permissions': value['permissions'],
     };
 }
 

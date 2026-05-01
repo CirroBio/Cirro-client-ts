@@ -12,18 +12,20 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { Entity } from './Entity';
 import {
     EntityFromJSON,
     EntityFromJSONTyped,
     EntityToJSON,
+    EntityToJSONTyped,
 } from './Entity';
 import type { MessageType } from './MessageType';
 import {
     MessageTypeFromJSON,
     MessageTypeFromJSONTyped,
     MessageTypeToJSON,
+    MessageTypeToJSONTyped,
 } from './MessageType';
 
 /**
@@ -88,21 +90,21 @@ export interface Message {
     updatedAt: Date;
 }
 
+
+
 /**
  * Check if a given object implements the Message interface.
  */
-export function instanceOfMessage(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "messageType" in value;
-    isInstance = isInstance && "id" in value;
-    isInstance = isInstance && "message" in value;
-    isInstance = isInstance && "links" in value;
-    isInstance = isInstance && "hasReplies" in value;
-    isInstance = isInstance && "createdBy" in value;
-    isInstance = isInstance && "createdAt" in value;
-    isInstance = isInstance && "updatedAt" in value;
-
-    return isInstance;
+export function instanceOfMessage(value: object): value is Message {
+    if (!('messageType' in value) || value['messageType'] === undefined) return false;
+    if (!('id' in value) || value['id'] === undefined) return false;
+    if (!('message' in value) || value['message'] === undefined) return false;
+    if (!('links' in value) || value['links'] === undefined) return false;
+    if (!('hasReplies' in value) || value['hasReplies'] === undefined) return false;
+    if (!('createdBy' in value) || value['createdBy'] === undefined) return false;
+    if (!('createdAt' in value) || value['createdAt'] === undefined) return false;
+    if (!('updatedAt' in value) || value['updatedAt'] === undefined) return false;
+    return true;
 }
 
 export function MessageFromJSON(json: any): Message {
@@ -110,7 +112,7 @@ export function MessageFromJSON(json: any): Message {
 }
 
 export function MessageFromJSONTyped(json: any, ignoreDiscriminator: boolean): Message {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -118,7 +120,7 @@ export function MessageFromJSONTyped(json: any, ignoreDiscriminator: boolean): M
         'messageType': MessageTypeFromJSON(json['messageType']),
         'id': json['id'],
         'message': json['message'],
-        'parentMessageId': !exists(json, 'parentMessageId') ? undefined : json['parentMessageId'],
+        'parentMessageId': json['parentMessageId'] == null ? undefined : json['parentMessageId'],
         'links': ((json['links'] as Array<any>).map(EntityFromJSON)),
         'hasReplies': json['hasReplies'],
         'createdBy': json['createdBy'],
@@ -127,24 +129,26 @@ export function MessageFromJSONTyped(json: any, ignoreDiscriminator: boolean): M
     };
 }
 
-export function MessageToJSON(value?: Message | null): any {
-    if (value === undefined) {
-        return undefined;
+export function MessageToJSON(json: any): Message {
+    return MessageToJSONTyped(json, false);
+}
+
+export function MessageToJSONTyped(value?: Message | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'messageType': MessageTypeToJSON(value.messageType),
-        'id': value.id,
-        'message': value.message,
-        'parentMessageId': value.parentMessageId,
-        'links': ((value.links as Array<any>).map(EntityToJSON)),
-        'hasReplies': value.hasReplies,
-        'createdBy': value.createdBy,
-        'createdAt': (value.createdAt.toISOString()),
-        'updatedAt': (value.updatedAt.toISOString()),
+        'messageType': MessageTypeToJSON(value['messageType']),
+        'id': value['id'],
+        'message': value['message'],
+        'parentMessageId': value['parentMessageId'],
+        'links': ((value['links'] as Array<any>).map(EntityToJSON)),
+        'hasReplies': value['hasReplies'],
+        'createdBy': value['createdBy'],
+        'createdAt': value['createdAt'].toISOString(),
+        'updatedAt': value['updatedAt'].toISOString(),
     };
 }
 

@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -36,12 +36,10 @@ export interface ViewSheetRef {
 /**
  * Check if a given object implements the ViewSheetRef interface.
  */
-export function instanceOfViewSheetRef(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "sheetId" in value;
-    isInstance = isInstance && "alias" in value;
-
-    return isInstance;
+export function instanceOfViewSheetRef(value: object): value is ViewSheetRef {
+    if (!('sheetId' in value) || value['sheetId'] === undefined) return false;
+    if (!('alias' in value) || value['alias'] === undefined) return false;
+    return true;
 }
 
 export function ViewSheetRefFromJSON(json: any): ViewSheetRef {
@@ -49,7 +47,7 @@ export function ViewSheetRefFromJSON(json: any): ViewSheetRef {
 }
 
 export function ViewSheetRefFromJSONTyped(json: any, ignoreDiscriminator: boolean): ViewSheetRef {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -59,17 +57,19 @@ export function ViewSheetRefFromJSONTyped(json: any, ignoreDiscriminator: boolea
     };
 }
 
-export function ViewSheetRefToJSON(value?: ViewSheetRef | null): any {
-    if (value === undefined) {
-        return undefined;
+export function ViewSheetRefToJSON(json: any): ViewSheetRef {
+    return ViewSheetRefToJSONTyped(json, false);
+}
+
+export function ViewSheetRefToJSONTyped(value?: ViewSheetRef | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'sheetId': value.sheetId,
-        'alias': value.alias,
+        'sheetId': value['sheetId'],
+        'alias': value['alias'],
     };
 }
 

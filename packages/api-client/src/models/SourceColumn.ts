@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -42,11 +42,9 @@ export interface SourceColumn {
 /**
  * Check if a given object implements the SourceColumn interface.
  */
-export function instanceOfSourceColumn(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "sheetColumn" in value;
-
-    return isInstance;
+export function instanceOfSourceColumn(value: object): value is SourceColumn {
+    if (!('sheetColumn' in value) || value['sheetColumn'] === undefined) return false;
+    return true;
 }
 
 export function SourceColumnFromJSON(json: any): SourceColumn {
@@ -54,29 +52,31 @@ export function SourceColumnFromJSON(json: any): SourceColumn {
 }
 
 export function SourceColumnFromJSONTyped(json: any, ignoreDiscriminator: boolean): SourceColumn {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'fileColumn': !exists(json, 'fileColumn') ? undefined : json['fileColumn'],
-        'index': !exists(json, 'index') ? undefined : json['index'],
+        'fileColumn': json['fileColumn'] == null ? undefined : json['fileColumn'],
+        'index': json['index'] == null ? undefined : json['index'],
         'sheetColumn': json['sheetColumn'],
     };
 }
 
-export function SourceColumnToJSON(value?: SourceColumn | null): any {
-    if (value === undefined) {
-        return undefined;
+export function SourceColumnToJSON(json: any): SourceColumn {
+    return SourceColumnToJSONTyped(json, false);
+}
+
+export function SourceColumnToJSONTyped(value?: SourceColumn | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'fileColumn': value.fileColumn,
-        'index': value.index,
-        'sheetColumn': value.sheetColumn,
+        'fileColumn': value['fileColumn'],
+        'index': value['index'],
+        'sheetColumn': value['sheetColumn'],
     };
 }
 

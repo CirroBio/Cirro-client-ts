@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -42,10 +42,8 @@ export interface PipelineCost {
 /**
  * Check if a given object implements the PipelineCost interface.
  */
-export function instanceOfPipelineCost(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfPipelineCost(value: object): value is PipelineCost {
+    return true;
 }
 
 export function PipelineCostFromJSON(json: any): PipelineCost {
@@ -53,29 +51,31 @@ export function PipelineCostFromJSON(json: any): PipelineCost {
 }
 
 export function PipelineCostFromJSONTyped(json: any, ignoreDiscriminator: boolean): PipelineCost {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'totalCost': !exists(json, 'totalCost') ? undefined : json['totalCost'],
-        'isEstimate': !exists(json, 'isEstimate') ? undefined : json['isEstimate'],
-        'description': !exists(json, 'description') ? undefined : json['description'],
+        'totalCost': json['totalCost'] == null ? undefined : json['totalCost'],
+        'isEstimate': json['isEstimate'] == null ? undefined : json['isEstimate'],
+        'description': json['description'] == null ? undefined : json['description'],
     };
 }
 
-export function PipelineCostToJSON(value?: PipelineCost | null): any {
-    if (value === undefined) {
-        return undefined;
+export function PipelineCostToJSON(json: any): PipelineCost {
+    return PipelineCostToJSONTyped(json, false);
+}
+
+export function PipelineCostToJSONTyped(value?: PipelineCost | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'totalCost': value.totalCost,
-        'isEstimate': value.isEstimate,
-        'description': value.description,
+        'totalCost': value['totalCost'],
+        'isEstimate': value['isEstimate'],
+        'description': value['description'],
     };
 }
 

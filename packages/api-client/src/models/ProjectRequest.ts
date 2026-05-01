@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -60,16 +60,14 @@ export interface ProjectRequest {
 /**
  * Check if a given object implements the ProjectRequest interface.
  */
-export function instanceOfProjectRequest(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "description" in value;
-    isInstance = isInstance && "classificationIds" in value;
-    isInstance = isInstance && "billingInfo" in value;
-    isInstance = isInstance && "adminUsername" in value;
-    isInstance = isInstance && "message" in value;
-
-    return isInstance;
+export function instanceOfProjectRequest(value: object): value is ProjectRequest {
+    if (!('name' in value) || value['name'] === undefined) return false;
+    if (!('description' in value) || value['description'] === undefined) return false;
+    if (!('classificationIds' in value) || value['classificationIds'] === undefined) return false;
+    if (!('billingInfo' in value) || value['billingInfo'] === undefined) return false;
+    if (!('adminUsername' in value) || value['adminUsername'] === undefined) return false;
+    if (!('message' in value) || value['message'] === undefined) return false;
+    return true;
 }
 
 export function ProjectRequestFromJSON(json: any): ProjectRequest {
@@ -77,7 +75,7 @@ export function ProjectRequestFromJSON(json: any): ProjectRequest {
 }
 
 export function ProjectRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): ProjectRequest {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -91,21 +89,23 @@ export function ProjectRequestFromJSONTyped(json: any, ignoreDiscriminator: bool
     };
 }
 
-export function ProjectRequestToJSON(value?: ProjectRequest | null): any {
-    if (value === undefined) {
-        return undefined;
+export function ProjectRequestToJSON(json: any): ProjectRequest {
+    return ProjectRequestToJSONTyped(json, false);
+}
+
+export function ProjectRequestToJSONTyped(value?: ProjectRequest | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'name': value.name,
-        'description': value.description,
-        'classificationIds': value.classificationIds,
-        'billingInfo': value.billingInfo,
-        'adminUsername': value.adminUsername,
-        'message': value.message,
+        'name': value['name'],
+        'description': value['description'],
+        'classificationIds': value['classificationIds'],
+        'billingInfo': value['billingInfo'],
+        'adminUsername': value['adminUsername'],
+        'message': value['message'],
     };
 }
 

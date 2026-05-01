@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -42,13 +42,11 @@ export interface ClassificationInput {
 /**
  * Check if a given object implements the ClassificationInput interface.
  */
-export function instanceOfClassificationInput(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "description" in value;
-    isInstance = isInstance && "requirementIds" in value;
-
-    return isInstance;
+export function instanceOfClassificationInput(value: object): value is ClassificationInput {
+    if (!('name' in value) || value['name'] === undefined) return false;
+    if (!('description' in value) || value['description'] === undefined) return false;
+    if (!('requirementIds' in value) || value['requirementIds'] === undefined) return false;
+    return true;
 }
 
 export function ClassificationInputFromJSON(json: any): ClassificationInput {
@@ -56,7 +54,7 @@ export function ClassificationInputFromJSON(json: any): ClassificationInput {
 }
 
 export function ClassificationInputFromJSONTyped(json: any, ignoreDiscriminator: boolean): ClassificationInput {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -67,18 +65,20 @@ export function ClassificationInputFromJSONTyped(json: any, ignoreDiscriminator:
     };
 }
 
-export function ClassificationInputToJSON(value?: ClassificationInput | null): any {
-    if (value === undefined) {
-        return undefined;
+export function ClassificationInputToJSON(json: any): ClassificationInput {
+    return ClassificationInputToJSONTyped(json, false);
+}
+
+export function ClassificationInputToJSONTyped(value?: ClassificationInput | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'name': value.name,
-        'description': value.description,
-        'requirementIds': value.requirementIds,
+        'name': value['name'],
+        'description': value['description'],
+        'requirementIds': value['requirementIds'],
     };
 }
 

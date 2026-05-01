@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -30,10 +30,8 @@ export interface GenerateSftpCredentialsRequest {
 /**
  * Check if a given object implements the GenerateSftpCredentialsRequest interface.
  */
-export function instanceOfGenerateSftpCredentialsRequest(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfGenerateSftpCredentialsRequest(value: object): value is GenerateSftpCredentialsRequest {
+    return true;
 }
 
 export function GenerateSftpCredentialsRequestFromJSON(json: any): GenerateSftpCredentialsRequest {
@@ -41,25 +39,27 @@ export function GenerateSftpCredentialsRequestFromJSON(json: any): GenerateSftpC
 }
 
 export function GenerateSftpCredentialsRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): GenerateSftpCredentialsRequest {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'lifetimeDays': !exists(json, 'lifetimeDays') ? undefined : json['lifetimeDays'],
+        'lifetimeDays': json['lifetimeDays'] == null ? undefined : json['lifetimeDays'],
     };
 }
 
-export function GenerateSftpCredentialsRequestToJSON(value?: GenerateSftpCredentialsRequest | null): any {
-    if (value === undefined) {
-        return undefined;
+export function GenerateSftpCredentialsRequestToJSON(json: any): GenerateSftpCredentialsRequest {
+    return GenerateSftpCredentialsRequestToJSONTyped(json, false);
+}
+
+export function GenerateSftpCredentialsRequestToJSONTyped(value?: GenerateSftpCredentialsRequest | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'lifetimeDays': value.lifetimeDays,
+        'lifetimeDays': value['lifetimeDays'],
     };
 }
 

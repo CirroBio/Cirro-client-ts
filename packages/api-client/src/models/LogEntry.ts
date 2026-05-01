@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -36,11 +36,9 @@ export interface LogEntry {
 /**
  * Check if a given object implements the LogEntry interface.
  */
-export function instanceOfLogEntry(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "message" in value;
-
-    return isInstance;
+export function instanceOfLogEntry(value: object): value is LogEntry {
+    if (!('message' in value) || value['message'] === undefined) return false;
+    return true;
 }
 
 export function LogEntryFromJSON(json: any): LogEntry {
@@ -48,27 +46,29 @@ export function LogEntryFromJSON(json: any): LogEntry {
 }
 
 export function LogEntryFromJSONTyped(json: any, ignoreDiscriminator: boolean): LogEntry {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'timestamp': !exists(json, 'timestamp') ? undefined : json['timestamp'],
+        'timestamp': json['timestamp'] == null ? undefined : json['timestamp'],
         'message': json['message'],
     };
 }
 
-export function LogEntryToJSON(value?: LogEntry | null): any {
-    if (value === undefined) {
-        return undefined;
+export function LogEntryToJSON(json: any): LogEntry {
+    return LogEntryToJSONTyped(json, false);
+}
+
+export function LogEntryToJSONTyped(value?: LogEntry | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'timestamp': value.timestamp,
-        'message': value.message,
+        'timestamp': value['timestamp'],
+        'message': value['message'],
     };
 }
 

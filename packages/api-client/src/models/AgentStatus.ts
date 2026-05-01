@@ -23,6 +23,17 @@ export enum AgentStatus {
 }
 
 
+export function instanceOfAgentStatus(value: any): boolean {
+    for (const key in AgentStatus) {
+        if (Object.prototype.hasOwnProperty.call(AgentStatus, key)) {
+            if (AgentStatus[key as keyof typeof AgentStatus] === value) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 export function AgentStatusFromJSON(json: any): AgentStatus {
     return AgentStatusFromJSONTyped(json, false);
 }
@@ -33,5 +44,9 @@ export function AgentStatusFromJSONTyped(json: any, ignoreDiscriminator: boolean
 
 export function AgentStatusToJSON(value?: AgentStatus | null): any {
     return value as any;
+}
+
+export function AgentStatusToJSONTyped(value: any, ignoreDiscriminator: boolean): AgentStatus {
+    return value as AgentStatus;
 }
 

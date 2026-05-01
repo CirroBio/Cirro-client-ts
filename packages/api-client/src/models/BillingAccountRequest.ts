@@ -12,25 +12,28 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { BillingMethod } from './BillingMethod';
 import {
     BillingMethodFromJSON,
     BillingMethodFromJSONTyped,
     BillingMethodToJSON,
+    BillingMethodToJSONTyped,
 } from './BillingMethod';
-import type { Contact } from './Contact';
-import {
-    ContactFromJSON,
-    ContactFromJSONTyped,
-    ContactToJSON,
-} from './Contact';
 import type { CustomerType } from './CustomerType';
 import {
     CustomerTypeFromJSON,
     CustomerTypeFromJSONTyped,
     CustomerTypeToJSON,
+    CustomerTypeToJSONTyped,
 } from './CustomerType';
+import type { Contact } from './Contact';
+import {
+    ContactFromJSON,
+    ContactFromJSONTyped,
+    ContactToJSON,
+    ContactToJSONTyped,
+} from './Contact';
 
 /**
  * 
@@ -82,20 +85,20 @@ export interface BillingAccountRequest {
     sharedWith: Array<string>;
 }
 
+
+
 /**
  * Check if a given object implements the BillingAccountRequest interface.
  */
-export function instanceOfBillingAccountRequest(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "contacts" in value;
-    isInstance = isInstance && "customerType" in value;
-    isInstance = isInstance && "billingMethod" in value;
-    isInstance = isInstance && "primaryBudgetNumber" in value;
-    isInstance = isInstance && "owner" in value;
-    isInstance = isInstance && "sharedWith" in value;
-
-    return isInstance;
+export function instanceOfBillingAccountRequest(value: object): value is BillingAccountRequest {
+    if (!('name' in value) || value['name'] === undefined) return false;
+    if (!('contacts' in value) || value['contacts'] === undefined) return false;
+    if (!('customerType' in value) || value['customerType'] === undefined) return false;
+    if (!('billingMethod' in value) || value['billingMethod'] === undefined) return false;
+    if (!('primaryBudgetNumber' in value) || value['primaryBudgetNumber'] === undefined) return false;
+    if (!('owner' in value) || value['owner'] === undefined) return false;
+    if (!('sharedWith' in value) || value['sharedWith'] === undefined) return false;
+    return true;
 }
 
 export function BillingAccountRequestFromJSON(json: any): BillingAccountRequest {
@@ -103,7 +106,7 @@ export function BillingAccountRequestFromJSON(json: any): BillingAccountRequest 
 }
 
 export function BillingAccountRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): BillingAccountRequest {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -118,22 +121,24 @@ export function BillingAccountRequestFromJSONTyped(json: any, ignoreDiscriminato
     };
 }
 
-export function BillingAccountRequestToJSON(value?: BillingAccountRequest | null): any {
-    if (value === undefined) {
-        return undefined;
+export function BillingAccountRequestToJSON(json: any): BillingAccountRequest {
+    return BillingAccountRequestToJSONTyped(json, false);
+}
+
+export function BillingAccountRequestToJSONTyped(value?: BillingAccountRequest | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'name': value.name,
-        'contacts': ((value.contacts as Array<any>).map(ContactToJSON)),
-        'customerType': CustomerTypeToJSON(value.customerType),
-        'billingMethod': BillingMethodToJSON(value.billingMethod),
-        'primaryBudgetNumber': value.primaryBudgetNumber,
-        'owner': value.owner,
-        'sharedWith': value.sharedWith,
+        'name': value['name'],
+        'contacts': ((value['contacts'] as Array<any>).map(ContactToJSON)),
+        'customerType': CustomerTypeToJSON(value['customerType']),
+        'billingMethod': BillingMethodToJSON(value['billingMethod']),
+        'primaryBudgetNumber': value['primaryBudgetNumber'],
+        'owner': value['owner'],
+        'sharedWith': value['sharedWith'],
     };
 }
 

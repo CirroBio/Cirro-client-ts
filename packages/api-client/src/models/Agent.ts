@@ -12,12 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { AgentStatus } from './AgentStatus';
 import {
     AgentStatusFromJSON,
     AgentStatusFromJSONTyped,
     AgentStatusToJSON,
+    AgentStatusToJSONTyped,
 } from './AgentStatus';
 
 /**
@@ -52,14 +53,14 @@ export interface Agent {
     status: AgentStatus;
 }
 
+
+
 /**
  * Check if a given object implements the Agent interface.
  */
-export function instanceOfAgent(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "status" in value;
-
-    return isInstance;
+export function instanceOfAgent(value: object): value is Agent {
+    if (!('status' in value) || value['status'] === undefined) return false;
+    return true;
 }
 
 export function AgentFromJSON(json: any): Agent {
@@ -67,31 +68,33 @@ export function AgentFromJSON(json: any): Agent {
 }
 
 export function AgentFromJSONTyped(json: any, ignoreDiscriminator: boolean): Agent {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'id': !exists(json, 'id') ? undefined : json['id'],
-        'name': !exists(json, 'name') ? undefined : json['name'],
-        'tags': !exists(json, 'tags') ? undefined : json['tags'],
+        'id': json['id'] == null ? undefined : json['id'],
+        'name': json['name'] == null ? undefined : json['name'],
+        'tags': json['tags'] == null ? undefined : json['tags'],
         'status': AgentStatusFromJSON(json['status']),
     };
 }
 
-export function AgentToJSON(value?: Agent | null): any {
-    if (value === undefined) {
-        return undefined;
+export function AgentToJSON(json: any): Agent {
+    return AgentToJSONTyped(json, false);
+}
+
+export function AgentToJSONTyped(value?: Agent | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'id': value.id,
-        'name': value.name,
-        'tags': value.tags,
-        'status': AgentStatusToJSON(value.status),
+        'id': value['id'],
+        'name': value['name'],
+        'tags': value['tags'],
+        'status': AgentStatusToJSON(value['status']),
     };
 }
 

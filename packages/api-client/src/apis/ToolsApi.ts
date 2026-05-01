@@ -12,18 +12,17 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  MoveDatasetInput,
-  MoveDatasetResponse,
-} from '../models/index';
 import {
+    type MoveDatasetInput,
     MoveDatasetInputFromJSON,
     MoveDatasetInputToJSON,
+} from '../models/MoveDatasetInput';
+import {
+    type MoveDatasetResponse,
     MoveDatasetResponseFromJSON,
     MoveDatasetResponseToJSON,
-} from '../models/index';
+} from '../models/MoveDatasetResponse';
 
 export interface MoveDatasetRequest {
     moveDatasetInput: MoveDatasetInput;
@@ -35,12 +34,14 @@ export interface MoveDatasetRequest {
 export class ToolsApi extends runtime.BaseAPI {
 
     /**
-     * Moves a dataset to a different project. The underlying S3 data is not transferred and will need to be done manually. It is expected the user will also transfer all datasets in the lineage.
-     * Move a dataset to a different project
+     * Creates request options for moveDataset without sending the request
      */
-    async moveDatasetRaw(requestParameters: MoveDatasetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<MoveDatasetResponse>> {
-        if (requestParameters.moveDatasetInput === null || requestParameters.moveDatasetInput === undefined) {
-            throw new runtime.RequiredError('moveDatasetInput','Required parameter requestParameters.moveDatasetInput was null or undefined when calling moveDataset.');
+    async moveDatasetRequestOpts(requestParameters: MoveDatasetRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['moveDatasetInput'] == null) {
+            throw new runtime.RequiredError(
+                'moveDatasetInput',
+                'Required parameter "moveDatasetInput" was null or undefined when calling moveDataset().'
+            );
         }
 
         const queryParameters: any = {};
@@ -57,13 +58,25 @@ export class ToolsApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/tools/move-dataset`,
+
+        let urlPath = `/tools/move-dataset`;
+
+        return {
+            path: urlPath,
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: MoveDatasetInputToJSON(requestParameters.moveDatasetInput),
-        }, initOverrides);
+            body: MoveDatasetInputToJSON(requestParameters['moveDatasetInput']),
+        };
+    }
+
+    /**
+     * Moves a dataset to a different project. The underlying S3 data is not transferred and will need to be done manually. It is expected the user will also transfer all datasets in the lineage.
+     * Move a dataset to a different project
+     */
+    async moveDatasetRaw(requestParameters: MoveDatasetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<MoveDatasetResponse>> {
+        const requestOptions = await this.moveDatasetRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => MoveDatasetResponseFromJSON(jsonValue));
     }

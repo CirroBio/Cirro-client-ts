@@ -12,12 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { FileType } from './FileType';
 import {
     FileTypeFromJSON,
     FileTypeFromJSONTyped,
     FileTypeToJSON,
+    FileTypeToJSONTyped,
 } from './FileType';
 
 /**
@@ -40,14 +41,14 @@ export interface FileDef {
     storageUri?: string;
 }
 
+
+
 /**
  * Check if a given object implements the FileDef interface.
  */
-export function instanceOfFileDef(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "fileType" in value;
-
-    return isInstance;
+export function instanceOfFileDef(value: object): value is FileDef {
+    if (!('fileType' in value) || value['fileType'] === undefined) return false;
+    return true;
 }
 
 export function FileDefFromJSON(json: any): FileDef {
@@ -55,27 +56,29 @@ export function FileDefFromJSON(json: any): FileDef {
 }
 
 export function FileDefFromJSONTyped(json: any, ignoreDiscriminator: boolean): FileDef {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
         'fileType': FileTypeFromJSON(json['fileType']),
-        'storageUri': !exists(json, 'storageUri') ? undefined : json['storageUri'],
+        'storageUri': json['storageUri'] == null ? undefined : json['storageUri'],
     };
 }
 
-export function FileDefToJSON(value?: FileDef | null): any {
-    if (value === undefined) {
-        return undefined;
+export function FileDefToJSON(json: any): FileDef {
+    return FileDefToJSONTyped(json, false);
+}
+
+export function FileDefToJSONTyped(value?: FileDef | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'fileType': FileTypeToJSON(value.fileType),
-        'storageUri': value.storageUri,
+        'fileType': FileTypeToJSON(value['fileType']),
+        'storageUri': value['storageUri'],
     };
 }
 

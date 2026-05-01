@@ -12,24 +12,27 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { DatasetCondition } from './DatasetCondition';
 import {
     DatasetConditionFromJSON,
     DatasetConditionFromJSONTyped,
     DatasetConditionToJSON,
+    DatasetConditionToJSONTyped,
 } from './DatasetCondition';
 import type { NamedItem } from './NamedItem';
 import {
     NamedItemFromJSON,
     NamedItemFromJSONTyped,
     NamedItemToJSON,
+    NamedItemToJSONTyped,
 } from './NamedItem';
 import type { ShareType } from './ShareType';
 import {
     ShareTypeFromJSON,
     ShareTypeFromJSONTyped,
     ShareTypeToJSON,
+    ShareTypeToJSONTyped,
 } from './ShareType';
 
 /**
@@ -118,26 +121,26 @@ export interface ShareDetail {
     updatedAt: Date;
 }
 
+
+
 /**
  * Check if a given object implements the ShareDetail interface.
  */
-export function instanceOfShareDetail(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "id" in value;
-    isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "description" in value;
-    isInstance = isInstance && "originatingProject" in value;
-    isInstance = isInstance && "shareType" in value;
-    isInstance = isInstance && "sharedProjects" in value;
-    isInstance = isInstance && "conditions" in value;
-    isInstance = isInstance && "keywords" in value;
-    isInstance = isInstance && "classificationIds" in value;
-    isInstance = isInstance && "isViewRestricted" in value;
-    isInstance = isInstance && "createdBy" in value;
-    isInstance = isInstance && "createdAt" in value;
-    isInstance = isInstance && "updatedAt" in value;
-
-    return isInstance;
+export function instanceOfShareDetail(value: object): value is ShareDetail {
+    if (!('id' in value) || value['id'] === undefined) return false;
+    if (!('name' in value) || value['name'] === undefined) return false;
+    if (!('description' in value) || value['description'] === undefined) return false;
+    if (!('originatingProject' in value) || value['originatingProject'] === undefined) return false;
+    if (!('shareType' in value) || value['shareType'] === undefined) return false;
+    if (!('sharedProjects' in value) || value['sharedProjects'] === undefined) return false;
+    if (!('conditions' in value) || value['conditions'] === undefined) return false;
+    if (!('keywords' in value) || value['keywords'] === undefined) return false;
+    if (!('classificationIds' in value) || value['classificationIds'] === undefined) return false;
+    if (!('isViewRestricted' in value) || value['isViewRestricted'] === undefined) return false;
+    if (!('createdBy' in value) || value['createdBy'] === undefined) return false;
+    if (!('createdAt' in value) || value['createdAt'] === undefined) return false;
+    if (!('updatedAt' in value) || value['updatedAt'] === undefined) return false;
+    return true;
 }
 
 export function ShareDetailFromJSON(json: any): ShareDetail {
@@ -145,7 +148,7 @@ export function ShareDetailFromJSON(json: any): ShareDetail {
 }
 
 export function ShareDetailFromJSONTyped(json: any, ignoreDiscriminator: boolean): ShareDetail {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -166,28 +169,30 @@ export function ShareDetailFromJSONTyped(json: any, ignoreDiscriminator: boolean
     };
 }
 
-export function ShareDetailToJSON(value?: ShareDetail | null): any {
-    if (value === undefined) {
-        return undefined;
+export function ShareDetailToJSON(json: any): ShareDetail {
+    return ShareDetailToJSONTyped(json, false);
+}
+
+export function ShareDetailToJSONTyped(value?: ShareDetail | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'id': value.id,
-        'name': value.name,
-        'description': value.description,
-        'originatingProject': NamedItemToJSON(value.originatingProject),
-        'shareType': ShareTypeToJSON(value.shareType),
-        'sharedProjects': ((value.sharedProjects as Array<any>).map(NamedItemToJSON)),
-        'conditions': ((value.conditions as Array<any>).map(DatasetConditionToJSON)),
-        'keywords': value.keywords,
-        'classificationIds': value.classificationIds,
-        'isViewRestricted': value.isViewRestricted,
-        'createdBy': value.createdBy,
-        'createdAt': (value.createdAt.toISOString()),
-        'updatedAt': (value.updatedAt.toISOString()),
+        'id': value['id'],
+        'name': value['name'],
+        'description': value['description'],
+        'originatingProject': NamedItemToJSON(value['originatingProject']),
+        'shareType': ShareTypeToJSON(value['shareType']),
+        'sharedProjects': ((value['sharedProjects'] as Array<any>).map(NamedItemToJSON)),
+        'conditions': ((value['conditions'] as Array<any>).map(DatasetConditionToJSON)),
+        'keywords': value['keywords'],
+        'classificationIds': value['classificationIds'],
+        'isViewRestricted': value['isViewRestricted'],
+        'createdBy': value['createdBy'],
+        'createdAt': value['createdAt'].toISOString(),
+        'updatedAt': value['updatedAt'].toISOString(),
     };
 }
 

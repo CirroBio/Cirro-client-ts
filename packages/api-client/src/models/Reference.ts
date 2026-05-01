@@ -12,12 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { FileEntry } from './FileEntry';
 import {
     FileEntryFromJSON,
     FileEntryFromJSONTyped,
     FileEntryToJSON,
+    FileEntryToJSONTyped,
 } from './FileEntry';
 
 /**
@@ -73,17 +74,15 @@ export interface Reference {
 /**
  * Check if a given object implements the Reference interface.
  */
-export function instanceOfReference(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "id" in value;
-    isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "description" in value;
-    isInstance = isInstance && "type" in value;
-    isInstance = isInstance && "files" in value;
-    isInstance = isInstance && "createdBy" in value;
-    isInstance = isInstance && "createdAt" in value;
-
-    return isInstance;
+export function instanceOfReference(value: object): value is Reference {
+    if (!('id' in value) || value['id'] === undefined) return false;
+    if (!('name' in value) || value['name'] === undefined) return false;
+    if (!('description' in value) || value['description'] === undefined) return false;
+    if (!('type' in value) || value['type'] === undefined) return false;
+    if (!('files' in value) || value['files'] === undefined) return false;
+    if (!('createdBy' in value) || value['createdBy'] === undefined) return false;
+    if (!('createdAt' in value) || value['createdAt'] === undefined) return false;
+    return true;
 }
 
 export function ReferenceFromJSON(json: any): Reference {
@@ -91,7 +90,7 @@ export function ReferenceFromJSON(json: any): Reference {
 }
 
 export function ReferenceFromJSONTyped(json: any, ignoreDiscriminator: boolean): Reference {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -106,22 +105,24 @@ export function ReferenceFromJSONTyped(json: any, ignoreDiscriminator: boolean):
     };
 }
 
-export function ReferenceToJSON(value?: Reference | null): any {
-    if (value === undefined) {
-        return undefined;
+export function ReferenceToJSON(json: any): Reference {
+    return ReferenceToJSONTyped(json, false);
+}
+
+export function ReferenceToJSONTyped(value?: Reference | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'id': value.id,
-        'name': value.name,
-        'description': value.description,
-        'type': value.type,
-        'files': ((value.files as Array<any>).map(FileEntryToJSON)),
-        'createdBy': value.createdBy,
-        'createdAt': (value.createdAt.toISOString()),
+        'id': value['id'],
+        'name': value['name'],
+        'description': value['description'],
+        'type': value['type'],
+        'files': ((value['files'] as Array<any>).map(FileEntryToJSON)),
+        'createdBy': value['createdBy'],
+        'createdAt': value['createdAt'].toISOString(),
     };
 }
 

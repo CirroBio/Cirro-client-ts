@@ -12,24 +12,27 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
-import type { MountedDataset } from './MountedDataset';
-import {
-    MountedDatasetFromJSON,
-    MountedDatasetFromJSONTyped,
-    MountedDatasetToJSON,
-} from './MountedDataset';
+import { mapValues } from '../runtime';
 import type { SharingType } from './SharingType';
 import {
     SharingTypeFromJSON,
     SharingTypeFromJSONTyped,
     SharingTypeToJSON,
+    SharingTypeToJSONTyped,
 } from './SharingType';
+import type { MountedDataset } from './MountedDataset';
+import {
+    MountedDatasetFromJSON,
+    MountedDatasetFromJSONTyped,
+    MountedDatasetToJSON,
+    MountedDatasetToJSONTyped,
+} from './MountedDataset';
 import type { WorkspaceComputeConfig } from './WorkspaceComputeConfig';
 import {
     WorkspaceComputeConfigFromJSON,
     WorkspaceComputeConfigFromJSONTyped,
     WorkspaceComputeConfigToJSON,
+    WorkspaceComputeConfigToJSONTyped,
 } from './WorkspaceComputeConfig';
 
 /**
@@ -69,7 +72,7 @@ export interface WorkspaceInput {
      */
     computeConfig: WorkspaceComputeConfig;
     /**
-     * 
+     * Sharing mode of the workspace.
      * @type {SharingType}
      * @memberof WorkspaceInput
      */
@@ -82,17 +85,17 @@ export interface WorkspaceInput {
     autoStopTimeout?: number | null;
 }
 
+
+
 /**
  * Check if a given object implements the WorkspaceInput interface.
  */
-export function instanceOfWorkspaceInput(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "mountedDatasets" in value;
-    isInstance = isInstance && "computeConfig" in value;
-    isInstance = isInstance && "sharingType" in value;
-
-    return isInstance;
+export function instanceOfWorkspaceInput(value: object): value is WorkspaceInput {
+    if (!('name' in value) || value['name'] === undefined) return false;
+    if (!('mountedDatasets' in value) || value['mountedDatasets'] === undefined) return false;
+    if (!('computeConfig' in value) || value['computeConfig'] === undefined) return false;
+    if (!('sharingType' in value) || value['sharingType'] === undefined) return false;
+    return true;
 }
 
 export function WorkspaceInputFromJSON(json: any): WorkspaceInput {
@@ -100,37 +103,39 @@ export function WorkspaceInputFromJSON(json: any): WorkspaceInput {
 }
 
 export function WorkspaceInputFromJSONTyped(json: any, ignoreDiscriminator: boolean): WorkspaceInput {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
         'name': json['name'],
-        'description': !exists(json, 'description') ? undefined : json['description'],
+        'description': json['description'] == null ? undefined : json['description'],
         'mountedDatasets': ((json['mountedDatasets'] as Array<any>).map(MountedDatasetFromJSON)),
-        'environmentId': !exists(json, 'environmentId') ? undefined : json['environmentId'],
+        'environmentId': json['environmentId'] == null ? undefined : json['environmentId'],
         'computeConfig': WorkspaceComputeConfigFromJSON(json['computeConfig']),
         'sharingType': SharingTypeFromJSON(json['sharingType']),
-        'autoStopTimeout': !exists(json, 'autoStopTimeout') ? undefined : json['autoStopTimeout'],
+        'autoStopTimeout': json['autoStopTimeout'] == null ? undefined : json['autoStopTimeout'],
     };
 }
 
-export function WorkspaceInputToJSON(value?: WorkspaceInput | null): any {
-    if (value === undefined) {
-        return undefined;
+export function WorkspaceInputToJSON(json: any): WorkspaceInput {
+    return WorkspaceInputToJSONTyped(json, false);
+}
+
+export function WorkspaceInputToJSONTyped(value?: WorkspaceInput | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'name': value.name,
-        'description': value.description,
-        'mountedDatasets': ((value.mountedDatasets as Array<any>).map(MountedDatasetToJSON)),
-        'environmentId': value.environmentId,
-        'computeConfig': WorkspaceComputeConfigToJSON(value.computeConfig),
-        'sharingType': SharingTypeToJSON(value.sharingType),
-        'autoStopTimeout': value.autoStopTimeout,
+        'name': value['name'],
+        'description': value['description'],
+        'mountedDatasets': ((value['mountedDatasets'] as Array<any>).map(MountedDatasetToJSON)),
+        'environmentId': value['environmentId'],
+        'computeConfig': WorkspaceComputeConfigToJSON(value['computeConfig']),
+        'sharingType': SharingTypeToJSON(value['sharingType']),
+        'autoStopTimeout': value['autoStopTimeout'],
     };
 }
 

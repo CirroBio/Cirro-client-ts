@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -36,12 +36,10 @@ export interface ForeignKeyRef {
 /**
  * Check if a given object implements the ForeignKeyRef interface.
  */
-export function instanceOfForeignKeyRef(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "sheetId" in value;
-    isInstance = isInstance && "columnName" in value;
-
-    return isInstance;
+export function instanceOfForeignKeyRef(value: object): value is ForeignKeyRef {
+    if (!('sheetId' in value) || value['sheetId'] === undefined) return false;
+    if (!('columnName' in value) || value['columnName'] === undefined) return false;
+    return true;
 }
 
 export function ForeignKeyRefFromJSON(json: any): ForeignKeyRef {
@@ -49,7 +47,7 @@ export function ForeignKeyRefFromJSON(json: any): ForeignKeyRef {
 }
 
 export function ForeignKeyRefFromJSONTyped(json: any, ignoreDiscriminator: boolean): ForeignKeyRef {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -59,17 +57,19 @@ export function ForeignKeyRefFromJSONTyped(json: any, ignoreDiscriminator: boole
     };
 }
 
-export function ForeignKeyRefToJSON(value?: ForeignKeyRef | null): any {
-    if (value === undefined) {
-        return undefined;
+export function ForeignKeyRefToJSON(json: any): ForeignKeyRef {
+    return ForeignKeyRefToJSONTyped(json, false);
+}
+
+export function ForeignKeyRefToJSONTyped(value?: ForeignKeyRef | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'sheetId': value.sheetId,
-        'columnName': value.columnName,
+        'sheetId': value['sheetId'],
+        'columnName': value['columnName'],
     };
 }
 

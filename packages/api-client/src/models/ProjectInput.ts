@@ -12,31 +12,35 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { CloudAccount } from './CloudAccount';
 import {
     CloudAccountFromJSON,
     CloudAccountFromJSONTyped,
     CloudAccountToJSON,
+    CloudAccountToJSONTyped,
 } from './CloudAccount';
+import type { Tag } from './Tag';
+import {
+    TagFromJSON,
+    TagFromJSONTyped,
+    TagToJSON,
+    TagToJSONTyped,
+} from './Tag';
 import type { Contact } from './Contact';
 import {
     ContactFromJSON,
     ContactFromJSONTyped,
     ContactToJSON,
+    ContactToJSONTyped,
 } from './Contact';
 import type { ProjectSettings } from './ProjectSettings';
 import {
     ProjectSettingsFromJSON,
     ProjectSettingsFromJSONTyped,
     ProjectSettingsToJSON,
+    ProjectSettingsToJSONTyped,
 } from './ProjectSettings';
-import type { Tag } from './Tag';
-import {
-    TagFromJSON,
-    TagFromJSONTyped,
-    TagToJSON,
-} from './Tag';
 
 /**
  * 
@@ -97,15 +101,13 @@ export interface ProjectInput {
 /**
  * Check if a given object implements the ProjectInput interface.
  */
-export function instanceOfProjectInput(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "description" in value;
-    isInstance = isInstance && "billingAccountId" in value;
-    isInstance = isInstance && "settings" in value;
-    isInstance = isInstance && "contacts" in value;
-
-    return isInstance;
+export function instanceOfProjectInput(value: object): value is ProjectInput {
+    if (!('name' in value) || value['name'] === undefined) return false;
+    if (!('description' in value) || value['description'] === undefined) return false;
+    if (!('billingAccountId' in value) || value['billingAccountId'] === undefined) return false;
+    if (!('settings' in value) || value['settings'] === undefined) return false;
+    if (!('contacts' in value) || value['contacts'] === undefined) return false;
+    return true;
 }
 
 export function ProjectInputFromJSON(json: any): ProjectInput {
@@ -113,7 +115,7 @@ export function ProjectInputFromJSON(json: any): ProjectInput {
 }
 
 export function ProjectInputFromJSONTyped(json: any, ignoreDiscriminator: boolean): ProjectInput {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -123,29 +125,31 @@ export function ProjectInputFromJSONTyped(json: any, ignoreDiscriminator: boolea
         'billingAccountId': json['billingAccountId'],
         'settings': ProjectSettingsFromJSON(json['settings']),
         'contacts': ((json['contacts'] as Array<any>).map(ContactFromJSON)),
-        'account': !exists(json, 'account') ? undefined : CloudAccountFromJSON(json['account']),
-        'classificationIds': !exists(json, 'classificationIds') ? undefined : json['classificationIds'],
-        'tags': !exists(json, 'tags') ? undefined : (json['tags'] === null ? null : (json['tags'] as Array<any>).map(TagFromJSON)),
+        'account': json['account'] == null ? undefined : CloudAccountFromJSON(json['account']),
+        'classificationIds': json['classificationIds'] == null ? undefined : json['classificationIds'],
+        'tags': json['tags'] == null ? undefined : ((json['tags'] as Array<any>).map(TagFromJSON)),
     };
 }
 
-export function ProjectInputToJSON(value?: ProjectInput | null): any {
-    if (value === undefined) {
-        return undefined;
+export function ProjectInputToJSON(json: any): ProjectInput {
+    return ProjectInputToJSONTyped(json, false);
+}
+
+export function ProjectInputToJSONTyped(value?: ProjectInput | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'name': value.name,
-        'description': value.description,
-        'billingAccountId': value.billingAccountId,
-        'settings': ProjectSettingsToJSON(value.settings),
-        'contacts': ((value.contacts as Array<any>).map(ContactToJSON)),
-        'account': CloudAccountToJSON(value.account),
-        'classificationIds': value.classificationIds,
-        'tags': value.tags === undefined ? undefined : (value.tags === null ? null : (value.tags as Array<any>).map(TagToJSON)),
+        'name': value['name'],
+        'description': value['description'],
+        'billingAccountId': value['billingAccountId'],
+        'settings': ProjectSettingsToJSON(value['settings']),
+        'contacts': ((value['contacts'] as Array<any>).map(ContactToJSON)),
+        'account': CloudAccountToJSON(value['account']),
+        'classificationIds': value['classificationIds'],
+        'tags': value['tags'] == null ? undefined : ((value['tags'] as Array<any>).map(TagToJSON)),
     };
 }
 

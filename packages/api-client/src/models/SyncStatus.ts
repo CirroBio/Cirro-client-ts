@@ -23,6 +23,17 @@ export enum SyncStatus {
 }
 
 
+export function instanceOfSyncStatus(value: any): boolean {
+    for (const key in SyncStatus) {
+        if (Object.prototype.hasOwnProperty.call(SyncStatus, key)) {
+            if (SyncStatus[key as keyof typeof SyncStatus] === value) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 export function SyncStatusFromJSON(json: any): SyncStatus {
     return SyncStatusFromJSONTyped(json, false);
 }
@@ -33,5 +44,9 @@ export function SyncStatusFromJSONTyped(json: any, ignoreDiscriminator: boolean)
 
 export function SyncStatusToJSON(value?: SyncStatus | null): any {
     return value as any;
+}
+
+export function SyncStatusToJSONTyped(value: any, ignoreDiscriminator: boolean): SyncStatus {
+    return value as SyncStatus;
 }
 

@@ -25,6 +25,17 @@ export enum GovernanceExpiryType {
 }
 
 
+export function instanceOfGovernanceExpiryType(value: any): boolean {
+    for (const key in GovernanceExpiryType) {
+        if (Object.prototype.hasOwnProperty.call(GovernanceExpiryType, key)) {
+            if (GovernanceExpiryType[key as keyof typeof GovernanceExpiryType] === value) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 export function GovernanceExpiryTypeFromJSON(json: any): GovernanceExpiryType {
     return GovernanceExpiryTypeFromJSONTyped(json, false);
 }
@@ -35,5 +46,9 @@ export function GovernanceExpiryTypeFromJSONTyped(json: any, ignoreDiscriminator
 
 export function GovernanceExpiryTypeToJSON(value?: GovernanceExpiryType | null): any {
     return value as any;
+}
+
+export function GovernanceExpiryTypeToJSONTyped(value: any, ignoreDiscriminator: boolean): GovernanceExpiryType {
+    return value as GovernanceExpiryType;
 }
 

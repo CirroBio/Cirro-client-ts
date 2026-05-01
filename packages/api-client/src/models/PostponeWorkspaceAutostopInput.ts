@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -30,10 +30,8 @@ export interface PostponeWorkspaceAutostopInput {
 /**
  * Check if a given object implements the PostponeWorkspaceAutostopInput interface.
  */
-export function instanceOfPostponeWorkspaceAutostopInput(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfPostponeWorkspaceAutostopInput(value: object): value is PostponeWorkspaceAutostopInput {
+    return true;
 }
 
 export function PostponeWorkspaceAutostopInputFromJSON(json: any): PostponeWorkspaceAutostopInput {
@@ -41,25 +39,27 @@ export function PostponeWorkspaceAutostopInputFromJSON(json: any): PostponeWorks
 }
 
 export function PostponeWorkspaceAutostopInputFromJSONTyped(json: any, ignoreDiscriminator: boolean): PostponeWorkspaceAutostopInput {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'autoStopTimeout': !exists(json, 'autoStopTimeout') ? undefined : json['autoStopTimeout'],
+        'autoStopTimeout': json['autoStopTimeout'] == null ? undefined : json['autoStopTimeout'],
     };
 }
 
-export function PostponeWorkspaceAutostopInputToJSON(value?: PostponeWorkspaceAutostopInput | null): any {
-    if (value === undefined) {
-        return undefined;
+export function PostponeWorkspaceAutostopInputToJSON(json: any): PostponeWorkspaceAutostopInput {
+    return PostponeWorkspaceAutostopInputToJSONTyped(json, false);
+}
+
+export function PostponeWorkspaceAutostopInputToJSONTyped(value?: PostponeWorkspaceAutostopInput | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'autoStopTimeout': value.autoStopTimeout,
+        'autoStopTimeout': value['autoStopTimeout'],
     };
 }
 

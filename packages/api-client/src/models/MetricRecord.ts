@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -42,11 +42,9 @@ export interface MetricRecord {
 /**
  * Check if a given object implements the MetricRecord interface.
  */
-export function instanceOfMetricRecord(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "unit" in value;
-
-    return isInstance;
+export function instanceOfMetricRecord(value: object): value is MetricRecord {
+    if (!('unit' in value) || value['unit'] === undefined) return false;
+    return true;
 }
 
 export function MetricRecordFromJSON(json: any): MetricRecord {
@@ -54,29 +52,31 @@ export function MetricRecordFromJSON(json: any): MetricRecord {
 }
 
 export function MetricRecordFromJSONTyped(json: any, ignoreDiscriminator: boolean): MetricRecord {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'date': !exists(json, 'date') ? undefined : json['date'],
+        'date': json['date'] == null ? undefined : json['date'],
         'unit': json['unit'],
-        'services': !exists(json, 'services') ? undefined : json['services'],
+        'services': json['services'] == null ? undefined : json['services'],
     };
 }
 
-export function MetricRecordToJSON(value?: MetricRecord | null): any {
-    if (value === undefined) {
-        return undefined;
+export function MetricRecordToJSON(json: any): MetricRecord {
+    return MetricRecordToJSONTyped(json, false);
+}
+
+export function MetricRecordToJSONTyped(value?: MetricRecord | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'date': value.date,
-        'unit': value.unit,
-        'services': value.services,
+        'date': value['date'],
+        'unit': value['unit'],
+        'services': value['services'],
     };
 }
 

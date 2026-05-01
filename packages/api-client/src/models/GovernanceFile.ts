@@ -12,12 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { GovernanceFileType } from './GovernanceFileType';
 import {
     GovernanceFileTypeFromJSON,
     GovernanceFileTypeFromJSONTyped,
     GovernanceFileTypeToJSON,
+    GovernanceFileTypeToJSONTyped,
 } from './GovernanceFileType';
 
 /**
@@ -45,20 +46,20 @@ export interface GovernanceFile {
      */
     src?: string;
     /**
-     * 
+     * The type of resource
      * @type {GovernanceFileType}
      * @memberof GovernanceFile
      */
     type?: GovernanceFileType;
 }
 
+
+
 /**
  * Check if a given object implements the GovernanceFile interface.
  */
-export function instanceOfGovernanceFile(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfGovernanceFile(value: object): value is GovernanceFile {
+    return true;
 }
 
 export function GovernanceFileFromJSON(json: any): GovernanceFile {
@@ -66,31 +67,33 @@ export function GovernanceFileFromJSON(json: any): GovernanceFile {
 }
 
 export function GovernanceFileFromJSONTyped(json: any, ignoreDiscriminator: boolean): GovernanceFile {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'name': !exists(json, 'name') ? undefined : json['name'],
-        'description': !exists(json, 'description') ? undefined : json['description'],
-        'src': !exists(json, 'src') ? undefined : json['src'],
-        'type': !exists(json, 'type') ? undefined : GovernanceFileTypeFromJSON(json['type']),
+        'name': json['name'] == null ? undefined : json['name'],
+        'description': json['description'] == null ? undefined : json['description'],
+        'src': json['src'] == null ? undefined : json['src'],
+        'type': json['type'] == null ? undefined : GovernanceFileTypeFromJSON(json['type']),
     };
 }
 
-export function GovernanceFileToJSON(value?: GovernanceFile | null): any {
-    if (value === undefined) {
-        return undefined;
+export function GovernanceFileToJSON(json: any): GovernanceFile {
+    return GovernanceFileToJSONTyped(json, false);
+}
+
+export function GovernanceFileToJSONTyped(value?: GovernanceFile | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'name': value.name,
-        'description': value.description,
-        'src': value.src,
-        'type': GovernanceFileTypeToJSON(value.type),
+        'name': value['name'],
+        'description': value['description'],
+        'src': value['src'],
+        'type': GovernanceFileTypeToJSON(value['type']),
     };
 }
 

@@ -12,33 +12,42 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  CreateResponse,
-  LogEntry,
-  PostponeWorkspaceAutostopInput,
-  Workspace,
-  WorkspaceConnectionResponse,
-  WorkspaceEnvironment,
-  WorkspaceInput,
-} from '../models/index';
 import {
+    type CreateResponse,
     CreateResponseFromJSON,
     CreateResponseToJSON,
+} from '../models/CreateResponse';
+import {
+    type LogEntry,
     LogEntryFromJSON,
     LogEntryToJSON,
+} from '../models/LogEntry';
+import {
+    type PostponeWorkspaceAutostopInput,
     PostponeWorkspaceAutostopInputFromJSON,
     PostponeWorkspaceAutostopInputToJSON,
+} from '../models/PostponeWorkspaceAutostopInput';
+import {
+    type Workspace,
     WorkspaceFromJSON,
     WorkspaceToJSON,
+} from '../models/Workspace';
+import {
+    type WorkspaceConnectionResponse,
     WorkspaceConnectionResponseFromJSON,
     WorkspaceConnectionResponseToJSON,
+} from '../models/WorkspaceConnectionResponse';
+import {
+    type WorkspaceEnvironment,
     WorkspaceEnvironmentFromJSON,
     WorkspaceEnvironmentToJSON,
+} from '../models/WorkspaceEnvironment';
+import {
+    type WorkspaceInput,
     WorkspaceInputFromJSON,
     WorkspaceInputToJSON,
-} from '../models/index';
+} from '../models/WorkspaceInput';
 
 export interface ConnectWorkspaceRequest {
     projectId: string;
@@ -103,16 +112,21 @@ export interface UpdateWorkspaceRequest {
 export class WorkspacesApi extends runtime.BaseAPI {
 
     /**
-     * Generates a URL to connect to the given workspace
-     * Connect to workspace
+     * Creates request options for connectWorkspace without sending the request
      */
-    async connectWorkspaceRaw(requestParameters: ConnectWorkspaceRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<WorkspaceConnectionResponse>> {
-        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
-            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling connectWorkspace.');
+    async connectWorkspaceRequestOpts(requestParameters: ConnectWorkspaceRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling connectWorkspace().'
+            );
         }
 
-        if (requestParameters.workspaceId === null || requestParameters.workspaceId === undefined) {
-            throw new runtime.RequiredError('workspaceId','Required parameter requestParameters.workspaceId was null or undefined when calling connectWorkspace.');
+        if (requestParameters['workspaceId'] == null) {
+            throw new runtime.RequiredError(
+                'workspaceId',
+                'Required parameter "workspaceId" was null or undefined when calling connectWorkspace().'
+            );
         }
 
         const queryParameters: any = {};
@@ -127,12 +141,26 @@ export class WorkspacesApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/projects/{projectId}/workspaces/{workspaceId}:connect`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))).replace(`{${"workspaceId"}}`, encodeURIComponent(String(requestParameters.workspaceId))),
+
+        let urlPath = `/projects/{projectId}/workspaces/{workspaceId}:connect`;
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+        urlPath = urlPath.replace('{workspaceId}', encodeURIComponent(String(requestParameters['workspaceId'])));
+
+        return {
+            path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Generates a URL to connect to the given workspace
+     * Connect to workspace
+     */
+    async connectWorkspaceRaw(requestParameters: ConnectWorkspaceRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<WorkspaceConnectionResponse>> {
+        const requestOptions = await this.connectWorkspaceRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => WorkspaceConnectionResponseFromJSON(jsonValue));
     }
@@ -147,16 +175,21 @@ export class WorkspacesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Creates a workspace within a project
-     * Create workspace
+     * Creates request options for createWorkspace without sending the request
      */
-    async createWorkspaceRaw(requestParameters: CreateWorkspaceRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateResponse>> {
-        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
-            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling createWorkspace.');
+    async createWorkspaceRequestOpts(requestParameters: CreateWorkspaceRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling createWorkspace().'
+            );
         }
 
-        if (requestParameters.workspaceInput === null || requestParameters.workspaceInput === undefined) {
-            throw new runtime.RequiredError('workspaceInput','Required parameter requestParameters.workspaceInput was null or undefined when calling createWorkspace.');
+        if (requestParameters['workspaceInput'] == null) {
+            throw new runtime.RequiredError(
+                'workspaceInput',
+                'Required parameter "workspaceInput" was null or undefined when calling createWorkspace().'
+            );
         }
 
         const queryParameters: any = {};
@@ -173,13 +206,26 @@ export class WorkspacesApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/projects/{projectId}/workspaces`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))),
+
+        let urlPath = `/projects/{projectId}/workspaces`;
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+
+        return {
+            path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: WorkspaceInputToJSON(requestParameters.workspaceInput),
-        }, initOverrides);
+            body: WorkspaceInputToJSON(requestParameters['workspaceInput']),
+        };
+    }
+
+    /**
+     * Creates a workspace within a project
+     * Create workspace
+     */
+    async createWorkspaceRaw(requestParameters: CreateWorkspaceRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateResponse>> {
+        const requestOptions = await this.createWorkspaceRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => CreateResponseFromJSON(jsonValue));
     }
@@ -194,16 +240,21 @@ export class WorkspacesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Deletes a workspace within a project
-     * Delete workspace
+     * Creates request options for deleteWorkspace without sending the request
      */
-    async deleteWorkspaceRaw(requestParameters: DeleteWorkspaceRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
-            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling deleteWorkspace.');
+    async deleteWorkspaceRequestOpts(requestParameters: DeleteWorkspaceRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling deleteWorkspace().'
+            );
         }
 
-        if (requestParameters.workspaceId === null || requestParameters.workspaceId === undefined) {
-            throw new runtime.RequiredError('workspaceId','Required parameter requestParameters.workspaceId was null or undefined when calling deleteWorkspace.');
+        if (requestParameters['workspaceId'] == null) {
+            throw new runtime.RequiredError(
+                'workspaceId',
+                'Required parameter "workspaceId" was null or undefined when calling deleteWorkspace().'
+            );
         }
 
         const queryParameters: any = {};
@@ -218,12 +269,26 @@ export class WorkspacesApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/projects/{projectId}/workspaces/{workspaceId}`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))).replace(`{${"workspaceId"}}`, encodeURIComponent(String(requestParameters.workspaceId))),
+
+        let urlPath = `/projects/{projectId}/workspaces/{workspaceId}`;
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+        urlPath = urlPath.replace('{workspaceId}', encodeURIComponent(String(requestParameters['workspaceId'])));
+
+        return {
+            path: urlPath,
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Deletes a workspace within a project
+     * Delete workspace
+     */
+    async deleteWorkspaceRaw(requestParameters: DeleteWorkspaceRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.deleteWorkspaceRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -237,26 +302,34 @@ export class WorkspacesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Closes the connection to the given workspace
-     * Disconnect from workspace
+     * Creates request options for disconnectWorkspace without sending the request
      */
-    async disconnectWorkspaceRaw(requestParameters: DisconnectWorkspaceRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
-            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling disconnectWorkspace.');
+    async disconnectWorkspaceRequestOpts(requestParameters: DisconnectWorkspaceRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling disconnectWorkspace().'
+            );
         }
 
-        if (requestParameters.workspaceId === null || requestParameters.workspaceId === undefined) {
-            throw new runtime.RequiredError('workspaceId','Required parameter requestParameters.workspaceId was null or undefined when calling disconnectWorkspace.');
+        if (requestParameters['workspaceId'] == null) {
+            throw new runtime.RequiredError(
+                'workspaceId',
+                'Required parameter "workspaceId" was null or undefined when calling disconnectWorkspace().'
+            );
         }
 
-        if (requestParameters.sessionId === null || requestParameters.sessionId === undefined) {
-            throw new runtime.RequiredError('sessionId','Required parameter requestParameters.sessionId was null or undefined when calling disconnectWorkspace.');
+        if (requestParameters['sessionId'] == null) {
+            throw new runtime.RequiredError(
+                'sessionId',
+                'Required parameter "sessionId" was null or undefined when calling disconnectWorkspace().'
+            );
         }
 
         const queryParameters: any = {};
 
-        if (requestParameters.sessionId !== undefined) {
-            queryParameters['sessionId'] = requestParameters.sessionId;
+        if (requestParameters['sessionId'] != null) {
+            queryParameters['sessionId'] = requestParameters['sessionId'];
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -269,12 +342,26 @@ export class WorkspacesApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/projects/{projectId}/workspaces/{workspaceId}:disconnect`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))).replace(`{${"workspaceId"}}`, encodeURIComponent(String(requestParameters.workspaceId))),
+
+        let urlPath = `/projects/{projectId}/workspaces/{workspaceId}:disconnect`;
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+        urlPath = urlPath.replace('{workspaceId}', encodeURIComponent(String(requestParameters['workspaceId'])));
+
+        return {
+            path: urlPath,
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Closes the connection to the given workspace
+     * Disconnect from workspace
+     */
+    async disconnectWorkspaceRaw(requestParameters: DisconnectWorkspaceRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.disconnectWorkspaceRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -288,16 +375,21 @@ export class WorkspacesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Get details of a particular workspace
-     * Get workspace
+     * Creates request options for getWorkspace without sending the request
      */
-    async getWorkspaceRaw(requestParameters: GetWorkspaceRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Workspace>> {
-        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
-            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling getWorkspace.');
+    async getWorkspaceRequestOpts(requestParameters: GetWorkspaceRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling getWorkspace().'
+            );
         }
 
-        if (requestParameters.workspaceId === null || requestParameters.workspaceId === undefined) {
-            throw new runtime.RequiredError('workspaceId','Required parameter requestParameters.workspaceId was null or undefined when calling getWorkspace.');
+        if (requestParameters['workspaceId'] == null) {
+            throw new runtime.RequiredError(
+                'workspaceId',
+                'Required parameter "workspaceId" was null or undefined when calling getWorkspace().'
+            );
         }
 
         const queryParameters: any = {};
@@ -312,12 +404,26 @@ export class WorkspacesApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/projects/{projectId}/workspaces/{workspaceId}`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))).replace(`{${"workspaceId"}}`, encodeURIComponent(String(requestParameters.workspaceId))),
+
+        let urlPath = `/projects/{projectId}/workspaces/{workspaceId}`;
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+        urlPath = urlPath.replace('{workspaceId}', encodeURIComponent(String(requestParameters['workspaceId'])));
+
+        return {
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Get details of a particular workspace
+     * Get workspace
+     */
+    async getWorkspaceRaw(requestParameters: GetWorkspaceRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Workspace>> {
+        const requestOptions = await this.getWorkspaceRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => WorkspaceFromJSON(jsonValue));
     }
@@ -332,10 +438,9 @@ export class WorkspacesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Retrieves a list of pre-defined workspace environments available to use
-     * Get workspace environments
+     * Creates request options for getWorkspaceEnvironments without sending the request
      */
-    async getWorkspaceEnvironmentsRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<WorkspaceEnvironment>>> {
+    async getWorkspaceEnvironmentsRequestOpts(): Promise<runtime.RequestOpts> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -348,12 +453,24 @@ export class WorkspacesApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/workspace-environments`,
+
+        let urlPath = `/workspace-environments`;
+
+        return {
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Retrieves a list of pre-defined workspace environments available to use
+     * Get workspace environments
+     */
+    async getWorkspaceEnvironmentsRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<WorkspaceEnvironment>>> {
+        const requestOptions = await this.getWorkspaceEnvironmentsRequestOpts();
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(WorkspaceEnvironmentFromJSON));
     }
@@ -368,16 +485,21 @@ export class WorkspacesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Retrieves logs from the main workspace container
-     * Get workspace logs
+     * Creates request options for getWorkspaceLogs without sending the request
      */
-    async getWorkspaceLogsRaw(requestParameters: GetWorkspaceLogsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<LogEntry>>> {
-        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
-            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling getWorkspaceLogs.');
+    async getWorkspaceLogsRequestOpts(requestParameters: GetWorkspaceLogsRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling getWorkspaceLogs().'
+            );
         }
 
-        if (requestParameters.workspaceId === null || requestParameters.workspaceId === undefined) {
-            throw new runtime.RequiredError('workspaceId','Required parameter requestParameters.workspaceId was null or undefined when calling getWorkspaceLogs.');
+        if (requestParameters['workspaceId'] == null) {
+            throw new runtime.RequiredError(
+                'workspaceId',
+                'Required parameter "workspaceId" was null or undefined when calling getWorkspaceLogs().'
+            );
         }
 
         const queryParameters: any = {};
@@ -392,12 +514,26 @@ export class WorkspacesApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/projects/{projectId}/workspaces/{workspaceId}/logs`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))).replace(`{${"workspaceId"}}`, encodeURIComponent(String(requestParameters.workspaceId))),
+
+        let urlPath = `/projects/{projectId}/workspaces/{workspaceId}/logs`;
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+        urlPath = urlPath.replace('{workspaceId}', encodeURIComponent(String(requestParameters['workspaceId'])));
+
+        return {
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Retrieves logs from the main workspace container
+     * Get workspace logs
+     */
+    async getWorkspaceLogsRaw(requestParameters: GetWorkspaceLogsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<LogEntry>>> {
+        const requestOptions = await this.getWorkspaceLogsRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(LogEntryFromJSON));
     }
@@ -412,12 +548,14 @@ export class WorkspacesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Retrieves a list of workspaces that the user has access to
-     * Get workspaces
+     * Creates request options for getWorkspaces without sending the request
      */
-    async getWorkspacesRaw(requestParameters: GetWorkspacesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<Workspace>>> {
-        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
-            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling getWorkspaces.');
+    async getWorkspacesRequestOpts(requestParameters: GetWorkspacesRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling getWorkspaces().'
+            );
         }
 
         const queryParameters: any = {};
@@ -432,12 +570,25 @@ export class WorkspacesApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/projects/{projectId}/workspaces`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))),
+
+        let urlPath = `/projects/{projectId}/workspaces`;
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+
+        return {
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Retrieves a list of workspaces that the user has access to
+     * Get workspaces
+     */
+    async getWorkspacesRaw(requestParameters: GetWorkspacesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<Workspace>>> {
+        const requestOptions = await this.getWorkspacesRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(WorkspaceFromJSON));
     }
@@ -452,20 +603,28 @@ export class WorkspacesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Postpone autostop for the given workspace
-     * Postpone workspace autostop
+     * Creates request options for postponeAutoStop without sending the request
      */
-    async postponeAutoStopRaw(requestParameters: PostponeAutoStopRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Workspace>> {
-        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
-            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling postponeAutoStop.');
+    async postponeAutoStopRequestOpts(requestParameters: PostponeAutoStopRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling postponeAutoStop().'
+            );
         }
 
-        if (requestParameters.workspaceId === null || requestParameters.workspaceId === undefined) {
-            throw new runtime.RequiredError('workspaceId','Required parameter requestParameters.workspaceId was null or undefined when calling postponeAutoStop.');
+        if (requestParameters['workspaceId'] == null) {
+            throw new runtime.RequiredError(
+                'workspaceId',
+                'Required parameter "workspaceId" was null or undefined when calling postponeAutoStop().'
+            );
         }
 
-        if (requestParameters.postponeWorkspaceAutostopInput === null || requestParameters.postponeWorkspaceAutostopInput === undefined) {
-            throw new runtime.RequiredError('postponeWorkspaceAutostopInput','Required parameter requestParameters.postponeWorkspaceAutostopInput was null or undefined when calling postponeAutoStop.');
+        if (requestParameters['postponeWorkspaceAutostopInput'] == null) {
+            throw new runtime.RequiredError(
+                'postponeWorkspaceAutostopInput',
+                'Required parameter "postponeWorkspaceAutostopInput" was null or undefined when calling postponeAutoStop().'
+            );
         }
 
         const queryParameters: any = {};
@@ -482,13 +641,27 @@ export class WorkspacesApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/projects/{projectId}/workspaces/{workspaceId}:postpone-auto-stop`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))).replace(`{${"workspaceId"}}`, encodeURIComponent(String(requestParameters.workspaceId))),
+
+        let urlPath = `/projects/{projectId}/workspaces/{workspaceId}:postpone-auto-stop`;
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+        urlPath = urlPath.replace('{workspaceId}', encodeURIComponent(String(requestParameters['workspaceId'])));
+
+        return {
+            path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: PostponeWorkspaceAutostopInputToJSON(requestParameters.postponeWorkspaceAutostopInput),
-        }, initOverrides);
+            body: PostponeWorkspaceAutostopInputToJSON(requestParameters['postponeWorkspaceAutostopInput']),
+        };
+    }
+
+    /**
+     * Postpone autostop for the given workspace
+     * Postpone workspace autostop
+     */
+    async postponeAutoStopRaw(requestParameters: PostponeAutoStopRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Workspace>> {
+        const requestOptions = await this.postponeAutoStopRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => WorkspaceFromJSON(jsonValue));
     }
@@ -503,16 +676,21 @@ export class WorkspacesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Starts a workspace instance
-     * Start workspace
+     * Creates request options for startWorkspace without sending the request
      */
-    async startWorkspaceRaw(requestParameters: StartWorkspaceRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
-            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling startWorkspace.');
+    async startWorkspaceRequestOpts(requestParameters: StartWorkspaceRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling startWorkspace().'
+            );
         }
 
-        if (requestParameters.workspaceId === null || requestParameters.workspaceId === undefined) {
-            throw new runtime.RequiredError('workspaceId','Required parameter requestParameters.workspaceId was null or undefined when calling startWorkspace.');
+        if (requestParameters['workspaceId'] == null) {
+            throw new runtime.RequiredError(
+                'workspaceId',
+                'Required parameter "workspaceId" was null or undefined when calling startWorkspace().'
+            );
         }
 
         const queryParameters: any = {};
@@ -527,12 +705,26 @@ export class WorkspacesApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/projects/{projectId}/workspaces/{workspaceId}:start`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))).replace(`{${"workspaceId"}}`, encodeURIComponent(String(requestParameters.workspaceId))),
+
+        let urlPath = `/projects/{projectId}/workspaces/{workspaceId}:start`;
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+        urlPath = urlPath.replace('{workspaceId}', encodeURIComponent(String(requestParameters['workspaceId'])));
+
+        return {
+            path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Starts a workspace instance
+     * Start workspace
+     */
+    async startWorkspaceRaw(requestParameters: StartWorkspaceRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.startWorkspaceRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -546,16 +738,21 @@ export class WorkspacesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Shuts down a running workspace instance
-     * Stop workspace
+     * Creates request options for stopWorkspace without sending the request
      */
-    async stopWorkspaceRaw(requestParameters: StopWorkspaceRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
-            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling stopWorkspace.');
+    async stopWorkspaceRequestOpts(requestParameters: StopWorkspaceRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling stopWorkspace().'
+            );
         }
 
-        if (requestParameters.workspaceId === null || requestParameters.workspaceId === undefined) {
-            throw new runtime.RequiredError('workspaceId','Required parameter requestParameters.workspaceId was null or undefined when calling stopWorkspace.');
+        if (requestParameters['workspaceId'] == null) {
+            throw new runtime.RequiredError(
+                'workspaceId',
+                'Required parameter "workspaceId" was null or undefined when calling stopWorkspace().'
+            );
         }
 
         const queryParameters: any = {};
@@ -570,12 +767,26 @@ export class WorkspacesApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/projects/{projectId}/workspaces/{workspaceId}:stop`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))).replace(`{${"workspaceId"}}`, encodeURIComponent(String(requestParameters.workspaceId))),
+
+        let urlPath = `/projects/{projectId}/workspaces/{workspaceId}:stop`;
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+        urlPath = urlPath.replace('{workspaceId}', encodeURIComponent(String(requestParameters['workspaceId'])));
+
+        return {
+            path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Shuts down a running workspace instance
+     * Stop workspace
+     */
+    async stopWorkspaceRaw(requestParameters: StopWorkspaceRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.stopWorkspaceRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -589,20 +800,28 @@ export class WorkspacesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Updates a workspace within a project
-     * Update workspace
+     * Creates request options for updateWorkspace without sending the request
      */
-    async updateWorkspaceRaw(requestParameters: UpdateWorkspaceRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
-            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling updateWorkspace.');
+    async updateWorkspaceRequestOpts(requestParameters: UpdateWorkspaceRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling updateWorkspace().'
+            );
         }
 
-        if (requestParameters.workspaceId === null || requestParameters.workspaceId === undefined) {
-            throw new runtime.RequiredError('workspaceId','Required parameter requestParameters.workspaceId was null or undefined when calling updateWorkspace.');
+        if (requestParameters['workspaceId'] == null) {
+            throw new runtime.RequiredError(
+                'workspaceId',
+                'Required parameter "workspaceId" was null or undefined when calling updateWorkspace().'
+            );
         }
 
-        if (requestParameters.workspaceInput === null || requestParameters.workspaceInput === undefined) {
-            throw new runtime.RequiredError('workspaceInput','Required parameter requestParameters.workspaceInput was null or undefined when calling updateWorkspace.');
+        if (requestParameters['workspaceInput'] == null) {
+            throw new runtime.RequiredError(
+                'workspaceInput',
+                'Required parameter "workspaceInput" was null or undefined when calling updateWorkspace().'
+            );
         }
 
         const queryParameters: any = {};
@@ -619,13 +838,27 @@ export class WorkspacesApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/projects/{projectId}/workspaces/{workspaceId}`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))).replace(`{${"workspaceId"}}`, encodeURIComponent(String(requestParameters.workspaceId))),
+
+        let urlPath = `/projects/{projectId}/workspaces/{workspaceId}`;
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+        urlPath = urlPath.replace('{workspaceId}', encodeURIComponent(String(requestParameters['workspaceId'])));
+
+        return {
+            path: urlPath,
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: WorkspaceInputToJSON(requestParameters.workspaceInput),
-        }, initOverrides);
+            body: WorkspaceInputToJSON(requestParameters['workspaceInput']),
+        };
+    }
+
+    /**
+     * Updates a workspace within a project
+     * Update workspace
+     */
+    async updateWorkspaceRaw(requestParameters: UpdateWorkspaceRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.updateWorkspaceRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }

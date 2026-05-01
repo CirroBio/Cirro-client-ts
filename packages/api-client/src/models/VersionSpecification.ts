@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -42,13 +42,11 @@ export interface VersionSpecification {
 /**
  * Check if a given object implements the VersionSpecification interface.
  */
-export function instanceOfVersionSpecification(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "version" in value;
-    isInstance = isInstance && "isDefault" in value;
-    isInstance = isInstance && "isLatest" in value;
-
-    return isInstance;
+export function instanceOfVersionSpecification(value: object): value is VersionSpecification {
+    if (!('version' in value) || value['version'] === undefined) return false;
+    if (!('isDefault' in value) || value['isDefault'] === undefined) return false;
+    if (!('isLatest' in value) || value['isLatest'] === undefined) return false;
+    return true;
 }
 
 export function VersionSpecificationFromJSON(json: any): VersionSpecification {
@@ -56,7 +54,7 @@ export function VersionSpecificationFromJSON(json: any): VersionSpecification {
 }
 
 export function VersionSpecificationFromJSONTyped(json: any, ignoreDiscriminator: boolean): VersionSpecification {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -67,18 +65,20 @@ export function VersionSpecificationFromJSONTyped(json: any, ignoreDiscriminator
     };
 }
 
-export function VersionSpecificationToJSON(value?: VersionSpecification | null): any {
-    if (value === undefined) {
-        return undefined;
+export function VersionSpecificationToJSON(json: any): VersionSpecification {
+    return VersionSpecificationToJSONTyped(json, false);
+}
+
+export function VersionSpecificationToJSONTyped(value?: VersionSpecification | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'version': value.version,
-        'isDefault': value.isDefault,
-        'isLatest': value.isLatest,
+        'version': value['version'],
+        'isDefault': value['isDefault'],
+        'isLatest': value['isLatest'],
     };
 }
 

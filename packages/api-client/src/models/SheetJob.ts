@@ -12,19 +12,21 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
-import type { SheetJobType } from './SheetJobType';
-import {
-    SheetJobTypeFromJSON,
-    SheetJobTypeFromJSONTyped,
-    SheetJobTypeToJSON,
-} from './SheetJobType';
+import { mapValues } from '../runtime';
 import type { Status } from './Status';
 import {
     StatusFromJSON,
     StatusFromJSONTyped,
     StatusToJSON,
+    StatusToJSONTyped,
 } from './Status';
+import type { SheetJobType } from './SheetJobType';
+import {
+    SheetJobTypeFromJSON,
+    SheetJobTypeFromJSONTyped,
+    SheetJobTypeToJSON,
+    SheetJobTypeToJSONTyped,
+} from './SheetJobType';
 
 /**
  * 
@@ -100,19 +102,19 @@ export interface SheetJob {
     updatedAt: Date;
 }
 
+
+
 /**
  * Check if a given object implements the SheetJob interface.
  */
-export function instanceOfSheetJob(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "id" in value;
-    isInstance = isInstance && "sheetId" in value;
-    isInstance = isInstance && "jobType" in value;
-    isInstance = isInstance && "status" in value;
-    isInstance = isInstance && "createdAt" in value;
-    isInstance = isInstance && "updatedAt" in value;
-
-    return isInstance;
+export function instanceOfSheetJob(value: object): value is SheetJob {
+    if (!('id' in value) || value['id'] === undefined) return false;
+    if (!('sheetId' in value) || value['sheetId'] === undefined) return false;
+    if (!('jobType' in value) || value['jobType'] === undefined) return false;
+    if (!('status' in value) || value['status'] === undefined) return false;
+    if (!('createdAt' in value) || value['createdAt'] === undefined) return false;
+    if (!('updatedAt' in value) || value['updatedAt'] === undefined) return false;
+    return true;
 }
 
 export function SheetJobFromJSON(json: any): SheetJob {
@@ -120,7 +122,7 @@ export function SheetJobFromJSON(json: any): SheetJob {
 }
 
 export function SheetJobFromJSONTyped(json: any, ignoreDiscriminator: boolean): SheetJob {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -129,36 +131,38 @@ export function SheetJobFromJSONTyped(json: any, ignoreDiscriminator: boolean): 
         'sheetId': json['sheetId'],
         'jobType': SheetJobTypeFromJSON(json['jobType']),
         'status': StatusFromJSON(json['status']),
-        'startedAt': !exists(json, 'startedAt') ? undefined : (json['startedAt'] === null ? null : new Date(json['startedAt'])),
-        'completedAt': !exists(json, 'completedAt') ? undefined : (json['completedAt'] === null ? null : new Date(json['completedAt'])),
-        'failedAtStep': !exists(json, 'failedAtStep') ? undefined : json['failedAtStep'],
-        'errorMessage': !exists(json, 'errorMessage') ? undefined : json['errorMessage'],
-        'snapshotId': !exists(json, 'snapshotId') ? undefined : json['snapshotId'],
+        'startedAt': json['startedAt'] == null ? undefined : (new Date(json['startedAt'])),
+        'completedAt': json['completedAt'] == null ? undefined : (new Date(json['completedAt'])),
+        'failedAtStep': json['failedAtStep'] == null ? undefined : json['failedAtStep'],
+        'errorMessage': json['errorMessage'] == null ? undefined : json['errorMessage'],
+        'snapshotId': json['snapshotId'] == null ? undefined : json['snapshotId'],
         'createdAt': (new Date(json['createdAt'])),
         'updatedAt': (new Date(json['updatedAt'])),
     };
 }
 
-export function SheetJobToJSON(value?: SheetJob | null): any {
-    if (value === undefined) {
-        return undefined;
+export function SheetJobToJSON(json: any): SheetJob {
+    return SheetJobToJSONTyped(json, false);
+}
+
+export function SheetJobToJSONTyped(value?: SheetJob | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'id': value.id,
-        'sheetId': value.sheetId,
-        'jobType': SheetJobTypeToJSON(value.jobType),
-        'status': StatusToJSON(value.status),
-        'startedAt': value.startedAt === undefined ? undefined : (value.startedAt === null ? null : value.startedAt.toISOString()),
-        'completedAt': value.completedAt === undefined ? undefined : (value.completedAt === null ? null : value.completedAt.toISOString()),
-        'failedAtStep': value.failedAtStep,
-        'errorMessage': value.errorMessage,
-        'snapshotId': value.snapshotId,
-        'createdAt': (value.createdAt.toISOString()),
-        'updatedAt': (value.updatedAt.toISOString()),
+        'id': value['id'],
+        'sheetId': value['sheetId'],
+        'jobType': SheetJobTypeToJSON(value['jobType']),
+        'status': StatusToJSON(value['status']),
+        'startedAt': value['startedAt'] == null ? value['startedAt'] : value['startedAt'].toISOString(),
+        'completedAt': value['completedAt'] == null ? value['completedAt'] : value['completedAt'].toISOString(),
+        'failedAtStep': value['failedAtStep'],
+        'errorMessage': value['errorMessage'],
+        'snapshotId': value['snapshotId'],
+        'createdAt': value['createdAt'].toISOString(),
+        'updatedAt': value['updatedAt'].toISOString(),
     };
 }
 

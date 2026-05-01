@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -54,14 +54,12 @@ export interface AWSCredentials {
 /**
  * Check if a given object implements the AWSCredentials interface.
  */
-export function instanceOfAWSCredentials(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "accessKeyId" in value;
-    isInstance = isInstance && "secretAccessKey" in value;
-    isInstance = isInstance && "sessionToken" in value;
-    isInstance = isInstance && "expiration" in value;
-
-    return isInstance;
+export function instanceOfAWSCredentials(value: object): value is AWSCredentials {
+    if (!('accessKeyId' in value) || value['accessKeyId'] === undefined) return false;
+    if (!('secretAccessKey' in value) || value['secretAccessKey'] === undefined) return false;
+    if (!('sessionToken' in value) || value['sessionToken'] === undefined) return false;
+    if (!('expiration' in value) || value['expiration'] === undefined) return false;
+    return true;
 }
 
 export function AWSCredentialsFromJSON(json: any): AWSCredentials {
@@ -69,7 +67,7 @@ export function AWSCredentialsFromJSON(json: any): AWSCredentials {
 }
 
 export function AWSCredentialsFromJSONTyped(json: any, ignoreDiscriminator: boolean): AWSCredentials {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -78,24 +76,26 @@ export function AWSCredentialsFromJSONTyped(json: any, ignoreDiscriminator: bool
         'secretAccessKey': json['secretAccessKey'],
         'sessionToken': json['sessionToken'],
         'expiration': (new Date(json['expiration'])),
-        'region': !exists(json, 'region') ? undefined : json['region'],
+        'region': json['region'] == null ? undefined : json['region'],
     };
 }
 
-export function AWSCredentialsToJSON(value?: AWSCredentials | null): any {
-    if (value === undefined) {
-        return undefined;
+export function AWSCredentialsToJSON(json: any): AWSCredentials {
+    return AWSCredentialsToJSONTyped(json, false);
+}
+
+export function AWSCredentialsToJSONTyped(value?: AWSCredentials | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'accessKeyId': value.accessKeyId,
-        'secretAccessKey': value.secretAccessKey,
-        'sessionToken': value.sessionToken,
-        'expiration': (value.expiration.toISOString()),
-        'region': value.region,
+        'accessKeyId': value['accessKeyId'],
+        'secretAccessKey': value['secretAccessKey'],
+        'sessionToken': value['sessionToken'],
+        'expiration': value['expiration'].toISOString(),
+        'region': value['region'],
     };
 }
 

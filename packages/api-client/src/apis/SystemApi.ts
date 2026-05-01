@@ -12,18 +12,17 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  ServiceConnection,
-  SystemInfoResponse,
-} from '../models/index';
 import {
+    type ServiceConnection,
     ServiceConnectionFromJSON,
     ServiceConnectionToJSON,
+} from '../models/ServiceConnection';
+import {
+    type SystemInfoResponse,
     SystemInfoResponseFromJSON,
     SystemInfoResponseToJSON,
-} from '../models/index';
+} from '../models/SystemInfoResponse';
 
 /**
  * 
@@ -31,10 +30,9 @@ import {
 export class SystemApi extends runtime.BaseAPI {
 
     /**
-     * List available service connections
-     * Get service connections
+     * Creates request options for getServiceConnections without sending the request
      */
-    async getServiceConnectionsRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<ServiceConnection>>> {
+    async getServiceConnectionsRequestOpts(): Promise<runtime.RequestOpts> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -47,12 +45,24 @@ export class SystemApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/service-connections`,
+
+        let urlPath = `/service-connections`;
+
+        return {
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * List available service connections
+     * Get service connections
+     */
+    async getServiceConnectionsRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<ServiceConnection>>> {
+        const requestOptions = await this.getServiceConnectionsRequestOpts();
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(ServiceConnectionFromJSON));
     }
@@ -67,9 +77,9 @@ export class SystemApi extends runtime.BaseAPI {
     }
 
     /**
-     * Get system info
+     * Creates request options for info without sending the request
      */
-    async infoRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SystemInfoResponse>> {
+    async infoRequestOpts(): Promise<runtime.RequestOpts> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -82,12 +92,23 @@ export class SystemApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/info`,
+
+        let urlPath = `/info`;
+
+        return {
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Get system info
+     */
+    async infoRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SystemInfoResponse>> {
+        const requestOptions = await this.infoRequestOpts();
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => SystemInfoResponseFromJSON(jsonValue));
     }

@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -48,14 +48,12 @@ export interface SftpCredentials {
 /**
  * Check if a given object implements the SftpCredentials interface.
  */
-export function instanceOfSftpCredentials(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "username" in value;
-    isInstance = isInstance && "password" in value;
-    isInstance = isInstance && "projectId" in value;
-    isInstance = isInstance && "expiresAt" in value;
-
-    return isInstance;
+export function instanceOfSftpCredentials(value: object): value is SftpCredentials {
+    if (!('username' in value) || value['username'] === undefined) return false;
+    if (!('password' in value) || value['password'] === undefined) return false;
+    if (!('projectId' in value) || value['projectId'] === undefined) return false;
+    if (!('expiresAt' in value) || value['expiresAt'] === undefined) return false;
+    return true;
 }
 
 export function SftpCredentialsFromJSON(json: any): SftpCredentials {
@@ -63,7 +61,7 @@ export function SftpCredentialsFromJSON(json: any): SftpCredentials {
 }
 
 export function SftpCredentialsFromJSONTyped(json: any, ignoreDiscriminator: boolean): SftpCredentials {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -75,19 +73,21 @@ export function SftpCredentialsFromJSONTyped(json: any, ignoreDiscriminator: boo
     };
 }
 
-export function SftpCredentialsToJSON(value?: SftpCredentials | null): any {
-    if (value === undefined) {
-        return undefined;
+export function SftpCredentialsToJSON(json: any): SftpCredentials {
+    return SftpCredentialsToJSONTyped(json, false);
+}
+
+export function SftpCredentialsToJSONTyped(value?: SftpCredentials | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'username': value.username,
-        'password': value.password,
-        'projectId': value.projectId,
-        'expiresAt': (value.expiresAt.toISOString()),
+        'username': value['username'],
+        'password': value['password'],
+        'projectId': value['projectId'],
+        'expiresAt': value['expiresAt'].toISOString(),
     };
 }
 

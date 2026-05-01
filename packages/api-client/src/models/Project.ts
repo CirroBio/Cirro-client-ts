@@ -12,18 +12,20 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { Status } from './Status';
 import {
     StatusFromJSON,
     StatusFromJSONTyped,
     StatusToJSON,
+    StatusToJSONTyped,
 } from './Status';
 import type { Tag } from './Tag';
 import {
     TagFromJSON,
     TagFromJSONTyped,
     TagToJSON,
+    TagToJSONTyped,
 } from './Tag';
 
 /**
@@ -82,21 +84,21 @@ export interface Project {
     billingAccountId: string;
 }
 
+
+
 /**
  * Check if a given object implements the Project interface.
  */
-export function instanceOfProject(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "id" in value;
-    isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "description" in value;
-    isInstance = isInstance && "status" in value;
-    isInstance = isInstance && "tags" in value;
-    isInstance = isInstance && "organization" in value;
-    isInstance = isInstance && "classificationIds" in value;
-    isInstance = isInstance && "billingAccountId" in value;
-
-    return isInstance;
+export function instanceOfProject(value: object): value is Project {
+    if (!('id' in value) || value['id'] === undefined) return false;
+    if (!('name' in value) || value['name'] === undefined) return false;
+    if (!('description' in value) || value['description'] === undefined) return false;
+    if (!('status' in value) || value['status'] === undefined) return false;
+    if (!('tags' in value) || value['tags'] === undefined) return false;
+    if (!('organization' in value) || value['organization'] === undefined) return false;
+    if (!('classificationIds' in value) || value['classificationIds'] === undefined) return false;
+    if (!('billingAccountId' in value) || value['billingAccountId'] === undefined) return false;
+    return true;
 }
 
 export function ProjectFromJSON(json: any): Project {
@@ -104,7 +106,7 @@ export function ProjectFromJSON(json: any): Project {
 }
 
 export function ProjectFromJSONTyped(json: any, ignoreDiscriminator: boolean): Project {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -120,23 +122,25 @@ export function ProjectFromJSONTyped(json: any, ignoreDiscriminator: boolean): P
     };
 }
 
-export function ProjectToJSON(value?: Project | null): any {
-    if (value === undefined) {
-        return undefined;
+export function ProjectToJSON(json: any): Project {
+    return ProjectToJSONTyped(json, false);
+}
+
+export function ProjectToJSONTyped(value?: Project | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'id': value.id,
-        'name': value.name,
-        'description': value.description,
-        'status': StatusToJSON(value.status),
-        'tags': ((value.tags as Array<any>).map(TagToJSON)),
-        'organization': value.organization,
-        'classificationIds': value.classificationIds,
-        'billingAccountId': value.billingAccountId,
+        'id': value['id'],
+        'name': value['name'],
+        'description': value['description'],
+        'status': StatusToJSON(value['status']),
+        'tags': ((value['tags'] as Array<any>).map(TagToJSON)),
+        'organization': value['organization'],
+        'classificationIds': value['classificationIds'],
+        'billingAccountId': value['billingAccountId'],
     };
 }
 

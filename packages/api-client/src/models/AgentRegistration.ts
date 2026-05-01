@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -54,15 +54,13 @@ export interface AgentRegistration {
 /**
  * Check if a given object implements the AgentRegistration interface.
  */
-export function instanceOfAgentRegistration(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "localIp" in value;
-    isInstance = isInstance && "remoteIp" in value;
-    isInstance = isInstance && "agentVersion" in value;
-    isInstance = isInstance && "hostname" in value;
-    isInstance = isInstance && "os" in value;
-
-    return isInstance;
+export function instanceOfAgentRegistration(value: object): value is AgentRegistration {
+    if (!('localIp' in value) || value['localIp'] === undefined) return false;
+    if (!('remoteIp' in value) || value['remoteIp'] === undefined) return false;
+    if (!('agentVersion' in value) || value['agentVersion'] === undefined) return false;
+    if (!('hostname' in value) || value['hostname'] === undefined) return false;
+    if (!('os' in value) || value['os'] === undefined) return false;
+    return true;
 }
 
 export function AgentRegistrationFromJSON(json: any): AgentRegistration {
@@ -70,7 +68,7 @@ export function AgentRegistrationFromJSON(json: any): AgentRegistration {
 }
 
 export function AgentRegistrationFromJSONTyped(json: any, ignoreDiscriminator: boolean): AgentRegistration {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -83,20 +81,22 @@ export function AgentRegistrationFromJSONTyped(json: any, ignoreDiscriminator: b
     };
 }
 
-export function AgentRegistrationToJSON(value?: AgentRegistration | null): any {
-    if (value === undefined) {
-        return undefined;
+export function AgentRegistrationToJSON(json: any): AgentRegistration {
+    return AgentRegistrationToJSONTyped(json, false);
+}
+
+export function AgentRegistrationToJSONTyped(value?: AgentRegistration | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'localIp': value.localIp,
-        'remoteIp': value.remoteIp,
-        'agentVersion': value.agentVersion,
-        'hostname': value.hostname,
-        'os': value.os,
+        'localIp': value['localIp'],
+        'remoteIp': value['remoteIp'],
+        'agentVersion': value['agentVersion'],
+        'hostname': value['hostname'],
+        'os': value['os'],
     };
 }
 

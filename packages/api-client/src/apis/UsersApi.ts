@@ -12,30 +12,37 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  InviteUserRequest,
-  InviteUserResponse,
-  PaginatedResponseUserDto,
-  UpdateUserRequest,
-  User,
-  UserDetail,
-} from '../models/index';
 import {
+    type InviteUserRequest,
     InviteUserRequestFromJSON,
     InviteUserRequestToJSON,
+} from '../models/InviteUserRequest';
+import {
+    type InviteUserResponse,
     InviteUserResponseFromJSON,
     InviteUserResponseToJSON,
+} from '../models/InviteUserResponse';
+import {
+    type PaginatedResponseUserDto,
     PaginatedResponseUserDtoFromJSON,
     PaginatedResponseUserDtoToJSON,
+} from '../models/PaginatedResponseUserDto';
+import {
+    type UpdateUserRequest,
     UpdateUserRequestFromJSON,
     UpdateUserRequestToJSON,
+} from '../models/UpdateUserRequest';
+import {
+    type User,
     UserFromJSON,
     UserToJSON,
+} from '../models/User';
+import {
+    type UserDetail,
     UserDetailFromJSON,
     UserDetailToJSON,
-} from '../models/index';
+} from '../models/UserDetail';
 
 export interface GetUserRequest {
     username: string;
@@ -66,12 +73,14 @@ export interface UpdateUserOperationRequest {
 export class UsersApi extends runtime.BaseAPI {
 
     /**
-     * Get user information
-     * Get user
+     * Creates request options for getUser without sending the request
      */
-    async getUserRaw(requestParameters: GetUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<UserDetail>> {
-        if (requestParameters.username === null || requestParameters.username === undefined) {
-            throw new runtime.RequiredError('username','Required parameter requestParameters.username was null or undefined when calling getUser.');
+    async getUserRequestOpts(requestParameters: GetUserRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['username'] == null) {
+            throw new runtime.RequiredError(
+                'username',
+                'Required parameter "username" was null or undefined when calling getUser().'
+            );
         }
 
         const queryParameters: any = {};
@@ -86,12 +95,25 @@ export class UsersApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/users/{username}`.replace(`{${"username"}}`, encodeURIComponent(String(requestParameters.username))),
+
+        let urlPath = `/users/{username}`;
+        urlPath = urlPath.replace('{username}', encodeURIComponent(String(requestParameters['username'])));
+
+        return {
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Get user information
+     * Get user
+     */
+    async getUserRaw(requestParameters: GetUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<UserDetail>> {
+        const requestOptions = await this.getUserRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => UserDetailFromJSON(jsonValue));
     }
@@ -106,12 +128,14 @@ export class UsersApi extends runtime.BaseAPI {
     }
 
     /**
-     * Invites a user to the system
-     * Invite user
+     * Creates request options for inviteUser without sending the request
      */
-    async inviteUserRaw(requestParameters: InviteUserOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<InviteUserResponse>> {
-        if (requestParameters.inviteUserRequest === null || requestParameters.inviteUserRequest === undefined) {
-            throw new runtime.RequiredError('inviteUserRequest','Required parameter requestParameters.inviteUserRequest was null or undefined when calling inviteUser.');
+    async inviteUserRequestOpts(requestParameters: InviteUserOperationRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['inviteUserRequest'] == null) {
+            throw new runtime.RequiredError(
+                'inviteUserRequest',
+                'Required parameter "inviteUserRequest" was null or undefined when calling inviteUser().'
+            );
         }
 
         const queryParameters: any = {};
@@ -128,13 +152,25 @@ export class UsersApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/users`,
+
+        let urlPath = `/users`;
+
+        return {
+            path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: InviteUserRequestToJSON(requestParameters.inviteUserRequest),
-        }, initOverrides);
+            body: InviteUserRequestToJSON(requestParameters['inviteUserRequest']),
+        };
+    }
+
+    /**
+     * Invites a user to the system
+     * Invite user
+     */
+    async inviteUserRaw(requestParameters: InviteUserOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<InviteUserResponse>> {
+        const requestOptions = await this.inviteUserRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => InviteUserResponseFromJSON(jsonValue));
     }
@@ -149,22 +185,21 @@ export class UsersApi extends runtime.BaseAPI {
     }
 
     /**
-     * Gets a list of users, matching an optional username pattern
-     * List users
+     * Creates request options for listUsers without sending the request
      */
-    async listUsersRaw(requestParameters: ListUsersRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PaginatedResponseUserDto>> {
+    async listUsersRequestOpts(requestParameters: ListUsersRequest): Promise<runtime.RequestOpts> {
         const queryParameters: any = {};
 
-        if (requestParameters.username !== undefined) {
-            queryParameters['username'] = requestParameters.username;
+        if (requestParameters['username'] != null) {
+            queryParameters['username'] = requestParameters['username'];
         }
 
-        if (requestParameters.limit !== undefined) {
-            queryParameters['limit'] = requestParameters.limit;
+        if (requestParameters['limit'] != null) {
+            queryParameters['limit'] = requestParameters['limit'];
         }
 
-        if (requestParameters.nextToken !== undefined) {
-            queryParameters['nextToken'] = requestParameters.nextToken;
+        if (requestParameters['nextToken'] != null) {
+            queryParameters['nextToken'] = requestParameters['nextToken'];
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -177,12 +212,24 @@ export class UsersApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/users`,
+
+        let urlPath = `/users`;
+
+        return {
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Gets a list of users, matching an optional username pattern
+     * List users
+     */
+    async listUsersRaw(requestParameters: ListUsersRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PaginatedResponseUserDto>> {
+        const requestOptions = await this.listUsersRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => PaginatedResponseUserDtoFromJSON(jsonValue));
     }
@@ -197,12 +244,14 @@ export class UsersApi extends runtime.BaseAPI {
     }
 
     /**
-     * Signs user out from all sessions
-     * Sign out user
+     * Creates request options for signOutUser without sending the request
      */
-    async signOutUserRaw(requestParameters: SignOutUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.username === null || requestParameters.username === undefined) {
-            throw new runtime.RequiredError('username','Required parameter requestParameters.username was null or undefined when calling signOutUser.');
+    async signOutUserRequestOpts(requestParameters: SignOutUserRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['username'] == null) {
+            throw new runtime.RequiredError(
+                'username',
+                'Required parameter "username" was null or undefined when calling signOutUser().'
+            );
         }
 
         const queryParameters: any = {};
@@ -217,12 +266,25 @@ export class UsersApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/users/{username}:signOut`.replace(`{${"username"}}`, encodeURIComponent(String(requestParameters.username))),
+
+        let urlPath = `/users/{username}:signOut`;
+        urlPath = urlPath.replace('{username}', encodeURIComponent(String(requestParameters['username'])));
+
+        return {
+            path: urlPath,
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Signs user out from all sessions
+     * Sign out user
+     */
+    async signOutUserRaw(requestParameters: SignOutUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.signOutUserRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -236,16 +298,21 @@ export class UsersApi extends runtime.BaseAPI {
     }
 
     /**
-     * Update user information
-     * Update user
+     * Creates request options for updateUser without sending the request
      */
-    async updateUserRaw(requestParameters: UpdateUserOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<User>> {
-        if (requestParameters.username === null || requestParameters.username === undefined) {
-            throw new runtime.RequiredError('username','Required parameter requestParameters.username was null or undefined when calling updateUser.');
+    async updateUserRequestOpts(requestParameters: UpdateUserOperationRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['username'] == null) {
+            throw new runtime.RequiredError(
+                'username',
+                'Required parameter "username" was null or undefined when calling updateUser().'
+            );
         }
 
-        if (requestParameters.updateUserRequest === null || requestParameters.updateUserRequest === undefined) {
-            throw new runtime.RequiredError('updateUserRequest','Required parameter requestParameters.updateUserRequest was null or undefined when calling updateUser.');
+        if (requestParameters['updateUserRequest'] == null) {
+            throw new runtime.RequiredError(
+                'updateUserRequest',
+                'Required parameter "updateUserRequest" was null or undefined when calling updateUser().'
+            );
         }
 
         const queryParameters: any = {};
@@ -262,13 +329,26 @@ export class UsersApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/users/{username}`.replace(`{${"username"}}`, encodeURIComponent(String(requestParameters.username))),
+
+        let urlPath = `/users/{username}`;
+        urlPath = urlPath.replace('{username}', encodeURIComponent(String(requestParameters['username'])));
+
+        return {
+            path: urlPath,
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: UpdateUserRequestToJSON(requestParameters.updateUserRequest),
-        }, initOverrides);
+            body: UpdateUserRequestToJSON(requestParameters['updateUserRequest']),
+        };
+    }
+
+    /**
+     * Update user information
+     * Update user
+     */
+    async updateUserRaw(requestParameters: UpdateUserOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<User>> {
+        const requestOptions = await this.updateUserRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => UserFromJSON(jsonValue));
     }

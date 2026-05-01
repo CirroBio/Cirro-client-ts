@@ -12,31 +12,35 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { AppClientType } from './AppClientType';
 import {
     AppClientTypeFromJSON,
     AppClientTypeFromJSONTyped,
     AppClientTypeToJSON,
+    AppClientTypeToJSONTyped,
 } from './AppClientType';
 import type { Permission } from './Permission';
 import {
     PermissionFromJSON,
     PermissionFromJSONTyped,
     PermissionToJSON,
+    PermissionToJSONTyped,
 } from './Permission';
-import type { PrincipalType } from './PrincipalType';
-import {
-    PrincipalTypeFromJSON,
-    PrincipalTypeFromJSONTyped,
-    PrincipalTypeToJSON,
-} from './PrincipalType';
 import type { ProjectPermissionSet } from './ProjectPermissionSet';
 import {
     ProjectPermissionSetFromJSON,
     ProjectPermissionSetFromJSONTyped,
     ProjectPermissionSetToJSON,
+    ProjectPermissionSetToJSONTyped,
 } from './ProjectPermissionSet';
+import type { PrincipalType } from './PrincipalType';
+import {
+    PrincipalTypeFromJSON,
+    PrincipalTypeFromJSONTyped,
+    PrincipalTypeToJSON,
+    PrincipalTypeToJSONTyped,
+} from './PrincipalType';
 
 /**
  * 
@@ -75,13 +79,13 @@ export interface AppRegistrationInput {
      */
     publisher?: string | null;
     /**
-     * 
+     * Whether it is linked to a user or it's own identity
      * @type {PrincipalType}
      * @memberof AppRegistrationInput
      */
     principalType: PrincipalType;
     /**
-     * 
+     * Application client type
      * @type {AppClientType}
      * @memberof AppRegistrationInput
      */
@@ -130,21 +134,21 @@ export interface AppRegistrationInput {
     templateId?: string | null;
 }
 
+
+
 /**
  * Check if a given object implements the AppRegistrationInput interface.
  */
-export function instanceOfAppRegistrationInput(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "description" in value;
-    isInstance = isInstance && "principalType" in value;
-    isInstance = isInstance && "clientType" in value;
-    isInstance = isInstance && "allowedIps" in value;
-    isInstance = isInstance && "redirectUris" in value;
-    isInstance = isInstance && "projectPermissions" in value;
-    isInstance = isInstance && "globalPermissions" in value;
-
-    return isInstance;
+export function instanceOfAppRegistrationInput(value: object): value is AppRegistrationInput {
+    if (!('name' in value) || value['name'] === undefined) return false;
+    if (!('description' in value) || value['description'] === undefined) return false;
+    if (!('principalType' in value) || value['principalType'] === undefined) return false;
+    if (!('clientType' in value) || value['clientType'] === undefined) return false;
+    if (!('allowedIps' in value) || value['allowedIps'] === undefined) return false;
+    if (!('redirectUris' in value) || value['redirectUris'] === undefined) return false;
+    if (!('projectPermissions' in value) || value['projectPermissions'] === undefined) return false;
+    if (!('globalPermissions' in value) || value['globalPermissions'] === undefined) return false;
+    return true;
 }
 
 export function AppRegistrationInputFromJSON(json: any): AppRegistrationInput {
@@ -152,51 +156,53 @@ export function AppRegistrationInputFromJSON(json: any): AppRegistrationInput {
 }
 
 export function AppRegistrationInputFromJSONTyped(json: any, ignoreDiscriminator: boolean): AppRegistrationInput {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
         'name': json['name'],
         'description': json['description'],
-        'logoUrl': !exists(json, 'logoUrl') ? undefined : json['logoUrl'],
-        'appUrl': !exists(json, 'appUrl') ? undefined : json['appUrl'],
-        'publisher': !exists(json, 'publisher') ? undefined : json['publisher'],
+        'logoUrl': json['logoUrl'] == null ? undefined : json['logoUrl'],
+        'appUrl': json['appUrl'] == null ? undefined : json['appUrl'],
+        'publisher': json['publisher'] == null ? undefined : json['publisher'],
         'principalType': PrincipalTypeFromJSON(json['principalType']),
         'clientType': AppClientTypeFromJSON(json['clientType']),
         'allowedIps': json['allowedIps'],
         'redirectUris': json['redirectUris'],
-        'secretExpiresAt': !exists(json, 'secretExpiresAt') ? undefined : (json['secretExpiresAt'] === null ? null : new Date(json['secretExpiresAt'])),
+        'secretExpiresAt': json['secretExpiresAt'] == null ? undefined : (new Date(json['secretExpiresAt'])),
         'projectPermissions': ((json['projectPermissions'] as Array<any>).map(ProjectPermissionSetFromJSON)),
         'globalPermissions': ((json['globalPermissions'] as Array<any>).map(PermissionFromJSON)),
-        'discoveryEnabled': !exists(json, 'discoveryEnabled') ? undefined : json['discoveryEnabled'],
-        'templateId': !exists(json, 'templateId') ? undefined : json['templateId'],
+        'discoveryEnabled': json['discoveryEnabled'] == null ? undefined : json['discoveryEnabled'],
+        'templateId': json['templateId'] == null ? undefined : json['templateId'],
     };
 }
 
-export function AppRegistrationInputToJSON(value?: AppRegistrationInput | null): any {
-    if (value === undefined) {
-        return undefined;
+export function AppRegistrationInputToJSON(json: any): AppRegistrationInput {
+    return AppRegistrationInputToJSONTyped(json, false);
+}
+
+export function AppRegistrationInputToJSONTyped(value?: AppRegistrationInput | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'name': value.name,
-        'description': value.description,
-        'logoUrl': value.logoUrl,
-        'appUrl': value.appUrl,
-        'publisher': value.publisher,
-        'principalType': PrincipalTypeToJSON(value.principalType),
-        'clientType': AppClientTypeToJSON(value.clientType),
-        'allowedIps': value.allowedIps,
-        'redirectUris': value.redirectUris,
-        'secretExpiresAt': value.secretExpiresAt === undefined ? undefined : (value.secretExpiresAt === null ? null : value.secretExpiresAt.toISOString()),
-        'projectPermissions': ((value.projectPermissions as Array<any>).map(ProjectPermissionSetToJSON)),
-        'globalPermissions': ((value.globalPermissions as Array<any>).map(PermissionToJSON)),
-        'discoveryEnabled': value.discoveryEnabled,
-        'templateId': value.templateId,
+        'name': value['name'],
+        'description': value['description'],
+        'logoUrl': value['logoUrl'],
+        'appUrl': value['appUrl'],
+        'publisher': value['publisher'],
+        'principalType': PrincipalTypeToJSON(value['principalType']),
+        'clientType': AppClientTypeToJSON(value['clientType']),
+        'allowedIps': value['allowedIps'],
+        'redirectUris': value['redirectUris'],
+        'secretExpiresAt': value['secretExpiresAt'] == null ? value['secretExpiresAt'] : value['secretExpiresAt'].toISOString(),
+        'projectPermissions': ((value['projectPermissions'] as Array<any>).map(ProjectPermissionSetToJSON)),
+        'globalPermissions': ((value['globalPermissions'] as Array<any>).map(PermissionToJSON)),
+        'discoveryEnabled': value['discoveryEnabled'],
+        'templateId': value['templateId'],
     };
 }
 

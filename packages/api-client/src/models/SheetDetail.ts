@@ -12,37 +12,42 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
-import type { ColumnDef } from './ColumnDef';
-import {
-    ColumnDefFromJSON,
-    ColumnDefFromJSONTyped,
-    ColumnDefToJSON,
-} from './ColumnDef';
-import type { SheetCreationMode } from './SheetCreationMode';
-import {
-    SheetCreationModeFromJSON,
-    SheetCreationModeFromJSONTyped,
-    SheetCreationModeToJSON,
-} from './SheetCreationMode';
-import type { SheetDetailViewDefinition } from './SheetDetailViewDefinition';
-import {
-    SheetDetailViewDefinitionFromJSON,
-    SheetDetailViewDefinitionFromJSONTyped,
-    SheetDetailViewDefinitionToJSON,
-} from './SheetDetailViewDefinition';
-import type { SheetType } from './SheetType';
-import {
-    SheetTypeFromJSON,
-    SheetTypeFromJSONTyped,
-    SheetTypeToJSON,
-} from './SheetType';
+import { mapValues } from '../runtime';
 import type { Status } from './Status';
 import {
     StatusFromJSON,
     StatusFromJSONTyped,
     StatusToJSON,
+    StatusToJSONTyped,
 } from './Status';
+import type { SheetCreationMode } from './SheetCreationMode';
+import {
+    SheetCreationModeFromJSON,
+    SheetCreationModeFromJSONTyped,
+    SheetCreationModeToJSON,
+    SheetCreationModeToJSONTyped,
+} from './SheetCreationMode';
+import type { ViewQueryRequest } from './ViewQueryRequest';
+import {
+    ViewQueryRequestFromJSON,
+    ViewQueryRequestFromJSONTyped,
+    ViewQueryRequestToJSON,
+    ViewQueryRequestToJSONTyped,
+} from './ViewQueryRequest';
+import type { ColumnDef } from './ColumnDef';
+import {
+    ColumnDefFromJSON,
+    ColumnDefFromJSONTyped,
+    ColumnDefToJSON,
+    ColumnDefToJSONTyped,
+} from './ColumnDef';
+import type { SheetType } from './SheetType';
+import {
+    SheetTypeFromJSON,
+    SheetTypeFromJSONTyped,
+    SheetTypeToJSON,
+    SheetTypeToJSONTyped,
+} from './SheetType';
 
 /**
  * 
@@ -93,7 +98,7 @@ export interface SheetDetail {
      */
     sheetType: SheetType;
     /**
-     * 
+     * How the table was initialized. Null for VIEW sheets.
      * @type {SheetCreationMode}
      * @memberof SheetDetail
      */
@@ -117,11 +122,11 @@ export interface SheetDetail {
      */
     auditReadAccess: boolean;
     /**
-     * 
-     * @type {SheetDetailViewDefinition}
+     * View definition for VIEW sheets. Null for TABLE sheets.
+     * @type {ViewQueryRequest}
      * @memberof SheetDetail
      */
-    viewDefinition?: SheetDetailViewDefinition | null;
+    viewDefinition?: ViewQueryRequest | null;
     /**
      * When the view was last materialized. Null for TABLE sheets.
      * @type {Date}
@@ -129,7 +134,7 @@ export interface SheetDetail {
      */
     lastRefreshedAt?: Date | null;
     /**
-     * S3 upload path for files to be ingested into this sheet
+     * S3 upload path for files to be ingested into this sheet.
      * @type {string}
      * @memberof SheetDetail
      */
@@ -158,28 +163,34 @@ export interface SheetDetail {
      * @memberof SheetDetail
      */
     totalRowCount: number;
+    /**
+     * Current table schema version (starts at 0). Used for optimistic concurrency control. New tables can omit this, but updates should include this to prevent overwriting due to stale table schema metadata.
+     * @type {number}
+     * @memberof SheetDetail
+     */
+    schemaVersionId?: number;
 }
+
+
 
 /**
  * Check if a given object implements the SheetDetail interface.
  */
-export function instanceOfSheetDetail(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "id" in value;
-    isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "description" in value;
-    isInstance = isInstance && "projectId" in value;
-    isInstance = isInstance && "namespaceName" in value;
-    isInstance = isInstance && "tableName" in value;
-    isInstance = isInstance && "sheetType" in value;
-    isInstance = isInstance && "status" in value;
-    isInstance = isInstance && "auditReadAccess" in value;
-    isInstance = isInstance && "createdBy" in value;
-    isInstance = isInstance && "createdAt" in value;
-    isInstance = isInstance && "updatedAt" in value;
-    isInstance = isInstance && "totalRowCount" in value;
-
-    return isInstance;
+export function instanceOfSheetDetail(value: object): value is SheetDetail {
+    if (!('id' in value) || value['id'] === undefined) return false;
+    if (!('name' in value) || value['name'] === undefined) return false;
+    if (!('description' in value) || value['description'] === undefined) return false;
+    if (!('projectId' in value) || value['projectId'] === undefined) return false;
+    if (!('namespaceName' in value) || value['namespaceName'] === undefined) return false;
+    if (!('tableName' in value) || value['tableName'] === undefined) return false;
+    if (!('sheetType' in value) || value['sheetType'] === undefined) return false;
+    if (!('status' in value) || value['status'] === undefined) return false;
+    if (!('auditReadAccess' in value) || value['auditReadAccess'] === undefined) return false;
+    if (!('createdBy' in value) || value['createdBy'] === undefined) return false;
+    if (!('createdAt' in value) || value['createdAt'] === undefined) return false;
+    if (!('updatedAt' in value) || value['updatedAt'] === undefined) return false;
+    if (!('totalRowCount' in value) || value['totalRowCount'] === undefined) return false;
+    return true;
 }
 
 export function SheetDetailFromJSON(json: any): SheetDetail {
@@ -187,7 +198,7 @@ export function SheetDetailFromJSON(json: any): SheetDetail {
 }
 
 export function SheetDetailFromJSONTyped(json: any, ignoreDiscriminator: boolean): SheetDetail {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -199,47 +210,51 @@ export function SheetDetailFromJSONTyped(json: any, ignoreDiscriminator: boolean
         'namespaceName': json['namespaceName'],
         'tableName': json['tableName'],
         'sheetType': SheetTypeFromJSON(json['sheetType']),
-        'sheetCreationMode': !exists(json, 'sheetCreationMode') ? undefined : SheetCreationModeFromJSON(json['sheetCreationMode']),
+        'sheetCreationMode': json['sheetCreationMode'] == null ? undefined : SheetCreationModeFromJSON(json['sheetCreationMode']),
         'status': StatusFromJSON(json['status']),
-        'columns': !exists(json, 'columns') ? undefined : (json['columns'] === null ? null : (json['columns'] as Array<any>).map(ColumnDefFromJSON)),
+        'columns': json['columns'] == null ? undefined : ((json['columns'] as Array<any>).map(ColumnDefFromJSON)),
         'auditReadAccess': json['auditReadAccess'],
-        'viewDefinition': !exists(json, 'viewDefinition') ? undefined : SheetDetailViewDefinitionFromJSON(json['viewDefinition']),
-        'lastRefreshedAt': !exists(json, 'lastRefreshedAt') ? undefined : (json['lastRefreshedAt'] === null ? null : new Date(json['lastRefreshedAt'])),
-        'stagingUploadPath': !exists(json, 'stagingUploadPath') ? undefined : json['stagingUploadPath'],
+        'viewDefinition': json['viewDefinition'] == null ? undefined : ViewQueryRequestFromJSON(json['viewDefinition']),
+        'lastRefreshedAt': json['lastRefreshedAt'] == null ? undefined : (new Date(json['lastRefreshedAt'])),
+        'stagingUploadPath': json['stagingUploadPath'] == null ? undefined : json['stagingUploadPath'],
         'createdBy': json['createdBy'],
         'createdAt': (new Date(json['createdAt'])),
         'updatedAt': (new Date(json['updatedAt'])),
         'totalRowCount': json['totalRowCount'],
+        'schemaVersionId': json['schemaVersionId'] == null ? undefined : json['schemaVersionId'],
     };
 }
 
-export function SheetDetailToJSON(value?: SheetDetail | null): any {
-    if (value === undefined) {
-        return undefined;
+export function SheetDetailToJSON(json: any): SheetDetail {
+    return SheetDetailToJSONTyped(json, false);
+}
+
+export function SheetDetailToJSONTyped(value?: SheetDetail | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'id': value.id,
-        'name': value.name,
-        'description': value.description,
-        'projectId': value.projectId,
-        'namespaceName': value.namespaceName,
-        'tableName': value.tableName,
-        'sheetType': SheetTypeToJSON(value.sheetType),
-        'sheetCreationMode': SheetCreationModeToJSON(value.sheetCreationMode),
-        'status': StatusToJSON(value.status),
-        'columns': value.columns === undefined ? undefined : (value.columns === null ? null : (value.columns as Array<any>).map(ColumnDefToJSON)),
-        'auditReadAccess': value.auditReadAccess,
-        'viewDefinition': SheetDetailViewDefinitionToJSON(value.viewDefinition),
-        'lastRefreshedAt': value.lastRefreshedAt === undefined ? undefined : (value.lastRefreshedAt === null ? null : value.lastRefreshedAt.toISOString()),
-        'stagingUploadPath': value.stagingUploadPath,
-        'createdBy': value.createdBy,
-        'createdAt': (value.createdAt.toISOString()),
-        'updatedAt': (value.updatedAt.toISOString()),
-        'totalRowCount': value.totalRowCount,
+        'id': value['id'],
+        'name': value['name'],
+        'description': value['description'],
+        'projectId': value['projectId'],
+        'namespaceName': value['namespaceName'],
+        'tableName': value['tableName'],
+        'sheetType': SheetTypeToJSON(value['sheetType']),
+        'sheetCreationMode': SheetCreationModeToJSON(value['sheetCreationMode']),
+        'status': StatusToJSON(value['status']),
+        'columns': value['columns'] == null ? undefined : ((value['columns'] as Array<any>).map(ColumnDefToJSON)),
+        'auditReadAccess': value['auditReadAccess'],
+        'viewDefinition': ViewQueryRequestToJSON(value['viewDefinition']),
+        'lastRefreshedAt': value['lastRefreshedAt'] == null ? value['lastRefreshedAt'] : value['lastRefreshedAt'].toISOString(),
+        'stagingUploadPath': value['stagingUploadPath'],
+        'createdBy': value['createdBy'],
+        'createdAt': value['createdAt'].toISOString(),
+        'updatedAt': value['updatedAt'].toISOString(),
+        'totalRowCount': value['totalRowCount'],
+        'schemaVersionId': value['schemaVersionId'],
     };
 }
 

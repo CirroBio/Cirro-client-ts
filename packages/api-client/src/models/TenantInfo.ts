@@ -12,18 +12,20 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { FeatureFlags } from './FeatureFlags';
 import {
     FeatureFlagsFromJSON,
     FeatureFlagsFromJSONTyped,
     FeatureFlagsToJSON,
+    FeatureFlagsToJSONTyped,
 } from './FeatureFlags';
 import type { LoginProvider } from './LoginProvider';
 import {
     LoginProviderFromJSON,
     LoginProviderFromJSONTyped,
     LoginProviderToJSON,
+    LoginProviderToJSONTyped,
 } from './LoginProvider';
 
 /**
@@ -97,20 +99,18 @@ export interface TenantInfo {
 /**
  * Check if a given object implements the TenantInfo interface.
  */
-export function instanceOfTenantInfo(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "id" in value;
-    isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "description" in value;
-    isInstance = isInstance && "location" in value;
-    isInstance = isInstance && "contactEmail" in value;
-    isInstance = isInstance && "tenantLogoUrl" in value;
-    isInstance = isInstance && "termsOfServiceUrl" in value;
-    isInstance = isInstance && "privacyPolicyUrl" in value;
-    isInstance = isInstance && "loginProviders" in value;
-    isInstance = isInstance && "features" in value;
-
-    return isInstance;
+export function instanceOfTenantInfo(value: object): value is TenantInfo {
+    if (!('id' in value) || value['id'] === undefined) return false;
+    if (!('name' in value) || value['name'] === undefined) return false;
+    if (!('description' in value) || value['description'] === undefined) return false;
+    if (!('location' in value) || value['location'] === undefined) return false;
+    if (!('contactEmail' in value) || value['contactEmail'] === undefined) return false;
+    if (!('tenantLogoUrl' in value) || value['tenantLogoUrl'] === undefined) return false;
+    if (!('termsOfServiceUrl' in value) || value['termsOfServiceUrl'] === undefined) return false;
+    if (!('privacyPolicyUrl' in value) || value['privacyPolicyUrl'] === undefined) return false;
+    if (!('loginProviders' in value) || value['loginProviders'] === undefined) return false;
+    if (!('features' in value) || value['features'] === undefined) return false;
+    return true;
 }
 
 export function TenantInfoFromJSON(json: any): TenantInfo {
@@ -118,7 +118,7 @@ export function TenantInfoFromJSON(json: any): TenantInfo {
 }
 
 export function TenantInfoFromJSONTyped(json: any, ignoreDiscriminator: boolean): TenantInfo {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -136,25 +136,27 @@ export function TenantInfoFromJSONTyped(json: any, ignoreDiscriminator: boolean)
     };
 }
 
-export function TenantInfoToJSON(value?: TenantInfo | null): any {
-    if (value === undefined) {
-        return undefined;
+export function TenantInfoToJSON(json: any): TenantInfo {
+    return TenantInfoToJSONTyped(json, false);
+}
+
+export function TenantInfoToJSONTyped(value?: TenantInfo | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'id': value.id,
-        'name': value.name,
-        'description': value.description,
-        'location': value.location,
-        'contactEmail': value.contactEmail,
-        'tenantLogoUrl': value.tenantLogoUrl,
-        'termsOfServiceUrl': value.termsOfServiceUrl,
-        'privacyPolicyUrl': value.privacyPolicyUrl,
-        'loginProviders': ((value.loginProviders as Array<any>).map(LoginProviderToJSON)),
-        'features': FeatureFlagsToJSON(value.features),
+        'id': value['id'],
+        'name': value['name'],
+        'description': value['description'],
+        'location': value['location'],
+        'contactEmail': value['contactEmail'],
+        'tenantLogoUrl': value['tenantLogoUrl'],
+        'termsOfServiceUrl': value['termsOfServiceUrl'],
+        'privacyPolicyUrl': value['privacyPolicyUrl'],
+        'loginProviders': ((value['loginProviders'] as Array<any>).map(LoginProviderToJSON)),
+        'features': FeatureFlagsToJSON(value['features']),
     };
 }
 

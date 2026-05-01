@@ -12,12 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { ProjectRole } from './ProjectRole';
 import {
     ProjectRoleFromJSON,
     ProjectRoleFromJSONTyped,
     ProjectRoleToJSON,
+    ProjectRoleToJSONTyped,
 } from './ProjectRole';
 
 /**
@@ -40,15 +41,15 @@ export interface CreateProjectAccessRequest {
     message: string;
 }
 
+
+
 /**
  * Check if a given object implements the CreateProjectAccessRequest interface.
  */
-export function instanceOfCreateProjectAccessRequest(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "role" in value;
-    isInstance = isInstance && "message" in value;
-
-    return isInstance;
+export function instanceOfCreateProjectAccessRequest(value: object): value is CreateProjectAccessRequest {
+    if (!('role' in value) || value['role'] === undefined) return false;
+    if (!('message' in value) || value['message'] === undefined) return false;
+    return true;
 }
 
 export function CreateProjectAccessRequestFromJSON(json: any): CreateProjectAccessRequest {
@@ -56,7 +57,7 @@ export function CreateProjectAccessRequestFromJSON(json: any): CreateProjectAcce
 }
 
 export function CreateProjectAccessRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): CreateProjectAccessRequest {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -66,17 +67,19 @@ export function CreateProjectAccessRequestFromJSONTyped(json: any, ignoreDiscrim
     };
 }
 
-export function CreateProjectAccessRequestToJSON(value?: CreateProjectAccessRequest | null): any {
-    if (value === undefined) {
-        return undefined;
+export function CreateProjectAccessRequestToJSON(json: any): CreateProjectAccessRequest {
+    return CreateProjectAccessRequestToJSONTyped(json, false);
+}
+
+export function CreateProjectAccessRequestToJSONTyped(value?: CreateProjectAccessRequest | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'role': ProjectRoleToJSON(value.role),
-        'message': value.message,
+        'role': ProjectRoleToJSON(value['role']),
+        'message': value['message'],
     };
 }
 

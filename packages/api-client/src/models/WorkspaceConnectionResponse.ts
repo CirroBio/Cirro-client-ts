@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -42,13 +42,11 @@ export interface WorkspaceConnectionResponse {
 /**
  * Check if a given object implements the WorkspaceConnectionResponse interface.
  */
-export function instanceOfWorkspaceConnectionResponse(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "connectionUrl" in value;
-    isInstance = isInstance && "expiresAt" in value;
-    isInstance = isInstance && "message" in value;
-
-    return isInstance;
+export function instanceOfWorkspaceConnectionResponse(value: object): value is WorkspaceConnectionResponse {
+    if (!('connectionUrl' in value) || value['connectionUrl'] === undefined) return false;
+    if (!('expiresAt' in value) || value['expiresAt'] === undefined) return false;
+    if (!('message' in value) || value['message'] === undefined) return false;
+    return true;
 }
 
 export function WorkspaceConnectionResponseFromJSON(json: any): WorkspaceConnectionResponse {
@@ -56,7 +54,7 @@ export function WorkspaceConnectionResponseFromJSON(json: any): WorkspaceConnect
 }
 
 export function WorkspaceConnectionResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): WorkspaceConnectionResponse {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -67,18 +65,20 @@ export function WorkspaceConnectionResponseFromJSONTyped(json: any, ignoreDiscri
     };
 }
 
-export function WorkspaceConnectionResponseToJSON(value?: WorkspaceConnectionResponse | null): any {
-    if (value === undefined) {
-        return undefined;
+export function WorkspaceConnectionResponseToJSON(json: any): WorkspaceConnectionResponse {
+    return WorkspaceConnectionResponseToJSONTyped(json, false);
+}
+
+export function WorkspaceConnectionResponseToJSONTyped(value?: WorkspaceConnectionResponse | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'connectionUrl': value.connectionUrl,
-        'expiresAt': (value.expiresAt.toISOString()),
-        'message': value.message,
+        'connectionUrl': value['connectionUrl'],
+        'expiresAt': value['expiresAt'].toISOString(),
+        'message': value['message'],
     };
 }
 

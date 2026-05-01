@@ -18,11 +18,31 @@
  * @enum {string}
  */
 export enum SharingType {
+    /**
+    * This is private and accessible only to its owner.
+    */
     Private = 'PRIVATE',
+    /**
+    * The workspace is shared with others with read and write access.
+    */
     ReadWrite = 'READ_WRITE',
+    /**
+    * The workspace is shared with others with read, write, and start/stop access.
+    */
     ReadWriteControl = 'READ_WRITE_CONTROL'
 }
 
+
+export function instanceOfSharingType(value: any): boolean {
+    for (const key in SharingType) {
+        if (Object.prototype.hasOwnProperty.call(SharingType, key)) {
+            if (SharingType[key as keyof typeof SharingType] === value) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
 
 export function SharingTypeFromJSON(json: any): SharingType {
     return SharingTypeFromJSONTyped(json, false);
@@ -34,5 +54,9 @@ export function SharingTypeFromJSONTyped(json: any, ignoreDiscriminator: boolean
 
 export function SharingTypeToJSON(value?: SharingType | null): any {
     return value as any;
+}
+
+export function SharingTypeToJSONTyped(value: any, ignoreDiscriminator: boolean): SharingType {
+    return value as SharingType;
 }
 

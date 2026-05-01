@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -42,10 +42,8 @@ export interface FormSchema {
 /**
  * Check if a given object implements the FormSchema interface.
  */
-export function instanceOfFormSchema(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfFormSchema(value: object): value is FormSchema {
+    return true;
 }
 
 export function FormSchemaFromJSON(json: any): FormSchema {
@@ -53,29 +51,31 @@ export function FormSchemaFromJSON(json: any): FormSchema {
 }
 
 export function FormSchemaFromJSONTyped(json: any, ignoreDiscriminator: boolean): FormSchema {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'form': !exists(json, 'form') ? undefined : json['form'],
-        'ui': !exists(json, 'ui') ? undefined : json['ui'],
-        'metadataRequirements': !exists(json, 'metadataRequirements') ? undefined : json['metadataRequirements'],
+        'form': json['form'] == null ? undefined : json['form'],
+        'ui': json['ui'] == null ? undefined : json['ui'],
+        'metadataRequirements': json['metadataRequirements'] == null ? undefined : json['metadataRequirements'],
     };
 }
 
-export function FormSchemaToJSON(value?: FormSchema | null): any {
-    if (value === undefined) {
-        return undefined;
+export function FormSchemaToJSON(json: any): FormSchema {
+    return FormSchemaToJSONTyped(json, false);
+}
+
+export function FormSchemaToJSONTyped(value?: FormSchema | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'form': value.form,
-        'ui': value.ui,
-        'metadataRequirements': value.metadataRequirements,
+        'form': value['form'],
+        'ui': value['ui'],
+        'metadataRequirements': value['metadataRequirements'],
     };
 }
 

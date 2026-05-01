@@ -12,27 +12,32 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  AgentDetail,
-  AgentInput,
-  ComputeEnvironmentConfiguration,
-  ComputeEnvironmentConfigurationInput,
-  CreateResponse,
-} from '../models/index';
 import {
+    type AgentDetail,
     AgentDetailFromJSON,
     AgentDetailToJSON,
+} from '../models/AgentDetail';
+import {
+    type AgentInput,
     AgentInputFromJSON,
     AgentInputToJSON,
+} from '../models/AgentInput';
+import {
+    type ComputeEnvironmentConfiguration,
     ComputeEnvironmentConfigurationFromJSON,
     ComputeEnvironmentConfigurationToJSON,
+} from '../models/ComputeEnvironmentConfiguration';
+import {
+    type ComputeEnvironmentConfigurationInput,
     ComputeEnvironmentConfigurationInputFromJSON,
     ComputeEnvironmentConfigurationInputToJSON,
+} from '../models/ComputeEnvironmentConfigurationInput';
+import {
+    type CreateResponse,
     CreateResponseFromJSON,
     CreateResponseToJSON,
-} from '../models/index';
+} from '../models/CreateResponse';
 
 export interface CreateAgentRequest {
     agentInput: AgentInput;
@@ -73,12 +78,14 @@ export interface UpdateComputeEnvironmentRequest {
 export class ComputeEnvironmentApi extends runtime.BaseAPI {
 
     /**
-     * Create a new agent
-     * Create agent
+     * Creates request options for createAgent without sending the request
      */
-    async createAgentRaw(requestParameters: CreateAgentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateResponse>> {
-        if (requestParameters.agentInput === null || requestParameters.agentInput === undefined) {
-            throw new runtime.RequiredError('agentInput','Required parameter requestParameters.agentInput was null or undefined when calling createAgent.');
+    async createAgentRequestOpts(requestParameters: CreateAgentRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['agentInput'] == null) {
+            throw new runtime.RequiredError(
+                'agentInput',
+                'Required parameter "agentInput" was null or undefined when calling createAgent().'
+            );
         }
 
         const queryParameters: any = {};
@@ -95,13 +102,25 @@ export class ComputeEnvironmentApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/agents`,
+
+        let urlPath = `/agents`;
+
+        return {
+            path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: AgentInputToJSON(requestParameters.agentInput),
-        }, initOverrides);
+            body: AgentInputToJSON(requestParameters['agentInput']),
+        };
+    }
+
+    /**
+     * Create a new agent
+     * Create agent
+     */
+    async createAgentRaw(requestParameters: CreateAgentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateResponse>> {
+        const requestOptions = await this.createAgentRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => CreateResponseFromJSON(jsonValue));
     }
@@ -116,16 +135,21 @@ export class ComputeEnvironmentApi extends runtime.BaseAPI {
     }
 
     /**
-     * Create a new compute environment for a project
-     * Create compute environment
+     * Creates request options for createComputeEnvironment without sending the request
      */
-    async createComputeEnvironmentRaw(requestParameters: CreateComputeEnvironmentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateResponse>> {
-        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
-            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling createComputeEnvironment.');
+    async createComputeEnvironmentRequestOpts(requestParameters: CreateComputeEnvironmentRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling createComputeEnvironment().'
+            );
         }
 
-        if (requestParameters.computeEnvironmentConfigurationInput === null || requestParameters.computeEnvironmentConfigurationInput === undefined) {
-            throw new runtime.RequiredError('computeEnvironmentConfigurationInput','Required parameter requestParameters.computeEnvironmentConfigurationInput was null or undefined when calling createComputeEnvironment.');
+        if (requestParameters['computeEnvironmentConfigurationInput'] == null) {
+            throw new runtime.RequiredError(
+                'computeEnvironmentConfigurationInput',
+                'Required parameter "computeEnvironmentConfigurationInput" was null or undefined when calling createComputeEnvironment().'
+            );
         }
 
         const queryParameters: any = {};
@@ -142,13 +166,26 @@ export class ComputeEnvironmentApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/projects/{projectId}/compute-environments`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))),
+
+        let urlPath = `/projects/{projectId}/compute-environments`;
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+
+        return {
+            path: urlPath,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: ComputeEnvironmentConfigurationInputToJSON(requestParameters.computeEnvironmentConfigurationInput),
-        }, initOverrides);
+            body: ComputeEnvironmentConfigurationInputToJSON(requestParameters['computeEnvironmentConfigurationInput']),
+        };
+    }
+
+    /**
+     * Create a new compute environment for a project
+     * Create compute environment
+     */
+    async createComputeEnvironmentRaw(requestParameters: CreateComputeEnvironmentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateResponse>> {
+        const requestOptions = await this.createComputeEnvironmentRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => CreateResponseFromJSON(jsonValue));
     }
@@ -163,12 +200,14 @@ export class ComputeEnvironmentApi extends runtime.BaseAPI {
     }
 
     /**
-     * Delete an agent
-     * Delete agent
+     * Creates request options for deleteAgent without sending the request
      */
-    async deleteAgentRaw(requestParameters: DeleteAgentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.agentId === null || requestParameters.agentId === undefined) {
-            throw new runtime.RequiredError('agentId','Required parameter requestParameters.agentId was null or undefined when calling deleteAgent.');
+    async deleteAgentRequestOpts(requestParameters: DeleteAgentRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['agentId'] == null) {
+            throw new runtime.RequiredError(
+                'agentId',
+                'Required parameter "agentId" was null or undefined when calling deleteAgent().'
+            );
         }
 
         const queryParameters: any = {};
@@ -183,12 +222,25 @@ export class ComputeEnvironmentApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/agents/{agentId}`.replace(`{${"agentId"}}`, encodeURIComponent(String(requestParameters.agentId))),
+
+        let urlPath = `/agents/{agentId}`;
+        urlPath = urlPath.replace('{agentId}', encodeURIComponent(String(requestParameters['agentId'])));
+
+        return {
+            path: urlPath,
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Delete an agent
+     * Delete agent
+     */
+    async deleteAgentRaw(requestParameters: DeleteAgentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.deleteAgentRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -202,16 +254,21 @@ export class ComputeEnvironmentApi extends runtime.BaseAPI {
     }
 
     /**
-     * Delete a compute environment for a project
-     * Delete compute environment
+     * Creates request options for deleteComputeEnvironment without sending the request
      */
-    async deleteComputeEnvironmentRaw(requestParameters: DeleteComputeEnvironmentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
-            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling deleteComputeEnvironment.');
+    async deleteComputeEnvironmentRequestOpts(requestParameters: DeleteComputeEnvironmentRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling deleteComputeEnvironment().'
+            );
         }
 
-        if (requestParameters.computeEnvironmentId === null || requestParameters.computeEnvironmentId === undefined) {
-            throw new runtime.RequiredError('computeEnvironmentId','Required parameter requestParameters.computeEnvironmentId was null or undefined when calling deleteComputeEnvironment.');
+        if (requestParameters['computeEnvironmentId'] == null) {
+            throw new runtime.RequiredError(
+                'computeEnvironmentId',
+                'Required parameter "computeEnvironmentId" was null or undefined when calling deleteComputeEnvironment().'
+            );
         }
 
         const queryParameters: any = {};
@@ -226,12 +283,26 @@ export class ComputeEnvironmentApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/projects/{projectId}/compute-environments/{computeEnvironmentId}`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))).replace(`{${"computeEnvironmentId"}}`, encodeURIComponent(String(requestParameters.computeEnvironmentId))),
+
+        let urlPath = `/projects/{projectId}/compute-environments/{computeEnvironmentId}`;
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+        urlPath = urlPath.replace('{computeEnvironmentId}', encodeURIComponent(String(requestParameters['computeEnvironmentId'])));
+
+        return {
+            path: urlPath,
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Delete a compute environment for a project
+     * Delete compute environment
+     */
+    async deleteComputeEnvironmentRaw(requestParameters: DeleteComputeEnvironmentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.deleteComputeEnvironmentRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -245,10 +316,9 @@ export class ComputeEnvironmentApi extends runtime.BaseAPI {
     }
 
     /**
-     * Get a list of agents
-     * Get agents
+     * Creates request options for getAgents without sending the request
      */
-    async getAgentsRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<AgentDetail>>> {
+    async getAgentsRequestOpts(): Promise<runtime.RequestOpts> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -261,12 +331,24 @@ export class ComputeEnvironmentApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/agents`,
+
+        let urlPath = `/agents`;
+
+        return {
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Get a list of agents
+     * Get agents
+     */
+    async getAgentsRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<AgentDetail>>> {
+        const requestOptions = await this.getAgentsRequestOpts();
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(AgentDetailFromJSON));
     }
@@ -281,12 +363,14 @@ export class ComputeEnvironmentApi extends runtime.BaseAPI {
     }
 
     /**
-     * Get a list of compute environments for a project
-     * Get compute environments
+     * Creates request options for getComputeEnvironments without sending the request
      */
-    async getComputeEnvironmentsRaw(requestParameters: GetComputeEnvironmentsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<ComputeEnvironmentConfiguration>>> {
-        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
-            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling getComputeEnvironments.');
+    async getComputeEnvironmentsRequestOpts(requestParameters: GetComputeEnvironmentsRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling getComputeEnvironments().'
+            );
         }
 
         const queryParameters: any = {};
@@ -301,12 +385,25 @@ export class ComputeEnvironmentApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/projects/{projectId}/compute-environments`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))),
+
+        let urlPath = `/projects/{projectId}/compute-environments`;
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+
+        return {
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Get a list of compute environments for a project
+     * Get compute environments
+     */
+    async getComputeEnvironmentsRaw(requestParameters: GetComputeEnvironmentsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<ComputeEnvironmentConfiguration>>> {
+        const requestOptions = await this.getComputeEnvironmentsRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(ComputeEnvironmentConfigurationFromJSON));
     }
@@ -321,16 +418,21 @@ export class ComputeEnvironmentApi extends runtime.BaseAPI {
     }
 
     /**
-     * Update an agent
-     * Update agent
+     * Creates request options for updateAgent without sending the request
      */
-    async updateAgentRaw(requestParameters: UpdateAgentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.agentId === null || requestParameters.agentId === undefined) {
-            throw new runtime.RequiredError('agentId','Required parameter requestParameters.agentId was null or undefined when calling updateAgent.');
+    async updateAgentRequestOpts(requestParameters: UpdateAgentRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['agentId'] == null) {
+            throw new runtime.RequiredError(
+                'agentId',
+                'Required parameter "agentId" was null or undefined when calling updateAgent().'
+            );
         }
 
-        if (requestParameters.agentInput === null || requestParameters.agentInput === undefined) {
-            throw new runtime.RequiredError('agentInput','Required parameter requestParameters.agentInput was null or undefined when calling updateAgent.');
+        if (requestParameters['agentInput'] == null) {
+            throw new runtime.RequiredError(
+                'agentInput',
+                'Required parameter "agentInput" was null or undefined when calling updateAgent().'
+            );
         }
 
         const queryParameters: any = {};
@@ -347,13 +449,26 @@ export class ComputeEnvironmentApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/agents/{agentId}`.replace(`{${"agentId"}}`, encodeURIComponent(String(requestParameters.agentId))),
+
+        let urlPath = `/agents/{agentId}`;
+        urlPath = urlPath.replace('{agentId}', encodeURIComponent(String(requestParameters['agentId'])));
+
+        return {
+            path: urlPath,
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: AgentInputToJSON(requestParameters.agentInput),
-        }, initOverrides);
+            body: AgentInputToJSON(requestParameters['agentInput']),
+        };
+    }
+
+    /**
+     * Update an agent
+     * Update agent
+     */
+    async updateAgentRaw(requestParameters: UpdateAgentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.updateAgentRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
@@ -367,20 +482,28 @@ export class ComputeEnvironmentApi extends runtime.BaseAPI {
     }
 
     /**
-     * Update a compute environment for a project
-     * Update compute environment
+     * Creates request options for updateComputeEnvironment without sending the request
      */
-    async updateComputeEnvironmentRaw(requestParameters: UpdateComputeEnvironmentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.projectId === null || requestParameters.projectId === undefined) {
-            throw new runtime.RequiredError('projectId','Required parameter requestParameters.projectId was null or undefined when calling updateComputeEnvironment.');
+    async updateComputeEnvironmentRequestOpts(requestParameters: UpdateComputeEnvironmentRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling updateComputeEnvironment().'
+            );
         }
 
-        if (requestParameters.computeEnvironmentId === null || requestParameters.computeEnvironmentId === undefined) {
-            throw new runtime.RequiredError('computeEnvironmentId','Required parameter requestParameters.computeEnvironmentId was null or undefined when calling updateComputeEnvironment.');
+        if (requestParameters['computeEnvironmentId'] == null) {
+            throw new runtime.RequiredError(
+                'computeEnvironmentId',
+                'Required parameter "computeEnvironmentId" was null or undefined when calling updateComputeEnvironment().'
+            );
         }
 
-        if (requestParameters.computeEnvironmentConfigurationInput === null || requestParameters.computeEnvironmentConfigurationInput === undefined) {
-            throw new runtime.RequiredError('computeEnvironmentConfigurationInput','Required parameter requestParameters.computeEnvironmentConfigurationInput was null or undefined when calling updateComputeEnvironment.');
+        if (requestParameters['computeEnvironmentConfigurationInput'] == null) {
+            throw new runtime.RequiredError(
+                'computeEnvironmentConfigurationInput',
+                'Required parameter "computeEnvironmentConfigurationInput" was null or undefined when calling updateComputeEnvironment().'
+            );
         }
 
         const queryParameters: any = {};
@@ -397,13 +520,27 @@ export class ComputeEnvironmentApi extends runtime.BaseAPI {
                 headerParameters["Authorization"] = `Bearer ${tokenString}`;
             }
         }
-        const response = await this.request({
-            path: `/projects/{projectId}/compute-environments/{computeEnvironmentId}`.replace(`{${"projectId"}}`, encodeURIComponent(String(requestParameters.projectId))).replace(`{${"computeEnvironmentId"}}`, encodeURIComponent(String(requestParameters.computeEnvironmentId))),
+
+        let urlPath = `/projects/{projectId}/compute-environments/{computeEnvironmentId}`;
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+        urlPath = urlPath.replace('{computeEnvironmentId}', encodeURIComponent(String(requestParameters['computeEnvironmentId'])));
+
+        return {
+            path: urlPath,
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: ComputeEnvironmentConfigurationInputToJSON(requestParameters.computeEnvironmentConfigurationInput),
-        }, initOverrides);
+            body: ComputeEnvironmentConfigurationInputToJSON(requestParameters['computeEnvironmentConfigurationInput']),
+        };
+    }
+
+    /**
+     * Update a compute environment for a project
+     * Update compute environment
+     */
+    async updateComputeEnvironmentRaw(requestParameters: UpdateComputeEnvironmentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.updateComputeEnvironmentRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }

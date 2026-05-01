@@ -25,6 +25,17 @@ export enum SheetCreationMode {
 }
 
 
+export function instanceOfSheetCreationMode(value: any): boolean {
+    for (const key in SheetCreationMode) {
+        if (Object.prototype.hasOwnProperty.call(SheetCreationMode, key)) {
+            if (SheetCreationMode[key as keyof typeof SheetCreationMode] === value) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 export function SheetCreationModeFromJSON(json: any): SheetCreationMode {
     return SheetCreationModeFromJSONTyped(json, false);
 }
@@ -35,5 +46,9 @@ export function SheetCreationModeFromJSONTyped(json: any, ignoreDiscriminator: b
 
 export function SheetCreationModeToJSON(value?: SheetCreationMode | null): any {
     return value as any;
+}
+
+export function SheetCreationModeToJSONTyped(value: any, ignoreDiscriminator: boolean): SheetCreationMode {
+    return value as SheetCreationMode;
 }
 

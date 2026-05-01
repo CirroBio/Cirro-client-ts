@@ -12,37 +12,42 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
-import type { CustomPipelineSettings } from './CustomPipelineSettings';
-import {
-    CustomPipelineSettingsFromJSON,
-    CustomPipelineSettingsFromJSONTyped,
-    CustomPipelineSettingsToJSON,
-} from './CustomPipelineSettings';
+import { mapValues } from '../runtime';
 import type { Executor } from './Executor';
 import {
     ExecutorFromJSON,
     ExecutorFromJSONTyped,
     ExecutorToJSON,
+    ExecutorToJSONTyped,
 } from './Executor';
 import type { FileMappingRule } from './FileMappingRule';
 import {
     FileMappingRuleFromJSON,
     FileMappingRuleFromJSONTyped,
     FileMappingRuleToJSON,
+    FileMappingRuleToJSONTyped,
 } from './FileMappingRule';
-import type { PipelineCode } from './PipelineCode';
+import type { CustomPipelineSettings } from './CustomPipelineSettings';
 import {
-    PipelineCodeFromJSON,
-    PipelineCodeFromJSONTyped,
-    PipelineCodeToJSON,
-} from './PipelineCode';
+    CustomPipelineSettingsFromJSON,
+    CustomPipelineSettingsFromJSONTyped,
+    CustomPipelineSettingsToJSON,
+    CustomPipelineSettingsToJSONTyped,
+} from './CustomPipelineSettings';
 import type { Tag } from './Tag';
 import {
     TagFromJSON,
     TagFromJSONTyped,
     TagToJSON,
+    TagToJSONTyped,
 } from './Tag';
+import type { PipelineCode } from './PipelineCode';
+import {
+    PipelineCodeFromJSON,
+    PipelineCodeFromJSONTyped,
+    PipelineCodeToJSON,
+    PipelineCodeToJSONTyped,
+} from './PipelineCode';
 
 /**
  * 
@@ -160,20 +165,20 @@ export interface CustomProcessInput {
     tags?: Array<Tag> | null;
 }
 
+
+
 /**
  * Check if a given object implements the CustomProcessInput interface.
  */
-export function instanceOfCustomProcessInput(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "id" in value;
-    isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "description" in value;
-    isInstance = isInstance && "executor" in value;
-    isInstance = isInstance && "childProcessIds" in value;
-    isInstance = isInstance && "parentProcessIds" in value;
-    isInstance = isInstance && "linkedProjectIds" in value;
-
-    return isInstance;
+export function instanceOfCustomProcessInput(value: object): value is CustomProcessInput {
+    if (!('id' in value) || value['id'] === undefined) return false;
+    if (!('name' in value) || value['name'] === undefined) return false;
+    if (!('description' in value) || value['description'] === undefined) return false;
+    if (!('executor' in value) || value['executor'] === undefined) return false;
+    if (!('childProcessIds' in value) || value['childProcessIds'] === undefined) return false;
+    if (!('parentProcessIds' in value) || value['parentProcessIds'] === undefined) return false;
+    if (!('linkedProjectIds' in value) || value['linkedProjectIds'] === undefined) return false;
+    return true;
 }
 
 export function CustomProcessInputFromJSON(json: any): CustomProcessInput {
@@ -181,7 +186,7 @@ export function CustomProcessInputFromJSON(json: any): CustomProcessInput {
 }
 
 export function CustomProcessInputFromJSONTyped(json: any, ignoreDiscriminator: boolean): CustomProcessInput {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -189,51 +194,53 @@ export function CustomProcessInputFromJSONTyped(json: any, ignoreDiscriminator: 
         'id': json['id'],
         'name': json['name'],
         'description': json['description'],
-        'dataType': !exists(json, 'dataType') ? undefined : json['dataType'],
+        'dataType': json['dataType'] == null ? undefined : json['dataType'],
         'executor': ExecutorFromJSON(json['executor']),
-        'category': !exists(json, 'category') ? undefined : json['category'],
+        'category': json['category'] == null ? undefined : json['category'],
         'childProcessIds': json['childProcessIds'],
         'parentProcessIds': json['parentProcessIds'],
-        'documentationUrl': !exists(json, 'documentationUrl') ? undefined : json['documentationUrl'],
-        'fileRequirementsMessage': !exists(json, 'fileRequirementsMessage') ? undefined : json['fileRequirementsMessage'],
-        'pipelineCode': !exists(json, 'pipelineCode') ? undefined : PipelineCodeFromJSON(json['pipelineCode']),
+        'documentationUrl': json['documentationUrl'] == null ? undefined : json['documentationUrl'],
+        'fileRequirementsMessage': json['fileRequirementsMessage'] == null ? undefined : json['fileRequirementsMessage'],
+        'pipelineCode': json['pipelineCode'] == null ? undefined : PipelineCodeFromJSON(json['pipelineCode']),
         'linkedProjectIds': json['linkedProjectIds'],
-        'isTenantWide': !exists(json, 'isTenantWide') ? undefined : json['isTenantWide'],
-        'allowMultipleSources': !exists(json, 'allowMultipleSources') ? undefined : json['allowMultipleSources'],
-        'usesSampleSheet': !exists(json, 'usesSampleSheet') ? undefined : json['usesSampleSheet'],
-        'customSettings': !exists(json, 'customSettings') ? undefined : CustomPipelineSettingsFromJSON(json['customSettings']),
-        'fileMappingRules': !exists(json, 'fileMappingRules') ? undefined : (json['fileMappingRules'] === null ? null : (json['fileMappingRules'] as Array<any>).map(FileMappingRuleFromJSON)),
-        'tags': !exists(json, 'tags') ? undefined : (json['tags'] === null ? null : (json['tags'] as Array<any>).map(TagFromJSON)),
+        'isTenantWide': json['isTenantWide'] == null ? undefined : json['isTenantWide'],
+        'allowMultipleSources': json['allowMultipleSources'] == null ? undefined : json['allowMultipleSources'],
+        'usesSampleSheet': json['usesSampleSheet'] == null ? undefined : json['usesSampleSheet'],
+        'customSettings': json['customSettings'] == null ? undefined : CustomPipelineSettingsFromJSON(json['customSettings']),
+        'fileMappingRules': json['fileMappingRules'] == null ? undefined : ((json['fileMappingRules'] as Array<any>).map(FileMappingRuleFromJSON)),
+        'tags': json['tags'] == null ? undefined : ((json['tags'] as Array<any>).map(TagFromJSON)),
     };
 }
 
-export function CustomProcessInputToJSON(value?: CustomProcessInput | null): any {
-    if (value === undefined) {
-        return undefined;
+export function CustomProcessInputToJSON(json: any): CustomProcessInput {
+    return CustomProcessInputToJSONTyped(json, false);
+}
+
+export function CustomProcessInputToJSONTyped(value?: CustomProcessInput | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'id': value.id,
-        'name': value.name,
-        'description': value.description,
-        'dataType': value.dataType,
-        'executor': ExecutorToJSON(value.executor),
-        'category': value.category,
-        'childProcessIds': value.childProcessIds,
-        'parentProcessIds': value.parentProcessIds,
-        'documentationUrl': value.documentationUrl,
-        'fileRequirementsMessage': value.fileRequirementsMessage,
-        'pipelineCode': PipelineCodeToJSON(value.pipelineCode),
-        'linkedProjectIds': value.linkedProjectIds,
-        'isTenantWide': value.isTenantWide,
-        'allowMultipleSources': value.allowMultipleSources,
-        'usesSampleSheet': value.usesSampleSheet,
-        'customSettings': CustomPipelineSettingsToJSON(value.customSettings),
-        'fileMappingRules': value.fileMappingRules === undefined ? undefined : (value.fileMappingRules === null ? null : (value.fileMappingRules as Array<any>).map(FileMappingRuleToJSON)),
-        'tags': value.tags === undefined ? undefined : (value.tags === null ? null : (value.tags as Array<any>).map(TagToJSON)),
+        'id': value['id'],
+        'name': value['name'],
+        'description': value['description'],
+        'dataType': value['dataType'],
+        'executor': ExecutorToJSON(value['executor']),
+        'category': value['category'],
+        'childProcessIds': value['childProcessIds'],
+        'parentProcessIds': value['parentProcessIds'],
+        'documentationUrl': value['documentationUrl'],
+        'fileRequirementsMessage': value['fileRequirementsMessage'],
+        'pipelineCode': PipelineCodeToJSON(value['pipelineCode']),
+        'linkedProjectIds': value['linkedProjectIds'],
+        'isTenantWide': value['isTenantWide'],
+        'allowMultipleSources': value['allowMultipleSources'],
+        'usesSampleSheet': value['usesSampleSheet'],
+        'customSettings': CustomPipelineSettingsToJSON(value['customSettings']),
+        'fileMappingRules': value['fileMappingRules'] == null ? undefined : ((value['fileMappingRules'] as Array<any>).map(FileMappingRuleToJSON)),
+        'tags': value['tags'] == null ? undefined : ((value['tags'] as Array<any>).map(TagToJSON)),
     };
 }
 

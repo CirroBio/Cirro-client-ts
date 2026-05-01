@@ -12,12 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { Tag } from './Tag';
 import {
     TagFromJSON,
     TagFromJSONTyped,
     TagToJSON,
+    TagToJSONTyped,
 } from './Tag';
 
 /**
@@ -52,10 +53,10 @@ export interface ImportDataRequest {
     tags?: Array<Tag> | null;
     /**
      * Method to download FastQ files
-     * @type {string}
+     * @type {ImportDataRequestDownloadMethodEnum}
      * @memberof ImportDataRequest
      */
-    downloadMethod?: ImportDataRequestDownloadMethodEnum;
+    downloadMethod?: ImportDataRequestDownloadMethodEnum | null;
     /**
      * dbGaP repository key (used to access protected data on SRA)
      * @type {string}
@@ -78,12 +79,10 @@ export enum ImportDataRequestDownloadMethodEnum {
 /**
  * Check if a given object implements the ImportDataRequest interface.
  */
-export function instanceOfImportDataRequest(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "publicIds" in value;
-
-    return isInstance;
+export function instanceOfImportDataRequest(value: object): value is ImportDataRequest {
+    if (!('name' in value) || value['name'] === undefined) return false;
+    if (!('publicIds' in value) || value['publicIds'] === undefined) return false;
+    return true;
 }
 
 export function ImportDataRequestFromJSON(json: any): ImportDataRequest {
@@ -91,35 +90,37 @@ export function ImportDataRequestFromJSON(json: any): ImportDataRequest {
 }
 
 export function ImportDataRequestFromJSONTyped(json: any, ignoreDiscriminator: boolean): ImportDataRequest {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
         'name': json['name'],
-        'description': !exists(json, 'description') ? undefined : json['description'],
+        'description': json['description'] == null ? undefined : json['description'],
         'publicIds': json['publicIds'],
-        'tags': !exists(json, 'tags') ? undefined : (json['tags'] === null ? null : (json['tags'] as Array<any>).map(TagFromJSON)),
-        'downloadMethod': !exists(json, 'downloadMethod') ? undefined : json['downloadMethod'],
-        'dbgapKey': !exists(json, 'dbgapKey') ? undefined : json['dbgapKey'],
+        'tags': json['tags'] == null ? undefined : ((json['tags'] as Array<any>).map(TagFromJSON)),
+        'downloadMethod': json['downloadMethod'] == null ? undefined : json['downloadMethod'],
+        'dbgapKey': json['dbgapKey'] == null ? undefined : json['dbgapKey'],
     };
 }
 
-export function ImportDataRequestToJSON(value?: ImportDataRequest | null): any {
-    if (value === undefined) {
-        return undefined;
+export function ImportDataRequestToJSON(json: any): ImportDataRequest {
+    return ImportDataRequestToJSONTyped(json, false);
+}
+
+export function ImportDataRequestToJSONTyped(value?: ImportDataRequest | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'name': value.name,
-        'description': value.description,
-        'publicIds': value.publicIds,
-        'tags': value.tags === undefined ? undefined : (value.tags === null ? null : (value.tags as Array<any>).map(TagToJSON)),
-        'downloadMethod': value.downloadMethod,
-        'dbgapKey': value.dbgapKey,
+        'name': value['name'],
+        'description': value['description'],
+        'publicIds': value['publicIds'],
+        'tags': value['tags'] == null ? undefined : ((value['tags'] as Array<any>).map(TagToJSON)),
+        'downloadMethod': value['downloadMethod'],
+        'dbgapKey': value['dbgapKey'],
     };
 }
 

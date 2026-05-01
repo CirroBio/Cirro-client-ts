@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -48,14 +48,12 @@ export interface Contact {
 /**
  * Check if a given object implements the Contact interface.
  */
-export function instanceOfContact(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "organization" in value;
-    isInstance = isInstance && "email" in value;
-    isInstance = isInstance && "phone" in value;
-
-    return isInstance;
+export function instanceOfContact(value: object): value is Contact {
+    if (!('name' in value) || value['name'] === undefined) return false;
+    if (!('organization' in value) || value['organization'] === undefined) return false;
+    if (!('email' in value) || value['email'] === undefined) return false;
+    if (!('phone' in value) || value['phone'] === undefined) return false;
+    return true;
 }
 
 export function ContactFromJSON(json: any): Contact {
@@ -63,7 +61,7 @@ export function ContactFromJSON(json: any): Contact {
 }
 
 export function ContactFromJSONTyped(json: any, ignoreDiscriminator: boolean): Contact {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -75,19 +73,21 @@ export function ContactFromJSONTyped(json: any, ignoreDiscriminator: boolean): C
     };
 }
 
-export function ContactToJSON(value?: Contact | null): any {
-    if (value === undefined) {
-        return undefined;
+export function ContactToJSON(json: any): Contact {
+    return ContactToJSONTyped(json, false);
+}
+
+export function ContactToJSONTyped(value?: Contact | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'name': value.name,
-        'organization': value.organization,
-        'email': value.email,
-        'phone': value.phone,
+        'name': value['name'],
+        'organization': value['organization'],
+        'email': value['email'],
+        'phone': value['phone'],
     };
 }
 

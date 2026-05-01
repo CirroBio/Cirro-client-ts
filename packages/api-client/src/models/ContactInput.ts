@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -54,15 +54,13 @@ export interface ContactInput {
 /**
  * Check if a given object implements the ContactInput interface.
  */
-export function instanceOfContactInput(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "title" in value;
-    isInstance = isInstance && "description" in value;
-    isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "phone" in value;
-    isInstance = isInstance && "email" in value;
-
-    return isInstance;
+export function instanceOfContactInput(value: object): value is ContactInput {
+    if (!('title' in value) || value['title'] === undefined) return false;
+    if (!('description' in value) || value['description'] === undefined) return false;
+    if (!('name' in value) || value['name'] === undefined) return false;
+    if (!('phone' in value) || value['phone'] === undefined) return false;
+    if (!('email' in value) || value['email'] === undefined) return false;
+    return true;
 }
 
 export function ContactInputFromJSON(json: any): ContactInput {
@@ -70,7 +68,7 @@ export function ContactInputFromJSON(json: any): ContactInput {
 }
 
 export function ContactInputFromJSONTyped(json: any, ignoreDiscriminator: boolean): ContactInput {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -83,20 +81,22 @@ export function ContactInputFromJSONTyped(json: any, ignoreDiscriminator: boolea
     };
 }
 
-export function ContactInputToJSON(value?: ContactInput | null): any {
-    if (value === undefined) {
-        return undefined;
+export function ContactInputToJSON(json: any): ContactInput {
+    return ContactInputToJSONTyped(json, false);
+}
+
+export function ContactInputToJSONTyped(value?: ContactInput | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'title': value.title,
-        'description': value.description,
-        'name': value.name,
-        'phone': value.phone,
-        'email': value.email,
+        'title': value['title'],
+        'description': value['description'],
+        'name': value['name'],
+        'phone': value['phone'],
+        'email': value['email'],
     };
 }
 

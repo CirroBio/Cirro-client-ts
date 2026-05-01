@@ -12,12 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { DatasetCondition } from './DatasetCondition';
 import {
     DatasetConditionFromJSON,
     DatasetConditionFromJSONTyped,
     DatasetConditionToJSON,
+    DatasetConditionToJSONTyped,
 } from './DatasetCondition';
 
 /**
@@ -73,14 +74,12 @@ export interface ShareInput {
 /**
  * Check if a given object implements the ShareInput interface.
  */
-export function instanceOfShareInput(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "description" in value;
-    isInstance = isInstance && "classificationIds" in value;
-    isInstance = isInstance && "conditions" in value;
-
-    return isInstance;
+export function instanceOfShareInput(value: object): value is ShareInput {
+    if (!('name' in value) || value['name'] === undefined) return false;
+    if (!('description' in value) || value['description'] === undefined) return false;
+    if (!('classificationIds' in value) || value['classificationIds'] === undefined) return false;
+    if (!('conditions' in value) || value['conditions'] === undefined) return false;
+    return true;
 }
 
 export function ShareInputFromJSON(json: any): ShareInput {
@@ -88,7 +87,7 @@ export function ShareInputFromJSON(json: any): ShareInput {
 }
 
 export function ShareInputFromJSONTyped(json: any, ignoreDiscriminator: boolean): ShareInput {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -97,28 +96,30 @@ export function ShareInputFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'description': json['description'],
         'classificationIds': json['classificationIds'],
         'conditions': ((json['conditions'] as Array<any>).map(DatasetConditionFromJSON)),
-        'keywords': !exists(json, 'keywords') ? undefined : json['keywords'],
-        'sharedProjectIds': !exists(json, 'sharedProjectIds') ? undefined : json['sharedProjectIds'],
-        'isViewRestricted': !exists(json, 'isViewRestricted') ? undefined : json['isViewRestricted'],
+        'keywords': json['keywords'] == null ? undefined : json['keywords'],
+        'sharedProjectIds': json['sharedProjectIds'] == null ? undefined : json['sharedProjectIds'],
+        'isViewRestricted': json['isViewRestricted'] == null ? undefined : json['isViewRestricted'],
     };
 }
 
-export function ShareInputToJSON(value?: ShareInput | null): any {
-    if (value === undefined) {
-        return undefined;
+export function ShareInputToJSON(json: any): ShareInput {
+    return ShareInputToJSONTyped(json, false);
+}
+
+export function ShareInputToJSONTyped(value?: ShareInput | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'name': value.name,
-        'description': value.description,
-        'classificationIds': value.classificationIds,
-        'conditions': ((value.conditions as Array<any>).map(DatasetConditionToJSON)),
-        'keywords': value.keywords,
-        'sharedProjectIds': value.sharedProjectIds,
-        'isViewRestricted': value.isViewRestricted,
+        'name': value['name'],
+        'description': value['description'],
+        'classificationIds': value['classificationIds'],
+        'conditions': ((value['conditions'] as Array<any>).map(DatasetConditionToJSON)),
+        'keywords': value['keywords'],
+        'sharedProjectIds': value['sharedProjectIds'],
+        'isViewRestricted': value['isViewRestricted'],
     };
 }
 

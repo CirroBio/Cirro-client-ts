@@ -12,7 +12,7 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 /**
  * 
  * @export
@@ -42,11 +42,9 @@ export interface SharedFilesystemInput {
 /**
  * Check if a given object implements the SharedFilesystemInput interface.
  */
-export function instanceOfSharedFilesystemInput(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "name" in value;
-
-    return isInstance;
+export function instanceOfSharedFilesystemInput(value: object): value is SharedFilesystemInput {
+    if (!('name' in value) || value['name'] === undefined) return false;
+    return true;
 }
 
 export function SharedFilesystemInputFromJSON(json: any): SharedFilesystemInput {
@@ -54,29 +52,31 @@ export function SharedFilesystemInputFromJSON(json: any): SharedFilesystemInput 
 }
 
 export function SharedFilesystemInputFromJSONTyped(json: any, ignoreDiscriminator: boolean): SharedFilesystemInput {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
         'name': json['name'],
-        'description': !exists(json, 'description') ? undefined : json['description'],
-        'warningThresholdBytes': !exists(json, 'warningThresholdBytes') ? undefined : json['warningThresholdBytes'],
+        'description': json['description'] == null ? undefined : json['description'],
+        'warningThresholdBytes': json['warningThresholdBytes'] == null ? undefined : json['warningThresholdBytes'],
     };
 }
 
-export function SharedFilesystemInputToJSON(value?: SharedFilesystemInput | null): any {
-    if (value === undefined) {
-        return undefined;
+export function SharedFilesystemInputToJSON(json: any): SharedFilesystemInput {
+    return SharedFilesystemInputToJSONTyped(json, false);
+}
+
+export function SharedFilesystemInputToJSONTyped(value?: SharedFilesystemInput | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'name': value.name,
-        'description': value.description,
-        'warningThresholdBytes': value.warningThresholdBytes,
+        'name': value['name'],
+        'description': value['description'],
+        'warningThresholdBytes': value['warningThresholdBytes'],
     };
 }
 

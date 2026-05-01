@@ -12,37 +12,42 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
+import type { Status } from './Status';
+import {
+    StatusFromJSON,
+    StatusFromJSONTyped,
+    StatusToJSON,
+    StatusToJSONTyped,
+} from './Status';
 import type { CloudAccount } from './CloudAccount';
 import {
     CloudAccountFromJSON,
     CloudAccountFromJSONTyped,
     CloudAccountToJSON,
+    CloudAccountToJSONTyped,
 } from './CloudAccount';
+import type { Tag } from './Tag';
+import {
+    TagFromJSON,
+    TagFromJSONTyped,
+    TagToJSON,
+    TagToJSONTyped,
+} from './Tag';
 import type { Contact } from './Contact';
 import {
     ContactFromJSON,
     ContactFromJSONTyped,
     ContactToJSON,
+    ContactToJSONTyped,
 } from './Contact';
 import type { ProjectSettings } from './ProjectSettings';
 import {
     ProjectSettingsFromJSON,
     ProjectSettingsFromJSONTyped,
     ProjectSettingsToJSON,
+    ProjectSettingsToJSONTyped,
 } from './ProjectSettings';
-import type { Status } from './Status';
-import {
-    StatusFromJSON,
-    StatusFromJSONTyped,
-    StatusToJSON,
-} from './Status';
-import type { Tag } from './Tag';
-import {
-    TagFromJSON,
-    TagFromJSONTyped,
-    TagToJSON,
-} from './Tag';
 
 /**
  * 
@@ -148,28 +153,28 @@ export interface ProjectDetail {
     updatedAt: Date;
 }
 
+
+
 /**
  * Check if a given object implements the ProjectDetail interface.
  */
-export function instanceOfProjectDetail(value: object): boolean {
-    let isInstance = true;
-    isInstance = isInstance && "id" in value;
-    isInstance = isInstance && "name" in value;
-    isInstance = isInstance && "description" in value;
-    isInstance = isInstance && "billingAccountId" in value;
-    isInstance = isInstance && "contacts" in value;
-    isInstance = isInstance && "organization" in value;
-    isInstance = isInstance && "status" in value;
-    isInstance = isInstance && "settings" in value;
-    isInstance = isInstance && "account" in value;
-    isInstance = isInstance && "statusMessage" in value;
-    isInstance = isInstance && "tags" in value;
-    isInstance = isInstance && "classificationIds" in value;
-    isInstance = isInstance && "createdBy" in value;
-    isInstance = isInstance && "createdAt" in value;
-    isInstance = isInstance && "updatedAt" in value;
-
-    return isInstance;
+export function instanceOfProjectDetail(value: object): value is ProjectDetail {
+    if (!('id' in value) || value['id'] === undefined) return false;
+    if (!('name' in value) || value['name'] === undefined) return false;
+    if (!('description' in value) || value['description'] === undefined) return false;
+    if (!('billingAccountId' in value) || value['billingAccountId'] === undefined) return false;
+    if (!('contacts' in value) || value['contacts'] === undefined) return false;
+    if (!('organization' in value) || value['organization'] === undefined) return false;
+    if (!('status' in value) || value['status'] === undefined) return false;
+    if (!('settings' in value) || value['settings'] === undefined) return false;
+    if (!('account' in value) || value['account'] === undefined) return false;
+    if (!('statusMessage' in value) || value['statusMessage'] === undefined) return false;
+    if (!('tags' in value) || value['tags'] === undefined) return false;
+    if (!('classificationIds' in value) || value['classificationIds'] === undefined) return false;
+    if (!('createdBy' in value) || value['createdBy'] === undefined) return false;
+    if (!('createdAt' in value) || value['createdAt'] === undefined) return false;
+    if (!('updatedAt' in value) || value['updatedAt'] === undefined) return false;
+    return true;
 }
 
 export function ProjectDetailFromJSON(json: any): ProjectDetail {
@@ -177,7 +182,7 @@ export function ProjectDetailFromJSON(json: any): ProjectDetail {
 }
 
 export function ProjectDetailFromJSONTyped(json: any, ignoreDiscriminator: boolean): ProjectDetail {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
@@ -194,38 +199,40 @@ export function ProjectDetailFromJSONTyped(json: any, ignoreDiscriminator: boole
         'statusMessage': json['statusMessage'],
         'tags': ((json['tags'] as Array<any>).map(TagFromJSON)),
         'classificationIds': json['classificationIds'],
-        'deployedAt': !exists(json, 'deployedAt') ? undefined : (json['deployedAt'] === null ? null : new Date(json['deployedAt'])),
+        'deployedAt': json['deployedAt'] == null ? undefined : (new Date(json['deployedAt'])),
         'createdBy': json['createdBy'],
         'createdAt': (new Date(json['createdAt'])),
         'updatedAt': (new Date(json['updatedAt'])),
     };
 }
 
-export function ProjectDetailToJSON(value?: ProjectDetail | null): any {
-    if (value === undefined) {
-        return undefined;
+export function ProjectDetailToJSON(json: any): ProjectDetail {
+    return ProjectDetailToJSONTyped(json, false);
+}
+
+export function ProjectDetailToJSONTyped(value?: ProjectDetail | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'id': value.id,
-        'name': value.name,
-        'description': value.description,
-        'billingAccountId': value.billingAccountId,
-        'contacts': ((value.contacts as Array<any>).map(ContactToJSON)),
-        'organization': value.organization,
-        'status': StatusToJSON(value.status),
-        'settings': ProjectSettingsToJSON(value.settings),
-        'account': CloudAccountToJSON(value.account),
-        'statusMessage': value.statusMessage,
-        'tags': ((value.tags as Array<any>).map(TagToJSON)),
-        'classificationIds': value.classificationIds,
-        'deployedAt': value.deployedAt === undefined ? undefined : (value.deployedAt === null ? null : value.deployedAt.toISOString()),
-        'createdBy': value.createdBy,
-        'createdAt': (value.createdAt.toISOString()),
-        'updatedAt': (value.updatedAt.toISOString()),
+        'id': value['id'],
+        'name': value['name'],
+        'description': value['description'],
+        'billingAccountId': value['billingAccountId'],
+        'contacts': ((value['contacts'] as Array<any>).map(ContactToJSON)),
+        'organization': value['organization'],
+        'status': StatusToJSON(value['status']),
+        'settings': ProjectSettingsToJSON(value['settings']),
+        'account': CloudAccountToJSON(value['account']),
+        'statusMessage': value['statusMessage'],
+        'tags': ((value['tags'] as Array<any>).map(TagToJSON)),
+        'classificationIds': value['classificationIds'],
+        'deployedAt': value['deployedAt'] == null ? value['deployedAt'] : value['deployedAt'].toISOString(),
+        'createdBy': value['createdBy'],
+        'createdAt': value['createdAt'].toISOString(),
+        'updatedAt': value['updatedAt'].toISOString(),
     };
 }
 

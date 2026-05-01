@@ -12,12 +12,13 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { mapValues } from '../runtime';
 import type { SqlSortOrder } from './SqlSortOrder';
 import {
     SqlSortOrderFromJSON,
     SqlSortOrderFromJSONTyped,
     SqlSortOrderToJSON,
+    SqlSortOrderToJSONTyped,
 } from './SqlSortOrder';
 
 /**
@@ -33,20 +34,20 @@ export interface SheetSort {
      */
     orderBy?: string | null;
     /**
-     * 
+     * Sort direction.
      * @type {SqlSortOrder}
      * @memberof SheetSort
      */
     order?: SqlSortOrder | null;
 }
 
+
+
 /**
  * Check if a given object implements the SheetSort interface.
  */
-export function instanceOfSheetSort(value: object): boolean {
-    let isInstance = true;
-
-    return isInstance;
+export function instanceOfSheetSort(value: object): value is SheetSort {
+    return true;
 }
 
 export function SheetSortFromJSON(json: any): SheetSort {
@@ -54,27 +55,29 @@ export function SheetSortFromJSON(json: any): SheetSort {
 }
 
 export function SheetSortFromJSONTyped(json: any, ignoreDiscriminator: boolean): SheetSort {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     return {
         
-        'orderBy': !exists(json, 'orderBy') ? undefined : json['orderBy'],
-        'order': !exists(json, 'order') ? undefined : SqlSortOrderFromJSON(json['order']),
+        'orderBy': json['orderBy'] == null ? undefined : json['orderBy'],
+        'order': json['order'] == null ? undefined : SqlSortOrderFromJSON(json['order']),
     };
 }
 
-export function SheetSortToJSON(value?: SheetSort | null): any {
-    if (value === undefined) {
-        return undefined;
+export function SheetSortToJSON(json: any): SheetSort {
+    return SheetSortToJSONTyped(json, false);
+}
+
+export function SheetSortToJSONTyped(value?: SheetSort | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
-    if (value === null) {
-        return null;
-    }
+
     return {
         
-        'orderBy': value.orderBy,
-        'order': SqlSortOrderToJSON(value.order),
+        'orderBy': value['orderBy'],
+        'order': SqlSortOrderToJSON(value['order']),
     };
 }
 

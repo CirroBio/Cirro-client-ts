@@ -12,15 +12,15 @@
  * Do not edit the class manually.
  */
 
+import type { TableSheetInput } from './TableSheetInput';
 import {
-    TableSheetInput,
     instanceOfTableSheetInput,
     TableSheetInputFromJSON,
     TableSheetInputFromJSONTyped,
     TableSheetInputToJSON,
 } from './TableSheetInput';
+import type { ViewSheetInput } from './ViewSheetInput';
 import {
-    ViewSheetInput,
     instanceOfViewSheetInput,
     ViewSheetInputFromJSON,
     ViewSheetInputFromJSONTyped,
@@ -39,34 +39,34 @@ export function SheetInputFromJSON(json: any): SheetInput {
 }
 
 export function SheetInputFromJSONTyped(json: any, ignoreDiscriminator: boolean): SheetInput {
-    if ((json === undefined) || (json === null)) {
+    if (json == null) {
         return json;
     }
     switch (json['sheetType']) {
         case 'TABLE':
-            return {...TableSheetInputFromJSONTyped(json, true), sheetType: 'TABLE'};
+            return Object.assign({}, TableSheetInputFromJSONTyped(json, true), { sheetType: 'TABLE' } as const);
         case 'VIEW':
-            return {...ViewSheetInputFromJSONTyped(json, true), sheetType: 'VIEW'};
+            return Object.assign({}, ViewSheetInputFromJSONTyped(json, true), { sheetType: 'VIEW' } as const);
         default:
-            throw new Error(`No variant of SheetInput exists with 'sheetType=${json['sheetType']}'`);
+            return json;
     }
 }
 
-export function SheetInputToJSON(value?: SheetInput | null): any {
-    if (value === undefined) {
-        return undefined;
-    }
-    if (value === null) {
-        return null;
+export function SheetInputToJSON(json: any): any {
+    return SheetInputToJSONTyped(json, false);
+}
+
+export function SheetInputToJSONTyped(value?: SheetInput | null, ignoreDiscriminator: boolean = false): any {
+    if (value == null) {
+        return value;
     }
     switch (value['sheetType']) {
         case 'TABLE':
-            return TableSheetInputToJSON(value);
+            return Object.assign({}, TableSheetInputToJSON(value), { sheetType: 'TABLE' } as const);
         case 'VIEW':
-            return ViewSheetInputToJSON(value);
+            return Object.assign({}, ViewSheetInputToJSON(value), { sheetType: 'VIEW' } as const);
         default:
-            throw new Error(`No variant of SheetInput exists with 'sheetType=${value['sheetType']}'`);
+            return value;
     }
-
 }
 
