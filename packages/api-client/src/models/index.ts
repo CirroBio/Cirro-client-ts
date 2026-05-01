@@ -167,6 +167,7 @@ export * from './SheetIngestRequest';
 export * from './SheetInput';
 export * from './SheetJob';
 export * from './SheetJobType';
+export * from './SheetQueryRequest';
 export * from './SheetQueryResponse';
 export * from './SheetSort';
 export * from './SheetType';

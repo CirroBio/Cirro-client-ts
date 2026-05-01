@@ -13,7 +13,7 @@
  */
 
 /**
- * 
+ * Column data type.
  * @export
  * @enum {string}
  */

@@ -58,6 +58,18 @@ export interface Sheet {
      * @type {string}
      * @memberof Sheet
      */
+    namespaceName: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Sheet
+     */
+    tableName: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Sheet
+     */
     description: string;
     /**
      * 
@@ -117,6 +129,8 @@ export interface Sheet {
 export function instanceOfSheet(value: object): value is Sheet {
     if (!('id' in value) || value['id'] === undefined) return false;
     if (!('name' in value) || value['name'] === undefined) return false;
+    if (!('namespaceName' in value) || value['namespaceName'] === undefined) return false;
+    if (!('tableName' in value) || value['tableName'] === undefined) return false;
     if (!('description' in value) || value['description'] === undefined) return false;
     if (!('projectId' in value) || value['projectId'] === undefined) return false;
     if (!('sheetType' in value) || value['sheetType'] === undefined) return false;
@@ -141,6 +155,8 @@ export function SheetFromJSONTyped(json: any, ignoreDiscriminator: boolean): She
         
         'id': json['id'],
         'name': json['name'],
+        'namespaceName': json['namespaceName'],
+        'tableName': json['tableName'],
         'description': json['description'],
         'projectId': json['projectId'],
         'sheetType': SheetTypeFromJSON(json['sheetType']),
@@ -166,6 +182,8 @@ export function SheetToJSONTyped(value?: Sheet | null, ignoreDiscriminator: bool
         
         'id': value['id'],
         'name': value['name'],
+        'namespaceName': value['namespaceName'],
+        'tableName': value['tableName'],
         'description': value['description'],
         'projectId': value['projectId'],
         'sheetType': SheetTypeToJSON(value['sheetType']),

@@ -49,6 +49,11 @@ import {
     SheetJobToJSON,
 } from '../models/SheetJob';
 import {
+    type SheetQueryRequest,
+    SheetQueryRequestFromJSON,
+    SheetQueryRequestToJSON,
+} from '../models/SheetQueryRequest';
+import {
     type SheetQueryResponse,
     SheetQueryResponseFromJSON,
     SheetQueryResponseToJSON,
@@ -100,6 +105,11 @@ export interface GetSheetDataRequest {
 
 export interface GetSheetsRequest {
     projectId: string;
+}
+
+export interface QueryNamespaceDataRequest {
+    projectId: string;
+    sheetQueryRequest: SheetQueryRequest;
 }
 
 export interface QuerySheetDataRequest {
@@ -524,6 +534,71 @@ export class SheetsApi extends runtime.BaseAPI {
      */
     async getSheets(requestParameters: GetSheetsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<Sheet>> {
         const response = await this.getSheetsRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Creates request options for queryNamespaceData without sending the request
+     */
+    async queryNamespaceDataRequestOpts(requestParameters: QueryNamespaceDataRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling queryNamespaceData().'
+            );
+        }
+
+        if (requestParameters['sheetQueryRequest'] == null) {
+            throw new runtime.RequiredError(
+                'sheetQueryRequest',
+                'Required parameter "sheetQueryRequest" was null or undefined when calling queryNamespaceData().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/projects/{projectId}/sheets/raw-query`;
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+
+        return {
+            path: urlPath,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: SheetQueryRequestToJSON(requestParameters['sheetQueryRequest']),
+        };
+    }
+
+    /**
+     * Returns executed SQL results.
+     * Run raw SQL against the project\'s sheets.
+     */
+    async queryNamespaceDataRaw(requestParameters: QueryNamespaceDataRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SheetQueryResponse>> {
+        const requestOptions = await this.queryNamespaceDataRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SheetQueryResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Returns executed SQL results.
+     * Run raw SQL against the project\'s sheets.
+     */
+    async queryNamespaceData(requestParameters: QueryNamespaceDataRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SheetQueryResponse> {
+        const response = await this.queryNamespaceDataRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
