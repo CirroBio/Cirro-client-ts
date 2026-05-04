@@ -19,6 +19,11 @@ import {
     CreateResponseToJSON,
 } from '../models/CreateResponse';
 import {
+    type DeleteRowsRequest,
+    DeleteRowsRequestFromJSON,
+    DeleteRowsRequestToJSON,
+} from '../models/DeleteRowsRequest';
+import {
     type Sheet,
     SheetFromJSON,
     SheetToJSON,
@@ -28,6 +33,11 @@ import {
     SheetDataRequestFromJSON,
     SheetDataRequestToJSON,
 } from '../models/SheetDataRequest';
+import {
+    type SheetDataUpdateResponse,
+    SheetDataUpdateResponseFromJSON,
+    SheetDataUpdateResponseToJSON,
+} from '../models/SheetDataUpdateResponse';
 import {
     type SheetDetail,
     SheetDetailFromJSON,
@@ -82,6 +92,12 @@ export interface CreateSheetRequest {
 export interface DeleteSheetRequest {
     projectId: string;
     sheetId: string;
+}
+
+export interface DeleteSheetDataRequest {
+    projectId: string;
+    sheetId: string;
+    deleteRowsRequest: DeleteRowsRequest;
 }
 
 export interface GetJobsRequest {
@@ -272,6 +288,79 @@ export class SheetsApi extends runtime.BaseAPI {
      */
     async deleteSheet(requestParameters: DeleteSheetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.deleteSheetRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Creates request options for deleteSheetData without sending the request
+     */
+    async deleteSheetDataRequestOpts(requestParameters: DeleteSheetDataRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling deleteSheetData().'
+            );
+        }
+
+        if (requestParameters['sheetId'] == null) {
+            throw new runtime.RequiredError(
+                'sheetId',
+                'Required parameter "sheetId" was null or undefined when calling deleteSheetData().'
+            );
+        }
+
+        if (requestParameters['deleteRowsRequest'] == null) {
+            throw new runtime.RequiredError(
+                'deleteRowsRequest',
+                'Required parameter "deleteRowsRequest" was null or undefined when calling deleteSheetData().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/projects/{projectId}/sheets/{sheetId}/data`;
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+        urlPath = urlPath.replace('{sheetId}', encodeURIComponent(String(requestParameters['sheetId'])));
+
+        return {
+            path: urlPath,
+            method: 'DELETE',
+            headers: headerParameters,
+            query: queryParameters,
+            body: DeleteRowsRequestToJSON(requestParameters['deleteRowsRequest']),
+        };
+    }
+
+    /**
+     * Returns number of rows deleted. Deletes specific rows from a sheet by _row_id. The request body lists the rowIds to delete.
+     * Delete sheet rows
+     */
+    async deleteSheetDataRaw(requestParameters: DeleteSheetDataRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SheetDataUpdateResponse>> {
+        const requestOptions = await this.deleteSheetDataRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SheetDataUpdateResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Returns number of rows deleted. Deletes specific rows from a sheet by _row_id. The request body lists the rowIds to delete.
+     * Delete sheet rows
+     */
+    async deleteSheetData(requestParameters: DeleteSheetDataRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SheetDataUpdateResponse> {
+        const response = await this.deleteSheetDataRaw(requestParameters, initOverrides);
+        return await response.value();
     }
 
     /**
@@ -940,22 +1029,23 @@ export class SheetsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Updates specific rows in a TABLE sheet by _row_id. This is a partial update: only the columns included in each entry are modified, all other columns are left unchanged.
+     * Returns number of rows updated. Updates specific rows in a TABLE sheet by _row_id. This is a partial update: only the columns included in each entry are modified, all other columns are left unchanged.
      * Update sheet rows
      */
-    async updateSheetDataRaw(requestParameters: UpdateSheetDataRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async updateSheetDataRaw(requestParameters: UpdateSheetDataRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SheetDataUpdateResponse>> {
         const requestOptions = await this.updateSheetDataRequestOpts(requestParameters);
         const response = await this.request(requestOptions, initOverrides);
 
-        return new runtime.VoidApiResponse(response);
+        return new runtime.JSONApiResponse(response, (jsonValue) => SheetDataUpdateResponseFromJSON(jsonValue));
     }
 
     /**
-     * Updates specific rows in a TABLE sheet by _row_id. This is a partial update: only the columns included in each entry are modified, all other columns are left unchanged.
+     * Returns number of rows updated. Updates specific rows in a TABLE sheet by _row_id. This is a partial update: only the columns included in each entry are modified, all other columns are left unchanged.
      * Update sheet rows
      */
-    async updateSheetData(requestParameters: UpdateSheetDataRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.updateSheetDataRaw(requestParameters, initOverrides);
+    async updateSheetData(requestParameters: UpdateSheetDataRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SheetDataUpdateResponse> {
+        const response = await this.updateSheetDataRaw(requestParameters, initOverrides);
+        return await response.value();
     }
 
 }

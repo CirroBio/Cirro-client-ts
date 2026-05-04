@@ -22,25 +22,30 @@ import {
 } from './QueryColumn';
 
 /**
+ * Paginated query result from a sheet.
  * 
+ * 
+ * The first column is always `_row_id`, an Iceberg v3 metadata column that
+ * uniquely identifies each row. Clients should use this value when calling the
+ * update endpoint (`PUT /projects/{projectId}/sheets/{sheetId}/data`).
  * @export
  * @interface SheetQueryResponse
  */
 export interface SheetQueryResponse {
     /**
-     * 
+     * column definitions, starting with `_row_id`
      * @type {Array<QueryColumn>}
      * @memberof SheetQueryResponse
      */
     columns: Array<QueryColumn>;
     /**
-     * 
+     * row data, each list aligned with `columns`
      * @type {Array<Array<object>>}
      * @memberof SheetQueryResponse
      */
     rows: Array<Array<object>>;
     /**
-     * 
+     * number of total rows in the result set
      * @type {number}
      * @memberof SheetQueryResponse
      */
