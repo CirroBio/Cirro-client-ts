@@ -42,7 +42,7 @@ import {
  */
 export interface ViewQueryRequest {
     /**
-     * Sheets to include in the view
+     * Sheets to include in the view. The first entry (sheets[0]) is the primary sheet — it becomes the FROM clause of the generated SQL. Subsequent entries are brought in via joins.
      * @type {Array<ViewSheetRef>}
      * @memberof ViewQueryRequest
      */

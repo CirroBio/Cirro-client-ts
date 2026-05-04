@@ -62,6 +62,7 @@ export interface CreateWorkspaceRequest {
 export interface DeleteWorkspaceRequest {
     projectId: string;
     workspaceId: string;
+    force?: boolean;
 }
 
 export interface DisconnectWorkspaceRequest {
@@ -259,6 +260,10 @@ export class WorkspacesApi extends runtime.BaseAPI {
 
         const queryParameters: any = {};
 
+        if (requestParameters['force'] != null) {
+            queryParameters['force'] = requestParameters['force'];
+        }
+
         const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.accessToken) {
@@ -283,7 +288,7 @@ export class WorkspacesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Deletes a workspace within a project
+     * Deletes a workspace within a project. Pass force=true (global admin only) to skip the FAILED-on-cleanup-error guard and end the workspace in DELETED regardless of partial cleanup failures.
      * Delete workspace
      */
     async deleteWorkspaceRaw(requestParameters: DeleteWorkspaceRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
@@ -294,7 +299,7 @@ export class WorkspacesApi extends runtime.BaseAPI {
     }
 
     /**
-     * Deletes a workspace within a project
+     * Deletes a workspace within a project. Pass force=true (global admin only) to skip the FAILED-on-cleanup-error guard and end the workspace in DELETED regardless of partial cleanup failures.
      * Delete workspace
      */
     async deleteWorkspace(requestParameters: DeleteWorkspaceRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {

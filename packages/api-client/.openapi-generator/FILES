@@ -78,6 +78,7 @@ src/models/DatasetCondition.ts
 src/models/DatasetConditionField.ts
 src/models/DatasetDetail.ts
 src/models/DatasetViz.ts
+src/models/DeleteRowsRequest.ts
 src/models/Discussion.ts
 src/models/DiscussionInput.ts
 src/models/DiscussionType.ts
@@ -189,6 +190,7 @@ src/models/SharingType.ts
 src/models/Sheet.ts
 src/models/SheetCreationMode.ts
 src/models/SheetDataRequest.ts
+src/models/SheetDataUpdateResponse.ts
 src/models/SheetDetail.ts
 src/models/SheetIngestRequest.ts
 src/models/SheetInput.ts
