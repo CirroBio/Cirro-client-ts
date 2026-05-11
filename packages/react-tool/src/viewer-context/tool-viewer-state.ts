@@ -12,6 +12,8 @@ export class ToolViewerState implements ViewerState {
     readonly files: Assets,
     readonly fileAccessContext: ProjectFileAccessContext,
     readonly _selectedFile?: string | null,
+    readonly toolState?: string,
+    readonly sendStateUpdate: (state: string) => void = () => {},
   ) {
     if (_selectedFile && manifest) {
       this.selectedFile = {

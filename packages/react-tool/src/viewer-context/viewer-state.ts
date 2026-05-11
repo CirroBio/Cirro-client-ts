@@ -45,4 +45,16 @@ export interface ViewerState {
    * File access context, used to get any arbitrary file from the project.
    */
   fileAccessContext: ProjectFileAccessContext;
+
+  /**
+   * Opaque tool state string persisted by the portal across sessions.
+   * Restore UI state from this on load.
+   */
+  toolState?: string;
+
+  /**
+   * Send an opaque state string to the portal for persistence.
+   * Call this whenever the tool's shareable state changes.
+   */
+  sendStateUpdate: (state: string) => void;
 }
