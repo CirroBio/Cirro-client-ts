@@ -58,8 +58,13 @@ export function ViewerContextProvider({ children }): ReactElement {
   }, [manifest, fileAccessContext]);
 
   const state: ViewerState = useMemo(() => {
-    return new ToolViewerState(project, dataset, manifest, assets, fileAccessContext, viewerState.config?.file)
-  }, [dataService, project, dataset, manifest, viewerState.config?.file]);
+    return new ToolViewerState(
+      project, dataset, manifest, assets, fileAccessContext,
+      viewerState.config?.file,
+      viewerState.config?.state,
+      viewerState.sendStateUpdate,
+    )
+  }, [dataService, project, dataset, manifest, viewerState.config?.file, viewerState.config?.state, viewerState.sendStateUpdate]);
 
   const services: ViewerServices = { dataService, fileService };
   const value = useMemo(() => ({ state, services }), [state, services]);

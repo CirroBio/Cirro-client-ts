@@ -57,8 +57,12 @@ export const ViewerStateProvider = ({ children, mode, patchFetch }: ViewerStateP
     setViewerConfig(config);
   }
 
+  const sendStateUpdate = (state: string) => {
+    window.parent.postMessage({ source: 'cirro-tool', payload: { type: 'STATE_UPDATE', state } });
+  };
+
   const value = useMemo(() => ({
-    status: viewerStatus, config: viewerConfig, s3Credentials, updateConfig, patchFetch
+    status: viewerStatus, config: viewerConfig, s3Credentials, updateConfig, patchFetch, sendStateUpdate
   }), [viewerStatus, viewerConfig]);
 
   return (

@@ -10,4 +10,5 @@ export interface ViewerConfigPayload {
   dataset: Partial<DatasetDetail>;
   manifest?: DatasetAssetsManifest;
   file?: string; // path relative to manifest domain
+  state?: string; // opaque tool state persisted by the portal
 }
