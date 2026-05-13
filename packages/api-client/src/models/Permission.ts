@@ -56,7 +56,6 @@ export enum Permission {
     EditSheet = 'EDIT_SHEET',
     EditSheetData = 'EDIT_SHEET_DATA',
     DeleteSheet = 'DELETE_SHEET',
-    DeleteSheetData = 'DELETE_SHEET_DATA',
     SheetRawQuery = 'SHEET_RAW_QUERY',
     CreateWorkspace = 'CREATE_WORKSPACE',
     DeleteWorkspace = 'DELETE_WORKSPACE',

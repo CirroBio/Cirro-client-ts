@@ -27,6 +27,7 @@ export enum EntityType {
     Workspace = 'WORKSPACE',
     Sample = 'SAMPLE',
     Share = 'SHARE',
+    Sheet = 'SHEET',
     Tag = 'TAG',
     Unknown = 'UNKNOWN'
 }

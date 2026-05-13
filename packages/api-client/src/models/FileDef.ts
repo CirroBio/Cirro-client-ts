@@ -38,7 +38,7 @@ export interface FileDef {
      * @type {string}
      * @memberof FileDef
      */
-    storageUri?: string;
+    storageUri: string;
 }
 
 
@@ -48,6 +48,7 @@ export interface FileDef {
  */
 export function instanceOfFileDef(value: object): value is FileDef {
     if (!('fileType' in value) || value['fileType'] === undefined) return false;
+    if (!('storageUri' in value) || value['storageUri'] === undefined) return false;
     return true;
 }
 
@@ -62,7 +63,7 @@ export function FileDefFromJSONTyped(json: any, ignoreDiscriminator: boolean): F
     return {
         
         'fileType': FileTypeFromJSON(json['fileType']),
-        'storageUri': json['storageUri'] == null ? undefined : json['storageUri'],
+        'storageUri': json['storageUri'],
     };
 }
 

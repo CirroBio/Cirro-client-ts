@@ -118,6 +118,7 @@ src/models/GovernanceTrainingVerification.ts
 src/models/GovernanceType.ts
 src/models/GroupCost.ts
 src/models/ImportDataRequest.ts
+src/models/InsertRowsRequest.ts
 src/models/InviteUserRequest.ts
 src/models/InviteUserResponse.ts
 src/models/JoinCondition.ts
@@ -172,11 +173,13 @@ src/models/RequestStatus.ts
 src/models/RequirementFulfillmentInput.ts
 src/models/RequirementInput.ts
 src/models/ResourcesInfo.ts
+src/models/RowInsert.ts
 src/models/RowUpdate.ts
 src/models/RunAnalysisRequest.ts
 src/models/Sample.ts
 src/models/SampleRequest.ts
 src/models/SampleSheets.ts
+src/models/SemanticColumnType.ts
 src/models/ServiceConnection.ts
 src/models/SetUserProjectRoleRequest.ts
 src/models/SftpCredentials.ts

@@ -27,6 +27,13 @@ import {
     ColumnDefToJSON,
     ColumnDefToJSONTyped,
 } from './ColumnDef';
+import type { Tag } from './Tag';
+import {
+    TagFromJSON,
+    TagFromJSONTyped,
+    TagToJSON,
+    TagToJSONTyped,
+} from './Tag';
 
 /**
  * 
@@ -83,6 +90,12 @@ export interface TableSheetInput {
      */
     schemaVersionId?: number | null;
     /**
+     * Tags for the sheet
+     * @type {Array<Tag>}
+     * @memberof TableSheetInput
+     */
+    tags?: Array<Tag>;
+    /**
      * 
      * @type {string}
      * @memberof TableSheetInput
@@ -122,6 +135,7 @@ export function TableSheetInputFromJSONTyped(json: any, ignoreDiscriminator: boo
         'sheetCreationMode': SheetCreationModeFromJSON(json['sheetCreationMode']),
         'columns': ((json['columns'] as Array<any>).map(ColumnDefFromJSON)),
         'schemaVersionId': json['schemaVersionId'] == null ? undefined : json['schemaVersionId'],
+        'tags': json['tags'] == null ? undefined : ((json['tags'] as Array<any>).map(TagFromJSON)),
         'sheetType': json['sheetType'] == null ? undefined : json['sheetType'],
     };
 }
@@ -145,6 +159,7 @@ export function TableSheetInputToJSONTyped(value?: TableSheetInput | null, ignor
         'sheetCreationMode': SheetCreationModeToJSON(value['sheetCreationMode']),
         'columns': ((value['columns'] as Array<any>).map(ColumnDefToJSON)),
         'schemaVersionId': value['schemaVersionId'],
+        'tags': value['tags'] == null ? undefined : ((value['tags'] as Array<any>).map(TagToJSON)),
         'sheetType': value['sheetType'],
     };
 }
