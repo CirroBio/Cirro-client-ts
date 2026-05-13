@@ -20,6 +20,13 @@ import {
     ViewQueryRequestToJSON,
     ViewQueryRequestToJSONTyped,
 } from './ViewQueryRequest';
+import type { Tag } from './Tag';
+import {
+    TagFromJSON,
+    TagFromJSONTyped,
+    TagToJSON,
+    TagToJSONTyped,
+} from './Tag';
 
 /**
  * 
@@ -64,6 +71,12 @@ export interface ViewSheetInput {
      */
     viewDefinition: ViewQueryRequest;
     /**
+     * Tags for the sheet
+     * @type {Array<Tag>}
+     * @memberof ViewSheetInput
+     */
+    tags?: Array<Tag>;
+    /**
      * 
      * @type {string}
      * @memberof ViewSheetInput
@@ -98,6 +111,7 @@ export function ViewSheetInputFromJSONTyped(json: any, ignoreDiscriminator: bool
         'tableName': json['tableName'],
         'auditReadAccess': json['auditReadAccess'] == null ? undefined : json['auditReadAccess'],
         'viewDefinition': ViewQueryRequestFromJSON(json['viewDefinition']),
+        'tags': json['tags'] == null ? undefined : ((json['tags'] as Array<any>).map(TagFromJSON)),
         'sheetType': json['sheetType'] == null ? undefined : json['sheetType'],
     };
 }
@@ -119,6 +133,7 @@ export function ViewSheetInputToJSONTyped(value?: ViewSheetInput | null, ignoreD
         'tableName': value['tableName'],
         'auditReadAccess': value['auditReadAccess'],
         'viewDefinition': ViewQueryRequestToJSON(value['viewDefinition']),
+        'tags': value['tags'] == null ? undefined : ((value['tags'] as Array<any>).map(TagToJSON)),
         'sheetType': value['sheetType'],
     };
 }

@@ -48,6 +48,13 @@ import {
     SheetTypeToJSON,
     SheetTypeToJSONTyped,
 } from './SheetType';
+import type { Tag } from './Tag';
+import {
+    TagFromJSON,
+    TagFromJSONTyped,
+    TagToJSON,
+    TagToJSONTyped,
+} from './Tag';
 
 /**
  * 
@@ -169,6 +176,12 @@ export interface SheetDetail {
      * @memberof SheetDetail
      */
     schemaVersionId?: number;
+    /**
+     * 
+     * @type {Array<Tag>}
+     * @memberof SheetDetail
+     */
+    tags: Array<Tag>;
 }
 
 
@@ -190,6 +203,7 @@ export function instanceOfSheetDetail(value: object): value is SheetDetail {
     if (!('createdAt' in value) || value['createdAt'] === undefined) return false;
     if (!('updatedAt' in value) || value['updatedAt'] === undefined) return false;
     if (!('totalRowCount' in value) || value['totalRowCount'] === undefined) return false;
+    if (!('tags' in value) || value['tags'] === undefined) return false;
     return true;
 }
 
@@ -222,6 +236,7 @@ export function SheetDetailFromJSONTyped(json: any, ignoreDiscriminator: boolean
         'updatedAt': (new Date(json['updatedAt'])),
         'totalRowCount': json['totalRowCount'],
         'schemaVersionId': json['schemaVersionId'] == null ? undefined : json['schemaVersionId'],
+        'tags': ((json['tags'] as Array<any>).map(TagFromJSON)),
     };
 }
 
@@ -255,6 +270,7 @@ export function SheetDetailToJSONTyped(value?: SheetDetail | null, ignoreDiscrim
         'updatedAt': value['updatedAt'].toISOString(),
         'totalRowCount': value['totalRowCount'],
         'schemaVersionId': value['schemaVersionId'],
+        'tags': ((value['tags'] as Array<any>).map(TagToJSON)),
     };
 }
 

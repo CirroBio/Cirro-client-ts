@@ -20,6 +20,13 @@ import {
     ColumnDataTypeToJSON,
     ColumnDataTypeToJSONTyped,
 } from './ColumnDataType';
+import type { SemanticColumnType } from './SemanticColumnType';
+import {
+    SemanticColumnTypeFromJSON,
+    SemanticColumnTypeFromJSONTyped,
+    SemanticColumnTypeToJSON,
+    SemanticColumnTypeToJSONTyped,
+} from './SemanticColumnType';
 import type { ForeignKeyRef } from './ForeignKeyRef';
 import {
     ForeignKeyRefFromJSON,
@@ -52,6 +59,30 @@ export interface ColumnDef {
      * @memberof ColumnDef
      */
     dataType: ColumnDataType;
+    /**
+     * Name displayed on UI.
+     * @type {string}
+     * @memberof ColumnDef
+     */
+    displayName?: string | null;
+    /**
+     * Whether the column is hidden on the UI.
+     * @type {boolean}
+     * @memberof ColumnDef
+     */
+    hidden?: boolean;
+    /**
+     * The semantic type of the column.
+     * @type {SemanticColumnType}
+     * @memberof ColumnDef
+     */
+    semanticType?: SemanticColumnType | null;
+    /**
+     * The allowed values for the column, only used for ENUM* types.
+     * @type {Array<string>}
+     * @memberof ColumnDef
+     */
+    allowedValues?: Array<string> | null;
     /**
      * 
      * @type {string}
@@ -96,6 +127,10 @@ export function ColumnDefFromJSONTyped(json: any, ignoreDiscriminator: boolean):
         'id': json['id'] == null ? undefined : json['id'],
         'name': json['name'],
         'dataType': ColumnDataTypeFromJSON(json['dataType']),
+        'displayName': json['displayName'] == null ? undefined : json['displayName'],
+        'hidden': json['hidden'] == null ? undefined : json['hidden'],
+        'semanticType': json['semanticType'] == null ? undefined : SemanticColumnTypeFromJSON(json['semanticType']),
+        'allowedValues': json['allowedValues'] == null ? undefined : json['allowedValues'],
         'description': json['description'] == null ? undefined : json['description'],
         'foreignKey': json['foreignKey'] == null ? undefined : ForeignKeyRefFromJSON(json['foreignKey']),
         'required': json['required'] == null ? undefined : json['required'],
@@ -116,6 +151,10 @@ export function ColumnDefToJSONTyped(value?: ColumnDef | null, ignoreDiscriminat
         'id': value['id'],
         'name': value['name'],
         'dataType': ColumnDataTypeToJSON(value['dataType']),
+        'displayName': value['displayName'],
+        'hidden': value['hidden'],
+        'semanticType': SemanticColumnTypeToJSON(value['semanticType']),
+        'allowedValues': value['allowedValues'],
         'description': value['description'],
         'foreignKey': ForeignKeyRefToJSON(value['foreignKey']),
         'required': value['required'],

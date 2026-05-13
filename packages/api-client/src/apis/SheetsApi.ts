@@ -24,6 +24,11 @@ import {
     DeleteRowsRequestToJSON,
 } from '../models/DeleteRowsRequest';
 import {
+    type InsertRowsRequest,
+    InsertRowsRequestFromJSON,
+    InsertRowsRequestToJSON,
+} from '../models/InsertRowsRequest';
+import {
     type Sheet,
     SheetFromJSON,
     SheetToJSON,
@@ -121,6 +126,12 @@ export interface GetSheetDataRequest {
 
 export interface GetSheetsRequest {
     projectId: string;
+}
+
+export interface InsertSheetDataRequest {
+    projectId: string;
+    sheetId: string;
+    insertRowsRequest: InsertRowsRequest;
 }
 
 export interface QueryNamespaceDataRequest {
@@ -627,6 +638,79 @@ export class SheetsApi extends runtime.BaseAPI {
     }
 
     /**
+     * Creates request options for insertSheetData without sending the request
+     */
+    async insertSheetDataRequestOpts(requestParameters: InsertSheetDataRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling insertSheetData().'
+            );
+        }
+
+        if (requestParameters['sheetId'] == null) {
+            throw new runtime.RequiredError(
+                'sheetId',
+                'Required parameter "sheetId" was null or undefined when calling insertSheetData().'
+            );
+        }
+
+        if (requestParameters['insertRowsRequest'] == null) {
+            throw new runtime.RequiredError(
+                'insertRowsRequest',
+                'Required parameter "insertRowsRequest" was null or undefined when calling insertSheetData().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/projects/{projectId}/sheets/{sheetId}/data`;
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+        urlPath = urlPath.replace('{sheetId}', encodeURIComponent(String(requestParameters['sheetId'])));
+
+        return {
+            path: urlPath,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: InsertRowsRequestToJSON(requestParameters['insertRowsRequest']),
+        };
+    }
+
+    /**
+     * Returns number of rows inserted.
+     * Insert sheet rows
+     */
+    async insertSheetDataRaw(requestParameters: InsertSheetDataRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SheetDataUpdateResponse>> {
+        const requestOptions = await this.insertSheetDataRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SheetDataUpdateResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Returns number of rows inserted.
+     * Insert sheet rows
+     */
+    async insertSheetData(requestParameters: InsertSheetDataRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SheetDataUpdateResponse> {
+        const response = await this.insertSheetDataRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
      * Creates request options for queryNamespaceData without sending the request
      */
     async queryNamespaceDataRequestOpts(requestParameters: QueryNamespaceDataRequest): Promise<runtime.RequestOpts> {
@@ -1021,7 +1105,7 @@ export class SheetsApi extends runtime.BaseAPI {
 
         return {
             path: urlPath,
-            method: 'PUT',
+            method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
             body: UpdateRowsRequestToJSON(requestParameters['updateRowsRequest']),
