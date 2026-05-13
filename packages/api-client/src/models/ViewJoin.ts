@@ -35,12 +35,6 @@ import {
  */
 export interface ViewJoin {
     /**
-     * Alias of the sheet to join
-     * @type {string}
-     * @memberof ViewJoin
-     */
-    sheetAlias: string;
-    /**
      * 
      * @type {JoinType}
      * @memberof ViewJoin
@@ -60,7 +54,6 @@ export interface ViewJoin {
  * Check if a given object implements the ViewJoin interface.
  */
 export function instanceOfViewJoin(value: object): value is ViewJoin {
-    if (!('sheetAlias' in value) || value['sheetAlias'] === undefined) return false;
     if (!('joinType' in value) || value['joinType'] === undefined) return false;
     if (!('conditions' in value) || value['conditions'] === undefined) return false;
     return true;
@@ -76,7 +69,6 @@ export function ViewJoinFromJSONTyped(json: any, ignoreDiscriminator: boolean): 
     }
     return {
         
-        'sheetAlias': json['sheetAlias'],
         'joinType': JoinTypeFromJSON(json['joinType']),
         'conditions': ((json['conditions'] as Array<any>).map(JoinConditionFromJSON)),
     };
@@ -93,7 +85,6 @@ export function ViewJoinToJSONTyped(value?: ViewJoin | null, ignoreDiscriminator
 
     return {
         
-        'sheetAlias': value['sheetAlias'],
         'joinType': JoinTypeToJSON(value['joinType']),
         'conditions': ((value['conditions'] as Array<any>).map(JoinConditionToJSON)),
     };
