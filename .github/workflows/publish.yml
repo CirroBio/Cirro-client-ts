@@ -71,3 +71,33 @@ jobs:
         if: github.event_name == 'release'
         working-directory: packages/sdk
         run: npm publish --provenance
+
+  build-react-tool:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [24.x]
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v6
+        with:
+          node-version: ${{ matrix.node-version }}
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Build react-tool
+        working-directory: packages/react-tool
+        run: |
+          yarn install --frozen-lockfile
+          npm run build
+
+      - name: Publish react-tool to NPM
+        if: github.event_name == 'release'
+        working-directory: packages/react-tool
+        run: npm publish --provenance
