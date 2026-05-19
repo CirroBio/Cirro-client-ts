@@ -69,6 +69,12 @@ export interface UserDetail {
      * @type {string}
      * @memberof UserDetail
      */
+    orcidId: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserDetail
+     */
     jobTitle: string;
     /**
      * 
@@ -130,6 +136,7 @@ export function instanceOfUserDetail(value: object): value is UserDetail {
     if (!('phone' in value) || value['phone'] === undefined) return false;
     if (!('email' in value) || value['email'] === undefined) return false;
     if (!('organization' in value) || value['organization'] === undefined) return false;
+    if (!('orcidId' in value) || value['orcidId'] === undefined) return false;
     if (!('jobTitle' in value) || value['jobTitle'] === undefined) return false;
     if (!('department' in value) || value['department'] === undefined) return false;
     if (!('invitedBy' in value) || value['invitedBy'] === undefined) return false;
@@ -154,6 +161,7 @@ export function UserDetailFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'phone': json['phone'],
         'email': json['email'],
         'organization': json['organization'],
+        'orcidId': json['orcidId'],
         'jobTitle': json['jobTitle'],
         'department': json['department'],
         'invitedBy': json['invitedBy'],
@@ -182,6 +190,7 @@ export function UserDetailToJSONTyped(value?: UserDetail | null, ignoreDiscrimin
         'phone': value['phone'],
         'email': value['email'],
         'organization': value['organization'],
+        'orcidId': value['orcidId'],
         'jobTitle': value['jobTitle'],
         'department': value['department'],
         'invitedBy': value['invitedBy'],

@@ -85,6 +85,12 @@ export interface FeatureFlags {
      * @memberof FeatureFlags
      */
     customWorkspaceRolesEnabled: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof FeatureFlags
+     */
+    orcidIntegrationEnabled: boolean;
 }
 
 /**
@@ -102,6 +108,7 @@ export function instanceOfFeatureFlags(value: object): value is FeatureFlags {
     if (!('aiEnabled' in value) || value['aiEnabled'] === undefined) return false;
     if (!('sharedFilesystemsEnabled' in value) || value['sharedFilesystemsEnabled'] === undefined) return false;
     if (!('customWorkspaceRolesEnabled' in value) || value['customWorkspaceRolesEnabled'] === undefined) return false;
+    if (!('orcidIntegrationEnabled' in value) || value['orcidIntegrationEnabled'] === undefined) return false;
     return true;
 }
 
@@ -126,6 +133,7 @@ export function FeatureFlagsFromJSONTyped(json: any, ignoreDiscriminator: boolea
         'aiEnabled': json['aiEnabled'],
         'sharedFilesystemsEnabled': json['sharedFilesystemsEnabled'],
         'customWorkspaceRolesEnabled': json['customWorkspaceRolesEnabled'],
+        'orcidIntegrationEnabled': json['orcidIntegrationEnabled'],
     };
 }
 
@@ -151,6 +159,7 @@ export function FeatureFlagsToJSONTyped(value?: FeatureFlags | null, ignoreDiscr
         'aiEnabled': value['aiEnabled'],
         'sharedFilesystemsEnabled': value['sharedFilesystemsEnabled'],
         'customWorkspaceRolesEnabled': value['customWorkspaceRolesEnabled'],
+        'orcidIntegrationEnabled': value['orcidIntegrationEnabled'],
     };
 }
 
