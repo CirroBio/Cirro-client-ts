@@ -51,7 +51,7 @@ export interface UserDetail {
      * @type {string}
      * @memberof UserDetail
      */
-    phone: string;
+    phone?: string | null;
     /**
      * 
      * @type {string}
@@ -69,19 +69,25 @@ export interface UserDetail {
      * @type {string}
      * @memberof UserDetail
      */
-    jobTitle: string;
+    orcidId?: string | null;
     /**
      * 
      * @type {string}
      * @memberof UserDetail
      */
-    department: string;
+    jobTitle?: string | null;
     /**
      * 
      * @type {string}
      * @memberof UserDetail
      */
-    invitedBy: string;
+    department?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserDetail
+     */
+    invitedBy?: string | null;
     /**
      * 
      * @type {Date}
@@ -127,12 +133,8 @@ export interface UserDetail {
 export function instanceOfUserDetail(value: object): value is UserDetail {
     if (!('username' in value) || value['username'] === undefined) return false;
     if (!('name' in value) || value['name'] === undefined) return false;
-    if (!('phone' in value) || value['phone'] === undefined) return false;
     if (!('email' in value) || value['email'] === undefined) return false;
     if (!('organization' in value) || value['organization'] === undefined) return false;
-    if (!('jobTitle' in value) || value['jobTitle'] === undefined) return false;
-    if (!('department' in value) || value['department'] === undefined) return false;
-    if (!('invitedBy' in value) || value['invitedBy'] === undefined) return false;
     if (!('projectAssignments' in value) || value['projectAssignments'] === undefined) return false;
     if (!('globalRoles' in value) || value['globalRoles'] === undefined) return false;
     if (!('settings' in value) || value['settings'] === undefined) return false;
@@ -151,12 +153,13 @@ export function UserDetailFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         
         'username': json['username'],
         'name': json['name'],
-        'phone': json['phone'],
+        'phone': json['phone'] == null ? undefined : json['phone'],
         'email': json['email'],
         'organization': json['organization'],
-        'jobTitle': json['jobTitle'],
-        'department': json['department'],
-        'invitedBy': json['invitedBy'],
+        'orcidId': json['orcidId'] == null ? undefined : json['orcidId'],
+        'jobTitle': json['jobTitle'] == null ? undefined : json['jobTitle'],
+        'department': json['department'] == null ? undefined : json['department'],
+        'invitedBy': json['invitedBy'] == null ? undefined : json['invitedBy'],
         'signUpTime': json['signUpTime'] == null ? undefined : (new Date(json['signUpTime'])),
         'lastSignedIn': json['lastSignedIn'] == null ? undefined : (new Date(json['lastSignedIn'])),
         'projectAssignments': ((json['projectAssignments'] as Array<any>).map(UserProjectAssignmentFromJSON)),
@@ -182,6 +185,7 @@ export function UserDetailToJSONTyped(value?: UserDetail | null, ignoreDiscrimin
         'phone': value['phone'],
         'email': value['email'],
         'organization': value['organization'],
+        'orcidId': value['orcidId'],
         'jobTitle': value['jobTitle'],
         'department': value['department'],
         'invitedBy': value['invitedBy'],
