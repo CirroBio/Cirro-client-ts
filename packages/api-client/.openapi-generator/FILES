@@ -164,6 +164,7 @@ src/models/ProjectRole.ts
 src/models/ProjectSettings.ts
 src/models/ProjectUser.ts
 src/models/QueryColumn.ts
+src/models/RawViewQueryRequest.ts
 src/models/Reference.ts
 src/models/ReferenceType.ts
 src/models/RepositoryType.ts
@@ -209,6 +210,7 @@ src/models/SourceColumn.ts
 src/models/SqlSortOrder.ts
 src/models/Status.ts
 src/models/StopExecutionResponse.ts
+src/models/StructuredViewQueryRequest.ts
 src/models/SyncStatus.ts
 src/models/SystemInfoResponse.ts
 src/models/Table.ts

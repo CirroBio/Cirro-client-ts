@@ -12,68 +12,27 @@
  * Do not edit the class manually.
  */
 
-import { mapValues } from '../runtime';
-import type { ViewJoin } from './ViewJoin';
+import type { RawViewQueryRequest } from './RawViewQueryRequest';
 import {
-    ViewJoinFromJSON,
-    ViewJoinFromJSONTyped,
-    ViewJoinToJSON,
-    ViewJoinToJSONTyped,
-} from './ViewJoin';
-import type { Filter } from './Filter';
+    instanceOfRawViewQueryRequest,
+    RawViewQueryRequestFromJSON,
+    RawViewQueryRequestFromJSONTyped,
+    RawViewQueryRequestToJSON,
+} from './RawViewQueryRequest';
+import type { StructuredViewQueryRequest } from './StructuredViewQueryRequest';
 import {
-    FilterFromJSON,
-    FilterFromJSONTyped,
-    FilterToJSON,
-    FilterToJSONTyped,
-} from './Filter';
-import type { ViewSheetRef } from './ViewSheetRef';
-import {
-    ViewSheetRefFromJSON,
-    ViewSheetRefFromJSONTyped,
-    ViewSheetRefToJSON,
-    ViewSheetRefToJSONTyped,
-} from './ViewSheetRef';
+    instanceOfStructuredViewQueryRequest,
+    StructuredViewQueryRequestFromJSON,
+    StructuredViewQueryRequestFromJSONTyped,
+    StructuredViewQueryRequestToJSON,
+} from './StructuredViewQueryRequest';
 
 /**
- * Request for a view joining one or more sheets with optional column selection and filtering
+ * @type ViewQueryRequest
+ * View definition. viewType=STRUCTURED for standard builder; viewType=RAW for a SQL SELECT.
  * @export
- * @interface ViewQueryRequest
  */
-export interface ViewQueryRequest {
-    /**
-     * Sheets to include in the view. The first entry (sheets[0]) is the primary sheet — it becomes the FROM clause of the generated SQL. Subsequent entries are brought in via joins.
-     * @type {Array<ViewSheetRef>}
-     * @memberof ViewQueryRequest
-     */
-    sheets: Array<ViewSheetRef>;
-    /**
-     * Join definitions between sheets
-     * @type {Array<ViewJoin>}
-     * @memberof ViewQueryRequest
-     */
-    joins?: Array<ViewJoin> | null;
-    /**
-     * Columns to select in alias.column format. If null, selects all columns.
-     * @type {Array<string>}
-     * @memberof ViewQueryRequest
-     */
-    columns?: Array<string> | null;
-    /**
-     * Filter conditions to apply
-     * @type {Filter}
-     * @memberof ViewQueryRequest
-     */
-    filter?: Filter | null;
-}
-
-/**
- * Check if a given object implements the ViewQueryRequest interface.
- */
-export function instanceOfViewQueryRequest(value: object): value is ViewQueryRequest {
-    if (!('sheets' in value) || value['sheets'] === undefined) return false;
-    return true;
-}
+export type ViewQueryRequest = { viewType: 'RAW' } & RawViewQueryRequest | { viewType: 'STRUCTURED' } & StructuredViewQueryRequest;
 
 export function ViewQueryRequestFromJSON(json: any): ViewQueryRequest {
     return ViewQueryRequestFromJSONTyped(json, false);
@@ -83,16 +42,17 @@ export function ViewQueryRequestFromJSONTyped(json: any, ignoreDiscriminator: bo
     if (json == null) {
         return json;
     }
-    return {
-        
-        'sheets': ((json['sheets'] as Array<any>).map(ViewSheetRefFromJSON)),
-        'joins': json['joins'] == null ? undefined : ((json['joins'] as Array<any>).map(ViewJoinFromJSON)),
-        'columns': json['columns'] == null ? undefined : json['columns'],
-        'filter': json['filter'] == null ? undefined : FilterFromJSON(json['filter']),
-    };
+    switch (json['viewType']) {
+        case 'RAW':
+            return Object.assign({}, RawViewQueryRequestFromJSONTyped(json, true), { viewType: 'RAW' } as const);
+        case 'STRUCTURED':
+            return Object.assign({}, StructuredViewQueryRequestFromJSONTyped(json, true), { viewType: 'STRUCTURED' } as const);
+        default:
+            return json;
+    }
 }
 
-export function ViewQueryRequestToJSON(json: any): ViewQueryRequest {
+export function ViewQueryRequestToJSON(json: any): any {
     return ViewQueryRequestToJSONTyped(json, false);
 }
 
@@ -100,13 +60,13 @@ export function ViewQueryRequestToJSONTyped(value?: ViewQueryRequest | null, ign
     if (value == null) {
         return value;
     }
-
-    return {
-        
-        'sheets': ((value['sheets'] as Array<any>).map(ViewSheetRefToJSON)),
-        'joins': value['joins'] == null ? undefined : ((value['joins'] as Array<any>).map(ViewJoinToJSON)),
-        'columns': value['columns'],
-        'filter': FilterToJSON(value['filter']),
-    };
+    switch (value['viewType']) {
+        case 'RAW':
+            return Object.assign({}, RawViewQueryRequestToJSON(value), { viewType: 'RAW' } as const);
+        case 'STRUCTURED':
+            return Object.assign({}, StructuredViewQueryRequestToJSON(value), { viewType: 'STRUCTURED' } as const);
+        default:
+            return value;
+    }
 }
 
