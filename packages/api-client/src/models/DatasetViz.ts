@@ -43,19 +43,12 @@ export interface DatasetViz {
      * @memberof DatasetViz
      */
     type?: string;
-    /**
-     * 
-     * @type {object}
-     * @memberof DatasetViz
-     */
-    config: object;
 }
 
 /**
  * Check if a given object implements the DatasetViz interface.
  */
 export function instanceOfDatasetViz(value: object): value is DatasetViz {
-    if (!('config' in value) || value['config'] === undefined) return false;
     return true;
 }
 
@@ -73,7 +66,6 @@ export function DatasetVizFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'name': json['name'] == null ? undefined : json['name'],
         'desc': json['desc'] == null ? undefined : json['desc'],
         'type': json['type'] == null ? undefined : json['type'],
-        'config': json['config'],
     };
 }
 
@@ -92,7 +84,6 @@ export function DatasetVizToJSONTyped(value?: DatasetViz | null, ignoreDiscrimin
         'name': value['name'],
         'desc': value['desc'],
         'type': value['type'],
-        'config': value['config'],
     };
 }
 
