@@ -27,6 +27,7 @@ export enum FilterOperator {
     In = 'IN',
     NotIn = 'NOT_IN',
     Like = 'LIKE',
+    NotLike = 'NOT_LIKE',
     IsNull = 'IS_NULL',
     IsNotNull = 'IS_NOT_NULL'
 }
