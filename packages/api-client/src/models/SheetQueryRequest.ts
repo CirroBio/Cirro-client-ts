@@ -31,6 +31,18 @@ export interface SheetQueryRequest {
      * @memberof SheetQueryRequest
      */
     query: string;
+    /**
+     * Maximum rows to return
+     * @type {number}
+     * @memberof SheetQueryRequest
+     */
+    limit?: number | null;
+    /**
+     * Page to return
+     * @type {number}
+     * @memberof SheetQueryRequest
+     */
+    page?: number | null;
 }
 
 /**
@@ -54,6 +66,8 @@ export function SheetQueryRequestFromJSONTyped(json: any, ignoreDiscriminator: b
         
         'namespaceName': json['namespaceName'],
         'query': json['query'],
+        'limit': json['limit'] == null ? undefined : json['limit'],
+        'page': json['page'] == null ? undefined : json['page'],
     };
 }
 
@@ -70,6 +84,8 @@ export function SheetQueryRequestToJSONTyped(value?: SheetQueryRequest | null, i
         
         'namespaceName': value['namespaceName'],
         'query': value['query'],
+        'limit': value['limit'],
+        'page': value['page'],
     };
 }
 
