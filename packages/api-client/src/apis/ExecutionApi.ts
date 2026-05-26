@@ -29,6 +29,11 @@ import {
     GetExecutionLogsResponseToJSON,
 } from '../models/GetExecutionLogsResponse';
 import {
+    type GetTaskFilesResponse,
+    GetTaskFilesResponseFromJSON,
+    GetTaskFilesResponseToJSON,
+} from '../models/GetTaskFilesResponse';
+import {
     type RunAnalysisRequest,
     RunAnalysisRequestFromJSON,
     RunAnalysisRequestToJSON,
@@ -43,6 +48,11 @@ import {
     TaskFromJSON,
     TaskToJSON,
 } from '../models/Task';
+import {
+    type TaskLogSource,
+    TaskLogSourceFromJSON,
+    TaskLogSourceToJSON,
+} from '../models/TaskLogSource';
 
 export interface CalculateCostRequest {
     projectId: string;
@@ -67,11 +77,18 @@ export interface GetTaskRequest {
     forceLive?: boolean;
 }
 
+export interface GetTaskFilesRequest {
+    datasetId: string;
+    projectId: string;
+    taskId: string;
+}
+
 export interface GetTaskLogsRequest {
     datasetId: string;
     projectId: string;
     taskId: string;
     forceLive?: boolean;
+    source?: TaskLogSource;
 }
 
 export interface GetTasksForExecutionRequest {
@@ -360,6 +377,77 @@ export class ExecutionApi extends runtime.BaseAPI {
     }
 
     /**
+     * Creates request options for getTaskFiles without sending the request
+     */
+    async getTaskFilesRequestOpts(requestParameters: GetTaskFilesRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['datasetId'] == null) {
+            throw new runtime.RequiredError(
+                'datasetId',
+                'Required parameter "datasetId" was null or undefined when calling getTaskFiles().'
+            );
+        }
+
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling getTaskFiles().'
+            );
+        }
+
+        if (requestParameters['taskId'] == null) {
+            throw new runtime.RequiredError(
+                'taskId',
+                'Required parameter "taskId" was null or undefined when calling getTaskFiles().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/projects/{projectId}/execution/{datasetId}/tasks/{taskId}/files`;
+        urlPath = urlPath.replace('{datasetId}', encodeURIComponent(String(requestParameters['datasetId'])));
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+        urlPath = urlPath.replace('{taskId}', encodeURIComponent(String(requestParameters['taskId'])));
+
+        return {
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        };
+    }
+
+    /**
+     * Gets the input and output files for an individual Nextflow task
+     * Get task files
+     */
+    async getTaskFilesRaw(requestParameters: GetTaskFilesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetTaskFilesResponse>> {
+        const requestOptions = await this.getTaskFilesRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetTaskFilesResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Gets the input and output files for an individual Nextflow task
+     * Get task files
+     */
+    async getTaskFiles(requestParameters: GetTaskFilesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetTaskFilesResponse> {
+        const response = await this.getTaskFilesRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
      * Creates request options for getTaskLogs without sending the request
      */
     async getTaskLogsRequestOpts(requestParameters: GetTaskLogsRequest): Promise<runtime.RequestOpts> {
@@ -388,6 +476,10 @@ export class ExecutionApi extends runtime.BaseAPI {
 
         if (requestParameters['forceLive'] != null) {
             queryParameters['forceLive'] = requestParameters['forceLive'];
+        }
+
+        if (requestParameters['source'] != null) {
+            queryParameters['source'] = requestParameters['source'];
         }
 
         const headerParameters: runtime.HTTPHeaders = {};

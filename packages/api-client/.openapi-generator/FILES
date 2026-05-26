@@ -103,6 +103,7 @@ src/models/FormSchema.ts
 src/models/FulfillmentResponse.ts
 src/models/GenerateSftpCredentialsRequest.ts
 src/models/GetExecutionLogsResponse.ts
+src/models/GetTaskFilesResponse.ts
 src/models/GovernanceAccessType.ts
 src/models/GovernanceClassification.ts
 src/models/GovernanceContact.ts
@@ -218,6 +219,7 @@ src/models/TableSheetInput.ts
 src/models/Tag.ts
 src/models/Task.ts
 src/models/TaskCost.ts
+src/models/TaskLogSource.ts
 src/models/TenantInfo.ts
 src/models/UpdateDatasetRequest.ts
 src/models/UpdateRowsRequest.ts

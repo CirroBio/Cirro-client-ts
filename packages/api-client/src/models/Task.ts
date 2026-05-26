@@ -72,6 +72,18 @@ export interface Task {
      * @type {string}
      * @memberof Task
      */
+    workDir?: string | null;
+    /**
+     * 
+     * @type {number}
+     * @memberof Task
+     */
+    exitCode?: number | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof Task
+     */
     commandLine?: string | null;
     /**
      * 
@@ -108,6 +120,8 @@ export function TaskFromJSONTyped(json: any, ignoreDiscriminator: boolean): Task
         'startedAt': json['startedAt'] == null ? undefined : (new Date(json['startedAt'])),
         'stoppedAt': json['stoppedAt'] == null ? undefined : (new Date(json['stoppedAt'])),
         'containerImage': json['containerImage'] == null ? undefined : json['containerImage'],
+        'workDir': json['workDir'] == null ? undefined : json['workDir'],
+        'exitCode': json['exitCode'] == null ? undefined : json['exitCode'],
         'commandLine': json['commandLine'] == null ? undefined : json['commandLine'],
         'logLocation': json['logLocation'] == null ? undefined : json['logLocation'],
     };
@@ -132,6 +146,8 @@ export function TaskToJSONTyped(value?: Task | null, ignoreDiscriminator: boolea
         'startedAt': value['startedAt'] == null ? value['startedAt'] : value['startedAt'].toISOString(),
         'stoppedAt': value['stoppedAt'] == null ? value['stoppedAt'] : value['stoppedAt'].toISOString(),
         'containerImage': value['containerImage'],
+        'workDir': value['workDir'],
+        'exitCode': value['exitCode'],
         'commandLine': value['commandLine'],
         'logLocation': value['logLocation'],
     };
