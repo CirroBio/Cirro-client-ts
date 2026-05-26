@@ -20,7 +20,8 @@
 export enum FileType {
     Parquet = 'PARQUET',
     Csv = 'CSV',
-    Json = 'JSON'
+    Json = 'JSON',
+    Xlsx = 'XLSX'
 }
 
 
