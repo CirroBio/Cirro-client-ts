@@ -55,6 +55,11 @@ export const FILE_IMAGE_EXTENSIONS = ['jpg', 'jpeg', 'png', 'svg'];
 export const FILE_OME_EXTENSIONS = ['tif', 'ome.tif', 'ome.tiff', 'ome.tif.gz', 'ome.tiff.gz'];
 
 /**
+ * An array of file extensions that are rendered as formatted Markdown.
+ */
+export const FILE_MARKDOWN_EXTENSIONS = ['md', 'markdown'];
+
+/**
  * An array of file extensions that can be opened in the browser.
  * Includes common document formats such as HTML, PDF, and JSON, as well as image, DSV, TXT, and OME file formats.
  */
@@ -62,7 +67,8 @@ export const FILE_EXTENSIONS_TO_OPEN = ['html', 'pdf', 'json', 'fcs',
     ...FILE_IMAGE_EXTENSIONS,
     ...FILE_TXT_EXTENSIONS,
     ...FILE_TRACK_EXTENSIONS,
-    ...FILE_PROTEIN_STRUCTURE_EXTENSIONS
+    ...FILE_PROTEIN_STRUCTURE_EXTENSIONS,
+    ...FILE_MARKDOWN_EXTENSIONS
 ];
 
 
