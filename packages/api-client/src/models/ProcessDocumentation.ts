@@ -24,19 +24,19 @@ export interface ProcessDocumentation {
      * @type {string}
      * @memberof ProcessDocumentation
      */
-    docsUri?: string;
+    docsUri?: string | null;
     /**
-     * URI of process documentation (partial)
+     * URI of process documentation (partial) - only for Cirro-hosted docs
      * @type {string}
      * @memberof ProcessDocumentation
      */
-    partialUri?: string;
+    partialUri?: string | null;
     /**
      * Documentation content
      * @type {string}
      * @memberof ProcessDocumentation
      */
-    content?: string;
+    content?: string | null;
 }
 
 /**
