@@ -13,6 +13,13 @@
  */
 
 import { mapValues } from '../runtime';
+import type { ConfigSource } from './ConfigSource';
+import {
+    ConfigSourceFromJSON,
+    ConfigSourceFromJSONTyped,
+    ConfigSourceToJSON,
+    ConfigSourceToJSONTyped,
+} from './ConfigSource';
 import type { Executor } from './Executor';
 import {
     ExecutorFromJSON,
@@ -193,6 +200,12 @@ export interface ProcessDetail {
      * @memberof ProcessDetail
      */
     tags: Array<Tag>;
+    /**
+     * 
+     * @type {ConfigSource}
+     * @memberof ProcessDetail
+     */
+    configSource: ConfigSource;
 }
 
 
@@ -214,6 +227,7 @@ export function instanceOfProcessDetail(value: object): value is ProcessDetail {
     if (!('usesSampleSheet' in value) || value['usesSampleSheet'] === undefined) return false;
     if (!('isArchived' in value) || value['isArchived'] === undefined) return false;
     if (!('tags' in value) || value['tags'] === undefined) return false;
+    if (!('configSource' in value) || value['configSource'] === undefined) return false;
     return true;
 }
 
@@ -250,6 +264,7 @@ export function ProcessDetailFromJSONTyped(json: any, ignoreDiscriminator: boole
         'createdAt': json['createdAt'] == null ? undefined : (new Date(json['createdAt'])),
         'updatedAt': json['updatedAt'] == null ? undefined : (new Date(json['updatedAt'])),
         'tags': ((json['tags'] as Array<any>).map(TagFromJSON)),
+        'configSource': ConfigSourceFromJSON(json['configSource']),
     };
 }
 
@@ -287,6 +302,7 @@ export function ProcessDetailToJSONTyped(value?: ProcessDetail | null, ignoreDis
         'createdAt': value['createdAt'] == null ? value['createdAt'] : value['createdAt'].toISOString(),
         'updatedAt': value['updatedAt'] == null ? value['updatedAt'] : value['updatedAt'].toISOString(),
         'tags': ((value['tags'] as Array<any>).map(TagToJSON)),
+        'configSource': ConfigSourceToJSON(value['configSource']),
     };
 }
 

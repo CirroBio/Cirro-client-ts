@@ -13,6 +13,13 @@
  */
 
 import { mapValues } from '../runtime';
+import type { ConfigSource } from './ConfigSource';
+import {
+    ConfigSourceFromJSON,
+    ConfigSourceFromJSONTyped,
+    ConfigSourceToJSON,
+    ConfigSourceToJSONTyped,
+} from './ConfigSource';
 import type { Executor } from './Executor';
 import {
     ExecutorFromJSON,
@@ -163,6 +170,12 @@ export interface CustomProcessInput {
      * @memberof CustomProcessInput
      */
     tags?: Array<Tag> | null;
+    /**
+     * 
+     * @type {ConfigSource}
+     * @memberof CustomProcessInput
+     */
+    configSource?: ConfigSource | null;
 }
 
 
@@ -209,6 +222,7 @@ export function CustomProcessInputFromJSONTyped(json: any, ignoreDiscriminator: 
         'customSettings': json['customSettings'] == null ? undefined : CustomPipelineSettingsFromJSON(json['customSettings']),
         'fileMappingRules': json['fileMappingRules'] == null ? undefined : ((json['fileMappingRules'] as Array<any>).map(FileMappingRuleFromJSON)),
         'tags': json['tags'] == null ? undefined : ((json['tags'] as Array<any>).map(TagFromJSON)),
+        'configSource': json['configSource'] == null ? undefined : ConfigSourceFromJSON(json['configSource']),
     };
 }
 
@@ -241,6 +255,7 @@ export function CustomProcessInputToJSONTyped(value?: CustomProcessInput | null,
         'customSettings': CustomPipelineSettingsToJSON(value['customSettings']),
         'fileMappingRules': value['fileMappingRules'] == null ? undefined : ((value['fileMappingRules'] as Array<any>).map(FileMappingRuleToJSON)),
         'tags': value['tags'] == null ? undefined : ((value['tags'] as Array<any>).map(TagToJSON)),
+        'configSource': ConfigSourceToJSON(value['configSource']),
     };
 }
 

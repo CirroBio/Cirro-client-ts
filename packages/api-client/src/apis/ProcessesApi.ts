@@ -49,6 +49,11 @@ import {
     FormSchemaToJSON,
 } from '../models/FormSchema';
 import {
+    type PaginatedResponseProcessRevisionDto,
+    PaginatedResponseProcessRevisionDtoFromJSON,
+    PaginatedResponseProcessRevisionDtoToJSON,
+} from '../models/PaginatedResponseProcessRevisionDto';
+import {
     type PipelineCost,
     PipelineCostFromJSON,
     PipelineCostToJSON,
@@ -73,6 +78,21 @@ import {
     ProcessDocumentationFromJSON,
     ProcessDocumentationToJSON,
 } from '../models/ProcessDocumentation';
+import {
+    type ProcessRevisionDto,
+    ProcessRevisionDtoFromJSON,
+    ProcessRevisionDtoToJSON,
+} from '../models/ProcessRevisionDto';
+import {
+    type ProcessRevisionSaveRequest,
+    ProcessRevisionSaveRequestFromJSON,
+    ProcessRevisionSaveRequestToJSON,
+} from '../models/ProcessRevisionSaveRequest';
+import {
+    type ProcessRevisionSaveResponse,
+    ProcessRevisionSaveResponseFromJSON,
+    ProcessRevisionSaveResponseToJSON,
+} from '../models/ProcessRevisionSaveResponse';
 import {
     type ValidateFileNamePatternsRequest,
     ValidateFileNamePatternsRequestFromJSON,
@@ -109,8 +129,25 @@ export interface GetProcessParametersRequest {
     processId: string;
 }
 
+export interface GetProcessRevisionRequest {
+    processId: string;
+    revisionNum: number;
+}
+
 export interface GetProcessesRequest {
     includeArchived?: boolean;
+}
+
+export interface ListProcessRevisionsRequest {
+    processId: string;
+    limit?: number;
+    nextToken?: string;
+}
+
+export interface SaveProcessRevisionRequest {
+    processId: string;
+    processRevisionSaveRequest: ProcessRevisionSaveRequest;
+    ifMatch?: string | null;
 }
 
 export interface SyncCustomProcessRequest {
@@ -479,6 +516,69 @@ export class ProcessesApi extends runtime.BaseAPI {
     }
 
     /**
+     * Creates request options for getProcessRevision without sending the request
+     */
+    async getProcessRevisionRequestOpts(requestParameters: GetProcessRevisionRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['processId'] == null) {
+            throw new runtime.RequiredError(
+                'processId',
+                'Required parameter "processId" was null or undefined when calling getProcessRevision().'
+            );
+        }
+
+        if (requestParameters['revisionNum'] == null) {
+            throw new runtime.RequiredError(
+                'revisionNum',
+                'Required parameter "revisionNum" was null or undefined when calling getProcessRevision().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/processes/{processId}/revisions/{revisionNum}`;
+        urlPath = urlPath.replace('{processId}', encodeURIComponent(String(requestParameters['processId'])));
+        urlPath = urlPath.replace('{revisionNum}', encodeURIComponent(String(requestParameters['revisionNum'])));
+
+        return {
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        };
+    }
+
+    /**
+     * Returns the full revision entry (files map + provenance) for the named revision number.
+     * Fetch a single configuration revision entry
+     */
+    async getProcessRevisionRaw(requestParameters: GetProcessRevisionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ProcessRevisionDto>> {
+        const requestOptions = await this.getProcessRevisionRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => ProcessRevisionDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Returns the full revision entry (files map + provenance) for the named revision number.
+     * Fetch a single configuration revision entry
+     */
+    async getProcessRevision(requestParameters: GetProcessRevisionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ProcessRevisionDto> {
+        const response = await this.getProcessRevisionRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
      * Creates request options for getProcesses without sending the request
      */
     async getProcessesRequestOpts(requestParameters: GetProcessesRequest): Promise<runtime.RequestOpts> {
@@ -526,6 +626,138 @@ export class ProcessesApi extends runtime.BaseAPI {
      */
     async getProcesses(requestParameters: GetProcessesRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<Process>> {
         const response = await this.getProcessesRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Creates request options for listProcessRevisions without sending the request
+     */
+    async listProcessRevisionsRequestOpts(requestParameters: ListProcessRevisionsRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['processId'] == null) {
+            throw new runtime.RequiredError(
+                'processId',
+                'Required parameter "processId" was null or undefined when calling listProcessRevisions().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters['limit'] != null) {
+            queryParameters['limit'] = requestParameters['limit'];
+        }
+
+        if (requestParameters['nextToken'] != null) {
+            queryParameters['nextToken'] = requestParameters['nextToken'];
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/processes/{processId}/revisions`;
+        urlPath = urlPath.replace('{processId}', encodeURIComponent(String(requestParameters['processId'])));
+
+        return {
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        };
+    }
+
+    /**
+     * Paginated, newest-first by default. Returns 404 for processes without configuration in tenant storage
+     * List configuration revisions for a process that are in storage
+     */
+    async listProcessRevisionsRaw(requestParameters: ListProcessRevisionsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PaginatedResponseProcessRevisionDto>> {
+        const requestOptions = await this.listProcessRevisionsRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => PaginatedResponseProcessRevisionDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Paginated, newest-first by default. Returns 404 for processes without configuration in tenant storage
+     * List configuration revisions for a process that are in storage
+     */
+    async listProcessRevisions(requestParameters: ListProcessRevisionsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<PaginatedResponseProcessRevisionDto> {
+        const response = await this.listProcessRevisionsRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Creates request options for saveProcessRevision without sending the request
+     */
+    async saveProcessRevisionRequestOpts(requestParameters: SaveProcessRevisionRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['processId'] == null) {
+            throw new runtime.RequiredError(
+                'processId',
+                'Required parameter "processId" was null or undefined when calling saveProcessRevision().'
+            );
+        }
+
+        if (requestParameters['processRevisionSaveRequest'] == null) {
+            throw new runtime.RequiredError(
+                'processRevisionSaveRequest',
+                'Required parameter "processRevisionSaveRequest" was null or undefined when calling saveProcessRevision().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (requestParameters['ifMatch'] != null) {
+            headerParameters['If-Match'] = String(requestParameters['ifMatch']);
+        }
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/processes/{processId}/revisions`;
+        urlPath = urlPath.replace('{processId}', encodeURIComponent(String(requestParameters['processId'])));
+
+        return {
+            path: urlPath,
+            method: 'PUT',
+            headers: headerParameters,
+            query: queryParameters,
+            body: ProcessRevisionSaveRequestToJSON(requestParameters['processRevisionSaveRequest']),
+        };
+    }
+
+    /**
+     * Writes the given configuration files to tenant storage and appends a single revision entry that records every resource type touched by this save.
+     * Save one or more process configuration resources to storage as a new revision
+     */
+    async saveProcessRevisionRaw(requestParameters: SaveProcessRevisionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ProcessRevisionSaveResponse>> {
+        const requestOptions = await this.saveProcessRevisionRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => ProcessRevisionSaveResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Writes the given configuration files to tenant storage and appends a single revision entry that records every resource type touched by this save.
+     * Save one or more process configuration resources to storage as a new revision
+     */
+    async saveProcessRevision(requestParameters: SaveProcessRevisionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ProcessRevisionSaveResponse> {
+        const response = await this.saveProcessRevisionRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
