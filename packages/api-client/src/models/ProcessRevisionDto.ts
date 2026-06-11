@@ -51,6 +51,12 @@ export interface ProcessRevisionDto {
     savedResourceTypes: Array<string>;
     /**
      * 
+     * @type {Array<string>}
+     * @memberof ProcessRevisionDto
+     */
+    deletedResourceTypes: Array<string>;
+    /**
+     * 
      * @type {{ [key: string]: string; }}
      * @memberof ProcessRevisionDto
      */
@@ -65,6 +71,7 @@ export function instanceOfProcessRevisionDto(value: object): value is ProcessRev
     if (!('savedBy' in value) || value['savedBy'] === undefined) return false;
     if (!('savedAt' in value) || value['savedAt'] === undefined) return false;
     if (!('savedResourceTypes' in value) || value['savedResourceTypes'] === undefined) return false;
+    if (!('deletedResourceTypes' in value) || value['deletedResourceTypes'] === undefined) return false;
     if (!('files' in value) || value['files'] === undefined) return false;
     return true;
 }
@@ -84,6 +91,7 @@ export function ProcessRevisionDtoFromJSONTyped(json: any, ignoreDiscriminator: 
         'savedAt': (new Date(json['savedAt'])),
         'commitMessage': json['commitMessage'] == null ? undefined : json['commitMessage'],
         'savedResourceTypes': json['savedResourceTypes'],
+        'deletedResourceTypes': json['deletedResourceTypes'],
         'files': json['files'],
     };
 }
@@ -104,6 +112,7 @@ export function ProcessRevisionDtoToJSONTyped(value?: ProcessRevisionDto | null,
         'savedAt': value['savedAt'].toISOString(),
         'commitMessage': value['commitMessage'],
         'savedResourceTypes': value['savedResourceTypes'],
+        'deletedResourceTypes': value['deletedResourceTypes'],
         'files': value['files'],
     };
 }

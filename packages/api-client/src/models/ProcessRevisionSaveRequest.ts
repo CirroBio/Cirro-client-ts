@@ -13,6 +13,13 @@
  */
 
 import { mapValues } from '../runtime';
+import type { ProcessResource } from './ProcessResource';
+import {
+    ProcessResourceFromJSON,
+    ProcessResourceFromJSONTyped,
+    ProcessResourceToJSON,
+    ProcessResourceToJSONTyped,
+} from './ProcessResource';
 import type { ProcessRevisionSaveFile } from './ProcessRevisionSaveFile';
 import {
     ProcessRevisionSaveFileFromJSON,
@@ -28,11 +35,17 @@ import {
  */
 export interface ProcessRevisionSaveRequest {
     /**
-     * Files to persist in this revision; one entry per resource type. Submitting multiple files produces a single revision.
+     * Files to persist in this revision; one entry per resource type. May be omitted when only deletions are requested.
      * @type {Array<ProcessRevisionSaveFile>}
      * @memberof ProcessRevisionSaveRequest
      */
-    files: Array<ProcessRevisionSaveFile>;
+    files?: Array<ProcessRevisionSaveFile> | null;
+    /**
+     * Resource types to remove from the new revision's snapshot. Underlying S3 content is never deleted; prior revisions retain their references.
+     * @type {Array<ProcessResource>}
+     * @memberof ProcessRevisionSaveRequest
+     */
+    deletedResourceTypes?: Array<ProcessResource> | null;
     /**
      * Optional human-readable note describing the change. Maximum 1024 characters.
      * @type {string}
@@ -45,7 +58,6 @@ export interface ProcessRevisionSaveRequest {
  * Check if a given object implements the ProcessRevisionSaveRequest interface.
  */
 export function instanceOfProcessRevisionSaveRequest(value: object): value is ProcessRevisionSaveRequest {
-    if (!('files' in value) || value['files'] === undefined) return false;
     return true;
 }
 
@@ -59,7 +71,8 @@ export function ProcessRevisionSaveRequestFromJSONTyped(json: any, ignoreDiscrim
     }
     return {
         
-        'files': ((json['files'] as Array<any>).map(ProcessRevisionSaveFileFromJSON)),
+        'files': json['files'] == null ? undefined : ((json['files'] as Array<any>).map(ProcessRevisionSaveFileFromJSON)),
+        'deletedResourceTypes': json['deletedResourceTypes'] == null ? undefined : ((json['deletedResourceTypes'] as Array<any>).map(ProcessResourceFromJSON)),
         'commitMessage': json['commitMessage'] == null ? undefined : json['commitMessage'],
     };
 }
@@ -75,7 +88,8 @@ export function ProcessRevisionSaveRequestToJSONTyped(value?: ProcessRevisionSav
 
     return {
         
-        'files': ((value['files'] as Array<any>).map(ProcessRevisionSaveFileToJSON)),
+        'files': value['files'] == null ? undefined : ((value['files'] as Array<any>).map(ProcessRevisionSaveFileToJSON)),
+        'deletedResourceTypes': value['deletedResourceTypes'] == null ? undefined : ((value['deletedResourceTypes'] as Array<any>).map(ProcessResourceToJSON)),
         'commitMessage': value['commitMessage'],
     };
 }
