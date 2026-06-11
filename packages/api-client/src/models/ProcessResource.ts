@@ -18,13 +18,13 @@
  * @enum {string}
  */
 export enum ProcessResource {
-    Form = 'FORM',
-    Input = 'INPUT',
-    Output = 'OUTPUT',
-    Compute = 'COMPUTE',
-    Preprocess = 'PREPROCESS',
-    Metadata = 'METADATA',
-    Documentation = 'DOCUMENTATION'
+    Form = 'form',
+    Input = 'input',
+    Output = 'output',
+    Compute = 'compute',
+    Preprocess = 'preprocess',
+    Metadata = 'metadata',
+    Documentation = 'documentation'
 }
 
 

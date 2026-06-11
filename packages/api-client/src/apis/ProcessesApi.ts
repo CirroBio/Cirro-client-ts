@@ -79,6 +79,16 @@ import {
     ProcessDocumentationToJSON,
 } from '../models/ProcessDocumentation';
 import {
+    type ProcessResource,
+    ProcessResourceFromJSON,
+    ProcessResourceToJSON,
+} from '../models/ProcessResource';
+import {
+    type ProcessResourceContentDto,
+    ProcessResourceContentDtoFromJSON,
+    ProcessResourceContentDtoToJSON,
+} from '../models/ProcessResourceContentDto';
+import {
     type ProcessRevisionDto,
     ProcessRevisionDtoFromJSON,
     ProcessRevisionDtoToJSON,
@@ -117,6 +127,10 @@ export interface CreateCustomProcessRequest {
     customProcessInput: CustomProcessInput;
 }
 
+export interface GetLatestProcessRevisionRequest {
+    processId: string;
+}
+
 export interface GetProcessRequest {
     processId: string;
 }
@@ -127,6 +141,11 @@ export interface GetProcessDocumentationRequest {
 
 export interface GetProcessParametersRequest {
     processId: string;
+}
+
+export interface GetProcessResourceRequest {
+    processId: string;
+    type: ProcessResource;
 }
 
 export interface GetProcessRevisionRequest {
@@ -351,6 +370,61 @@ export class ProcessesApi extends runtime.BaseAPI {
     }
 
     /**
+     * Creates request options for getLatestProcessRevision without sending the request
+     */
+    async getLatestProcessRevisionRequestOpts(requestParameters: GetLatestProcessRevisionRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['processId'] == null) {
+            throw new runtime.RequiredError(
+                'processId',
+                'Required parameter "processId" was null or undefined when calling getLatestProcessRevision().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/processes/{processId}/revisions:latest`;
+        urlPath = urlPath.replace('{processId}', encodeURIComponent(String(requestParameters['processId'])));
+
+        return {
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        };
+    }
+
+    /**
+     * Returns the highest-numbered revision entry for the given process. Returns 404 for processes without configuration in tenant storage.
+     * Fetch the latest configuration revision for a process
+     */
+    async getLatestProcessRevisionRaw(requestParameters: GetLatestProcessRevisionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ProcessRevisionDto>> {
+        const requestOptions = await this.getLatestProcessRevisionRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => ProcessRevisionDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Returns the highest-numbered revision entry for the given process. Returns 404 for processes without configuration in tenant storage.
+     * Fetch the latest configuration revision for a process
+     */
+    async getLatestProcessRevision(requestParameters: GetLatestProcessRevisionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ProcessRevisionDto> {
+        const response = await this.getLatestProcessRevisionRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
      * Creates request options for getProcess without sending the request
      */
     async getProcessRequestOpts(requestParameters: GetProcessRequest): Promise<runtime.RequestOpts> {
@@ -512,6 +586,69 @@ export class ProcessesApi extends runtime.BaseAPI {
      */
     async getProcessParameters(requestParameters: GetProcessParametersRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<FormSchema> {
         const response = await this.getProcessParametersRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Creates request options for getProcessResource without sending the request
+     */
+    async getProcessResourceRequestOpts(requestParameters: GetProcessResourceRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['processId'] == null) {
+            throw new runtime.RequiredError(
+                'processId',
+                'Required parameter "processId" was null or undefined when calling getProcessResource().'
+            );
+        }
+
+        if (requestParameters['type'] == null) {
+            throw new runtime.RequiredError(
+                'type',
+                'Required parameter "type" was null or undefined when calling getProcessResource().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/processes/{processId}/resources/{type}`;
+        urlPath = urlPath.replace('{processId}', encodeURIComponent(String(requestParameters['processId'])));
+        urlPath = urlPath.replace('{type}', encodeURIComponent(String(requestParameters['type'])));
+
+        return {
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        };
+    }
+
+    /**
+     * Returns the resource content wrapped in a JSON envelope carrying the source revision number and the content sha256 digest. The same digest is reflected in the response ETag header.
+     * Fetch the stored content of one pipeline configuration resource at the latest revision
+     */
+    async getProcessResourceRaw(requestParameters: GetProcessResourceRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ProcessResourceContentDto>> {
+        const requestOptions = await this.getProcessResourceRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => ProcessResourceContentDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Returns the resource content wrapped in a JSON envelope carrying the source revision number and the content sha256 digest. The same digest is reflected in the response ETag header.
+     * Fetch the stored content of one pipeline configuration resource at the latest revision
+     */
+    async getProcessResource(requestParameters: GetProcessResourceRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ProcessResourceContentDto> {
+        const response = await this.getProcessResourceRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

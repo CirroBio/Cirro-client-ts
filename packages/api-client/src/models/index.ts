@@ -126,6 +126,7 @@ export * from './Process';
 export * from './ProcessDetail';
 export * from './ProcessDocumentation';
 export * from './ProcessResource';
+export * from './ProcessResourceContentDto';
 export * from './ProcessRevisionDto';
 export * from './ProcessRevisionSaveFile';
 export * from './ProcessRevisionSaveRequest';
