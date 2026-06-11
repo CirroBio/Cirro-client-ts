@@ -1506,7 +1506,7 @@ __metadata:
     "@aws-sdk/s3-request-presigner": "npm:^3.995.0"
     uuid: "npm:^11.1.0"
   peerDependencies:
-    "@cirrobio/api-client": ^0.14.0
+    "@cirrobio/api-client": ^0.13.0
   languageName: unknown
   linkType: soft
 
