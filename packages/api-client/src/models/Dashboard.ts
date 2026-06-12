@@ -52,17 +52,17 @@ export interface Dashboard {
      */
     criteria?: { [key: string]: any; };
     /**
-     * 
+     * Dashboard definition (not provided in list responses)
      * @type {{ [key: string]: any; }}
      * @memberof Dashboard
      */
-    dashboardData?: { [key: string]: any; };
+    dashboardData?: { [key: string]: any; } | null;
     /**
      * 
      * @type {Array<Tag>}
      * @memberof Dashboard
      */
-    tag: Array<Tag>;
+    tags: Array<Tag>;
     /**
      * 
      * @type {string}
@@ -82,11 +82,11 @@ export interface Dashboard {
      */
     updatedAt: Date;
     /**
-     * 
+     * Schema version of dashboardData
      * @type {number}
      * @memberof Dashboard
      */
-    schemaVersion: number;
+    schemaVersion?: number;
 }
 
 /**
@@ -96,11 +96,10 @@ export function instanceOfDashboard(value: object): value is Dashboard {
     if (!('id' in value) || value['id'] === undefined) return false;
     if (!('name' in value) || value['name'] === undefined) return false;
     if (!('description' in value) || value['description'] === undefined) return false;
-    if (!('tag' in value) || value['tag'] === undefined) return false;
+    if (!('tags' in value) || value['tags'] === undefined) return false;
     if (!('createdBy' in value) || value['createdBy'] === undefined) return false;
     if (!('createdAt' in value) || value['createdAt'] === undefined) return false;
     if (!('updatedAt' in value) || value['updatedAt'] === undefined) return false;
-    if (!('schemaVersion' in value) || value['schemaVersion'] === undefined) return false;
     return true;
 }
 
@@ -119,11 +118,11 @@ export function DashboardFromJSONTyped(json: any, ignoreDiscriminator: boolean):
         'description': json['description'],
         'criteria': json['criteria'] == null ? undefined : json['criteria'],
         'dashboardData': json['dashboardData'] == null ? undefined : json['dashboardData'],
-        'tag': ((json['tag'] as Array<any>).map(TagFromJSON)),
+        'tags': ((json['tags'] as Array<any>).map(TagFromJSON)),
         'createdBy': json['createdBy'],
         'createdAt': (new Date(json['createdAt'])),
         'updatedAt': (new Date(json['updatedAt'])),
-        'schemaVersion': json['schemaVersion'],
+        'schemaVersion': json['schemaVersion'] == null ? undefined : json['schemaVersion'],
     };
 }
 
@@ -143,7 +142,7 @@ export function DashboardToJSONTyped(value?: Dashboard | null, ignoreDiscriminat
         'description': value['description'],
         'criteria': value['criteria'],
         'dashboardData': value['dashboardData'],
-        'tag': ((value['tag'] as Array<any>).map(TagToJSON)),
+        'tags': ((value['tags'] as Array<any>).map(TagToJSON)),
         'createdBy': value['createdBy'],
         'createdAt': value['createdAt'].toISOString(),
         'updatedAt': value['updatedAt'].toISOString(),
