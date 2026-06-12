@@ -14,7 +14,7 @@
 
 import { mapValues } from '../runtime';
 /**
- * Data update response for inserts (coming soon), deletes, and updates.
+ * Data update response for inserts, deletes, and updates.
  * @export
  * @interface SheetDataUpdateResponse
  */
