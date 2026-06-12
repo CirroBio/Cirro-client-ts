@@ -34,7 +34,7 @@ export interface QueryColumn {
      */
     name: string;
     /**
-     * Column data type.
+     * 
      * @type {ColumnDataType}
      * @memberof QueryColumn
      */

@@ -71,7 +71,7 @@ src/models/CustomPipelineSettings.ts
 src/models/CustomProcessInput.ts
 src/models/CustomerType.ts
 src/models/Dashboard.ts
-src/models/DashboardRequest.ts
+src/models/DashboardInput.ts
 src/models/DataFile.ts
 src/models/Dataset.ts
 src/models/DatasetAssetsManifest.ts
