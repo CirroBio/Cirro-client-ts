@@ -50,6 +50,7 @@ export enum Permission {
     ViewDashboard = 'VIEW_DASHBOARD',
     CreateDashboard = 'CREATE_DASHBOARD',
     EditDashboard = 'EDIT_DASHBOARD',
+    CreateDashboardTemplate = 'CREATE_DASHBOARD_TEMPLATE',
     ViewSheet = 'VIEW_SHEET',
     ViewSheetData = 'VIEW_SHEET_DATA',
     CreateSheet = 'CREATE_SHEET',

@@ -24,14 +24,18 @@ import {
     DashboardToJSON,
 } from '../models/Dashboard';
 import {
-    type DashboardRequest,
-    DashboardRequestFromJSON,
-    DashboardRequestToJSON,
-} from '../models/DashboardRequest';
+    type DashboardInput,
+    DashboardInputFromJSON,
+    DashboardInputToJSON,
+} from '../models/DashboardInput';
 
 export interface CreateDashboardRequest {
     projectId: string;
-    dashboardRequest: DashboardRequest;
+    dashboardInput: DashboardInput;
+}
+
+export interface CreateDashboardTemplateRequest {
+    dashboardInput: DashboardInput;
 }
 
 export interface DeleteDashboardRequest {
@@ -39,8 +43,16 @@ export interface DeleteDashboardRequest {
     dashboardId: string;
 }
 
+export interface DeleteDashboardTemplateRequest {
+    dashboardId: string;
+}
+
 export interface GetDashboardRequest {
     projectId: string;
+    dashboardId: string;
+}
+
+export interface GetDashboardTemplateRequest {
     dashboardId: string;
 }
 
@@ -51,7 +63,12 @@ export interface GetDashboardsRequest {
 export interface UpdateDashboardRequest {
     projectId: string;
     dashboardId: string;
-    dashboardRequest: DashboardRequest;
+    dashboardInput: DashboardInput;
+}
+
+export interface UpdateDashboardTemplateRequest {
+    dashboardId: string;
+    dashboardInput: DashboardInput;
 }
 
 /**
@@ -70,10 +87,10 @@ export class DashboardsApi extends runtime.BaseAPI {
             );
         }
 
-        if (requestParameters['dashboardRequest'] == null) {
+        if (requestParameters['dashboardInput'] == null) {
             throw new runtime.RequiredError(
-                'dashboardRequest',
-                'Required parameter "dashboardRequest" was null or undefined when calling createDashboard().'
+                'dashboardInput',
+                'Required parameter "dashboardInput" was null or undefined when calling createDashboard().'
             );
         }
 
@@ -100,7 +117,7 @@ export class DashboardsApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: DashboardRequestToJSON(requestParameters['dashboardRequest']),
+            body: DashboardInputToJSON(requestParameters['dashboardInput']),
         };
     }
 
@@ -121,6 +138,63 @@ export class DashboardsApi extends runtime.BaseAPI {
      */
     async createDashboard(requestParameters: CreateDashboardRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateResponse> {
         const response = await this.createDashboardRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Creates request options for createDashboardTemplate without sending the request
+     */
+    async createDashboardTemplateRequestOpts(requestParameters: CreateDashboardTemplateRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['dashboardInput'] == null) {
+            throw new runtime.RequiredError(
+                'dashboardInput',
+                'Required parameter "dashboardInput" was null or undefined when calling createDashboardTemplate().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/dashboards`;
+
+        return {
+            path: urlPath,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: DashboardInputToJSON(requestParameters['dashboardInput']),
+        };
+    }
+
+    /**
+     * Creates a new dashboard template
+     * Create dashboard template
+     */
+    async createDashboardTemplateRaw(requestParameters: CreateDashboardTemplateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateResponse>> {
+        const requestOptions = await this.createDashboardTemplateRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => CreateResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Creates a new dashboard template
+     * Create dashboard template
+     */
+    async createDashboardTemplate(requestParameters: CreateDashboardTemplateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateResponse> {
+        const response = await this.createDashboardTemplateRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -188,6 +262,60 @@ export class DashboardsApi extends runtime.BaseAPI {
     }
 
     /**
+     * Creates request options for deleteDashboardTemplate without sending the request
+     */
+    async deleteDashboardTemplateRequestOpts(requestParameters: DeleteDashboardTemplateRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['dashboardId'] == null) {
+            throw new runtime.RequiredError(
+                'dashboardId',
+                'Required parameter "dashboardId" was null or undefined when calling deleteDashboardTemplate().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/dashboards/{dashboardId}`;
+        urlPath = urlPath.replace('{dashboardId}', encodeURIComponent(String(requestParameters['dashboardId'])));
+
+        return {
+            path: urlPath,
+            method: 'DELETE',
+            headers: headerParameters,
+            query: queryParameters,
+        };
+    }
+
+    /**
+     * Deletes a dashboard template
+     * Delete dashboard template
+     */
+    async deleteDashboardTemplateRaw(requestParameters: DeleteDashboardTemplateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.deleteDashboardTemplateRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Deletes a dashboard template
+     * Delete dashboard template
+     */
+    async deleteDashboardTemplate(requestParameters: DeleteDashboardTemplateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.deleteDashboardTemplateRaw(requestParameters, initOverrides);
+    }
+
+    /**
      * Creates request options for getDashboard without sending the request
      */
     async getDashboardRequestOpts(requestParameters: GetDashboardRequest): Promise<runtime.RequestOpts> {
@@ -247,6 +375,108 @@ export class DashboardsApi extends runtime.BaseAPI {
      */
     async getDashboard(requestParameters: GetDashboardRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Dashboard> {
         const response = await this.getDashboardRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Creates request options for getDashboardTemplate without sending the request
+     */
+    async getDashboardTemplateRequestOpts(requestParameters: GetDashboardTemplateRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['dashboardId'] == null) {
+            throw new runtime.RequiredError(
+                'dashboardId',
+                'Required parameter "dashboardId" was null or undefined when calling getDashboardTemplate().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/dashboards/{dashboardId}`;
+        urlPath = urlPath.replace('{dashboardId}', encodeURIComponent(String(requestParameters['dashboardId'])));
+
+        return {
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        };
+    }
+
+    /**
+     * Retrieves a dashboard template by ID
+     * Get dashboard template
+     */
+    async getDashboardTemplateRaw(requestParameters: GetDashboardTemplateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Dashboard>> {
+        const requestOptions = await this.getDashboardTemplateRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => DashboardFromJSON(jsonValue));
+    }
+
+    /**
+     * Retrieves a dashboard template by ID
+     * Get dashboard template
+     */
+    async getDashboardTemplate(requestParameters: GetDashboardTemplateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Dashboard> {
+        const response = await this.getDashboardTemplateRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Creates request options for getDashboardTemplates without sending the request
+     */
+    async getDashboardTemplatesRequestOpts(): Promise<runtime.RequestOpts> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/dashboards`;
+
+        return {
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        };
+    }
+
+    /**
+     * Retrieves dashboard templates for a given process
+     * List dashboard templates
+     */
+    async getDashboardTemplatesRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<Dashboard>>> {
+        const requestOptions = await this.getDashboardTemplatesRequestOpts();
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(DashboardFromJSON));
+    }
+
+    /**
+     * Retrieves dashboard templates for a given process
+     * List dashboard templates
+     */
+    async getDashboardTemplates(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<Dashboard>> {
+        const response = await this.getDashboardTemplatesRaw(initOverrides);
         return await response.value();
     }
 
@@ -323,10 +553,10 @@ export class DashboardsApi extends runtime.BaseAPI {
             );
         }
 
-        if (requestParameters['dashboardRequest'] == null) {
+        if (requestParameters['dashboardInput'] == null) {
             throw new runtime.RequiredError(
-                'dashboardRequest',
-                'Required parameter "dashboardRequest" was null or undefined when calling updateDashboard().'
+                'dashboardInput',
+                'Required parameter "dashboardInput" was null or undefined when calling updateDashboard().'
             );
         }
 
@@ -354,7 +584,7 @@ export class DashboardsApi extends runtime.BaseAPI {
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: DashboardRequestToJSON(requestParameters['dashboardRequest']),
+            body: DashboardInputToJSON(requestParameters['dashboardInput']),
         };
     }
 
@@ -375,6 +605,71 @@ export class DashboardsApi extends runtime.BaseAPI {
      */
     async updateDashboard(requestParameters: UpdateDashboardRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Dashboard> {
         const response = await this.updateDashboardRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Creates request options for updateDashboardTemplate without sending the request
+     */
+    async updateDashboardTemplateRequestOpts(requestParameters: UpdateDashboardTemplateRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['dashboardId'] == null) {
+            throw new runtime.RequiredError(
+                'dashboardId',
+                'Required parameter "dashboardId" was null or undefined when calling updateDashboardTemplate().'
+            );
+        }
+
+        if (requestParameters['dashboardInput'] == null) {
+            throw new runtime.RequiredError(
+                'dashboardInput',
+                'Required parameter "dashboardInput" was null or undefined when calling updateDashboardTemplate().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/dashboards/{dashboardId}`;
+        urlPath = urlPath.replace('{dashboardId}', encodeURIComponent(String(requestParameters['dashboardId'])));
+
+        return {
+            path: urlPath,
+            method: 'PUT',
+            headers: headerParameters,
+            query: queryParameters,
+            body: DashboardInputToJSON(requestParameters['dashboardInput']),
+        };
+    }
+
+    /**
+     * Updates a dashboard template
+     * Update dashboard template
+     */
+    async updateDashboardTemplateRaw(requestParameters: UpdateDashboardTemplateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Dashboard>> {
+        const requestOptions = await this.updateDashboardTemplateRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => DashboardFromJSON(jsonValue));
+    }
+
+    /**
+     * Updates a dashboard template
+     * Update dashboard template
+     */
+    async updateDashboardTemplate(requestParameters: UpdateDashboardTemplateRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Dashboard> {
+        const response = await this.updateDashboardTemplateRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
