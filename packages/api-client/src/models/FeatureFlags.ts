@@ -24,6 +24,12 @@ export interface FeatureFlags {
      * @type {boolean}
      * @memberof FeatureFlags
      */
+    zipServiceEnabled: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof FeatureFlags
+     */
     sftpEnabled: boolean;
     /**
      * 
@@ -103,6 +109,7 @@ export interface FeatureFlags {
  * Check if a given object implements the FeatureFlags interface.
  */
 export function instanceOfFeatureFlags(value: object): value is FeatureFlags {
+    if (!('zipServiceEnabled' in value) || value['zipServiceEnabled'] === undefined) return false;
     if (!('sftpEnabled' in value) || value['sftpEnabled'] === undefined) return false;
     if (!('governanceEnabled' in value) || value['governanceEnabled'] === undefined) return false;
     if (!('projectRequestsEnabled' in value) || value['projectRequestsEnabled'] === undefined) return false;
@@ -129,6 +136,7 @@ export function FeatureFlagsFromJSONTyped(json: any, ignoreDiscriminator: boolea
     }
     return {
         
+        'zipServiceEnabled': json['zipServiceEnabled'],
         'sftpEnabled': json['sftpEnabled'],
         'governanceEnabled': json['governanceEnabled'],
         'projectRequestsEnabled': json['projectRequestsEnabled'],
@@ -156,6 +164,7 @@ export function FeatureFlagsToJSONTyped(value?: FeatureFlags | null, ignoreDiscr
 
     return {
         
+        'zipServiceEnabled': value['zipServiceEnabled'],
         'sftpEnabled': value['sftpEnabled'],
         'governanceEnabled': value['governanceEnabled'],
         'projectRequestsEnabled': value['projectRequestsEnabled'],
