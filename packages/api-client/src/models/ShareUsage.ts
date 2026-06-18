@@ -36,6 +36,12 @@ import {
 export interface ShareUsage {
     /**
      * 
+     * @type {string}
+     * @memberof ShareUsage
+     */
+    id: string;
+    /**
+     * 
      * @type {Entity}
      * @memberof ShareUsage
      */
@@ -84,6 +90,7 @@ export interface ShareUsage {
  * Check if a given object implements the ShareUsage interface.
  */
 export function instanceOfShareUsage(value: object): value is ShareUsage {
+    if (!('id' in value) || value['id'] === undefined) return false;
     if (!('consumingItem' in value) || value['consumingItem'] === undefined) return false;
     if (!('updatedAt' in value) || value['updatedAt'] === undefined) return false;
     return true;
@@ -99,6 +106,7 @@ export function ShareUsageFromJSONTyped(json: any, ignoreDiscriminator: boolean)
     }
     return {
         
+        'id': json['id'],
         'consumingItem': EntityFromJSON(json['consumingItem']),
         'consumingProjectId': json['consumingProjectId'] == null ? undefined : json['consumingProjectId'],
         'originatingDatasetId': json['originatingDatasetId'] == null ? undefined : json['originatingDatasetId'],
@@ -120,6 +128,7 @@ export function ShareUsageToJSONTyped(value?: ShareUsage | null, ignoreDiscrimin
 
     return {
         
+        'id': value['id'],
         'consumingItem': EntityToJSON(value['consumingItem']),
         'consumingProjectId': value['consumingProjectId'],
         'originatingDatasetId': value['originatingDatasetId'],
