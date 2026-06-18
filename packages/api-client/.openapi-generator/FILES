@@ -142,6 +142,7 @@ src/models/PaginatedResponseDiscussion.ts
 src/models/PaginatedResponseMessage.ts
 src/models/PaginatedResponseProcessRevisionDto.ts
 src/models/PaginatedResponseSampleDto.ts
+src/models/PaginatedResponseShareUsage.ts
 src/models/PaginatedResponseUserDto.ts
 src/models/Permission.ts
 src/models/PipelineCode.ts
@@ -198,6 +199,7 @@ src/models/Share.ts
 src/models/ShareDetail.ts
 src/models/ShareInput.ts
 src/models/ShareType.ts
+src/models/ShareUsage.ts
 src/models/SharedFilesystem.ts
 src/models/SharedFilesystemInput.ts
 src/models/SharingType.ts
