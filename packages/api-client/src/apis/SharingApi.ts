@@ -72,8 +72,8 @@ export interface GetShareRequest {
 export interface GetShareUsagesRequest {
     projectId: string;
     shareId: string;
-    nextToken: string;
     limit?: number;
+    nextToken?: string;
 }
 
 export interface GetSharedDatasetsRequest {
@@ -438,13 +438,6 @@ export class SharingApi extends runtime.BaseAPI {
             throw new runtime.RequiredError(
                 'shareId',
                 'Required parameter "shareId" was null or undefined when calling getShareUsages().'
-            );
-        }
-
-        if (requestParameters['nextToken'] == null) {
-            throw new runtime.RequiredError(
-                'nextToken',
-                'Required parameter "nextToken" was null or undefined when calling getShareUsages().'
             );
         }
 
