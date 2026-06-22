@@ -78,6 +78,12 @@ export interface Share {
     classificationIds: Array<string>;
     /**
      * 
+     * @type {boolean}
+     * @memberof Share
+     */
+    isViewRestricted: boolean;
+    /**
+     * 
      * @type {Array<string>}
      * @memberof Share
      */
@@ -115,6 +121,7 @@ export function instanceOfShare(value: object): value is Share {
     if (!('shareType' in value) || value['shareType'] === undefined) return false;
     if (!('conditions' in value) || value['conditions'] === undefined) return false;
     if (!('classificationIds' in value) || value['classificationIds'] === undefined) return false;
+    if (!('isViewRestricted' in value) || value['isViewRestricted'] === undefined) return false;
     if (!('keywords' in value) || value['keywords'] === undefined) return false;
     if (!('createdBy' in value) || value['createdBy'] === undefined) return false;
     if (!('createdAt' in value) || value['createdAt'] === undefined) return false;
@@ -139,6 +146,7 @@ export function ShareFromJSONTyped(json: any, ignoreDiscriminator: boolean): Sha
         'shareType': ShareTypeFromJSON(json['shareType']),
         'conditions': ((json['conditions'] as Array<any>).map(DatasetConditionFromJSON)),
         'classificationIds': json['classificationIds'],
+        'isViewRestricted': json['isViewRestricted'],
         'keywords': json['keywords'],
         'createdBy': json['createdBy'],
         'createdAt': (new Date(json['createdAt'])),
@@ -164,6 +172,7 @@ export function ShareToJSONTyped(value?: Share | null, ignoreDiscriminator: bool
         'shareType': ShareTypeToJSON(value['shareType']),
         'conditions': ((value['conditions'] as Array<any>).map(DatasetConditionToJSON)),
         'classificationIds': value['classificationIds'],
+        'isViewRestricted': value['isViewRestricted'],
         'keywords': value['keywords'],
         'createdBy': value['createdBy'],
         'createdAt': value['createdAt'].toISOString(),
