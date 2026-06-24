@@ -24,6 +24,11 @@ import {
     PaginatedResponseDatasetListDtoToJSON,
 } from '../models/PaginatedResponseDatasetListDto';
 import {
+    type PaginatedResponseShareUsage,
+    PaginatedResponseShareUsageFromJSON,
+    PaginatedResponseShareUsageToJSON,
+} from '../models/PaginatedResponseShareUsage';
+import {
     type Share,
     ShareFromJSON,
     ShareToJSON,
@@ -58,6 +63,13 @@ export interface GetShareRequest {
     shareId: string;
 }
 
+export interface GetShareUsagesRequest {
+    projectId: string;
+    shareId: string;
+    limit?: number;
+    nextToken?: string;
+}
+
 export interface GetSharedDatasetsRequest {
     projectId: string;
     shareId: string;
@@ -67,6 +79,12 @@ export interface GetSharedDatasetsRequest {
 
 export interface GetSharesRequest {
     projectId: string;
+}
+
+export interface RevokeShareUsageRequest {
+    projectId: string;
+    shareId: string;
+    usageId: string;
 }
 
 export interface SubscribeShareRequest {
@@ -336,6 +354,77 @@ export class SharingApi extends runtime.BaseAPI {
     }
 
     /**
+     * Creates request options for getShareUsages without sending the request
+     */
+    async getShareUsagesRequestOpts(requestParameters: GetShareUsagesRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling getShareUsages().'
+            );
+        }
+
+        if (requestParameters['shareId'] == null) {
+            throw new runtime.RequiredError(
+                'shareId',
+                'Required parameter "shareId" was null or undefined when calling getShareUsages().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters['limit'] != null) {
+            queryParameters['limit'] = requestParameters['limit'];
+        }
+
+        if (requestParameters['nextToken'] != null) {
+            queryParameters['nextToken'] = requestParameters['nextToken'];
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/projects/{projectId}/shares/{shareId}/usages`;
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+        urlPath = urlPath.replace('{shareId}', encodeURIComponent(String(requestParameters['shareId'])));
+
+        return {
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        };
+    }
+
+    /**
+     * Get usage records for a share published by this project
+     * Get share usages
+     */
+    async getShareUsagesRaw(requestParameters: GetShareUsagesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PaginatedResponseShareUsage>> {
+        const requestOptions = await this.getShareUsagesRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => PaginatedResponseShareUsageFromJSON(jsonValue));
+    }
+
+    /**
+     * Get usage records for a share published by this project
+     * Get share usages
+     */
+    async getShareUsages(requestParameters: GetShareUsagesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<PaginatedResponseShareUsage> {
+        const response = await this.getShareUsagesRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
      * Creates request options for getSharedDatasets without sending the request
      */
     async getSharedDatasetsRequestOpts(requestParameters: GetSharedDatasetsRequest): Promise<runtime.RequestOpts> {
@@ -459,6 +548,76 @@ export class SharingApi extends runtime.BaseAPI {
     async getShares(requestParameters: GetSharesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<Share>> {
         const response = await this.getSharesRaw(requestParameters, initOverrides);
         return await response.value();
+    }
+
+    /**
+     * Creates request options for revokeShareUsage without sending the request
+     */
+    async revokeShareUsageRequestOpts(requestParameters: RevokeShareUsageRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling revokeShareUsage().'
+            );
+        }
+
+        if (requestParameters['shareId'] == null) {
+            throw new runtime.RequiredError(
+                'shareId',
+                'Required parameter "shareId" was null or undefined when calling revokeShareUsage().'
+            );
+        }
+
+        if (requestParameters['usageId'] == null) {
+            throw new runtime.RequiredError(
+                'usageId',
+                'Required parameter "usageId" was null or undefined when calling revokeShareUsage().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/projects/{projectId}/shares/{shareId}/usages/{usageId}`;
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+        urlPath = urlPath.replace('{shareId}', encodeURIComponent(String(requestParameters['shareId'])));
+        urlPath = urlPath.replace('{usageId}', encodeURIComponent(String(requestParameters['usageId'])));
+
+        return {
+            path: urlPath,
+            method: 'DELETE',
+            headers: headerParameters,
+            query: queryParameters,
+        };
+    }
+
+    /**
+     * Revokes the data access grant to an item associated with this usage. Because an access point is shared across all usages from the same consuming item to the same originating project, all related usages are closed together.
+     * Revoke share usage
+     */
+    async revokeShareUsageRaw(requestParameters: RevokeShareUsageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.revokeShareUsageRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Revokes the data access grant to an item associated with this usage. Because an access point is shared across all usages from the same consuming item to the same originating project, all related usages are closed together.
+     * Revoke share usage
+     */
+    async revokeShareUsage(requestParameters: RevokeShareUsageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.revokeShareUsageRaw(requestParameters, initOverrides);
     }
 
     /**
