@@ -16,57 +16,57 @@ import { mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface ProcessRevisionDto
+ * @interface ProcessRevision
  */
-export interface ProcessRevisionDto {
+export interface ProcessRevision {
     /**
      * 
      * @type {number}
-     * @memberof ProcessRevisionDto
+     * @memberof ProcessRevision
      */
     revisionNumber: number;
     /**
      * 
      * @type {string}
-     * @memberof ProcessRevisionDto
+     * @memberof ProcessRevision
      */
     savedBy: string;
     /**
      * 
      * @type {Date}
-     * @memberof ProcessRevisionDto
+     * @memberof ProcessRevision
      */
     savedAt: Date;
     /**
      * 
      * @type {string}
-     * @memberof ProcessRevisionDto
+     * @memberof ProcessRevision
      */
     commitMessage?: string | null;
     /**
      * 
      * @type {Array<string>}
-     * @memberof ProcessRevisionDto
+     * @memberof ProcessRevision
      */
     savedResourceTypes: Array<string>;
     /**
      * 
      * @type {Array<string>}
-     * @memberof ProcessRevisionDto
+     * @memberof ProcessRevision
      */
     deletedResourceTypes: Array<string>;
     /**
      * 
      * @type {{ [key: string]: string; }}
-     * @memberof ProcessRevisionDto
+     * @memberof ProcessRevision
      */
     files: { [key: string]: string; };
 }
 
 /**
- * Check if a given object implements the ProcessRevisionDto interface.
+ * Check if a given object implements the ProcessRevision interface.
  */
-export function instanceOfProcessRevisionDto(value: object): value is ProcessRevisionDto {
+export function instanceOfProcessRevision(value: object): value is ProcessRevision {
     if (!('revisionNumber' in value) || value['revisionNumber'] === undefined) return false;
     if (!('savedBy' in value) || value['savedBy'] === undefined) return false;
     if (!('savedAt' in value) || value['savedAt'] === undefined) return false;
@@ -76,11 +76,11 @@ export function instanceOfProcessRevisionDto(value: object): value is ProcessRev
     return true;
 }
 
-export function ProcessRevisionDtoFromJSON(json: any): ProcessRevisionDto {
-    return ProcessRevisionDtoFromJSONTyped(json, false);
+export function ProcessRevisionFromJSON(json: any): ProcessRevision {
+    return ProcessRevisionFromJSONTyped(json, false);
 }
 
-export function ProcessRevisionDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): ProcessRevisionDto {
+export function ProcessRevisionFromJSONTyped(json: any, ignoreDiscriminator: boolean): ProcessRevision {
     if (json == null) {
         return json;
     }
@@ -96,11 +96,11 @@ export function ProcessRevisionDtoFromJSONTyped(json: any, ignoreDiscriminator: 
     };
 }
 
-export function ProcessRevisionDtoToJSON(json: any): ProcessRevisionDto {
-    return ProcessRevisionDtoToJSONTyped(json, false);
+export function ProcessRevisionToJSON(json: any): ProcessRevision {
+    return ProcessRevisionToJSONTyped(json, false);
 }
 
-export function ProcessRevisionDtoToJSONTyped(value?: ProcessRevisionDto | null, ignoreDiscriminator: boolean = false): any {
+export function ProcessRevisionToJSONTyped(value?: ProcessRevision | null, ignoreDiscriminator: boolean = false): any {
     if (value == null) {
         return value;
     }

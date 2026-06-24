@@ -24,31 +24,31 @@ import {
 /**
  * Stored content for a single pipeline configuration resource at the current revision.
  * @export
- * @interface ProcessResourceContentDto
+ * @interface ProcessResourceContent
  */
-export interface ProcessResourceContentDto {
+export interface ProcessResourceContent {
     /**
      * The resource type whose content is returned.
      * @type {ProcessResource}
-     * @memberof ProcessResourceContentDto
+     * @memberof ProcessResourceContent
      */
     type?: ProcessResource;
     /**
      * The revision number this content was read from (the latest revision of the process at request time).
      * @type {number}
-     * @memberof ProcessResourceContentDto
+     * @memberof ProcessResourceContent
      */
     revisionNumber?: number;
     /**
      * Sha256 hex of the content bytes. Matches the entry in the revision's files map. Same value appears in the response ETag header.
      * @type {string}
-     * @memberof ProcessResourceContentDto
+     * @memberof ProcessResourceContent
      */
     digest?: string;
     /**
      * Raw resource content as a string. For JSON-typed resources this is a serialized JSON document.
      * @type {string}
-     * @memberof ProcessResourceContentDto
+     * @memberof ProcessResourceContent
      */
     content?: string;
 }
@@ -56,17 +56,17 @@ export interface ProcessResourceContentDto {
 
 
 /**
- * Check if a given object implements the ProcessResourceContentDto interface.
+ * Check if a given object implements the ProcessResourceContent interface.
  */
-export function instanceOfProcessResourceContentDto(value: object): value is ProcessResourceContentDto {
+export function instanceOfProcessResourceContent(value: object): value is ProcessResourceContent {
     return true;
 }
 
-export function ProcessResourceContentDtoFromJSON(json: any): ProcessResourceContentDto {
-    return ProcessResourceContentDtoFromJSONTyped(json, false);
+export function ProcessResourceContentFromJSON(json: any): ProcessResourceContent {
+    return ProcessResourceContentFromJSONTyped(json, false);
 }
 
-export function ProcessResourceContentDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): ProcessResourceContentDto {
+export function ProcessResourceContentFromJSONTyped(json: any, ignoreDiscriminator: boolean): ProcessResourceContent {
     if (json == null) {
         return json;
     }
@@ -79,11 +79,11 @@ export function ProcessResourceContentDtoFromJSONTyped(json: any, ignoreDiscrimi
     };
 }
 
-export function ProcessResourceContentDtoToJSON(json: any): ProcessResourceContentDto {
-    return ProcessResourceContentDtoToJSONTyped(json, false);
+export function ProcessResourceContentToJSON(json: any): ProcessResourceContent {
+    return ProcessResourceContentToJSONTyped(json, false);
 }
 
-export function ProcessResourceContentDtoToJSONTyped(value?: ProcessResourceContentDto | null, ignoreDiscriminator: boolean = false): any {
+export function ProcessResourceContentToJSONTyped(value?: ProcessResourceContent | null, ignoreDiscriminator: boolean = false): any {
     if (value == null) {
         return value;
     }

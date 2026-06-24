@@ -59,11 +59,11 @@ export interface ShareUsage {
      */
     originatingDatasetId?: string;
     /**
-     * Current state of the usage. RUNNING means access is active; DELETED means the access point has been revoked.
+     * 
      * @type {Status}
      * @memberof ShareUsage
      */
-    status?: Status;
+    status: Status;
     /**
      * ARN of the shared AWS S3 access point. One access point covers all usages from the same consuming item to the same originating project.
      * @type {string}
@@ -92,6 +92,7 @@ export interface ShareUsage {
 export function instanceOfShareUsage(value: object): value is ShareUsage {
     if (!('id' in value) || value['id'] === undefined) return false;
     if (!('consumingItem' in value) || value['consumingItem'] === undefined) return false;
+    if (!('status' in value) || value['status'] === undefined) return false;
     if (!('updatedAt' in value) || value['updatedAt'] === undefined) return false;
     return true;
 }
@@ -110,7 +111,7 @@ export function ShareUsageFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'consumingItem': EntityFromJSON(json['consumingItem']),
         'consumingProjectId': json['consumingProjectId'] == null ? undefined : json['consumingProjectId'],
         'originatingDatasetId': json['originatingDatasetId'] == null ? undefined : json['originatingDatasetId'],
-        'status': json['status'] == null ? undefined : StatusFromJSON(json['status']),
+        'status': StatusFromJSON(json['status']),
         'accessPointArn': json['accessPointArn'] == null ? undefined : json['accessPointArn'],
         'createdAt': json['createdAt'] == null ? undefined : (new Date(json['createdAt'])),
         'updatedAt': (new Date(json['updatedAt'])),

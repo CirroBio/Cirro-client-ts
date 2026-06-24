@@ -154,8 +154,8 @@ src/models/Process.ts
 src/models/ProcessDetail.ts
 src/models/ProcessDocumentation.ts
 src/models/ProcessResource.ts
-src/models/ProcessResourceContentDto.ts
-src/models/ProcessRevisionDto.ts
+src/models/ProcessResourceContent.ts
+src/models/ProcessRevision.ts
 src/models/ProcessRevisionSaveFile.ts
 src/models/ProcessRevisionSaveRequest.ts
 src/models/ProcessRevisionSaveResponse.ts

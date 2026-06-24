@@ -84,15 +84,15 @@ import {
     ProcessResourceToJSON,
 } from '../models/ProcessResource';
 import {
-    type ProcessResourceContentDto,
-    ProcessResourceContentDtoFromJSON,
-    ProcessResourceContentDtoToJSON,
-} from '../models/ProcessResourceContentDto';
+    type ProcessResourceContent,
+    ProcessResourceContentFromJSON,
+    ProcessResourceContentToJSON,
+} from '../models/ProcessResourceContent';
 import {
-    type ProcessRevisionDto,
-    ProcessRevisionDtoFromJSON,
-    ProcessRevisionDtoToJSON,
-} from '../models/ProcessRevisionDto';
+    type ProcessRevision,
+    ProcessRevisionFromJSON,
+    ProcessRevisionToJSON,
+} from '../models/ProcessRevision';
 import {
     type ProcessRevisionSaveRequest,
     ProcessRevisionSaveRequestFromJSON,
@@ -408,18 +408,18 @@ export class ProcessesApi extends runtime.BaseAPI {
      * Returns the highest-numbered revision entry for the given process. Returns 404 for processes without configuration in tenant storage.
      * Fetch the latest configuration revision for a process
      */
-    async getLatestProcessRevisionRaw(requestParameters: GetLatestProcessRevisionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ProcessRevisionDto>> {
+    async getLatestProcessRevisionRaw(requestParameters: GetLatestProcessRevisionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ProcessRevision>> {
         const requestOptions = await this.getLatestProcessRevisionRequestOpts(requestParameters);
         const response = await this.request(requestOptions, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => ProcessRevisionDtoFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => ProcessRevisionFromJSON(jsonValue));
     }
 
     /**
      * Returns the highest-numbered revision entry for the given process. Returns 404 for processes without configuration in tenant storage.
      * Fetch the latest configuration revision for a process
      */
-    async getLatestProcessRevision(requestParameters: GetLatestProcessRevisionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ProcessRevisionDto> {
+    async getLatestProcessRevision(requestParameters: GetLatestProcessRevisionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ProcessRevision> {
         const response = await this.getLatestProcessRevisionRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -636,18 +636,18 @@ export class ProcessesApi extends runtime.BaseAPI {
      * Returns the resource content wrapped in a JSON envelope carrying the source revision number and the content sha256 digest. The same digest is reflected in the response ETag header.
      * Fetch the stored content of one pipeline configuration resource at the latest revision
      */
-    async getProcessResourceRaw(requestParameters: GetProcessResourceRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ProcessResourceContentDto>> {
+    async getProcessResourceRaw(requestParameters: GetProcessResourceRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ProcessResourceContent>> {
         const requestOptions = await this.getProcessResourceRequestOpts(requestParameters);
         const response = await this.request(requestOptions, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => ProcessResourceContentDtoFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => ProcessResourceContentFromJSON(jsonValue));
     }
 
     /**
      * Returns the resource content wrapped in a JSON envelope carrying the source revision number and the content sha256 digest. The same digest is reflected in the response ETag header.
      * Fetch the stored content of one pipeline configuration resource at the latest revision
      */
-    async getProcessResource(requestParameters: GetProcessResourceRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ProcessResourceContentDto> {
+    async getProcessResource(requestParameters: GetProcessResourceRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ProcessResourceContent> {
         const response = await this.getProcessResourceRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -699,18 +699,18 @@ export class ProcessesApi extends runtime.BaseAPI {
      * Returns the full revision entry (files map + provenance) for the named revision number.
      * Fetch a single configuration revision entry
      */
-    async getProcessRevisionRaw(requestParameters: GetProcessRevisionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ProcessRevisionDto>> {
+    async getProcessRevisionRaw(requestParameters: GetProcessRevisionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ProcessRevision>> {
         const requestOptions = await this.getProcessRevisionRequestOpts(requestParameters);
         const response = await this.request(requestOptions, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => ProcessRevisionDtoFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => ProcessRevisionFromJSON(jsonValue));
     }
 
     /**
      * Returns the full revision entry (files map + provenance) for the named revision number.
      * Fetch a single configuration revision entry
      */
-    async getProcessRevision(requestParameters: GetProcessRevisionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ProcessRevisionDto> {
+    async getProcessRevision(requestParameters: GetProcessRevisionRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ProcessRevision> {
         const response = await this.getProcessRevisionRaw(requestParameters, initOverrides);
         return await response.value();
     }

@@ -13,13 +13,13 @@
  */
 
 import { mapValues } from '../runtime';
-import type { ProcessRevisionDto } from './ProcessRevisionDto';
+import type { ProcessRevision } from './ProcessRevision';
 import {
-    ProcessRevisionDtoFromJSON,
-    ProcessRevisionDtoFromJSONTyped,
-    ProcessRevisionDtoToJSON,
-    ProcessRevisionDtoToJSONTyped,
-} from './ProcessRevisionDto';
+    ProcessRevisionFromJSON,
+    ProcessRevisionFromJSONTyped,
+    ProcessRevisionToJSON,
+    ProcessRevisionToJSONTyped,
+} from './ProcessRevision';
 
 /**
  * 
@@ -29,10 +29,10 @@ import {
 export interface PaginatedResponseProcessRevisionDto {
     /**
      * 
-     * @type {Array<ProcessRevisionDto>}
+     * @type {Array<ProcessRevision>}
      * @memberof PaginatedResponseProcessRevisionDto
      */
-    data: Array<ProcessRevisionDto>;
+    data: Array<ProcessRevision>;
     /**
      * 
      * @type {string}
@@ -60,7 +60,7 @@ export function PaginatedResponseProcessRevisionDtoFromJSONTyped(json: any, igno
     }
     return {
         
-        'data': ((json['data'] as Array<any>).map(ProcessRevisionDtoFromJSON)),
+        'data': ((json['data'] as Array<any>).map(ProcessRevisionFromJSON)),
         'nextToken': json['nextToken'],
     };
 }
@@ -76,7 +76,7 @@ export function PaginatedResponseProcessRevisionDtoToJSONTyped(value?: Paginated
 
     return {
         
-        'data': ((value['data'] as Array<any>).map(ProcessRevisionDtoToJSON)),
+        'data': ((value['data'] as Array<any>).map(ProcessRevisionToJSON)),
         'nextToken': value['nextToken'],
     };
 }
