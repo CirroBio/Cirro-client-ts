@@ -31,6 +31,7 @@ export * from './CloudQuota';
 export * from './ColumnDataType';
 export * from './ColumnDef';
 export * from './ColumnDefinition';
+export * from './ColumnRelationship';
 export * from './ComputeEnvironmentConfiguration';
 export * from './ComputeEnvironmentConfigurationInput';
 export * from './ConfigSource';

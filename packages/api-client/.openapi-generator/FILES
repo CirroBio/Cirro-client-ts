@@ -58,6 +58,7 @@ src/models/CloudQuota.ts
 src/models/ColumnDataType.ts
 src/models/ColumnDef.ts
 src/models/ColumnDefinition.ts
+src/models/ColumnRelationship.ts
 src/models/ComputeEnvironmentConfiguration.ts
 src/models/ComputeEnvironmentConfigurationInput.ts
 src/models/ConfigSource.ts

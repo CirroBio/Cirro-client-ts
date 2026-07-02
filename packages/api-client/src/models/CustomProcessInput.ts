@@ -135,6 +135,12 @@ export interface CustomProcessInput {
      */
     linkedProjectIds: Array<string>;
     /**
+     * 
+     * @type {Array<string>}
+     * @memberof CustomProcessInput
+     */
+    maintainers: Array<string>;
+    /**
      * Whether the process is shared with the tenant
      * @type {boolean}
      * @memberof CustomProcessInput
@@ -191,6 +197,7 @@ export function instanceOfCustomProcessInput(value: object): value is CustomProc
     if (!('childProcessIds' in value) || value['childProcessIds'] === undefined) return false;
     if (!('parentProcessIds' in value) || value['parentProcessIds'] === undefined) return false;
     if (!('linkedProjectIds' in value) || value['linkedProjectIds'] === undefined) return false;
+    if (!('maintainers' in value) || value['maintainers'] === undefined) return false;
     return true;
 }
 
@@ -216,6 +223,7 @@ export function CustomProcessInputFromJSONTyped(json: any, ignoreDiscriminator: 
         'fileRequirementsMessage': json['fileRequirementsMessage'] == null ? undefined : json['fileRequirementsMessage'],
         'pipelineCode': json['pipelineCode'] == null ? undefined : PipelineCodeFromJSON(json['pipelineCode']),
         'linkedProjectIds': json['linkedProjectIds'],
+        'maintainers': json['maintainers'],
         'isTenantWide': json['isTenantWide'] == null ? undefined : json['isTenantWide'],
         'allowMultipleSources': json['allowMultipleSources'] == null ? undefined : json['allowMultipleSources'],
         'usesSampleSheet': json['usesSampleSheet'] == null ? undefined : json['usesSampleSheet'],
@@ -249,6 +257,7 @@ export function CustomProcessInputToJSONTyped(value?: CustomProcessInput | null,
         'fileRequirementsMessage': value['fileRequirementsMessage'],
         'pipelineCode': PipelineCodeToJSON(value['pipelineCode']),
         'linkedProjectIds': value['linkedProjectIds'],
+        'maintainers': value['maintainers'],
         'isTenantWide': value['isTenantWide'],
         'allowMultipleSources': value['allowMultipleSources'],
         'usesSampleSheet': value['usesSampleSheet'],
