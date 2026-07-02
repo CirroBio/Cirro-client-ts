@@ -107,6 +107,12 @@ export interface Process {
      */
     owner?: string | null;
     /**
+     * Other users who maintain the pipeline. These users have access to manage the pipeline (blank if Cirro curated)
+     * @type {Array<string>}
+     * @memberof Process
+     */
+    maintainers?: Array<string> | null;
+    /**
      * Projects that can run this process
      * @type {Array<string>}
      * @memberof Process
@@ -200,6 +206,7 @@ export function ProcessFromJSONTyped(json: any, ignoreDiscriminator: boolean): P
         'childProcessIds': json['childProcessIds'],
         'parentProcessIds': json['parentProcessIds'],
         'owner': json['owner'] == null ? undefined : json['owner'],
+        'maintainers': json['maintainers'] == null ? undefined : json['maintainers'],
         'linkedProjectIds': json['linkedProjectIds'],
         'isTenantWide': json['isTenantWide'],
         'allowMultipleSources': json['allowMultipleSources'],
@@ -234,6 +241,7 @@ export function ProcessToJSONTyped(value?: Process | null, ignoreDiscriminator: 
         'childProcessIds': value['childProcessIds'],
         'parentProcessIds': value['parentProcessIds'],
         'owner': value['owner'],
+        'maintainers': value['maintainers'],
         'linkedProjectIds': value['linkedProjectIds'],
         'isTenantWide': value['isTenantWide'],
         'allowMultipleSources': value['allowMultipleSources'],

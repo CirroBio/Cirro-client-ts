@@ -141,6 +141,12 @@ export interface ProcessDetail {
      */
     owner?: string | null;
     /**
+     * Other users who maintain the pipeline. These users have access to manage the pipeline (blank if Cirro curated)
+     * @type {Array<string>}
+     * @memberof ProcessDetail
+     */
+    maintainers?: Array<string> | null;
+    /**
      * Projects that can run this process
      * @type {Array<string>}
      * @memberof ProcessDetail
@@ -254,6 +260,7 @@ export function ProcessDetailFromJSONTyped(json: any, ignoreDiscriminator: boole
         'fileRequirementsMessage': json['fileRequirementsMessage'] == null ? undefined : json['fileRequirementsMessage'],
         'pipelineCode': json['pipelineCode'] == null ? undefined : PipelineCodeFromJSON(json['pipelineCode']),
         'owner': json['owner'] == null ? undefined : json['owner'],
+        'maintainers': json['maintainers'] == null ? undefined : json['maintainers'],
         'linkedProjectIds': json['linkedProjectIds'],
         'isTenantWide': json['isTenantWide'],
         'allowMultipleSources': json['allowMultipleSources'],
@@ -292,6 +299,7 @@ export function ProcessDetailToJSONTyped(value?: ProcessDetail | null, ignoreDis
         'fileRequirementsMessage': value['fileRequirementsMessage'],
         'pipelineCode': PipelineCodeToJSON(value['pipelineCode']),
         'owner': value['owner'],
+        'maintainers': value['maintainers'],
         'linkedProjectIds': value['linkedProjectIds'],
         'isTenantWide': value['isTenantWide'],
         'allowMultipleSources': value['allowMultipleSources'],

@@ -41,6 +41,13 @@ import {
     TagToJSON,
     TagToJSONTyped,
 } from './Tag';
+import type { ColumnRelationship } from './ColumnRelationship';
+import {
+    ColumnRelationshipFromJSON,
+    ColumnRelationshipFromJSONTyped,
+    ColumnRelationshipToJSON,
+    ColumnRelationshipToJSONTyped,
+} from './ColumnRelationship';
 
 /**
  * 
@@ -132,6 +139,12 @@ export interface Sheet {
      * @memberof Sheet
      */
     tags: Array<Tag>;
+    /**
+     * 
+     * @type {Array<ColumnRelationship>}
+     * @memberof Sheet
+     */
+    columnRelationships: Array<ColumnRelationship>;
 }
 
 
@@ -154,6 +167,7 @@ export function instanceOfSheet(value: object): value is Sheet {
     if (!('updatedAt' in value) || value['updatedAt'] === undefined) return false;
     if (!('totalRowCount' in value) || value['totalRowCount'] === undefined) return false;
     if (!('tags' in value) || value['tags'] === undefined) return false;
+    if (!('columnRelationships' in value) || value['columnRelationships'] === undefined) return false;
     return true;
 }
 
@@ -181,6 +195,7 @@ export function SheetFromJSONTyped(json: any, ignoreDiscriminator: boolean): She
         'updatedAt': (new Date(json['updatedAt'])),
         'totalRowCount': json['totalRowCount'],
         'tags': ((json['tags'] as Array<any>).map(TagFromJSON)),
+        'columnRelationships': ((json['columnRelationships'] as Array<any>).map(ColumnRelationshipFromJSON)),
     };
 }
 
@@ -209,6 +224,7 @@ export function SheetToJSONTyped(value?: Sheet | null, ignoreDiscriminator: bool
         'updatedAt': value['updatedAt'].toISOString(),
         'totalRowCount': value['totalRowCount'],
         'tags': ((value['tags'] as Array<any>).map(TagToJSON)),
+        'columnRelationships': ((value['columnRelationships'] as Array<any>).map(ColumnRelationshipToJSON)),
     };
 }
 
