@@ -139,7 +139,7 @@ export interface CustomProcessInput {
      * @type {Array<string>}
      * @memberof CustomProcessInput
      */
-    maintainers: Array<string>;
+    maintainers?: Array<string> | null;
     /**
      * Whether the process is shared with the tenant
      * @type {boolean}
@@ -197,7 +197,6 @@ export function instanceOfCustomProcessInput(value: object): value is CustomProc
     if (!('childProcessIds' in value) || value['childProcessIds'] === undefined) return false;
     if (!('parentProcessIds' in value) || value['parentProcessIds'] === undefined) return false;
     if (!('linkedProjectIds' in value) || value['linkedProjectIds'] === undefined) return false;
-    if (!('maintainers' in value) || value['maintainers'] === undefined) return false;
     return true;
 }
 
@@ -223,7 +222,7 @@ export function CustomProcessInputFromJSONTyped(json: any, ignoreDiscriminator: 
         'fileRequirementsMessage': json['fileRequirementsMessage'] == null ? undefined : json['fileRequirementsMessage'],
         'pipelineCode': json['pipelineCode'] == null ? undefined : PipelineCodeFromJSON(json['pipelineCode']),
         'linkedProjectIds': json['linkedProjectIds'],
-        'maintainers': json['maintainers'],
+        'maintainers': json['maintainers'] == null ? undefined : json['maintainers'],
         'isTenantWide': json['isTenantWide'] == null ? undefined : json['isTenantWide'],
         'allowMultipleSources': json['allowMultipleSources'] == null ? undefined : json['allowMultipleSources'],
         'usesSampleSheet': json['usesSampleSheet'] == null ? undefined : json['usesSampleSheet'],
