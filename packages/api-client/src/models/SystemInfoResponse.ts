@@ -13,6 +13,13 @@
  */
 
 import { mapValues } from '../runtime';
+import type { VersionInfo } from './VersionInfo';
+import {
+    VersionInfoFromJSON,
+    VersionInfoFromJSONTyped,
+    VersionInfoToJSON,
+    VersionInfoToJSONTyped,
+} from './VersionInfo';
 import type { AuthInfo } from './AuthInfo';
 import {
     AuthInfoFromJSON,
@@ -27,13 +34,6 @@ import {
     TenantInfoToJSON,
     TenantInfoToJSONTyped,
 } from './TenantInfo';
-import type { ResourcesInfo } from './ResourcesInfo';
-import {
-    ResourcesInfoFromJSON,
-    ResourcesInfoFromJSONTyped,
-    ResourcesInfoToJSON,
-    ResourcesInfoToJSONTyped,
-} from './ResourcesInfo';
 
 /**
  * 
@@ -85,22 +85,22 @@ export interface SystemInfoResponse {
     maintenanceModeEnabled: boolean;
     /**
      * 
-     * @type {string}
+     * @type {VersionInfo}
      * @memberof SystemInfoResponse
      */
-    commitHash: string;
+    backendVersion?: VersionInfo | null;
     /**
      * 
-     * @type {string}
+     * @type {VersionInfo}
      * @memberof SystemInfoResponse
      */
-    version: string;
+    resourcesVersion?: VersionInfo | null;
     /**
      * 
-     * @type {ResourcesInfo}
+     * @type {VersionInfo}
      * @memberof SystemInfoResponse
      */
-    resourcesInfo: ResourcesInfo;
+    projectResourceVersion?: VersionInfo | null;
     /**
      * 
      * @type {TenantInfo}
@@ -126,9 +126,6 @@ export function instanceOfSystemInfoResponse(value: object): value is SystemInfo
     if (!('region' in value) || value['region'] === undefined) return false;
     if (!('systemMessage' in value) || value['systemMessage'] === undefined) return false;
     if (!('maintenanceModeEnabled' in value) || value['maintenanceModeEnabled'] === undefined) return false;
-    if (!('commitHash' in value) || value['commitHash'] === undefined) return false;
-    if (!('version' in value) || value['version'] === undefined) return false;
-    if (!('resourcesInfo' in value) || value['resourcesInfo'] === undefined) return false;
     if (!('tenantInfo' in value) || value['tenantInfo'] === undefined) return false;
     if (!('auth' in value) || value['auth'] === undefined) return false;
     return true;
@@ -151,9 +148,9 @@ export function SystemInfoResponseFromJSONTyped(json: any, ignoreDiscriminator: 
         'region': json['region'],
         'systemMessage': json['systemMessage'],
         'maintenanceModeEnabled': json['maintenanceModeEnabled'],
-        'commitHash': json['commitHash'],
-        'version': json['version'],
-        'resourcesInfo': ResourcesInfoFromJSON(json['resourcesInfo']),
+        'backendVersion': json['backendVersion'] == null ? undefined : VersionInfoFromJSON(json['backendVersion']),
+        'resourcesVersion': json['resourcesVersion'] == null ? undefined : VersionInfoFromJSON(json['resourcesVersion']),
+        'projectResourceVersion': json['projectResourceVersion'] == null ? undefined : VersionInfoFromJSON(json['projectResourceVersion']),
         'tenantInfo': TenantInfoFromJSON(json['tenantInfo']),
         'auth': AuthInfoFromJSON(json['auth']),
     };
@@ -177,9 +174,9 @@ export function SystemInfoResponseToJSONTyped(value?: SystemInfoResponse | null,
         'region': value['region'],
         'systemMessage': value['systemMessage'],
         'maintenanceModeEnabled': value['maintenanceModeEnabled'],
-        'commitHash': value['commitHash'],
-        'version': value['version'],
-        'resourcesInfo': ResourcesInfoToJSON(value['resourcesInfo']),
+        'backendVersion': VersionInfoToJSON(value['backendVersion']),
+        'resourcesVersion': VersionInfoToJSON(value['resourcesVersion']),
+        'projectResourceVersion': VersionInfoToJSON(value['projectResourceVersion']),
         'tenantInfo': TenantInfoToJSON(value['tenantInfo']),
         'auth': AuthInfoToJSON(value['auth']),
     };

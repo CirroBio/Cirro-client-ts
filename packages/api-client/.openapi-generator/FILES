@@ -184,7 +184,6 @@ src/models/RequestQuotaIncreaseResponse.ts
 src/models/RequestStatus.ts
 src/models/RequirementFulfillmentInput.ts
 src/models/RequirementInput.ts
-src/models/ResourcesInfo.ts
 src/models/RowInsert.ts
 src/models/RowUpdate.ts
 src/models/RunAnalysisRequest.ts
@@ -244,6 +243,7 @@ src/models/UserProjectAssignment.ts
 src/models/UserSettings.ts
 src/models/ValidateFileNamePatternsRequest.ts
 src/models/ValidateFileRequirementsRequest.ts
+src/models/VersionInfo.ts
 src/models/VersionSpecification.ts
 src/models/ViewJoin.ts
 src/models/ViewQueryRequest.ts
