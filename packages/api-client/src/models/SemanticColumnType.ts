@@ -24,7 +24,7 @@ export enum SemanticColumnType {
     EnumSingle = 'ENUM_SINGLE',
     EnumMulti = 'ENUM_MULTI',
     Url = 'URL',
-    FileLink = 'FILE_LINK',
+    CirroFile = 'CIRRO_FILE',
     DatasetLink = 'DATASET_LINK',
     ForeignKey = 'FOREIGN_KEY'
 }
