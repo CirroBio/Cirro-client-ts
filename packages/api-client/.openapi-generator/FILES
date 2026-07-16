@@ -241,6 +241,7 @@ src/models/User.ts
 src/models/UserDetail.ts
 src/models/UserProjectAssignment.ts
 src/models/UserSettings.ts
+src/models/UserStatus.ts
 src/models/ValidateFileNamePatternsRequest.ts
 src/models/ValidateFileRequirementsRequest.ts
 src/models/VersionInfo.ts

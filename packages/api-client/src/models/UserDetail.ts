@@ -27,6 +27,13 @@ import {
     UserProjectAssignmentToJSON,
     UserProjectAssignmentToJSONTyped,
 } from './UserProjectAssignment';
+import type { UserStatus } from './UserStatus';
+import {
+    UserStatusFromJSON,
+    UserStatusFromJSONTyped,
+    UserStatusToJSON,
+    UserStatusToJSONTyped,
+} from './UserStatus';
 
 /**
  * 
@@ -125,7 +132,15 @@ export interface UserDetail {
      * @memberof UserDetail
      */
     settings: UserSettings;
+    /**
+     * 
+     * @type {UserStatus}
+     * @memberof UserDetail
+     */
+    status: UserStatus;
 }
+
+
 
 /**
  * Check if a given object implements the UserDetail interface.
@@ -138,6 +153,7 @@ export function instanceOfUserDetail(value: object): value is UserDetail {
     if (!('projectAssignments' in value) || value['projectAssignments'] === undefined) return false;
     if (!('globalRoles' in value) || value['globalRoles'] === undefined) return false;
     if (!('settings' in value) || value['settings'] === undefined) return false;
+    if (!('status' in value) || value['status'] === undefined) return false;
     return true;
 }
 
@@ -166,6 +182,7 @@ export function UserDetailFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'globalRoles': json['globalRoles'],
         'groups': json['groups'] == null ? undefined : json['groups'],
         'settings': UserSettingsFromJSON(json['settings']),
+        'status': UserStatusFromJSON(json['status']),
     };
 }
 
@@ -195,6 +212,7 @@ export function UserDetailToJSONTyped(value?: UserDetail | null, ignoreDiscrimin
         'globalRoles': value['globalRoles'],
         'groups': value['groups'],
         'settings': UserSettingsToJSON(value['settings']),
+        'status': UserStatusToJSON(value['status']),
     };
 }
 

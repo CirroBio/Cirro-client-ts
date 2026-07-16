@@ -21,7 +21,8 @@ export enum SheetCreationMode {
     File = 'FILE',
     Scratch = 'SCRATCH',
     Template = 'TEMPLATE',
-    Standard = 'STANDARD'
+    Standard = 'STANDARD',
+    System = 'SYSTEM'
 }
 
 
