@@ -44,6 +44,15 @@ import {
     UserDetailToJSON,
 } from '../models/UserDetail';
 
+export interface ActivateUserRequest {
+    username: string;
+}
+
+export interface DeactivateUserRequest {
+    username: string;
+    removeFromProjects?: boolean;
+}
+
 export interface GetUserRequest {
     username: string;
 }
@@ -71,6 +80,118 @@ export interface UpdateUserOperationRequest {
  * 
  */
 export class UsersApi extends runtime.BaseAPI {
+
+    /**
+     * Creates request options for activateUser without sending the request
+     */
+    async activateUserRequestOpts(requestParameters: ActivateUserRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['username'] == null) {
+            throw new runtime.RequiredError(
+                'username',
+                'Required parameter "username" was null or undefined when calling activateUser().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/users/{username}:activate`;
+        urlPath = urlPath.replace('{username}', encodeURIComponent(String(requestParameters['username'])));
+
+        return {
+            path: urlPath,
+            method: 'PUT',
+            headers: headerParameters,
+            query: queryParameters,
+        };
+    }
+
+    /**
+     * Activate user a previously disabled user
+     * Activate user
+     */
+    async activateUserRaw(requestParameters: ActivateUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.activateUserRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Activate user a previously disabled user
+     * Activate user
+     */
+    async activateUser(requestParameters: ActivateUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.activateUserRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Creates request options for deactivateUser without sending the request
+     */
+    async deactivateUserRequestOpts(requestParameters: DeactivateUserRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['username'] == null) {
+            throw new runtime.RequiredError(
+                'username',
+                'Required parameter "username" was null or undefined when calling deactivateUser().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters['removeFromProjects'] != null) {
+            queryParameters['removeFromProjects'] = requestParameters['removeFromProjects'];
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/users/{username}:deactivate`;
+        urlPath = urlPath.replace('{username}', encodeURIComponent(String(requestParameters['username'])));
+
+        return {
+            path: urlPath,
+            method: 'PUT',
+            headers: headerParameters,
+            query: queryParameters,
+        };
+    }
+
+    /**
+     * Deactivates a user, blocking sign in and revoking their tokens
+     * Deactivate user
+     */
+    async deactivateUserRaw(requestParameters: DeactivateUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.deactivateUserRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Deactivates a user, blocking sign in and revoking their tokens
+     * Deactivate user
+     */
+    async deactivateUser(requestParameters: DeactivateUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.deactivateUserRaw(requestParameters, initOverrides);
+    }
 
     /**
      * Creates request options for getUser without sending the request

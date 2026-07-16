@@ -214,6 +214,7 @@ export * from './User';
 export * from './UserDetail';
 export * from './UserProjectAssignment';
 export * from './UserSettings';
+export * from './UserStatus';
 export * from './ValidateFileNamePatternsRequest';
 export * from './ValidateFileRequirementsRequest';
 export * from './VersionInfo';

@@ -13,6 +13,14 @@
  */
 
 import { mapValues } from '../runtime';
+import type { UserStatus } from './UserStatus';
+import {
+    UserStatusFromJSON,
+    UserStatusFromJSONTyped,
+    UserStatusToJSON,
+    UserStatusToJSONTyped,
+} from './UserStatus';
+
 /**
  * 
  * @export
@@ -55,7 +63,15 @@ export interface User {
      * @memberof User
      */
     globalRoles: Array<string>;
+    /**
+     * 
+     * @type {UserStatus}
+     * @memberof User
+     */
+    status: UserStatus;
 }
+
+
 
 /**
  * Check if a given object implements the User interface.
@@ -67,6 +83,7 @@ export function instanceOfUser(value: object): value is User {
     if (!('department' in value) || value['department'] === undefined) return false;
     if (!('jobTitle' in value) || value['jobTitle'] === undefined) return false;
     if (!('globalRoles' in value) || value['globalRoles'] === undefined) return false;
+    if (!('status' in value) || value['status'] === undefined) return false;
     return true;
 }
 
@@ -86,6 +103,7 @@ export function UserFromJSONTyped(json: any, ignoreDiscriminator: boolean): User
         'department': json['department'],
         'jobTitle': json['jobTitle'],
         'globalRoles': json['globalRoles'],
+        'status': UserStatusFromJSON(json['status']),
     };
 }
 
@@ -106,6 +124,7 @@ export function UserToJSONTyped(value?: User | null, ignoreDiscriminator: boolea
         'department': value['department'],
         'jobTitle': value['jobTitle'],
         'globalRoles': value['globalRoles'],
+        'status': UserStatusToJSON(value['status']),
     };
 }
 
