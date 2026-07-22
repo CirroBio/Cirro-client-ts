@@ -22,7 +22,7 @@
   },
   "packageManager": "yarn@4.13.0",
   "devDependencies": {
-    "@openapitools/openapi-generator-cli": "^2.34.0",
+    "@openapitools/openapi-generator-cli": "^2.39.1",
     "@rollup/plugin-typescript": "^12.1.2",
     "@types/jest": "^30.0.0",
     "@types/node": "^22.13.1",
