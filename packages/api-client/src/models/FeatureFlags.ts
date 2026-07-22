@@ -109,6 +109,12 @@ export interface FeatureFlags {
      * @memberof FeatureFlags
      */
     omicsPrivateWorkflowsEnabled: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof FeatureFlags
+     */
+    dashboardsEnabled: boolean;
 }
 
 /**
@@ -130,6 +136,7 @@ export function instanceOfFeatureFlags(value: object): value is FeatureFlags {
     if (!('orcidIntegrationEnabled' in value) || value['orcidIntegrationEnabled'] === undefined) return false;
     if (!('cirroStoredPipelineConfigEnabled' in value) || value['cirroStoredPipelineConfigEnabled'] === undefined) return false;
     if (!('omicsPrivateWorkflowsEnabled' in value) || value['omicsPrivateWorkflowsEnabled'] === undefined) return false;
+    if (!('dashboardsEnabled' in value) || value['dashboardsEnabled'] === undefined) return false;
     return true;
 }
 
@@ -158,6 +165,7 @@ export function FeatureFlagsFromJSONTyped(json: any, ignoreDiscriminator: boolea
         'orcidIntegrationEnabled': json['orcidIntegrationEnabled'],
         'cirroStoredPipelineConfigEnabled': json['cirroStoredPipelineConfigEnabled'],
         'omicsPrivateWorkflowsEnabled': json['omicsPrivateWorkflowsEnabled'],
+        'dashboardsEnabled': json['dashboardsEnabled'],
     };
 }
 
@@ -187,6 +195,7 @@ export function FeatureFlagsToJSONTyped(value?: FeatureFlags | null, ignoreDiscr
         'orcidIntegrationEnabled': value['orcidIntegrationEnabled'],
         'cirroStoredPipelineConfigEnabled': value['cirroStoredPipelineConfigEnabled'],
         'omicsPrivateWorkflowsEnabled': value['omicsPrivateWorkflowsEnabled'],
+        'dashboardsEnabled': value['dashboardsEnabled'],
     };
 }
 
