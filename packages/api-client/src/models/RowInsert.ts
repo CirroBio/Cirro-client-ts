@@ -20,7 +20,7 @@ import { mapValues } from '../runtime';
  */
 export interface RowInsert {
     /**
-     * Column name and value. Any missing columns will have a null value (will error if column is required).
+     * Column name and value. Any missing columns will have a null value (will error if column is required). CIRRO_FILE column values are objects with datasetId and path (relative to the dataset's data directory).
      * @type {{ [key: string]: object; }}
      * @memberof RowInsert
      */

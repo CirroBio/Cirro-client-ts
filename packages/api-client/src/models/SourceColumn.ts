@@ -37,6 +37,12 @@ export interface SourceColumn {
      * @memberof SourceColumn
      */
     sheetColumn: string;
+    /**
+     * Dataset holding the referenced files. Required when the target sheet column is CIRRO_FILE, forbidden otherwise; every path in the column must exist in this dataset.
+     * @type {string}
+     * @memberof SourceColumn
+     */
+    datasetId?: string | null;
 }
 
 /**
@@ -60,6 +66,7 @@ export function SourceColumnFromJSONTyped(json: any, ignoreDiscriminator: boolea
         'fileColumn': json['fileColumn'] == null ? undefined : json['fileColumn'],
         'index': json['index'] == null ? undefined : json['index'],
         'sheetColumn': json['sheetColumn'],
+        'datasetId': json['datasetId'] == null ? undefined : json['datasetId'],
     };
 }
 
@@ -77,6 +84,7 @@ export function SourceColumnToJSONTyped(value?: SourceColumn | null, ignoreDiscr
         'fileColumn': value['fileColumn'],
         'index': value['index'],
         'sheetColumn': value['sheetColumn'],
+        'datasetId': value['datasetId'],
     };
 }
 
