@@ -18,6 +18,11 @@ import {
     AuditEventFromJSON,
     AuditEventToJSON,
 } from '../models/AuditEvent';
+import {
+    type PaginatedResponseAuditEventDto,
+    PaginatedResponseAuditEventDtoFromJSON,
+    PaginatedResponseAuditEventDtoToJSON,
+} from '../models/PaginatedResponseAuditEventDto';
 
 export interface GetEventRequest {
     auditEventId: string;
@@ -27,6 +32,8 @@ export interface ListEventsRequest {
     username?: string;
     entityType?: ListEventsEntityTypeEnum;
     entityId?: string;
+    limit?: number;
+    nextToken?: string;
 }
 
 /**
@@ -49,6 +56,14 @@ export class AuditApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
 
         let urlPath = `/audit-events/{auditEventId}`;
         urlPath = urlPath.replace('{auditEventId}', encodeURIComponent(String(requestParameters['auditEventId'])));
@@ -99,8 +114,24 @@ export class AuditApi extends runtime.BaseAPI {
             queryParameters['entityId'] = requestParameters['entityId'];
         }
 
+        if (requestParameters['limit'] != null) {
+            queryParameters['limit'] = requestParameters['limit'];
+        }
+
+        if (requestParameters['nextToken'] != null) {
+            queryParameters['nextToken'] = requestParameters['nextToken'];
+        }
+
         const headerParameters: runtime.HTTPHeaders = {};
 
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
 
         let urlPath = `/audit-events`;
 
@@ -116,18 +147,18 @@ export class AuditApi extends runtime.BaseAPI {
      * Gets a list of audit events
      * List audit events
      */
-    async listEventsRaw(requestParameters: ListEventsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<AuditEvent>>> {
+    async listEventsRaw(requestParameters: ListEventsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PaginatedResponseAuditEventDto>> {
         const requestOptions = await this.listEventsRequestOpts(requestParameters);
         const response = await this.request(requestOptions, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(AuditEventFromJSON));
+        return new runtime.JSONApiResponse(response, (jsonValue) => PaginatedResponseAuditEventDtoFromJSON(jsonValue));
     }
 
     /**
      * Gets a list of audit events
      * List audit events
      */
-    async listEvents(requestParameters: ListEventsRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<AuditEvent>> {
+    async listEvents(requestParameters: ListEventsRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<PaginatedResponseAuditEventDto> {
         const response = await this.listEventsRaw(requestParameters, initOverrides);
         return await response.value();
     }

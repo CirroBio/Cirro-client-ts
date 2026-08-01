@@ -111,6 +111,7 @@ export * from './MoveDatasetInput';
 export * from './MoveDatasetResponse';
 export * from './NamedItem';
 export * from './PaginatedResponseAppRegistrationDto';
+export * from './PaginatedResponseAuditEventDto';
 export * from './PaginatedResponseDatasetListDto';
 export * from './PaginatedResponseDiscussion';
 export * from './PaginatedResponseMessage';
