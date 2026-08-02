@@ -138,6 +138,7 @@ src/models/MoveDatasetInput.ts
 src/models/MoveDatasetResponse.ts
 src/models/NamedItem.ts
 src/models/PaginatedResponseAppRegistrationDto.ts
+src/models/PaginatedResponseAuditEventDto.ts
 src/models/PaginatedResponseDatasetListDto.ts
 src/models/PaginatedResponseDiscussion.ts
 src/models/PaginatedResponseMessage.ts

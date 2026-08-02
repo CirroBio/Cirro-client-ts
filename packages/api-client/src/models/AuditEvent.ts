@@ -74,6 +74,18 @@ export interface AuditEvent {
      */
     ipAddress?: string;
     /**
+     * The user agent of the user who performed the action
+     * @type {string}
+     * @memberof AuditEvent
+     */
+    userAgent?: string;
+    /**
+     * The ID of the Cirro app that performed the action (if applicable)
+     * @type {string}
+     * @memberof AuditEvent
+     */
+    appId?: string;
+    /**
      * The date and time the event was created
      * @type {Date}
      * @memberof AuditEvent
@@ -107,6 +119,8 @@ export function AuditEventFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'changes': json['changes'] == null ? undefined : json['changes'],
         'username': json['username'] == null ? undefined : json['username'],
         'ipAddress': json['ipAddress'] == null ? undefined : json['ipAddress'],
+        'userAgent': json['userAgent'] == null ? undefined : json['userAgent'],
+        'appId': json['appId'] == null ? undefined : json['appId'],
         'createdAt': json['createdAt'] == null ? undefined : (new Date(json['createdAt'])),
     };
 }
@@ -131,6 +145,8 @@ export function AuditEventToJSONTyped(value?: AuditEvent | null, ignoreDiscrimin
         'changes': value['changes'],
         'username': value['username'],
         'ipAddress': value['ipAddress'],
+        'userAgent': value['userAgent'],
+        'appId': value['appId'],
         'createdAt': value['createdAt'] == null ? value['createdAt'] : value['createdAt'].toISOString(),
     };
 }
