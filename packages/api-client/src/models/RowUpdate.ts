@@ -26,7 +26,7 @@ export interface RowUpdate {
      */
     rowId: number;
     /**
-     * Column name and new value. Only the columns included here are updated; all other columns on the row are left unchanged. At least one entry is required.
+     * Column name and new value. Only the columns included here are updated; all other columns on the row are left unchanged. At least one entry is required. CIRRO_FILE column values are objects with datasetId and path (relative to the dataset's data directory).
      * @type {{ [key: string]: object; }}
      * @memberof RowUpdate
      */
