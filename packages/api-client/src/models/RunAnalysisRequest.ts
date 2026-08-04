@@ -13,6 +13,13 @@
  */
 
 import { mapValues } from '../runtime';
+import type { EnvironmentType } from './EnvironmentType';
+import {
+    EnvironmentTypeFromJSON,
+    EnvironmentTypeFromJSONTyped,
+    EnvironmentTypeToJSON,
+    EnvironmentTypeToJSONTyped,
+} from './EnvironmentType';
 import type { Tag } from './Tag';
 import {
     TagFromJSON,
@@ -88,12 +95,20 @@ export interface RunAnalysisRequest {
      */
     computeEnvironmentId?: string | null;
     /**
+     * The type of execution environment to run the workflow in, if not specified, the default for the pipeline is used
+     * @type {EnvironmentType}
+     * @memberof RunAnalysisRequest
+     */
+    environmentType?: EnvironmentType | null;
+    /**
      * List of tags to apply to the dataset
      * @type {Array<Tag>}
      * @memberof RunAnalysisRequest
      */
     tags?: Array<Tag> | null;
 }
+
+
 
 /**
  * Check if a given object implements the RunAnalysisRequest interface.
@@ -127,6 +142,7 @@ export function RunAnalysisRequestFromJSONTyped(json: any, ignoreDiscriminator: 
         'params': json['params'],
         'notificationEmails': json['notificationEmails'],
         'computeEnvironmentId': json['computeEnvironmentId'] == null ? undefined : json['computeEnvironmentId'],
+        'environmentType': json['environmentType'] == null ? undefined : EnvironmentTypeFromJSON(json['environmentType']),
         'tags': json['tags'] == null ? undefined : ((json['tags'] as Array<any>).map(TagFromJSON)),
     };
 }
@@ -152,6 +168,7 @@ export function RunAnalysisRequestToJSONTyped(value?: RunAnalysisRequest | null,
         'params': value['params'],
         'notificationEmails': value['notificationEmails'],
         'computeEnvironmentId': value['computeEnvironmentId'],
+        'environmentType': EnvironmentTypeToJSON(value['environmentType']),
         'tags': value['tags'] == null ? undefined : ((value['tags'] as Array<any>).map(TagToJSON)),
     };
 }
