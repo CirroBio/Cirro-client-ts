@@ -13,6 +13,13 @@
  */
 
 import { mapValues } from '../runtime';
+import type { NextflowVersion } from './NextflowVersion';
+import {
+    NextflowVersionFromJSON,
+    NextflowVersionFromJSONTyped,
+    NextflowVersionToJSON,
+    NextflowVersionToJSONTyped,
+} from './NextflowVersion';
 import type { RepositoryType } from './RepositoryType';
 import {
     RepositoryTypeFromJSON,
@@ -52,11 +59,11 @@ export interface PipelineCode {
      */
     entryPoint: string;
     /**
-     * Version of the executor
-     * @type {string}
+     * Nextflow version used to run the pipeline; must be one of the supported versions
+     * @type {NextflowVersion}
      * @memberof PipelineCode
      */
-    executorVersion?: string | null;
+    executorVersion?: NextflowVersion | null;
 }
 
 
@@ -86,7 +93,7 @@ export function PipelineCodeFromJSONTyped(json: any, ignoreDiscriminator: boolea
         'version': json['version'],
         'repositoryType': RepositoryTypeFromJSON(json['repositoryType']),
         'entryPoint': json['entryPoint'],
-        'executorVersion': json['executorVersion'] == null ? undefined : json['executorVersion'],
+        'executorVersion': json['executorVersion'] == null ? undefined : NextflowVersionFromJSON(json['executorVersion']),
     };
 }
 
@@ -105,7 +112,7 @@ export function PipelineCodeToJSONTyped(value?: PipelineCode | null, ignoreDiscr
         'version': value['version'],
         'repositoryType': RepositoryTypeToJSON(value['repositoryType']),
         'entryPoint': value['entryPoint'],
-        'executorVersion': value['executorVersion'],
+        'executorVersion': NextflowVersionToJSON(value['executorVersion']),
     };
 }
 

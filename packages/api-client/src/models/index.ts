@@ -110,6 +110,7 @@ export * from './MountedDataset';
 export * from './MoveDatasetInput';
 export * from './MoveDatasetResponse';
 export * from './NamedItem';
+export * from './NextflowVersion';
 export * from './PaginatedResponseAppRegistrationDto';
 export * from './PaginatedResponseAuditEventDto';
 export * from './PaginatedResponseDatasetListDto';
