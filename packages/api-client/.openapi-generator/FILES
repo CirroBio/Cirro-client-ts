@@ -64,7 +64,9 @@ src/models/ComputeEnvironmentConfigurationInput.ts
 src/models/ConfigSource.ts
 src/models/Contact.ts
 src/models/ContactInput.ts
+src/models/CostComponent.ts
 src/models/CostResponse.ts
+src/models/CostSource.ts
 src/models/CreateProjectAccessRequest.ts
 src/models/CreateReferenceRequest.ts
 src/models/CreateResponse.ts

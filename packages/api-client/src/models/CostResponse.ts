@@ -20,6 +20,13 @@ import {
     TaskCostToJSON,
     TaskCostToJSONTyped,
 } from './TaskCost';
+import type { CostComponent } from './CostComponent';
+import {
+    CostComponentFromJSON,
+    CostComponentFromJSONTyped,
+    CostComponentToJSON,
+    CostComponentToJSONTyped,
+} from './CostComponent';
 import type { GroupCost } from './GroupCost';
 import {
     GroupCostFromJSON,
@@ -27,6 +34,13 @@ import {
     GroupCostToJSON,
     GroupCostToJSONTyped,
 } from './GroupCost';
+import type { CostSource } from './CostSource';
+import {
+    CostSourceFromJSON,
+    CostSourceFromJSONTyped,
+    CostSourceToJSON,
+    CostSourceToJSONTyped,
+} from './CostSource';
 
 /**
  * 
@@ -58,7 +72,27 @@ export interface CostResponse {
      * @memberof CostResponse
      */
     isEstimate?: boolean;
+    /**
+     * Run storage cost, included in totalCost; null when not reported by the billing source
+     * @type {number}
+     * @memberof CostResponse
+     */
+    storageCost?: number | null;
+    /**
+     * How this cost was derived: BATCH_MODEL (regression model) or OMICS_MANIFEST (HealthOmics run manifest at published prices)
+     * @type {CostSource}
+     * @memberof CostResponse
+     */
+    costSource?: CostSource;
+    /**
+     * Billed components known to be excluded from totalCost (e.g. run storage when usage was not reported)
+     * @type {Array<CostComponent>}
+     * @memberof CostResponse
+     */
+    omittedComponents?: Array<CostComponent> | null;
 }
+
+
 
 /**
  * Check if a given object implements the CostResponse interface.
@@ -81,6 +115,9 @@ export function CostResponseFromJSONTyped(json: any, ignoreDiscriminator: boolea
         'groups': json['groups'] == null ? undefined : ((json['groups'] as Array<any>).map(GroupCostFromJSON)),
         'tasks': json['tasks'] == null ? undefined : ((json['tasks'] as Array<any>).map(TaskCostFromJSON)),
         'isEstimate': json['isEstimate'] == null ? undefined : json['isEstimate'],
+        'storageCost': json['storageCost'] == null ? undefined : json['storageCost'],
+        'costSource': json['costSource'] == null ? undefined : CostSourceFromJSON(json['costSource']),
+        'omittedComponents': json['omittedComponents'] == null ? undefined : ((json['omittedComponents'] as Array<any>).map(CostComponentFromJSON)),
     };
 }
 
@@ -99,6 +136,9 @@ export function CostResponseToJSONTyped(value?: CostResponse | null, ignoreDiscr
         'groups': value['groups'] == null ? undefined : ((value['groups'] as Array<any>).map(GroupCostToJSON)),
         'tasks': value['tasks'] == null ? undefined : ((value['tasks'] as Array<any>).map(TaskCostToJSON)),
         'isEstimate': value['isEstimate'],
+        'storageCost': value['storageCost'],
+        'costSource': CostSourceToJSON(value['costSource']),
+        'omittedComponents': value['omittedComponents'] == null ? undefined : ((value['omittedComponents'] as Array<any>).map(CostComponentToJSON)),
     };
 }
 
