@@ -19,13 +19,11 @@
  */
 export enum SemanticColumnType {
     Standard = 'STANDARD',
-    EntityName = 'ENTITY_NAME',
-    EntityKey = 'ENTITY_KEY',
     EnumSingle = 'ENUM_SINGLE',
     EnumMulti = 'ENUM_MULTI',
     Url = 'URL',
     CirroFile = 'CIRRO_FILE',
-    DatasetLink = 'DATASET_LINK',
+    CirroFolder = 'CIRRO_FOLDER',
     ForeignKey = 'FOREIGN_KEY'
 }
 

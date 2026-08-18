@@ -19,6 +19,11 @@ import {
     AWSCredentialsToJSON,
 } from '../models/AWSCredentials';
 import {
+    type DatasetSource,
+    DatasetSourceFromJSON,
+    DatasetSourceToJSON,
+} from '../models/DatasetSource';
+import {
     type GenerateSftpCredentialsRequest,
     GenerateSftpCredentialsRequestFromJSON,
     GenerateSftpCredentialsRequestToJSON,
@@ -29,15 +34,30 @@ import {
     GovernanceFileAccessRequestToJSON,
 } from '../models/GovernanceFileAccessRequest';
 import {
+    type ProjectFile,
+    ProjectFileFromJSON,
+    ProjectFileToJSON,
+} from '../models/ProjectFile';
+import {
     type ProjectFileAccessRequest,
     ProjectFileAccessRequestFromJSON,
     ProjectFileAccessRequestToJSON,
 } from '../models/ProjectFileAccessRequest';
 import {
+    type ProjectFileQueryResponse,
+    ProjectFileQueryResponseFromJSON,
+    ProjectFileQueryResponseToJSON,
+} from '../models/ProjectFileQueryResponse';
+import {
     type SftpCredentials,
     SftpCredentialsFromJSON,
     SftpCredentialsToJSON,
 } from '../models/SftpCredentials';
+import {
+    type SqlSortOrder,
+    SqlSortOrderFromJSON,
+    SqlSortOrderToJSON,
+} from '../models/SqlSortOrder';
 
 export interface GenerateGovernanceFileAccessTokenRequest {
     requirementId: string;
@@ -52,6 +72,28 @@ export interface GenerateProjectFileAccessTokenRequest {
 export interface GenerateProjectSftpTokenRequest {
     projectId: string;
     generateSftpCredentialsRequest: GenerateSftpCredentialsRequest;
+}
+
+export interface GetProjectFileRequest {
+    projectId: string;
+    datasetId: string;
+}
+
+export interface QueryProjectFilesRequest {
+    projectId: string;
+    source?: DatasetSource | null;
+    fileType?: string | null;
+    datasetId?: string | null;
+    processId?: string | null;
+    createdBy?: string | null;
+    pathContains?: string | null;
+    minSize?: number | null;
+    maxSize?: number | null;
+    createdAfter?: Date | null;
+    createdBefore?: Date | null;
+    sortOrder?: SqlSortOrder | null;
+    limit?: number | null;
+    nextToken?: string | null;
 }
 
 /**
@@ -251,6 +293,176 @@ export class FileApi extends runtime.BaseAPI {
      */
     async generateProjectSftpToken(requestParameters: GenerateProjectSftpTokenRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SftpCredentials> {
         const response = await this.generateProjectSftpTokenRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Creates request options for getProjectFile without sending the request
+     */
+    async getProjectFileRequestOpts(requestParameters: GetProjectFileRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling getProjectFile().'
+            );
+        }
+
+        if (requestParameters['datasetId'] == null) {
+            throw new runtime.RequiredError(
+                'datasetId',
+                'Required parameter "datasetId" was null or undefined when calling getProjectFile().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/projects/{projectId}/files/{datasetId}/path`;
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+        urlPath = urlPath.replace('{datasetId}', encodeURIComponent(String(requestParameters['datasetId'])));
+
+        return {
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        };
+    }
+
+    /**
+     * Fetches details on a single file given its dataset ID and relative path.
+     * Get a project file
+     */
+    async getProjectFileRaw(requestParameters: GetProjectFileRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ProjectFile>> {
+        const requestOptions = await this.getProjectFileRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => ProjectFileFromJSON(jsonValue));
+    }
+
+    /**
+     * Fetches details on a single file given its dataset ID and relative path.
+     * Get a project file
+     */
+    async getProjectFile(requestParameters: GetProjectFileRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ProjectFile> {
+        const response = await this.getProjectFileRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Creates request options for queryProjectFiles without sending the request
+     */
+    async queryProjectFilesRequestOpts(requestParameters: QueryProjectFilesRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling queryProjectFiles().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters['source'] != null) {
+            queryParameters['source'] = requestParameters['source'];
+        }
+
+        if (requestParameters['fileType'] != null) {
+            queryParameters['fileType'] = requestParameters['fileType'];
+        }
+
+        if (requestParameters['datasetId'] != null) {
+            queryParameters['datasetId'] = requestParameters['datasetId'];
+        }
+
+        if (requestParameters['processId'] != null) {
+            queryParameters['processId'] = requestParameters['processId'];
+        }
+
+        if (requestParameters['createdBy'] != null) {
+            queryParameters['createdBy'] = requestParameters['createdBy'];
+        }
+
+        if (requestParameters['pathContains'] != null) {
+            queryParameters['pathContains'] = requestParameters['pathContains'];
+        }
+
+        if (requestParameters['minSize'] != null) {
+            queryParameters['minSize'] = requestParameters['minSize'];
+        }
+
+        if (requestParameters['maxSize'] != null) {
+            queryParameters['maxSize'] = requestParameters['maxSize'];
+        }
+
+        if (requestParameters['createdAfter'] != null) {
+            queryParameters['createdAfter'] = (requestParameters['createdAfter'] as any).toISOString();
+        }
+
+        if (requestParameters['createdBefore'] != null) {
+            queryParameters['createdBefore'] = (requestParameters['createdBefore'] as any).toISOString();
+        }
+
+        if (requestParameters['sortOrder'] != null) {
+            queryParameters['sortOrder'] = requestParameters['sortOrder'];
+        }
+
+        if (requestParameters['limit'] != null) {
+            queryParameters['limit'] = requestParameters['limit'];
+        }
+
+        if (requestParameters['nextToken'] != null) {
+            queryParameters['nextToken'] = requestParameters['nextToken'];
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/projects/{projectId}/files`;
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+
+        return {
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        };
+    }
+
+    /**
+     * Queries the project for files, with optional filtering, sorting, and pagination.
+     * Search project files
+     */
+    async queryProjectFilesRaw(requestParameters: QueryProjectFilesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ProjectFileQueryResponse>> {
+        const requestOptions = await this.queryProjectFilesRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => ProjectFileQueryResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Queries the project for files, with optional filtering, sorting, and pagination.
+     * Search project files
+     */
+    async queryProjectFiles(requestParameters: QueryProjectFilesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ProjectFileQueryResponse> {
+        const response = await this.queryProjectFilesRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

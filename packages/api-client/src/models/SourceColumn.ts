@@ -38,7 +38,7 @@ export interface SourceColumn {
      */
     sheetColumn: string;
     /**
-     * Dataset holding the referenced files. Required when the target sheet column is CIRRO_FILE, forbidden otherwise; every path in the column must exist in this dataset.
+     * Dataset holding the referenced files or folders. Required when the target sheet column is CIRRO_FILE or CIRRO_FOLDER, forbidden otherwise.
      * @type {string}
      * @memberof SourceColumn
      */

@@ -81,6 +81,7 @@ src/models/DatasetAssetsManifest.ts
 src/models/DatasetCondition.ts
 src/models/DatasetConditionField.ts
 src/models/DatasetDetail.ts
+src/models/DatasetSource.ts
 src/models/DatasetViz.ts
 src/models/DeleteRowsRequest.ts
 src/models/Discussion.ts
@@ -123,6 +124,7 @@ src/models/GovernanceTrainingVerification.ts
 src/models/GovernanceType.ts
 src/models/GroupCost.ts
 src/models/ImportDataRequest.ts
+src/models/IngestConflictMode.ts
 src/models/InsertRowsRequest.ts
 src/models/InviteUserRequest.ts
 src/models/InviteUserResponse.ts
@@ -139,6 +141,7 @@ src/models/MountedDataset.ts
 src/models/MoveDatasetInput.ts
 src/models/MoveDatasetResponse.ts
 src/models/NamedItem.ts
+src/models/NextflowVersion.ts
 src/models/PaginatedResponseAppRegistrationDto.ts
 src/models/PaginatedResponseAuditEventDto.ts
 src/models/PaginatedResponseDatasetListDto.ts
@@ -168,7 +171,9 @@ src/models/ProjectAccessRequest.ts
 src/models/ProjectAccessType.ts
 src/models/ProjectCreateOptions.ts
 src/models/ProjectDetail.ts
+src/models/ProjectFile.ts
 src/models/ProjectFileAccessRequest.ts
+src/models/ProjectFileQueryResponse.ts
 src/models/ProjectInput.ts
 src/models/ProjectMetrics.ts
 src/models/ProjectPermissionSet.ts
@@ -235,6 +240,7 @@ src/models/Task.ts
 src/models/TaskCost.ts
 src/models/TaskLogSource.ts
 src/models/TenantInfo.ts
+src/models/TenantMetrics.ts
 src/models/UpdateDatasetRequest.ts
 src/models/UpdateRowsRequest.ts
 src/models/UpdateUserRequest.ts
