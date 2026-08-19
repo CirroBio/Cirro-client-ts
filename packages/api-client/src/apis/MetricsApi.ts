@@ -18,6 +18,11 @@ import {
     ProjectMetricsFromJSON,
     ProjectMetricsToJSON,
 } from '../models/ProjectMetrics';
+import {
+    type TenantMetrics,
+    TenantMetricsFromJSON,
+    TenantMetricsToJSON,
+} from '../models/TenantMetrics';
 
 export interface GetProjectMetricsRequest {
     projectId: string;
@@ -72,6 +77,53 @@ export class MetricsApi extends runtime.BaseAPI {
      */
     async getAllMetrics(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<ProjectMetrics>> {
         const response = await this.getAllMetricsRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Creates request options for getMetricsSummary without sending the request
+     */
+    async getMetricsSummaryRequestOpts(): Promise<runtime.RequestOpts> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/metrics-summary`;
+
+        return {
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        };
+    }
+
+    /**
+     * Retrieves summary of tenant (item counts)
+     * Get tenant metric summary
+     */
+    async getMetricsSummaryRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<TenantMetrics>> {
+        const requestOptions = await this.getMetricsSummaryRequestOpts();
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => TenantMetricsFromJSON(jsonValue));
+    }
+
+    /**
+     * Retrieves summary of tenant (item counts)
+     * Get tenant metric summary
+     */
+    async getMetricsSummary(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<TenantMetrics> {
+        const response = await this.getMetricsSummaryRaw(initOverrides);
         return await response.value();
     }
 

@@ -27,6 +27,13 @@ import {
     SourceColumnToJSON,
     SourceColumnToJSONTyped,
 } from './SourceColumn';
+import type { IngestConflictMode } from './IngestConflictMode';
+import {
+    IngestConflictModeFromJSON,
+    IngestConflictModeFromJSONTyped,
+    IngestConflictModeToJSON,
+    IngestConflictModeToJSONTyped,
+} from './IngestConflictMode';
 
 /**
  * 
@@ -46,7 +53,21 @@ export interface SheetIngestRequest {
      * @memberof SheetIngestRequest
      */
     sourceColumns?: Array<SourceColumn> | null;
+    /**
+     * How to handle rows colliding with a unique column: fail the job (default), skip them, or overwrite the stored rows. SKIP and OVERWRITE require the sheet to have a unique column.
+     * @type {IngestConflictMode}
+     * @memberof SheetIngestRequest
+     */
+    onConflict?: IngestConflictMode | null;
+    /**
+     * Unique column OVERWRITE replaces on. Required when the sheet has several unique columns; inferred when it has one.
+     * @type {string}
+     * @memberof SheetIngestRequest
+     */
+    conflictColumn?: string | null;
 }
+
+
 
 /**
  * Check if a given object implements the SheetIngestRequest interface.
@@ -68,6 +89,8 @@ export function SheetIngestRequestFromJSONTyped(json: any, ignoreDiscriminator: 
         
         'fileDef': FileDefFromJSON(json['fileDef']),
         'sourceColumns': json['sourceColumns'] == null ? undefined : ((json['sourceColumns'] as Array<any>).map(SourceColumnFromJSON)),
+        'onConflict': json['onConflict'] == null ? undefined : IngestConflictModeFromJSON(json['onConflict']),
+        'conflictColumn': json['conflictColumn'] == null ? undefined : json['conflictColumn'],
     };
 }
 
@@ -84,6 +107,8 @@ export function SheetIngestRequestToJSONTyped(value?: SheetIngestRequest | null,
         
         'fileDef': FileDefToJSON(value['fileDef']),
         'sourceColumns': value['sourceColumns'] == null ? undefined : ((value['sourceColumns'] as Array<any>).map(SourceColumnToJSON)),
+        'onConflict': IngestConflictModeToJSON(value['onConflict']),
+        'conflictColumn': value['conflictColumn'],
     };
 }
 

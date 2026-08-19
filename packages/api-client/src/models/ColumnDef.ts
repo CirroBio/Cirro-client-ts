@@ -101,6 +101,12 @@ export interface ColumnDef {
      * @memberof ColumnDef
      */
     required?: boolean;
+    /**
+     * Whether values in this column must be unique across the sheet (NULLs exempt). Set when the column is created; enforced at write time by the application.
+     * @type {boolean}
+     * @memberof ColumnDef
+     */
+    unique?: boolean;
 }
 
 
@@ -134,6 +140,7 @@ export function ColumnDefFromJSONTyped(json: any, ignoreDiscriminator: boolean):
         'description': json['description'] == null ? undefined : json['description'],
         'foreignKey': json['foreignKey'] == null ? undefined : ForeignKeyRefFromJSON(json['foreignKey']),
         'required': json['required'] == null ? undefined : json['required'],
+        'unique': json['unique'] == null ? undefined : json['unique'],
     };
 }
 
@@ -158,6 +165,7 @@ export function ColumnDefToJSONTyped(value?: ColumnDef | null, ignoreDiscriminat
         'description': value['description'],
         'foreignKey': ForeignKeyRefToJSON(value['foreignKey']),
         'required': value['required'],
+        'unique': value['unique'],
     };
 }
 
