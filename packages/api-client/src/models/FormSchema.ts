@@ -26,17 +26,11 @@ export interface FormSchema {
      */
     form?: { [key: string]: any; };
     /**
-     * Describes how the form should be rendered, see rjsf
+     * Describes how the form should be rendered on the UI, see rjsf
      * @type {{ [key: string]: any; }}
      * @memberof FormSchema
      */
     ui?: { [key: string]: any; };
-    /**
-     * JSONSchema for validating sample metadata
-     * @type {{ [key: string]: any; }}
-     * @memberof FormSchema
-     */
-    metadataRequirements?: { [key: string]: any; };
 }
 
 /**
@@ -58,7 +52,6 @@ export function FormSchemaFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         
         'form': json['form'] == null ? undefined : json['form'],
         'ui': json['ui'] == null ? undefined : json['ui'],
-        'metadataRequirements': json['metadataRequirements'] == null ? undefined : json['metadataRequirements'],
     };
 }
 
@@ -75,7 +68,6 @@ export function FormSchemaToJSONTyped(value?: FormSchema | null, ignoreDiscrimin
         
         'form': value['form'],
         'ui': value['ui'],
-        'metadataRequirements': value['metadataRequirements'],
     };
 }
 

@@ -198,6 +198,7 @@ export class MetadataApi extends runtime.BaseAPI {
 
     /**
      * Creates request options for getProjectSchema without sending the request
+     * @deprecated
      */
     async getProjectSchemaRequestOpts(requestParameters: GetProjectSchemaRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['projectId'] == null) {
@@ -233,6 +234,7 @@ export class MetadataApi extends runtime.BaseAPI {
 
     /**
      * Get project metadata schema
+     * @deprecated
      */
     async getProjectSchemaRaw(requestParameters: GetProjectSchemaRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FormSchema>> {
         const requestOptions = await this.getProjectSchemaRequestOpts(requestParameters);
@@ -243,6 +245,7 @@ export class MetadataApi extends runtime.BaseAPI {
 
     /**
      * Get project metadata schema
+     * @deprecated
      */
     async getProjectSchema(requestParameters: GetProjectSchemaRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<FormSchema> {
         const response = await this.getProjectSchemaRaw(requestParameters, initOverrides);
@@ -314,6 +317,7 @@ export class MetadataApi extends runtime.BaseAPI {
 
     /**
      * Creates request options for updateProjectSchema without sending the request
+     * @deprecated
      */
     async updateProjectSchemaRequestOpts(requestParameters: UpdateProjectSchemaRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['projectId'] == null) {
@@ -359,6 +363,7 @@ export class MetadataApi extends runtime.BaseAPI {
 
     /**
      * Update project metadata schema
+     * @deprecated
      */
     async updateProjectSchemaRaw(requestParameters: UpdateProjectSchemaRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
         const requestOptions = await this.updateProjectSchemaRequestOpts(requestParameters);
@@ -369,6 +374,7 @@ export class MetadataApi extends runtime.BaseAPI {
 
     /**
      * Update project metadata schema
+     * @deprecated
      */
     async updateProjectSchema(requestParameters: UpdateProjectSchemaRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.updateProjectSchemaRaw(requestParameters, initOverrides);
