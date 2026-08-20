@@ -1415,7 +1415,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@cirrobio/react-auth@npm:^0.0.7, @cirrobio/react-auth@workspace:packages/react-auth":
+"@cirrobio/react-auth@npm:^0.0.8, @cirrobio/react-auth@workspace:packages/react-auth":
   version: 0.0.0-use.local
   resolution: "@cirrobio/react-auth@workspace:packages/react-auth"
   dependencies:
@@ -1448,7 +1448,7 @@ __metadata:
   resolution: "@cirrobio/react-tool@workspace:packages/react-tool"
   dependencies:
     "@cirrobio/api-client": "npm:^0.13.0"
-    "@cirrobio/react-auth": "npm:^0.0.7"
+    "@cirrobio/react-auth": "npm:^0.0.8"
     "@cirrobio/react-core": "npm:^0.0.4"
     "@cirrobio/sdk": "npm:^0.13.0"
   peerDependencies:

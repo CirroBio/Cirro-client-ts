@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@cirrobio/api-client": "^0.13.0",
-    "@cirrobio/react-auth": "^0.0.7",
+    "@cirrobio/react-auth": "^0.0.8",
     "@cirrobio/react-core": "^0.0.4",
     "@cirrobio/sdk": "^0.13.0"
   },
