@@ -23,7 +23,6 @@ export enum ProcessResource {
     Output = 'output',
     Compute = 'compute',
     Preprocess = 'preprocess',
-    Metadata = 'metadata',
     Documentation = 'documentation'
 }
 

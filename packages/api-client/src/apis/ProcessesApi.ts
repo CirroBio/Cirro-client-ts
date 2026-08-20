@@ -44,11 +44,6 @@ import {
     FileRequirementsToJSON,
 } from '../models/FileRequirements';
 import {
-    type FormSchema,
-    FormSchemaFromJSON,
-    FormSchemaToJSON,
-} from '../models/FormSchema';
-import {
     type PaginatedResponseProcessRevisionDto,
     PaginatedResponseProcessRevisionDtoFromJSON,
     PaginatedResponseProcessRevisionDtoToJSON,
@@ -78,6 +73,11 @@ import {
     ProcessDocumentationFromJSON,
     ProcessDocumentationToJSON,
 } from '../models/ProcessDocumentation';
+import {
+    type ProcessParameterSchema,
+    ProcessParameterSchemaFromJSON,
+    ProcessParameterSchemaToJSON,
+} from '../models/ProcessParameterSchema';
 import {
     type ProcessResource,
     ProcessResourceFromJSON,
@@ -573,18 +573,18 @@ export class ProcessesApi extends runtime.BaseAPI {
      * Retrieves the input parameters for a process
      * Get process parameters
      */
-    async getProcessParametersRaw(requestParameters: GetProcessParametersRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<FormSchema>> {
+    async getProcessParametersRaw(requestParameters: GetProcessParametersRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ProcessParameterSchema>> {
         const requestOptions = await this.getProcessParametersRequestOpts(requestParameters);
         const response = await this.request(requestOptions, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => FormSchemaFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => ProcessParameterSchemaFromJSON(jsonValue));
     }
 
     /**
      * Retrieves the input parameters for a process
      * Get process parameters
      */
-    async getProcessParameters(requestParameters: GetProcessParametersRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<FormSchema> {
+    async getProcessParameters(requestParameters: GetProcessParametersRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ProcessParameterSchema> {
         const response = await this.getProcessParametersRaw(requestParameters, initOverrides);
         return await response.value();
     }

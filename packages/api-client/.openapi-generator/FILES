@@ -95,6 +95,7 @@ src/models/Executor.ts
 src/models/FeatureFlags.ts
 src/models/FileDef.ts
 src/models/FileEntry.ts
+src/models/FileFormat.ts
 src/models/FileMappingRule.ts
 src/models/FileNameMatch.ts
 src/models/FileNamePattern.ts
@@ -125,6 +126,7 @@ src/models/GovernanceType.ts
 src/models/GroupCost.ts
 src/models/ImportDataRequest.ts
 src/models/IngestConflictMode.ts
+src/models/InputFileRequirement.ts
 src/models/InsertRowsRequest.ts
 src/models/InviteUserRequest.ts
 src/models/InviteUserResponse.ts
@@ -160,6 +162,7 @@ src/models/PrincipalType.ts
 src/models/Process.ts
 src/models/ProcessDetail.ts
 src/models/ProcessDocumentation.ts
+src/models/ProcessParameterSchema.ts
 src/models/ProcessResource.ts
 src/models/ProcessResourceContent.ts
 src/models/ProcessRevision.ts
