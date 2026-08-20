@@ -28,7 +28,7 @@ export function LoginOptions({ loginProviders, onSelect, busy, success }: Readon
           variant="contained"
           color="secondary"
           fullWidth={true}
-          startIcon={<img style={{ maxHeight: '17px' }} alt={provider.name} src={provider.logoUrl} />}
+          startIcon={provider.logoUrl ? <img style={{ maxHeight: '17px' }} alt={provider.name} src={provider.logoUrl} /> : null}
           onClick={() => onSelect(provider.id)}
         >{provider.name}</Button>
       ))}
