@@ -39,6 +39,12 @@ export interface InputFileRequirement {
      * @memberof InputFileRequirement
      */
     schema: { [key: string]: any; };
+    /**
+     * Example data conforming to the schema, shown to the user as a starting point
+     * @type {{ [key: string]: any; }}
+     * @memberof InputFileRequirement
+     */
+    example?: { [key: string]: any; } | null;
 }
 
 
@@ -64,6 +70,7 @@ export function InputFileRequirementFromJSONTyped(json: any, ignoreDiscriminator
         
         'fileFormat': FileFormatFromJSON(json['fileFormat']),
         'schema': json['schema'],
+        'example': json['example'] == null ? undefined : json['example'],
     };
 }
 
@@ -80,6 +87,7 @@ export function InputFileRequirementToJSONTyped(value?: InputFileRequirement | n
         
         'fileFormat': FileFormatToJSON(value['fileFormat']),
         'schema': value['schema'],
+        'example': value['example'],
     };
 }
 
