@@ -68,6 +68,18 @@ export interface WorkspaceComputeConfig {
      */
     localPort?: number;
     /**
+     * Command to run in the container, overriding the image's default CMD. Provided as a list of executable and arguments (exec form). When null, the image's default is used.
+     * @type {Array<string>}
+     * @memberof WorkspaceComputeConfig
+     */
+    command?: Array<string> | null;
+    /**
+     * Linux user the container process runs as, as a username or numeric UID (optionally 'user:group' or 'uid:gid'). When null, the image's default user is used.
+     * @type {string}
+     * @memberof WorkspaceComputeConfig
+     */
+    user?: string | null;
+    /**
      * Custom IAM task role for the workspace ECS task. Provide either a role name (e.g., 'Cirro-CustomWorkspaceTaskRole-{projectShortCode}-{name}') or a full ARN (e.g., 'arn:aws:iam::{accountId}:role/Cirro-CustomWorkspaceTaskRole-{projectShortCode}-{name}'). Must belong to the project's AWS account.
      * @type {string}
      * @memberof WorkspaceComputeConfig
@@ -101,6 +113,8 @@ export function WorkspaceComputeConfigFromJSONTyped(json: any, ignoreDiscriminat
         'gpuModel': json['gpuModel'] == null ? undefined : json['gpuModel'],
         'environmentVariables': json['environmentVariables'] == null ? undefined : json['environmentVariables'],
         'localPort': json['localPort'] == null ? undefined : json['localPort'],
+        'command': json['command'] == null ? undefined : json['command'],
+        'user': json['user'] == null ? undefined : json['user'],
         'customTaskRoleArn': json['customTaskRoleArn'] == null ? undefined : json['customTaskRoleArn'],
     };
 }
@@ -124,6 +138,8 @@ export function WorkspaceComputeConfigToJSONTyped(value?: WorkspaceComputeConfig
         'gpuModel': value['gpuModel'],
         'environmentVariables': value['environmentVariables'],
         'localPort': value['localPort'],
+        'command': value['command'],
+        'user': value['user'],
         'customTaskRoleArn': value['customTaskRoleArn'],
     };
 }
