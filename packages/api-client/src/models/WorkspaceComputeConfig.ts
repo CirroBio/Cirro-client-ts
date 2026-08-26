@@ -68,7 +68,7 @@ export interface WorkspaceComputeConfig {
      */
     localPort?: number;
     /**
-     * Command to run in the container, overriding the image's default ENTRYPOINT/CMD. Provided as a list of executable and arguments (exec form). When null, the image's default is used.
+     * Command to run in the container, overriding the image's default CMD. Provided as a list of executable and arguments (exec form). When null, the image's default is used.
      * @type {Array<string>}
      * @memberof WorkspaceComputeConfig
      */
