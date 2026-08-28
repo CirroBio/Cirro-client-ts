@@ -27,9 +27,6 @@ export function FilterValuesInnerFromJSONTyped(json: any, ignoreDiscriminator: b
     if (json == null) {
         return json;
     }
-    if (typeof json === 'string') {
-        return json;
-    }
     if (typeof json === 'number') {
         return json;
     }
@@ -37,6 +34,9 @@ export function FilterValuesInnerFromJSONTyped(json: any, ignoreDiscriminator: b
         return json;
     }
     if (typeof json === 'boolean') {
+        return json;
+    }
+    if (typeof json === 'string') {
         return json;
     }
     return {} as any;
@@ -50,9 +50,6 @@ export function FilterValuesInnerToJSONTyped(value?: FilterValuesInner | null, i
     if (value == null) {
         return value;
     }
-    if (typeof value === 'string') {
-        return value;
-    }
     if (typeof value === 'number') {
         return value;
     }
@@ -60,6 +57,9 @@ export function FilterValuesInnerToJSONTyped(value?: FilterValuesInner | null, i
         return value;
     }
     if (typeof value === 'boolean') {
+        return value;
+    }
+    if (typeof value === 'string') {
         return value;
     }
     return {};

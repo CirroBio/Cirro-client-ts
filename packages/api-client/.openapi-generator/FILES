@@ -91,6 +91,7 @@ src/models/Entity.ts
 src/models/EntityType.ts
 src/models/EnvironmentType.ts
 src/models/ErrorMessage.ts
+src/models/ExecutionMode.ts
 src/models/Executor.ts
 src/models/FeatureFlags.ts
 src/models/FileDef.ts
