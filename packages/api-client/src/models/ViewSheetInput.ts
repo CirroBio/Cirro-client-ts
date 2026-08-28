@@ -71,6 +71,12 @@ export interface ViewSheetInput {
      */
     viewDefinition: ViewQueryRequest;
     /**
+     * True for a view resolved live at query time; false materializes it into a table (refreshed async). Immutable after create.
+     * @type {boolean}
+     * @memberof ViewSheetInput
+     */
+    virtual?: boolean;
+    /**
      * Tags for the sheet
      * @type {Array<Tag>}
      * @memberof ViewSheetInput
@@ -111,6 +117,7 @@ export function ViewSheetInputFromJSONTyped(json: any, ignoreDiscriminator: bool
         'tableName': json['tableName'],
         'auditReadAccess': json['auditReadAccess'] == null ? undefined : json['auditReadAccess'],
         'viewDefinition': ViewQueryRequestFromJSON(json['viewDefinition']),
+        'virtual': json['virtual'] == null ? undefined : json['virtual'],
         'tags': json['tags'] == null ? undefined : ((json['tags'] as Array<any>).map(TagFromJSON)),
         'sheetType': json['sheetType'] == null ? undefined : json['sheetType'],
     };
@@ -133,6 +140,7 @@ export function ViewSheetInputToJSONTyped(value?: ViewSheetInput | null, ignoreD
         'tableName': value['tableName'],
         'auditReadAccess': value['auditReadAccess'],
         'viewDefinition': ViewQueryRequestToJSON(value['viewDefinition']),
+        'virtual': value['virtual'],
         'tags': value['tags'] == null ? undefined : ((value['tags'] as Array<any>).map(TagToJSON)),
         'sheetType': value['sheetType'],
     };

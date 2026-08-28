@@ -41,6 +41,13 @@ import {
     CustomPipelineSettingsToJSON,
     CustomPipelineSettingsToJSONTyped,
 } from './CustomPipelineSettings';
+import type { ExecutionMode } from './ExecutionMode';
+import {
+    ExecutionModeFromJSON,
+    ExecutionModeFromJSONTyped,
+    ExecutionModeToJSON,
+    ExecutionModeToJSONTyped,
+} from './ExecutionMode';
 import type { Tag } from './Tag';
 import {
     TagFromJSON,
@@ -159,6 +166,12 @@ export interface CustomProcessInput {
      */
     usesSampleSheet?: boolean;
     /**
+     * Execution modes the pipeline supports
+     * @type {Array<ExecutionMode>}
+     * @memberof CustomProcessInput
+     */
+    executionModes?: Array<ExecutionMode> | null;
+    /**
      * 
      * @type {CustomPipelineSettings}
      * @memberof CustomProcessInput
@@ -226,6 +239,7 @@ export function CustomProcessInputFromJSONTyped(json: any, ignoreDiscriminator: 
         'isTenantWide': json['isTenantWide'] == null ? undefined : json['isTenantWide'],
         'allowMultipleSources': json['allowMultipleSources'] == null ? undefined : json['allowMultipleSources'],
         'usesSampleSheet': json['usesSampleSheet'] == null ? undefined : json['usesSampleSheet'],
+        'executionModes': json['executionModes'] == null ? undefined : ((json['executionModes'] as Array<any>).map(ExecutionModeFromJSON)),
         'customSettings': json['customSettings'] == null ? undefined : CustomPipelineSettingsFromJSON(json['customSettings']),
         'fileMappingRules': json['fileMappingRules'] == null ? undefined : ((json['fileMappingRules'] as Array<any>).map(FileMappingRuleFromJSON)),
         'tags': json['tags'] == null ? undefined : ((json['tags'] as Array<any>).map(TagFromJSON)),
@@ -260,6 +274,7 @@ export function CustomProcessInputToJSONTyped(value?: CustomProcessInput | null,
         'isTenantWide': value['isTenantWide'],
         'allowMultipleSources': value['allowMultipleSources'],
         'usesSampleSheet': value['usesSampleSheet'],
+        'executionModes': value['executionModes'] == null ? undefined : ((value['executionModes'] as Array<any>).map(ExecutionModeToJSON)),
         'customSettings': CustomPipelineSettingsToJSON(value['customSettings']),
         'fileMappingRules': value['fileMappingRules'] == null ? undefined : ((value['fileMappingRules'] as Array<any>).map(FileMappingRuleToJSON)),
         'tags': value['tags'] == null ? undefined : ((value['tags'] as Array<any>).map(TagToJSON)),

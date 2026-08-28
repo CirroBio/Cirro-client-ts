@@ -20,6 +20,13 @@ import {
     ExecutorToJSON,
     ExecutorToJSONTyped,
 } from './Executor';
+import type { ExecutionMode } from './ExecutionMode';
+import {
+    ExecutionModeFromJSON,
+    ExecutionModeFromJSONTyped,
+    ExecutionModeToJSON,
+    ExecutionModeToJSONTyped,
+} from './ExecutionMode';
 import type { Tag } from './Tag';
 import {
     TagFromJSON,
@@ -137,6 +144,12 @@ export interface Process {
      */
     usesSampleSheet: boolean;
     /**
+     * Execution modes the pipeline supports
+     * @type {Array<ExecutionMode>}
+     * @memberof Process
+     */
+    executionModes: Array<ExecutionMode>;
+    /**
      * Whether the process is marked as archived
      * @type {boolean}
      * @memberof Process
@@ -179,6 +192,7 @@ export function instanceOfProcess(value: object): value is Process {
     if (!('isTenantWide' in value) || value['isTenantWide'] === undefined) return false;
     if (!('allowMultipleSources' in value) || value['allowMultipleSources'] === undefined) return false;
     if (!('usesSampleSheet' in value) || value['usesSampleSheet'] === undefined) return false;
+    if (!('executionModes' in value) || value['executionModes'] === undefined) return false;
     if (!('isArchived' in value) || value['isArchived'] === undefined) return false;
     if (!('tags' in value) || value['tags'] === undefined) return false;
     return true;
@@ -211,6 +225,7 @@ export function ProcessFromJSONTyped(json: any, ignoreDiscriminator: boolean): P
         'isTenantWide': json['isTenantWide'],
         'allowMultipleSources': json['allowMultipleSources'],
         'usesSampleSheet': json['usesSampleSheet'],
+        'executionModes': ((json['executionModes'] as Array<any>).map(ExecutionModeFromJSON)),
         'isArchived': json['isArchived'],
         'createdAt': json['createdAt'] == null ? undefined : (new Date(json['createdAt'])),
         'updatedAt': json['updatedAt'] == null ? undefined : (new Date(json['updatedAt'])),
@@ -246,6 +261,7 @@ export function ProcessToJSONTyped(value?: Process | null, ignoreDiscriminator: 
         'isTenantWide': value['isTenantWide'],
         'allowMultipleSources': value['allowMultipleSources'],
         'usesSampleSheet': value['usesSampleSheet'],
+        'executionModes': ((value['executionModes'] as Array<any>).map(ExecutionModeToJSON)),
         'isArchived': value['isArchived'],
         'createdAt': value['createdAt'] == null ? value['createdAt'] : value['createdAt'].toISOString(),
         'updatedAt': value['updatedAt'] == null ? value['updatedAt'] : value['updatedAt'].toISOString(),

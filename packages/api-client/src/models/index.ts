@@ -64,6 +64,7 @@ export * from './Entity';
 export * from './EntityType';
 export * from './EnvironmentType';
 export * from './ErrorMessage';
+export * from './ExecutionMode';
 export * from './Executor';
 export * from './FeatureFlags';
 export * from './FileDef';

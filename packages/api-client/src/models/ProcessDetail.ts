@@ -41,6 +41,13 @@ import {
     CustomPipelineSettingsToJSON,
     CustomPipelineSettingsToJSONTyped,
 } from './CustomPipelineSettings';
+import type { ExecutionMode } from './ExecutionMode';
+import {
+    ExecutionModeFromJSON,
+    ExecutionModeFromJSONTyped,
+    ExecutionModeToJSON,
+    ExecutionModeToJSONTyped,
+} from './ExecutionMode';
 import type { Tag } from './Tag';
 import {
     TagFromJSON,
@@ -171,6 +178,12 @@ export interface ProcessDetail {
      */
     usesSampleSheet: boolean;
     /**
+     * Execution modes the pipeline supports
+     * @type {Array<ExecutionMode>}
+     * @memberof ProcessDetail
+     */
+    executionModes: Array<ExecutionMode>;
+    /**
      * Whether the process is marked as archived
      * @type {boolean}
      * @memberof ProcessDetail
@@ -231,6 +244,7 @@ export function instanceOfProcessDetail(value: object): value is ProcessDetail {
     if (!('isTenantWide' in value) || value['isTenantWide'] === undefined) return false;
     if (!('allowMultipleSources' in value) || value['allowMultipleSources'] === undefined) return false;
     if (!('usesSampleSheet' in value) || value['usesSampleSheet'] === undefined) return false;
+    if (!('executionModes' in value) || value['executionModes'] === undefined) return false;
     if (!('isArchived' in value) || value['isArchived'] === undefined) return false;
     if (!('tags' in value) || value['tags'] === undefined) return false;
     if (!('configSource' in value) || value['configSource'] === undefined) return false;
@@ -265,6 +279,7 @@ export function ProcessDetailFromJSONTyped(json: any, ignoreDiscriminator: boole
         'isTenantWide': json['isTenantWide'],
         'allowMultipleSources': json['allowMultipleSources'],
         'usesSampleSheet': json['usesSampleSheet'],
+        'executionModes': ((json['executionModes'] as Array<any>).map(ExecutionModeFromJSON)),
         'isArchived': json['isArchived'],
         'customSettings': json['customSettings'] == null ? undefined : CustomPipelineSettingsFromJSON(json['customSettings']),
         'fileMappingRules': json['fileMappingRules'] == null ? undefined : ((json['fileMappingRules'] as Array<any>).map(FileMappingRuleFromJSON)),
@@ -304,6 +319,7 @@ export function ProcessDetailToJSONTyped(value?: ProcessDetail | null, ignoreDis
         'isTenantWide': value['isTenantWide'],
         'allowMultipleSources': value['allowMultipleSources'],
         'usesSampleSheet': value['usesSampleSheet'],
+        'executionModes': ((value['executionModes'] as Array<any>).map(ExecutionModeToJSON)),
         'isArchived': value['isArchived'],
         'customSettings': CustomPipelineSettingsToJSON(value['customSettings']),
         'fileMappingRules': value['fileMappingRules'] == null ? undefined : ((value['fileMappingRules'] as Array<any>).map(FileMappingRuleToJSON)),

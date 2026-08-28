@@ -135,6 +135,12 @@ export interface SheetDetail {
      */
     viewDefinition?: ViewQueryRequest | null;
     /**
+     * True only for virtual (non-materialized) VIEW sheets.
+     * @type {boolean}
+     * @memberof SheetDetail
+     */
+    virtual?: boolean;
+    /**
      * When the view was last materialized. Null for TABLE sheets.
      * @type {Date}
      * @memberof SheetDetail
@@ -229,6 +235,7 @@ export function SheetDetailFromJSONTyped(json: any, ignoreDiscriminator: boolean
         'columns': json['columns'] == null ? undefined : ((json['columns'] as Array<any>).map(ColumnDefFromJSON)),
         'auditReadAccess': json['auditReadAccess'],
         'viewDefinition': json['viewDefinition'] == null ? undefined : ViewQueryRequestFromJSON(json['viewDefinition']),
+        'virtual': json['virtual'] == null ? undefined : json['virtual'],
         'lastRefreshedAt': json['lastRefreshedAt'] == null ? undefined : (new Date(json['lastRefreshedAt'])),
         'stagingUploadPath': json['stagingUploadPath'] == null ? undefined : json['stagingUploadPath'],
         'createdBy': json['createdBy'],
@@ -263,6 +270,7 @@ export function SheetDetailToJSONTyped(value?: SheetDetail | null, ignoreDiscrim
         'columns': value['columns'] == null ? undefined : ((value['columns'] as Array<any>).map(ColumnDefToJSON)),
         'auditReadAccess': value['auditReadAccess'],
         'viewDefinition': ViewQueryRequestToJSON(value['viewDefinition']),
+        'virtual': value['virtual'],
         'lastRefreshedAt': value['lastRefreshedAt'] == null ? value['lastRefreshedAt'] : value['lastRefreshedAt'].toISOString(),
         'stagingUploadPath': value['stagingUploadPath'],
         'createdBy': value['createdBy'],

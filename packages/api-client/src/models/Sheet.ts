@@ -105,6 +105,12 @@ export interface Sheet {
     sheetCreationMode: SheetCreationMode;
     /**
      * 
+     * @type {boolean}
+     * @memberof Sheet
+     */
+    virtual: boolean;
+    /**
+     * 
      * @type {Status}
      * @memberof Sheet
      */
@@ -161,6 +167,7 @@ export function instanceOfSheet(value: object): value is Sheet {
     if (!('projectId' in value) || value['projectId'] === undefined) return false;
     if (!('sheetType' in value) || value['sheetType'] === undefined) return false;
     if (!('sheetCreationMode' in value) || value['sheetCreationMode'] === undefined) return false;
+    if (!('virtual' in value) || value['virtual'] === undefined) return false;
     if (!('status' in value) || value['status'] === undefined) return false;
     if (!('createdBy' in value) || value['createdBy'] === undefined) return false;
     if (!('createdAt' in value) || value['createdAt'] === undefined) return false;
@@ -189,6 +196,7 @@ export function SheetFromJSONTyped(json: any, ignoreDiscriminator: boolean): She
         'projectId': json['projectId'],
         'sheetType': SheetTypeFromJSON(json['sheetType']),
         'sheetCreationMode': SheetCreationModeFromJSON(json['sheetCreationMode']),
+        'virtual': json['virtual'],
         'status': StatusFromJSON(json['status']),
         'createdBy': json['createdBy'],
         'createdAt': (new Date(json['createdAt'])),
@@ -218,6 +226,7 @@ export function SheetToJSONTyped(value?: Sheet | null, ignoreDiscriminator: bool
         'projectId': value['projectId'],
         'sheetType': SheetTypeToJSON(value['sheetType']),
         'sheetCreationMode': SheetCreationModeToJSON(value['sheetCreationMode']),
+        'virtual': value['virtual'],
         'status': StatusToJSON(value['status']),
         'createdBy': value['createdBy'],
         'createdAt': value['createdAt'].toISOString(),
