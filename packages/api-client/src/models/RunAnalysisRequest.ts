@@ -13,6 +13,13 @@
  */
 
 import { mapValues } from '../runtime';
+import type { StructuredFileInput } from './StructuredFileInput';
+import {
+    StructuredFileInputFromJSON,
+    StructuredFileInputFromJSONTyped,
+    StructuredFileInputToJSON,
+    StructuredFileInputToJSONTyped,
+} from './StructuredFileInput';
 import type { EnvironmentType } from './EnvironmentType';
 import {
     EnvironmentTypeFromJSON,
@@ -83,6 +90,12 @@ export interface RunAnalysisRequest {
      */
     params: { [key: string]: any; };
     /**
+     * Structured file inputs used in the workflow (can be empty), keyed by the input name on `inputFileRequirements`
+     * @type {{ [key: string]: StructuredFileInput; }}
+     * @memberof RunAnalysisRequest
+     */
+    structuredFileInputs?: { [key: string]: StructuredFileInput; } | null;
+    /**
      * Emails to notify upon workflow success or failure
      * @type {Array<string>}
      * @memberof RunAnalysisRequest
@@ -140,6 +153,7 @@ export function RunAnalysisRequestFromJSONTyped(json: any, ignoreDiscriminator: 
         'sourceSampleFilesMap': json['sourceSampleFilesMap'] == null ? undefined : json['sourceSampleFilesMap'],
         'resumeDatasetId': json['resumeDatasetId'] == null ? undefined : json['resumeDatasetId'],
         'params': json['params'],
+        'structuredFileInputs': json['structuredFileInputs'] == null ? undefined : (mapValues(json['structuredFileInputs'], StructuredFileInputFromJSON)),
         'notificationEmails': json['notificationEmails'],
         'computeEnvironmentId': json['computeEnvironmentId'] == null ? undefined : json['computeEnvironmentId'],
         'environmentType': json['environmentType'] == null ? undefined : EnvironmentTypeFromJSON(json['environmentType']),
@@ -166,6 +180,7 @@ export function RunAnalysisRequestToJSONTyped(value?: RunAnalysisRequest | null,
         'sourceSampleFilesMap': value['sourceSampleFilesMap'],
         'resumeDatasetId': value['resumeDatasetId'],
         'params': value['params'],
+        'structuredFileInputs': value['structuredFileInputs'] == null ? undefined : (mapValues(value['structuredFileInputs'], StructuredFileInputToJSON)),
         'notificationEmails': value['notificationEmails'],
         'computeEnvironmentId': value['computeEnvironmentId'],
         'environmentType': EnvironmentTypeToJSON(value['environmentType']),
