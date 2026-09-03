@@ -20,7 +20,7 @@ import { mapValues } from '../runtime';
  */
 export interface RowInsert {
     /**
-     * Column name and value. Any missing columns will have a null value (will error if column is required). CIRRO_FILE and CIRRO_FOLDER column values are objects with datasetId and path (relative to the dataset's data directory).
+     * Column name and value. Any missing columns will have a null value (will error if column is required). Cirro-typed columns hold Cirro URIs of the form cirro:<tenantId>:<projectId>:data:<datasetId>/<path> (scope segments may be empty; path relative to the dataset's data directory). CIRRO_DATASET cells reference the dataset itself and have no path.
      * @type {{ [key: string]: object; }}
      * @memberof RowInsert
      */

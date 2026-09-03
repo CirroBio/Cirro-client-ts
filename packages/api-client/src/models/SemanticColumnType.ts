@@ -24,6 +24,7 @@ export enum SemanticColumnType {
     Url = 'URL',
     CirroFile = 'CIRRO_FILE',
     CirroFolder = 'CIRRO_FOLDER',
+    CirroDataset = 'CIRRO_DATASET',
     ForeignKey = 'FOREIGN_KEY'
 }
 

@@ -48,7 +48,7 @@ export interface SheetIngestRequest {
      */
     fileDef: FileDef;
     /**
-     * List of file column to sheet column mapping. If null, requires the column headers to match the sheet column names.
+     * List of file column to sheet column mapping. A mapping targeting a CIRRO_FILE or CIRRO_FOLDER column either sets datasetId (file values are relative paths within that dataset) or omits it (file values are full Cirro URIs). A CIRRO_DATASET mapping either sets datasetId with no fileColumn/index (every row gets that dataset's URI) or reads full Cirro URIs from a file column. If null, requires the column headers to match the sheet column names.
      * @type {Array<SourceColumn>}
      * @memberof SheetIngestRequest
      */
