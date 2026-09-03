@@ -144,7 +144,6 @@ src/models/MountedDataset.ts
 src/models/MoveDatasetInput.ts
 src/models/MoveDatasetResponse.ts
 src/models/NamedItem.ts
-src/models/NextflowVersion.ts
 src/models/PaginatedResponseAppRegistrationDto.ts
 src/models/PaginatedResponseAuditEventDto.ts
 src/models/PaginatedResponseDatasetListDto.ts
