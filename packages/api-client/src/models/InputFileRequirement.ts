@@ -22,7 +22,7 @@ import {
 } from './FileFormat';
 
 /**
- * Defines a structured file that a pipeline requires as an input, and the schema used to validate it
+ * Defines a structured file that a pipeline accepts as an input, and the schema used to validate it
  * @export
  * @interface InputFileRequirement
  */
@@ -40,11 +40,11 @@ export interface InputFileRequirement {
      */
     schema: { [key: string]: any; };
     /**
-     * Example data conforming to the schema, shown to the user as a starting point
-     * @type {{ [key: string]: any; }}
+     * Example rows of data conforming to the schema, shown to the user as a starting point
+     * @type {Array<{ [key: string]: any; }>}
      * @memberof InputFileRequirement
      */
-    example?: { [key: string]: any; } | null;
+    examples?: Array<{ [key: string]: any; }> | null;
 }
 
 
@@ -70,7 +70,7 @@ export function InputFileRequirementFromJSONTyped(json: any, ignoreDiscriminator
         
         'fileFormat': FileFormatFromJSON(json['fileFormat']),
         'schema': json['schema'],
-        'example': json['example'] == null ? undefined : json['example'],
+        'examples': json['examples'] == null ? undefined : json['examples'],
     };
 }
 
@@ -87,7 +87,7 @@ export function InputFileRequirementToJSONTyped(value?: InputFileRequirement | n
         
         'fileFormat': FileFormatToJSON(value['fileFormat']),
         'schema': value['schema'],
-        'example': value['example'],
+        'examples': value['examples'],
     };
 }
 

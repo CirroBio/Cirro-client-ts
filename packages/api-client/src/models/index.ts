@@ -206,6 +206,7 @@ export * from './SourceColumn';
 export * from './SqlSortOrder';
 export * from './Status';
 export * from './StopExecutionResponse';
+export * from './StructuredFileInput';
 export * from './StructuredViewQueryRequest';
 export * from './SyncStatus';
 export * from './SystemInfoResponse';
