@@ -157,6 +157,12 @@ export interface ProjectDetail {
      * @memberof ProjectDetail
      */
     updatedAt: Date;
+    /**
+     * (Read-only) Whether analyses in this project can run on AWS HealthOmics
+     * @type {boolean}
+     * @memberof ProjectDetail
+     */
+    isOmicsAvailable?: boolean;
 }
 
 
@@ -210,6 +216,7 @@ export function ProjectDetailFromJSONTyped(json: any, ignoreDiscriminator: boole
         'createdBy': json['createdBy'],
         'createdAt': (new Date(json['createdAt'])),
         'updatedAt': (new Date(json['updatedAt'])),
+        'isOmicsAvailable': json['isOmicsAvailable'] == null ? undefined : json['isOmicsAvailable'],
     };
 }
 
@@ -241,6 +248,7 @@ export function ProjectDetailToJSONTyped(value?: ProjectDetail | null, ignoreDis
         'createdBy': value['createdBy'],
         'createdAt': value['createdAt'].toISOString(),
         'updatedAt': value['updatedAt'].toISOString(),
+        'isOmicsAvailable': value['isOmicsAvailable'],
     };
 }
 

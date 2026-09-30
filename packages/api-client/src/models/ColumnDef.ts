@@ -78,7 +78,7 @@ export interface ColumnDef {
      */
     semanticType?: SemanticColumnType | null;
     /**
-     * The allowed values for the column, only used for ENUM* types.
+     * The allowed values for an ENUM_SINGLE column.
      * @type {Array<string>}
      * @memberof ColumnDef
      */

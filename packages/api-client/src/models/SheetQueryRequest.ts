@@ -20,11 +20,12 @@ import { mapValues } from '../runtime';
  */
 export interface SheetQueryRequest {
     /**
-     * Namespace containing the sheets to query.
+     * Deprecated: no longer scopes name resolution — every namespace is on the engine's search path.
      * @type {string}
      * @memberof SheetQueryRequest
+     * @deprecated
      */
-    namespaceName: string;
+    namespaceName?: string | null;
     /**
      * Raw SQL query to run.
      * @type {string}
@@ -32,7 +33,7 @@ export interface SheetQueryRequest {
      */
     query: string;
     /**
-     * Maximum rows to return
+     * Maximum rows to return. Responses also have a size limit: with wide rows a large page can fail with a 502 — lower the limit if so.
      * @type {number}
      * @memberof SheetQueryRequest
      */
@@ -49,7 +50,6 @@ export interface SheetQueryRequest {
  * Check if a given object implements the SheetQueryRequest interface.
  */
 export function instanceOfSheetQueryRequest(value: object): value is SheetQueryRequest {
-    if (!('namespaceName' in value) || value['namespaceName'] === undefined) return false;
     if (!('query' in value) || value['query'] === undefined) return false;
     return true;
 }
@@ -64,7 +64,7 @@ export function SheetQueryRequestFromJSONTyped(json: any, ignoreDiscriminator: b
     }
     return {
         
-        'namespaceName': json['namespaceName'],
+        'namespaceName': json['namespaceName'] == null ? undefined : json['namespaceName'],
         'query': json['query'],
         'limit': json['limit'] == null ? undefined : json['limit'],
         'page': json['page'] == null ? undefined : json['page'],

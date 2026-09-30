@@ -26,6 +26,12 @@ export interface Task {
      */
     name: string;
     /**
+     * Hash of task from executor (used for caching)
+     * @type {string}
+     * @memberof Task
+     */
+    hash?: string | null;
+    /**
      * Job ID on the underlying execution environment (i.e. AWS Batch ID)
      * @type {string}
      * @memberof Task
@@ -113,6 +119,7 @@ export function TaskFromJSONTyped(json: any, ignoreDiscriminator: boolean): Task
     return {
         
         'name': json['name'],
+        'hash': json['hash'] == null ? undefined : json['hash'],
         'nativeJobId': json['nativeJobId'] == null ? undefined : json['nativeJobId'],
         'status': json['status'],
         'statusMessage': json['statusMessage'] == null ? undefined : json['statusMessage'],
@@ -139,6 +146,7 @@ export function TaskToJSONTyped(value?: Task | null, ignoreDiscriminator: boolea
     return {
         
         'name': value['name'],
+        'hash': value['hash'],
         'nativeJobId': value['nativeJobId'],
         'status': value['status'],
         'statusMessage': value['statusMessage'],

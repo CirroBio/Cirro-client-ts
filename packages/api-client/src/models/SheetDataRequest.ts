@@ -35,7 +35,7 @@ import {
  */
 export interface SheetDataRequest {
     /**
-     * Maximum rows to return
+     * Maximum rows to return. Responses also have a size limit: with wide rows a large page can fail with a 502 — lower the limit if so.
      * @type {number}
      * @memberof SheetDataRequest
      */

@@ -34,6 +34,11 @@ import {
     GetTaskFilesResponseToJSON,
 } from '../models/GetTaskFilesResponse';
 import {
+    type GetTaskLineageResponse,
+    GetTaskLineageResponseFromJSON,
+    GetTaskLineageResponseToJSON,
+} from '../models/GetTaskLineageResponse';
+import {
     type RunAnalysisRequest,
     RunAnalysisRequestFromJSON,
     RunAnalysisRequestToJSON,
@@ -78,6 +83,12 @@ export interface GetTaskRequest {
 }
 
 export interface GetTaskFilesRequest {
+    datasetId: string;
+    projectId: string;
+    taskId: string;
+}
+
+export interface GetTaskLineageRequest {
     datasetId: string;
     projectId: string;
     taskId: string;
@@ -444,6 +455,77 @@ export class ExecutionApi extends runtime.BaseAPI {
      */
     async getTaskFiles(requestParameters: GetTaskFilesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetTaskFilesResponse> {
         const response = await this.getTaskFilesRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Creates request options for getTaskLineage without sending the request
+     */
+    async getTaskLineageRequestOpts(requestParameters: GetTaskLineageRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['datasetId'] == null) {
+            throw new runtime.RequiredError(
+                'datasetId',
+                'Required parameter "datasetId" was null or undefined when calling getTaskLineage().'
+            );
+        }
+
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling getTaskLineage().'
+            );
+        }
+
+        if (requestParameters['taskId'] == null) {
+            throw new runtime.RequiredError(
+                'taskId',
+                'Required parameter "taskId" was null or undefined when calling getTaskLineage().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/projects/{projectId}/execution/{datasetId}/tasks/{taskId}/lineage`;
+        urlPath = urlPath.replace('{datasetId}', encodeURIComponent(String(requestParameters['datasetId'])));
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+        urlPath = urlPath.replace('{taskId}', encodeURIComponent(String(requestParameters['taskId'])));
+
+        return {
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        };
+    }
+
+    /**
+     * Gets detailed lineage information on the individual Nextflow task
+     * Get task lineage
+     */
+    async getTaskLineageRaw(requestParameters: GetTaskLineageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetTaskLineageResponse>> {
+        const requestOptions = await this.getTaskLineageRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetTaskLineageResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Gets detailed lineage information on the individual Nextflow task
+     * Get task lineage
+     */
+    async getTaskLineage(requestParameters: GetTaskLineageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetTaskLineageResponse> {
+        const response = await this.getTaskLineageRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
