@@ -24,6 +24,11 @@ import {
     DeleteRowsRequestToJSON,
 } from '../models/DeleteRowsRequest';
 import {
+    type EntityType,
+    EntityTypeFromJSON,
+    EntityTypeToJSON,
+} from '../models/EntityType';
+import {
     type InsertRowsRequest,
     InsertRowsRequestFromJSON,
     InsertRowsRequestToJSON,
@@ -84,6 +89,16 @@ import {
     SqlSortOrderToJSON,
 } from '../models/SqlSortOrder';
 import {
+    type TargetMapping,
+    TargetMappingFromJSON,
+    TargetMappingToJSON,
+} from '../models/TargetMapping';
+import {
+    type TargetMappingInput,
+    TargetMappingInputFromJSON,
+    TargetMappingInputToJSON,
+} from '../models/TargetMappingInput';
+import {
     type UpdateRowsRequest,
     UpdateRowsRequestFromJSON,
     UpdateRowsRequestToJSON,
@@ -105,6 +120,13 @@ export interface DeleteSheetDataRequest {
     deleteRowsRequest: DeleteRowsRequest;
 }
 
+export interface DeleteSheetMappingRequest {
+    projectId: string;
+    sheetId: string;
+    targetType: EntityType;
+    targetId: string;
+}
+
 export interface GetJobsRequest {
     projectId: string;
     sheetId: string;
@@ -124,6 +146,18 @@ export interface GetSheetDataRequest {
     order?: SqlSortOrder;
 }
 
+export interface GetSheetMappingRequest {
+    projectId: string;
+    sheetId: string;
+    targetType: EntityType;
+    targetId: string;
+}
+
+export interface GetSheetMappingsRequest {
+    projectId: string;
+    sheetId: string;
+}
+
 export interface GetSheetsRequest {
     projectId: string;
 }
@@ -134,7 +168,7 @@ export interface InsertSheetDataRequest {
     insertRowsRequest: InsertRowsRequest;
 }
 
-export interface QueryNamespaceDataRequest {
+export interface QueryDataRequest {
     projectId: string;
     sheetQueryRequest: SheetQueryRequest;
 }
@@ -148,6 +182,14 @@ export interface QuerySheetDataRequest {
 export interface RefreshViewRequest {
     projectId: string;
     sheetId: string;
+}
+
+export interface SaveSheetMappingRequest {
+    projectId: string;
+    sheetId: string;
+    targetType: EntityType;
+    targetId: string;
+    targetMappingInput: TargetMappingInput;
 }
 
 export interface TriggerIngestRequest {
@@ -375,6 +417,84 @@ export class SheetsApi extends runtime.BaseAPI {
     }
 
     /**
+     * Creates request options for deleteSheetMapping without sending the request
+     */
+    async deleteSheetMappingRequestOpts(requestParameters: DeleteSheetMappingRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling deleteSheetMapping().'
+            );
+        }
+
+        if (requestParameters['sheetId'] == null) {
+            throw new runtime.RequiredError(
+                'sheetId',
+                'Required parameter "sheetId" was null or undefined when calling deleteSheetMapping().'
+            );
+        }
+
+        if (requestParameters['targetType'] == null) {
+            throw new runtime.RequiredError(
+                'targetType',
+                'Required parameter "targetType" was null or undefined when calling deleteSheetMapping().'
+            );
+        }
+
+        if (requestParameters['targetId'] == null) {
+            throw new runtime.RequiredError(
+                'targetId',
+                'Required parameter "targetId" was null or undefined when calling deleteSheetMapping().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/projects/{projectId}/sheets/{sheetId}/mappings/{targetType}/{targetId}`;
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+        urlPath = urlPath.replace('{sheetId}', encodeURIComponent(String(requestParameters['sheetId'])));
+        urlPath = urlPath.replace('{targetType}', encodeURIComponent(String(requestParameters['targetType'])));
+        urlPath = urlPath.replace('{targetId}', encodeURIComponent(String(requestParameters['targetId'])));
+
+        return {
+            path: urlPath,
+            method: 'DELETE',
+            headers: headerParameters,
+            query: queryParameters,
+        };
+    }
+
+    /**
+     * Removes the saved column mapping from a sheet to a target
+     * Delete column mapping
+     */
+    async deleteSheetMappingRaw(requestParameters: DeleteSheetMappingRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.deleteSheetMappingRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Removes the saved column mapping from a sheet to a target
+     * Delete column mapping
+     */
+    async deleteSheetMapping(requestParameters: DeleteSheetMappingRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.deleteSheetMappingRaw(requestParameters, initOverrides);
+    }
+
+    /**
      * Creates request options for getJobs without sending the request
      */
     async getJobsRequestOpts(requestParameters: GetJobsRequest): Promise<runtime.RequestOpts> {
@@ -583,6 +703,148 @@ export class SheetsApi extends runtime.BaseAPI {
     }
 
     /**
+     * Creates request options for getSheetMapping without sending the request
+     */
+    async getSheetMappingRequestOpts(requestParameters: GetSheetMappingRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling getSheetMapping().'
+            );
+        }
+
+        if (requestParameters['sheetId'] == null) {
+            throw new runtime.RequiredError(
+                'sheetId',
+                'Required parameter "sheetId" was null or undefined when calling getSheetMapping().'
+            );
+        }
+
+        if (requestParameters['targetType'] == null) {
+            throw new runtime.RequiredError(
+                'targetType',
+                'Required parameter "targetType" was null or undefined when calling getSheetMapping().'
+            );
+        }
+
+        if (requestParameters['targetId'] == null) {
+            throw new runtime.RequiredError(
+                'targetId',
+                'Required parameter "targetId" was null or undefined when calling getSheetMapping().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/projects/{projectId}/sheets/{sheetId}/mappings/{targetType}/{targetId}`;
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+        urlPath = urlPath.replace('{sheetId}', encodeURIComponent(String(requestParameters['sheetId'])));
+        urlPath = urlPath.replace('{targetType}', encodeURIComponent(String(requestParameters['targetType'])));
+        urlPath = urlPath.replace('{targetId}', encodeURIComponent(String(requestParameters['targetId'])));
+
+        return {
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        };
+    }
+
+    /**
+     * Retrieves the saved column mapping from a sheet to a target; 404 when none is saved
+     * Get column mapping
+     */
+    async getSheetMappingRaw(requestParameters: GetSheetMappingRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<TargetMapping>> {
+        const requestOptions = await this.getSheetMappingRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => TargetMappingFromJSON(jsonValue));
+    }
+
+    /**
+     * Retrieves the saved column mapping from a sheet to a target; 404 when none is saved
+     * Get column mapping
+     */
+    async getSheetMapping(requestParameters: GetSheetMappingRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<TargetMapping> {
+        const response = await this.getSheetMappingRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Creates request options for getSheetMappings without sending the request
+     */
+    async getSheetMappingsRequestOpts(requestParameters: GetSheetMappingsRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling getSheetMappings().'
+            );
+        }
+
+        if (requestParameters['sheetId'] == null) {
+            throw new runtime.RequiredError(
+                'sheetId',
+                'Required parameter "sheetId" was null or undefined when calling getSheetMappings().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/projects/{projectId}/sheets/{sheetId}/mappings`;
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+        urlPath = urlPath.replace('{sheetId}', encodeURIComponent(String(requestParameters['sheetId'])));
+
+        return {
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        };
+    }
+
+    /**
+     * Retrieves every saved column mapping from a sheet, value mappings included
+     * List column mappings
+     */
+    async getSheetMappingsRaw(requestParameters: GetSheetMappingsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<TargetMapping>>> {
+        const requestOptions = await this.getSheetMappingsRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(TargetMappingFromJSON));
+    }
+
+    /**
+     * Retrieves every saved column mapping from a sheet, value mappings included
+     * List column mappings
+     */
+    async getSheetMappings(requestParameters: GetSheetMappingsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<TargetMapping>> {
+        const response = await this.getSheetMappingsRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
      * Creates request options for getSheets without sending the request
      */
     async getSheetsRequestOpts(requestParameters: GetSheetsRequest): Promise<runtime.RequestOpts> {
@@ -711,20 +973,20 @@ export class SheetsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Creates request options for queryNamespaceData without sending the request
+     * Creates request options for queryData without sending the request
      */
-    async queryNamespaceDataRequestOpts(requestParameters: QueryNamespaceDataRequest): Promise<runtime.RequestOpts> {
+    async queryDataRequestOpts(requestParameters: QueryDataRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['projectId'] == null) {
             throw new runtime.RequiredError(
                 'projectId',
-                'Required parameter "projectId" was null or undefined when calling queryNamespaceData().'
+                'Required parameter "projectId" was null or undefined when calling queryData().'
             );
         }
 
         if (requestParameters['sheetQueryRequest'] == null) {
             throw new runtime.RequiredError(
                 'sheetQueryRequest',
-                'Required parameter "sheetQueryRequest" was null or undefined when calling queryNamespaceData().'
+                'Required parameter "sheetQueryRequest" was null or undefined when calling queryData().'
             );
         }
 
@@ -756,22 +1018,22 @@ export class SheetsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Returns executed SQL results.
-     * Run raw SQL against the project\'s sheets.
+     * Runs a read-only SQL query and returns a page of its results. Unqualified table names resolve across every namespace in the project.
+     * Run a raw SQL query against the project\'s sheets
      */
-    async queryNamespaceDataRaw(requestParameters: QueryNamespaceDataRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SheetQueryResponse>> {
-        const requestOptions = await this.queryNamespaceDataRequestOpts(requestParameters);
+    async queryDataRaw(requestParameters: QueryDataRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SheetQueryResponse>> {
+        const requestOptions = await this.queryDataRequestOpts(requestParameters);
         const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => SheetQueryResponseFromJSON(jsonValue));
     }
 
     /**
-     * Returns executed SQL results.
-     * Run raw SQL against the project\'s sheets.
+     * Runs a read-only SQL query and returns a page of its results. Unqualified table names resolve across every namespace in the project.
+     * Run a raw SQL query against the project\'s sheets
      */
-    async queryNamespaceData(requestParameters: QueryNamespaceDataRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SheetQueryResponse> {
-        const response = await this.queryNamespaceDataRaw(requestParameters, initOverrides);
+    async queryData(requestParameters: QueryDataRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SheetQueryResponse> {
+        const response = await this.queryDataRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -908,6 +1170,95 @@ export class SheetsApi extends runtime.BaseAPI {
      */
     async refreshView(requestParameters: RefreshViewRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.refreshViewRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Creates request options for saveSheetMapping without sending the request
+     */
+    async saveSheetMappingRequestOpts(requestParameters: SaveSheetMappingRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling saveSheetMapping().'
+            );
+        }
+
+        if (requestParameters['sheetId'] == null) {
+            throw new runtime.RequiredError(
+                'sheetId',
+                'Required parameter "sheetId" was null or undefined when calling saveSheetMapping().'
+            );
+        }
+
+        if (requestParameters['targetType'] == null) {
+            throw new runtime.RequiredError(
+                'targetType',
+                'Required parameter "targetType" was null or undefined when calling saveSheetMapping().'
+            );
+        }
+
+        if (requestParameters['targetId'] == null) {
+            throw new runtime.RequiredError(
+                'targetId',
+                'Required parameter "targetId" was null or undefined when calling saveSheetMapping().'
+            );
+        }
+
+        if (requestParameters['targetMappingInput'] == null) {
+            throw new runtime.RequiredError(
+                'targetMappingInput',
+                'Required parameter "targetMappingInput" was null or undefined when calling saveSheetMapping().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/projects/{projectId}/sheets/{sheetId}/mappings/{targetType}/{targetId}`;
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+        urlPath = urlPath.replace('{sheetId}', encodeURIComponent(String(requestParameters['sheetId'])));
+        urlPath = urlPath.replace('{targetType}', encodeURIComponent(String(requestParameters['targetType'])));
+        urlPath = urlPath.replace('{targetId}', encodeURIComponent(String(requestParameters['targetId'])));
+
+        return {
+            path: urlPath,
+            method: 'PUT',
+            headers: headerParameters,
+            query: queryParameters,
+            body: TargetMappingInputToJSON(requestParameters['targetMappingInput']),
+        };
+    }
+
+    /**
+     * Creates or replaces the column mapping from a sheet to a target. Get it first to know whether one exists.
+     * Save column mapping
+     */
+    async saveSheetMappingRaw(requestParameters: SaveSheetMappingRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<TargetMapping>> {
+        const requestOptions = await this.saveSheetMappingRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => TargetMappingFromJSON(jsonValue));
+    }
+
+    /**
+     * Creates or replaces the column mapping from a sheet to a target. Get it first to know whether one exists.
+     * Save column mapping
+     */
+    async saveSheetMapping(requestParameters: SaveSheetMappingRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<TargetMapping> {
+        const response = await this.saveSheetMappingRaw(requestParameters, initOverrides);
+        return await response.value();
     }
 
     /**

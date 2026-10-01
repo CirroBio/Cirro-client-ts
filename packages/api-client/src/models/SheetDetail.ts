@@ -20,6 +20,13 @@ import {
     StatusToJSON,
     StatusToJSONTyped,
 } from './Status';
+import type { Entity } from './Entity';
+import {
+    EntityFromJSON,
+    EntityFromJSONTyped,
+    EntityToJSON,
+    EntityToJSONTyped,
+} from './Entity';
 import type { SheetCreationMode } from './SheetCreationMode';
 import {
     SheetCreationModeFromJSON,
@@ -188,6 +195,12 @@ export interface SheetDetail {
      * @memberof SheetDetail
      */
     tags: Array<Tag>;
+    /**
+     * Targets with a saved column mapping from this sheet; the mappings themselves come from the mappings endpoints
+     * @type {Array<Entity>}
+     * @memberof SheetDetail
+     */
+    mappingTargets: Array<Entity>;
 }
 
 
@@ -209,6 +222,7 @@ export function instanceOfSheetDetail(value: object): value is SheetDetail {
     if (!('createdAt' in value) || value['createdAt'] === undefined) return false;
     if (!('updatedAt' in value) || value['updatedAt'] === undefined) return false;
     if (!('tags' in value) || value['tags'] === undefined) return false;
+    if (!('mappingTargets' in value) || value['mappingTargets'] === undefined) return false;
     return true;
 }
 
@@ -243,6 +257,7 @@ export function SheetDetailFromJSONTyped(json: any, ignoreDiscriminator: boolean
         'totalRowCount': json['totalRowCount'] == null ? undefined : json['totalRowCount'],
         'schemaVersionId': json['schemaVersionId'] == null ? undefined : json['schemaVersionId'],
         'tags': ((json['tags'] as Array<any>).map(TagFromJSON)),
+        'mappingTargets': ((json['mappingTargets'] as Array<any>).map(EntityFromJSON)),
     };
 }
 
@@ -278,6 +293,7 @@ export function SheetDetailToJSONTyped(value?: SheetDetail | null, ignoreDiscrim
         'totalRowCount': value['totalRowCount'],
         'schemaVersionId': value['schemaVersionId'],
         'tags': ((value['tags'] as Array<any>).map(TagToJSON)),
+        'mappingTargets': ((value['mappingTargets'] as Array<any>).map(EntityToJSON)),
     };
 }
 

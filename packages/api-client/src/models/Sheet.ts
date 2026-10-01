@@ -20,6 +20,13 @@ import {
     StatusToJSON,
     StatusToJSONTyped,
 } from './Status';
+import type { Entity } from './Entity';
+import {
+    EntityFromJSON,
+    EntityFromJSONTyped,
+    EntityToJSON,
+    EntityToJSONTyped,
+} from './Entity';
 import type { SheetCreationMode } from './SheetCreationMode';
 import {
     SheetCreationModeFromJSON,
@@ -151,6 +158,12 @@ export interface Sheet {
      * @memberof Sheet
      */
     columnRelationships: Array<ColumnRelationship>;
+    /**
+     * Targets with a saved column mapping from this sheet; the mappings themselves come from the mappings endpoints
+     * @type {Array<Entity>}
+     * @memberof Sheet
+     */
+    mappingTargets: Array<Entity>;
 }
 
 
@@ -174,6 +187,7 @@ export function instanceOfSheet(value: object): value is Sheet {
     if (!('updatedAt' in value) || value['updatedAt'] === undefined) return false;
     if (!('tags' in value) || value['tags'] === undefined) return false;
     if (!('columnRelationships' in value) || value['columnRelationships'] === undefined) return false;
+    if (!('mappingTargets' in value) || value['mappingTargets'] === undefined) return false;
     return true;
 }
 
@@ -203,6 +217,7 @@ export function SheetFromJSONTyped(json: any, ignoreDiscriminator: boolean): She
         'totalRowCount': json['totalRowCount'] == null ? undefined : json['totalRowCount'],
         'tags': ((json['tags'] as Array<any>).map(TagFromJSON)),
         'columnRelationships': ((json['columnRelationships'] as Array<any>).map(ColumnRelationshipFromJSON)),
+        'mappingTargets': ((json['mappingTargets'] as Array<any>).map(EntityFromJSON)),
     };
 }
 
@@ -233,6 +248,7 @@ export function SheetToJSONTyped(value?: Sheet | null, ignoreDiscriminator: bool
         'totalRowCount': value['totalRowCount'],
         'tags': ((value['tags'] as Array<any>).map(TagToJSON)),
         'columnRelationships': ((value['columnRelationships'] as Array<any>).map(ColumnRelationshipToJSON)),
+        'mappingTargets': ((value['mappingTargets'] as Array<any>).map(EntityToJSON)),
     };
 }
 

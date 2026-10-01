@@ -100,7 +100,7 @@ export interface RunAnalysisRequest {
      * @type {Array<string>}
      * @memberof RunAnalysisRequest
      */
-    notificationEmails: Array<string>;
+    notificationEmails?: Array<string> | null;
     /**
      * The compute environment where to run the workflow, if not specified, it will run in AWS
      * @type {string}
@@ -137,7 +137,6 @@ export function instanceOfRunAnalysisRequest(value: object): value is RunAnalysi
     if (!('processId' in value) || value['processId'] === undefined) return false;
     if (!('sourceDatasetIds' in value) || value['sourceDatasetIds'] === undefined) return false;
     if (!('params' in value) || value['params'] === undefined) return false;
-    if (!('notificationEmails' in value) || value['notificationEmails'] === undefined) return false;
     return true;
 }
 
@@ -160,7 +159,7 @@ export function RunAnalysisRequestFromJSONTyped(json: any, ignoreDiscriminator: 
         'resumeDatasetId': json['resumeDatasetId'] == null ? undefined : json['resumeDatasetId'],
         'params': json['params'],
         'structuredFileInputs': json['structuredFileInputs'] == null ? undefined : (mapValues(json['structuredFileInputs'], StructuredFileInputFromJSON)),
-        'notificationEmails': json['notificationEmails'],
+        'notificationEmails': json['notificationEmails'] == null ? undefined : json['notificationEmails'],
         'computeEnvironmentId': json['computeEnvironmentId'] == null ? undefined : json['computeEnvironmentId'],
         'environmentType': json['environmentType'] == null ? undefined : EnvironmentTypeFromJSON(json['environmentType']),
         'tags': json['tags'] == null ? undefined : ((json['tags'] as Array<any>).map(TagFromJSON)),

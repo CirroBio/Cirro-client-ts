@@ -13,6 +13,14 @@
  */
 
 import { mapValues } from '../runtime';
+import type { FileFormat } from './FileFormat';
+import {
+    FileFormatFromJSON,
+    FileFormatFromJSONTyped,
+    FileFormatToJSON,
+    FileFormatToJSONTyped,
+} from './FileFormat';
+
 /**
  * Contents for a structured file that a pipeline accepts as an input
  * @export
@@ -27,17 +35,26 @@ export interface StructuredFileInput {
     data: Array<{ [key: string]: any; }>;
     /**
      * 
+     * @type {FileFormat}
+     * @memberof StructuredFileInput
+     */
+    fileFormat: FileFormat;
+    /**
+     * 
      * @type {Array<string>}
      * @memberof StructuredFileInput
      */
     importSourceUris: Array<string>;
 }
 
+
+
 /**
  * Check if a given object implements the StructuredFileInput interface.
  */
 export function instanceOfStructuredFileInput(value: object): value is StructuredFileInput {
     if (!('data' in value) || value['data'] === undefined) return false;
+    if (!('fileFormat' in value) || value['fileFormat'] === undefined) return false;
     if (!('importSourceUris' in value) || value['importSourceUris'] === undefined) return false;
     return true;
 }
@@ -53,6 +70,7 @@ export function StructuredFileInputFromJSONTyped(json: any, ignoreDiscriminator:
     return {
         
         'data': json['data'],
+        'fileFormat': FileFormatFromJSON(json['fileFormat']),
         'importSourceUris': json['importSourceUris'],
     };
 }
@@ -69,6 +87,7 @@ export function StructuredFileInputToJSONTyped(value?: StructuredFileInput | nul
     return {
         
         'data': value['data'],
+        'fileFormat': FileFormatToJSON(value['fileFormat']),
         'importSourceUris': value['importSourceUris'],
     };
 }
