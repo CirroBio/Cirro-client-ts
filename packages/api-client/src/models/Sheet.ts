@@ -134,11 +134,11 @@ export interface Sheet {
      */
     updatedAt: Date;
     /**
-     * 
+     * Stored row count, maintained on writes. Null for virtual views, whose rows are only counted at query time.
      * @type {number}
      * @memberof Sheet
      */
-    totalRowCount: number;
+    totalRowCount?: number | null;
     /**
      * 
      * @type {Array<Tag>}
@@ -172,7 +172,6 @@ export function instanceOfSheet(value: object): value is Sheet {
     if (!('createdBy' in value) || value['createdBy'] === undefined) return false;
     if (!('createdAt' in value) || value['createdAt'] === undefined) return false;
     if (!('updatedAt' in value) || value['updatedAt'] === undefined) return false;
-    if (!('totalRowCount' in value) || value['totalRowCount'] === undefined) return false;
     if (!('tags' in value) || value['tags'] === undefined) return false;
     if (!('columnRelationships' in value) || value['columnRelationships'] === undefined) return false;
     return true;
@@ -201,7 +200,7 @@ export function SheetFromJSONTyped(json: any, ignoreDiscriminator: boolean): She
         'createdBy': json['createdBy'],
         'createdAt': (new Date(json['createdAt'])),
         'updatedAt': (new Date(json['updatedAt'])),
-        'totalRowCount': json['totalRowCount'],
+        'totalRowCount': json['totalRowCount'] == null ? undefined : json['totalRowCount'],
         'tags': ((json['tags'] as Array<any>).map(TagFromJSON)),
         'columnRelationships': ((json['columnRelationships'] as Array<any>).map(ColumnRelationshipFromJSON)),
     };

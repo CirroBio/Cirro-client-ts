@@ -119,6 +119,12 @@ export interface RunAnalysisRequest {
      * @memberof RunAnalysisRequest
      */
     tags?: Array<Tag> | null;
+    /**
+     * Disables the task run cache
+     * @type {boolean}
+     * @memberof RunAnalysisRequest
+     */
+    disableCache?: boolean | null;
 }
 
 
@@ -158,6 +164,7 @@ export function RunAnalysisRequestFromJSONTyped(json: any, ignoreDiscriminator: 
         'computeEnvironmentId': json['computeEnvironmentId'] == null ? undefined : json['computeEnvironmentId'],
         'environmentType': json['environmentType'] == null ? undefined : EnvironmentTypeFromJSON(json['environmentType']),
         'tags': json['tags'] == null ? undefined : ((json['tags'] as Array<any>).map(TagFromJSON)),
+        'disableCache': json['disableCache'] == null ? undefined : json['disableCache'],
     };
 }
 
@@ -185,6 +192,7 @@ export function RunAnalysisRequestToJSONTyped(value?: RunAnalysisRequest | null,
         'computeEnvironmentId': value['computeEnvironmentId'],
         'environmentType': EnvironmentTypeToJSON(value['environmentType']),
         'tags': value['tags'] == null ? undefined : ((value['tags'] as Array<any>).map(TagToJSON)),
+        'disableCache': value['disableCache'],
     };
 }
 

@@ -20,6 +20,13 @@ import {
     QueryColumnToJSON,
     QueryColumnToJSONTyped,
 } from './QueryColumn';
+import type { CellValue } from './CellValue';
+import {
+    CellValueFromJSON,
+    CellValueFromJSONTyped,
+    CellValueToJSON,
+    CellValueToJSONTyped,
+} from './CellValue';
 
 /**
  * Paginated query result from a sheet.
@@ -38,10 +45,10 @@ export interface SheetQueryResponse {
     columns: Array<QueryColumn>;
     /**
      * row data, each list aligned with `columns`
-     * @type {Array<Array<object>>}
+     * @type {Array<Array<CellValue>>}
      * @memberof SheetQueryResponse
      */
-    rows: Array<Array<object>>;
+    rows: Array<Array<CellValue>>;
     /**
      * number of total rows in the result set
      * @type {number}

@@ -51,6 +51,7 @@ src/models/BillingAccount.ts
 src/models/BillingAccountRequest.ts
 src/models/BillingMethod.ts
 src/models/BudgetPeriod.ts
+src/models/CellValue.ts
 src/models/ClassificationInput.ts
 src/models/CloudAccount.ts
 src/models/CloudAccountType.ts
@@ -111,6 +112,7 @@ src/models/FulfillmentResponse.ts
 src/models/GenerateSftpCredentialsRequest.ts
 src/models/GetExecutionLogsResponse.ts
 src/models/GetTaskFilesResponse.ts
+src/models/GetTaskLineageResponse.ts
 src/models/GovernanceAccessType.ts
 src/models/GovernanceClassification.ts
 src/models/GovernanceContact.ts

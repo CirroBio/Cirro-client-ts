@@ -245,20 +245,19 @@ export class DashboardsApi extends runtime.BaseAPI {
      * Deletes a dashboard
      * Delete dashboard
      */
-    async deleteDashboardRaw(requestParameters: DeleteDashboardRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Dashboard>> {
+    async deleteDashboardRaw(requestParameters: DeleteDashboardRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
         const requestOptions = await this.deleteDashboardRequestOpts(requestParameters);
         const response = await this.request(requestOptions, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => DashboardFromJSON(jsonValue));
+        return new runtime.VoidApiResponse(response);
     }
 
     /**
      * Deletes a dashboard
      * Delete dashboard
      */
-    async deleteDashboard(requestParameters: DeleteDashboardRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Dashboard> {
-        const response = await this.deleteDashboardRaw(requestParameters, initOverrides);
-        return await response.value();
+    async deleteDashboard(requestParameters: DeleteDashboardRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.deleteDashboardRaw(requestParameters, initOverrides);
     }
 
     /**

@@ -105,7 +105,7 @@ export interface SheetDetail {
      */
     sheetType: SheetType;
     /**
-     * How the table was initialized. Null for VIEW sheets.
+     * How the sheet was initialized. SYSTEM for Cirro-managed sheets, including system views; null for user-created VIEW sheets.
      * @type {SheetCreationMode}
      * @memberof SheetDetail
      */
@@ -117,7 +117,7 @@ export interface SheetDetail {
      */
     status: Status;
     /**
-     * Column definitions for the table schema. Null for VIEW sheets.
+     * Column definitions for the sheet's schema. For VIEW sheets, a snapshot derived from the view definition.
      * @type {Array<ColumnDef>}
      * @memberof SheetDetail
      */
@@ -171,11 +171,11 @@ export interface SheetDetail {
      */
     updatedAt: Date;
     /**
-     * 
+     * Stored row count, maintained on writes. Null for virtual views, whose rows are only counted at query time.
      * @type {number}
      * @memberof SheetDetail
      */
-    totalRowCount: number;
+    totalRowCount?: number | null;
     /**
      * Current table schema version (starts at 0). Used for optimistic concurrency control. New tables can omit this, but updates should include this to prevent overwriting due to stale table schema metadata.
      * @type {number}
@@ -208,7 +208,6 @@ export function instanceOfSheetDetail(value: object): value is SheetDetail {
     if (!('createdBy' in value) || value['createdBy'] === undefined) return false;
     if (!('createdAt' in value) || value['createdAt'] === undefined) return false;
     if (!('updatedAt' in value) || value['updatedAt'] === undefined) return false;
-    if (!('totalRowCount' in value) || value['totalRowCount'] === undefined) return false;
     if (!('tags' in value) || value['tags'] === undefined) return false;
     return true;
 }
@@ -241,7 +240,7 @@ export function SheetDetailFromJSONTyped(json: any, ignoreDiscriminator: boolean
         'createdBy': json['createdBy'],
         'createdAt': (new Date(json['createdAt'])),
         'updatedAt': (new Date(json['updatedAt'])),
-        'totalRowCount': json['totalRowCount'],
+        'totalRowCount': json['totalRowCount'] == null ? undefined : json['totalRowCount'],
         'schemaVersionId': json['schemaVersionId'] == null ? undefined : json['schemaVersionId'],
         'tags': ((json['tags'] as Array<any>).map(TagFromJSON)),
     };
