@@ -196,7 +196,7 @@ export interface ProjectSettings {
      */
     hasSharedFilesystemsEnabled?: boolean | null;
     /**
-     * (Read-only) Whether analyses in this project can run on AWS HealthOmics
+     * (Read-only) Whether this project is deployed with the resources AWS HealthOmics runs need. Does not reflect the tenant's omicsPrivateWorkflowsEnabled feature flag
      * @type {boolean}
      * @memberof ProjectSettings
      */
