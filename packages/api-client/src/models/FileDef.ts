@@ -34,7 +34,7 @@ export interface FileDef {
      */
     fileType: FileType;
     /**
-     * Full S3 URI to the source file.
+     * Full S3 URI to the source file. For an ingest, it must be under the sheet's staging upload path.
      * @type {string}
      * @memberof FileDef
      */

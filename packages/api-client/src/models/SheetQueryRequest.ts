@@ -20,14 +20,7 @@ import { mapValues } from '../runtime';
  */
 export interface SheetQueryRequest {
     /**
-     * Deprecated: no longer scopes name resolution — every namespace is on the engine's search path.
-     * @type {string}
-     * @memberof SheetQueryRequest
-     * @deprecated
-     */
-    namespaceName?: string | null;
-    /**
-     * Raw SQL query to run.
+     * Raw SQL query to run. Unqualified table names resolve across every namespace in the project.
      * @type {string}
      * @memberof SheetQueryRequest
      */
@@ -64,7 +57,6 @@ export function SheetQueryRequestFromJSONTyped(json: any, ignoreDiscriminator: b
     }
     return {
         
-        'namespaceName': json['namespaceName'] == null ? undefined : json['namespaceName'],
         'query': json['query'],
         'limit': json['limit'] == null ? undefined : json['limit'],
         'page': json['page'] == null ? undefined : json['page'],
@@ -82,7 +74,6 @@ export function SheetQueryRequestToJSONTyped(value?: SheetQueryRequest | null, i
 
     return {
         
-        'namespaceName': value['namespaceName'],
         'query': value['query'],
         'limit': value['limit'],
         'page': value['page'],

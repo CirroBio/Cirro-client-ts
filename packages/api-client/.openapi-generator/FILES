@@ -59,6 +59,7 @@ src/models/CloudQuota.ts
 src/models/ColumnDataType.ts
 src/models/ColumnDef.ts
 src/models/ColumnDefinition.ts
+src/models/ColumnMapping.ts
 src/models/ColumnRelationship.ts
 src/models/ComputeEnvironmentConfiguration.ts
 src/models/ComputeEnvironmentConfigurationInput.ts
@@ -242,6 +243,8 @@ src/models/SystemInfoResponse.ts
 src/models/Table.ts
 src/models/TableSheetInput.ts
 src/models/Tag.ts
+src/models/TargetMapping.ts
+src/models/TargetMappingInput.ts
 src/models/Task.ts
 src/models/TaskCost.ts
 src/models/TaskLogSource.ts
@@ -259,6 +262,7 @@ src/models/UserSettings.ts
 src/models/UserStatus.ts
 src/models/ValidateFileNamePatternsRequest.ts
 src/models/ValidateFileRequirementsRequest.ts
+src/models/ValueMapping.ts
 src/models/VersionInfo.ts
 src/models/VersionSpecification.ts
 src/models/ViewJoin.ts
