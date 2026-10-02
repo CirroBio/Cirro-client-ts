@@ -50,7 +50,7 @@ export interface FileRequirements {
      * @type {string}
      * @memberof FileRequirements
      */
-    sheetTemplateCsv: string;
+    sheetTemplateCsv?: string | null;
     /**
      * 
      * @type {boolean}
@@ -66,7 +66,6 @@ export function instanceOfFileRequirements(value: object): value is FileRequirem
     if (!('files' in value) || value['files'] === undefined) return false;
     if (!('errorMsg' in value) || value['errorMsg'] === undefined) return false;
     if (!('allowedDataTypes' in value) || value['allowedDataTypes'] === undefined) return false;
-    if (!('sheetTemplateCsv' in value) || value['sheetTemplateCsv'] === undefined) return false;
     return true;
 }
 
@@ -83,7 +82,7 @@ export function FileRequirementsFromJSONTyped(json: any, ignoreDiscriminator: bo
         'files': json['files'],
         'errorMsg': json['errorMsg'],
         'allowedDataTypes': ((json['allowedDataTypes'] as Array<any>).map(AllowedDataTypeFromJSON)),
-        'sheetTemplateCsv': json['sheetTemplateCsv'],
+        'sheetTemplateCsv': json['sheetTemplateCsv'] == null ? undefined : json['sheetTemplateCsv'],
         'hasError': json['hasError'] == null ? undefined : json['hasError'],
     };
 }
