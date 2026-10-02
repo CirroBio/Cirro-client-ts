@@ -195,6 +195,12 @@ export interface ProjectSettings {
      * @memberof ProjectSettings
      */
     hasSharedFilesystemsEnabled?: boolean | null;
+    /**
+     * (Read-only) Whether this project is deployed with the resources AWS HealthOmics runs need. Does not reflect the tenant's omicsPrivateWorkflowsEnabled feature flag
+     * @type {boolean}
+     * @memberof ProjectSettings
+     */
+    isOmicsAvailable?: boolean | null;
 }
 
 
@@ -246,6 +252,7 @@ export function ProjectSettingsFromJSONTyped(json: any, ignoreDiscriminator: boo
         'hasPipelinesEnabled': json['hasPipelinesEnabled'] == null ? undefined : json['hasPipelinesEnabled'],
         'hasWorkspacesEnabled': json['hasWorkspacesEnabled'] == null ? undefined : json['hasWorkspacesEnabled'],
         'hasSharedFilesystemsEnabled': json['hasSharedFilesystemsEnabled'] == null ? undefined : json['hasSharedFilesystemsEnabled'],
+        'isOmicsAvailable': json['isOmicsAvailable'] == null ? undefined : json['isOmicsAvailable'],
     };
 }
 
@@ -288,6 +295,7 @@ export function ProjectSettingsToJSONTyped(value?: ProjectSettings | null, ignor
         'hasPipelinesEnabled': value['hasPipelinesEnabled'],
         'hasWorkspacesEnabled': value['hasWorkspacesEnabled'],
         'hasSharedFilesystemsEnabled': value['hasSharedFilesystemsEnabled'],
+        'isOmicsAvailable': value['isOmicsAvailable'],
     };
 }
 
