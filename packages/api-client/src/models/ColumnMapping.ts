@@ -40,6 +40,12 @@ export interface ColumnMapping {
      */
     targetColumn: string;
     /**
+     * Applied to each source value before the value mappings. Refers to the source value as "value", never by column name, so it survives column renames. Stored as given; the portal defines the rest of its syntax.
+     * @type {string}
+     * @memberof ColumnMapping
+     */
+    transform?: string | null;
+    /**
      * Recodes values before they reach the target. A value with no entry passes through unchanged.
      * @type {Array<ValueMapping>}
      * @memberof ColumnMapping
@@ -68,6 +74,7 @@ export function ColumnMappingFromJSONTyped(json: any, ignoreDiscriminator: boole
         
         'sourceColumn': json['sourceColumn'],
         'targetColumn': json['targetColumn'],
+        'transform': json['transform'] == null ? undefined : json['transform'],
         'valueMappings': json['valueMappings'] == null ? undefined : ((json['valueMappings'] as Array<any>).map(ValueMappingFromJSON)),
     };
 }
@@ -85,6 +92,7 @@ export function ColumnMappingToJSONTyped(value?: ColumnMapping | null, ignoreDis
         
         'sourceColumn': value['sourceColumn'],
         'targetColumn': value['targetColumn'],
+        'transform': value['transform'],
         'valueMappings': value['valueMappings'] == null ? undefined : ((value['valueMappings'] as Array<any>).map(ValueMappingToJSON)),
     };
 }
