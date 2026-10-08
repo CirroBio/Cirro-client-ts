@@ -202,6 +202,7 @@ export * from './SheetJobType';
 export * from './SheetQueryRequest';
 export * from './SheetQueryResponse';
 export * from './SheetSort';
+export * from './SheetTemplate';
 export * from './SheetType';
 export * from './SheetUpdateResponse';
 export * from './SortOrder';

@@ -26,7 +26,7 @@ export interface RowUpdate {
      */
     rowId: number;
     /**
-     * Column name and new value. Only the columns included here are updated; all other columns on the row are left unchanged. At least one entry is required. Cirro-typed columns hold Cirro URIs of the form cirro:<tenantId>:<projectId>:data:<datasetId>/<path> (scope segments may be empty; path relative to the dataset's data directory). CIRRO_DATASET cells reference the dataset itself and have no path.
+     * Column name and new value. Only the columns included here are updated; all other columns on the row are left unchanged. At least one entry is required. Cirro-typed columns hold Cirro URIs of the form cirro:<tenantId>:<projectId>:dataset:<datasetId>/<path> (scope segments may be empty; path relative to the dataset's data directory). CIRRO_DATASET cells reference the dataset itself and have no path.
      * @type {{ [key: string]: any; }}
      * @memberof RowUpdate
      */

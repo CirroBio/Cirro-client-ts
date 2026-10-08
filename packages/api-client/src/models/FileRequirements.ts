@@ -13,6 +13,13 @@
  */
 
 import { mapValues } from '../runtime';
+import type { SheetTemplate } from './SheetTemplate';
+import {
+    SheetTemplateFromJSON,
+    SheetTemplateFromJSONTyped,
+    SheetTemplateToJSON,
+    SheetTemplateToJSONTyped,
+} from './SheetTemplate';
 import type { AllowedDataType } from './AllowedDataType';
 import {
     AllowedDataTypeFromJSON,
@@ -47,10 +54,10 @@ export interface FileRequirements {
     allowedDataTypes: Array<AllowedDataType>;
     /**
      * 
-     * @type {string}
+     * @type {SheetTemplate}
      * @memberof FileRequirements
      */
-    sheetTemplateCsv?: string | null;
+    sheetTemplate?: SheetTemplate | null;
     /**
      * 
      * @type {boolean}
@@ -82,7 +89,7 @@ export function FileRequirementsFromJSONTyped(json: any, ignoreDiscriminator: bo
         'files': json['files'],
         'errorMsg': json['errorMsg'],
         'allowedDataTypes': ((json['allowedDataTypes'] as Array<any>).map(AllowedDataTypeFromJSON)),
-        'sheetTemplateCsv': json['sheetTemplateCsv'] == null ? undefined : json['sheetTemplateCsv'],
+        'sheetTemplate': json['sheetTemplate'] == null ? undefined : SheetTemplateFromJSON(json['sheetTemplate']),
         'hasError': json['hasError'] == null ? undefined : json['hasError'],
     };
 }
@@ -101,7 +108,7 @@ export function FileRequirementsToJSONTyped(value?: FileRequirements | null, ign
         'files': value['files'],
         'errorMsg': value['errorMsg'],
         'allowedDataTypes': ((value['allowedDataTypes'] as Array<any>).map(AllowedDataTypeToJSON)),
-        'sheetTemplateCsv': value['sheetTemplateCsv'],
+        'sheetTemplate': SheetTemplateToJSON(value['sheetTemplate']),
         'hasError': value['hasError'],
     };
 }
