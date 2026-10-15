@@ -59,12 +59,6 @@ export interface ViewSheetInput {
      */
     tableName: string;
     /**
-     * Enable audit logging for read access to this sheet
-     * @type {boolean}
-     * @memberof ViewSheetInput
-     */
-    auditReadAccess?: boolean;
-    /**
      * View definition. Replacing this on update triggers data refresh (async).
      * @type {ViewQueryRequest}
      * @memberof ViewSheetInput
@@ -115,7 +109,6 @@ export function ViewSheetInputFromJSONTyped(json: any, ignoreDiscriminator: bool
         'description': json['description'] == null ? undefined : json['description'],
         'namespaceName': json['namespaceName'],
         'tableName': json['tableName'],
-        'auditReadAccess': json['auditReadAccess'] == null ? undefined : json['auditReadAccess'],
         'viewDefinition': ViewQueryRequestFromJSON(json['viewDefinition']),
         'virtual': json['virtual'] == null ? undefined : json['virtual'],
         'tags': json['tags'] == null ? undefined : ((json['tags'] as Array<any>).map(TagFromJSON)),
@@ -138,7 +131,6 @@ export function ViewSheetInputToJSONTyped(value?: ViewSheetInput | null, ignoreD
         'description': value['description'],
         'namespaceName': value['namespaceName'],
         'tableName': value['tableName'],
-        'auditReadAccess': value['auditReadAccess'],
         'viewDefinition': ViewQueryRequestToJSON(value['viewDefinition']),
         'virtual': value['virtual'],
         'tags': value['tags'] == null ? undefined : ((value['tags'] as Array<any>).map(TagToJSON)),

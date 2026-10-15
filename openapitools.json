@@ -22,7 +22,7 @@
         },
         "additionalProperties": {
           "npmName": "@cirrobio/api-client",
-          "npmVersion": "0.13.37",
+          "npmVersion": "0.13.38",
           "author": "CirroBio",
           "stringEnums": true,
           "supportsES6": true

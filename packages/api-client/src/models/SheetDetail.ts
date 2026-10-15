@@ -106,6 +106,12 @@ export interface SheetDetail {
      */
     tableName: string;
     /**
+     * The S3 Tables ARN of the sheet's table.
+     * @type {string}
+     * @memberof SheetDetail
+     */
+    resourceArn?: string | null;
+    /**
      * 
      * @type {SheetType}
      * @memberof SheetDetail
@@ -129,12 +135,6 @@ export interface SheetDetail {
      * @memberof SheetDetail
      */
     columns?: Array<ColumnDef> | null;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof SheetDetail
-     */
-    auditReadAccess: boolean;
     /**
      * View definition for VIEW sheets. Null for TABLE sheets.
      * @type {ViewQueryRequest}
@@ -217,7 +217,6 @@ export function instanceOfSheetDetail(value: object): value is SheetDetail {
     if (!('tableName' in value) || value['tableName'] === undefined) return false;
     if (!('sheetType' in value) || value['sheetType'] === undefined) return false;
     if (!('status' in value) || value['status'] === undefined) return false;
-    if (!('auditReadAccess' in value) || value['auditReadAccess'] === undefined) return false;
     if (!('createdBy' in value) || value['createdBy'] === undefined) return false;
     if (!('createdAt' in value) || value['createdAt'] === undefined) return false;
     if (!('updatedAt' in value) || value['updatedAt'] === undefined) return false;
@@ -242,11 +241,11 @@ export function SheetDetailFromJSONTyped(json: any, ignoreDiscriminator: boolean
         'projectId': json['projectId'],
         'namespaceName': json['namespaceName'],
         'tableName': json['tableName'],
+        'resourceArn': json['resourceArn'] == null ? undefined : json['resourceArn'],
         'sheetType': SheetTypeFromJSON(json['sheetType']),
         'sheetCreationMode': json['sheetCreationMode'] == null ? undefined : SheetCreationModeFromJSON(json['sheetCreationMode']),
         'status': StatusFromJSON(json['status']),
         'columns': json['columns'] == null ? undefined : ((json['columns'] as Array<any>).map(ColumnDefFromJSON)),
-        'auditReadAccess': json['auditReadAccess'],
         'viewDefinition': json['viewDefinition'] == null ? undefined : ViewQueryRequestFromJSON(json['viewDefinition']),
         'virtual': json['virtual'] == null ? undefined : json['virtual'],
         'lastRefreshedAt': json['lastRefreshedAt'] == null ? undefined : (new Date(json['lastRefreshedAt'])),
@@ -278,11 +277,11 @@ export function SheetDetailToJSONTyped(value?: SheetDetail | null, ignoreDiscrim
         'projectId': value['projectId'],
         'namespaceName': value['namespaceName'],
         'tableName': value['tableName'],
+        'resourceArn': value['resourceArn'],
         'sheetType': SheetTypeToJSON(value['sheetType']),
         'sheetCreationMode': SheetCreationModeToJSON(value['sheetCreationMode']),
         'status': StatusToJSON(value['status']),
         'columns': value['columns'] == null ? undefined : ((value['columns'] as Array<any>).map(ColumnDefToJSON)),
-        'auditReadAccess': value['auditReadAccess'],
         'viewDefinition': ViewQueryRequestToJSON(value['viewDefinition']),
         'virtual': value['virtual'],
         'lastRefreshedAt': value['lastRefreshedAt'] == null ? value['lastRefreshedAt'] : value['lastRefreshedAt'].toISOString(),

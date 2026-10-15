@@ -66,12 +66,6 @@ export interface TableSheetInput {
      */
     tableName: string;
     /**
-     * Enable audit logging for read access to this sheet
-     * @type {boolean}
-     * @memberof TableSheetInput
-     */
-    auditReadAccess?: boolean;
-    /**
      * How the table was initialized. Immutable after create.
      * @type {SheetCreationMode}
      * @memberof TableSheetInput
@@ -131,7 +125,6 @@ export function TableSheetInputFromJSONTyped(json: any, ignoreDiscriminator: boo
         'description': json['description'] == null ? undefined : json['description'],
         'namespaceName': json['namespaceName'],
         'tableName': json['tableName'],
-        'auditReadAccess': json['auditReadAccess'] == null ? undefined : json['auditReadAccess'],
         'sheetCreationMode': SheetCreationModeFromJSON(json['sheetCreationMode']),
         'columns': ((json['columns'] as Array<any>).map(ColumnDefFromJSON)),
         'schemaVersionId': json['schemaVersionId'] == null ? undefined : json['schemaVersionId'],
@@ -155,7 +148,6 @@ export function TableSheetInputToJSONTyped(value?: TableSheetInput | null, ignor
         'description': value['description'],
         'namespaceName': value['namespaceName'],
         'tableName': value['tableName'],
-        'auditReadAccess': value['auditReadAccess'],
         'sheetCreationMode': SheetCreationModeToJSON(value['sheetCreationMode']),
         'columns': ((value['columns'] as Array<any>).map(ColumnDefToJSON)),
         'schemaVersionId': value['schemaVersionId'],
