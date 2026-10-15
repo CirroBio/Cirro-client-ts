@@ -178,6 +178,12 @@ export interface ProcessDetail {
      */
     usesSampleSheet: boolean;
     /**
+     * Whether the pipeline requires Internet access to function (only applicable to HealthOmics)
+     * @type {boolean}
+     * @memberof ProcessDetail
+     */
+    requiresInternet: boolean;
+    /**
      * Execution modes the pipeline supports
      * @type {Array<ExecutionMode>}
      * @memberof ProcessDetail
@@ -244,6 +250,7 @@ export function instanceOfProcessDetail(value: object): value is ProcessDetail {
     if (!('isTenantWide' in value) || value['isTenantWide'] === undefined) return false;
     if (!('allowMultipleSources' in value) || value['allowMultipleSources'] === undefined) return false;
     if (!('usesSampleSheet' in value) || value['usesSampleSheet'] === undefined) return false;
+    if (!('requiresInternet' in value) || value['requiresInternet'] === undefined) return false;
     if (!('executionModes' in value) || value['executionModes'] === undefined) return false;
     if (!('isArchived' in value) || value['isArchived'] === undefined) return false;
     if (!('tags' in value) || value['tags'] === undefined) return false;
@@ -279,6 +286,7 @@ export function ProcessDetailFromJSONTyped(json: any, ignoreDiscriminator: boole
         'isTenantWide': json['isTenantWide'],
         'allowMultipleSources': json['allowMultipleSources'],
         'usesSampleSheet': json['usesSampleSheet'],
+        'requiresInternet': json['requiresInternet'],
         'executionModes': ((json['executionModes'] as Array<any>).map(ExecutionModeFromJSON)),
         'isArchived': json['isArchived'],
         'customSettings': json['customSettings'] == null ? undefined : CustomPipelineSettingsFromJSON(json['customSettings']),
@@ -319,6 +327,7 @@ export function ProcessDetailToJSONTyped(value?: ProcessDetail | null, ignoreDis
         'isTenantWide': value['isTenantWide'],
         'allowMultipleSources': value['allowMultipleSources'],
         'usesSampleSheet': value['usesSampleSheet'],
+        'requiresInternet': value['requiresInternet'],
         'executionModes': ((value['executionModes'] as Array<any>).map(ExecutionModeToJSON)),
         'isArchived': value['isArchived'],
         'customSettings': CustomPipelineSettingsToJSON(value['customSettings']),
