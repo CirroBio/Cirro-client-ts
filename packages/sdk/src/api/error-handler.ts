@@ -23,6 +23,6 @@ export class PortalErrorHandler implements Middleware {
     } catch (ignore) {
       errorMessage = "Unknown Error";
     }
-    throw new ApiError(errorMessage, errors);
+    throw new ApiError(errorMessage, errors, response.status);
   }
 }
