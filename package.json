@@ -39,6 +39,7 @@
     "glob@^11.0.0": "^11.1.0",
     "js-yaml": "4.3.2",
     "yaml": "^1.10.3",
+    "handlebars": "^4.7.10",
     "@isaacs/brace-expansion": "^5.0.1",
     "brace-expansion@^1.1.7": "^1.1.18",
     "brace-expansion@^2.0.1": "^2.1.7",
@@ -61,6 +62,7 @@
     "follow-redirects": "^1.16.0",
     "postcss": "^8.5.23",
     "shell-quote": "^1.12.0",
-    "ip-address": "^10.5.1"
+    "ip-address": "^10.5.1",
+    "source-map-js": "^1.2.2"
   }
 }
