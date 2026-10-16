@@ -166,6 +166,12 @@ export interface CustomProcessInput {
      */
     usesSampleSheet?: boolean;
     /**
+     * Whether the pipeline requires Internet access to function (only applicable to HealthOmics)
+     * @type {boolean}
+     * @memberof CustomProcessInput
+     */
+    requiresInternet?: boolean;
+    /**
      * Execution modes the pipeline supports
      * @type {Array<ExecutionMode>}
      * @memberof CustomProcessInput
@@ -239,6 +245,7 @@ export function CustomProcessInputFromJSONTyped(json: any, ignoreDiscriminator: 
         'isTenantWide': json['isTenantWide'] == null ? undefined : json['isTenantWide'],
         'allowMultipleSources': json['allowMultipleSources'] == null ? undefined : json['allowMultipleSources'],
         'usesSampleSheet': json['usesSampleSheet'] == null ? undefined : json['usesSampleSheet'],
+        'requiresInternet': json['requiresInternet'] == null ? undefined : json['requiresInternet'],
         'executionModes': json['executionModes'] == null ? undefined : ((json['executionModes'] as Array<any>).map(ExecutionModeFromJSON)),
         'customSettings': json['customSettings'] == null ? undefined : CustomPipelineSettingsFromJSON(json['customSettings']),
         'fileMappingRules': json['fileMappingRules'] == null ? undefined : ((json['fileMappingRules'] as Array<any>).map(FileMappingRuleFromJSON)),
@@ -274,6 +281,7 @@ export function CustomProcessInputToJSONTyped(value?: CustomProcessInput | null,
         'isTenantWide': value['isTenantWide'],
         'allowMultipleSources': value['allowMultipleSources'],
         'usesSampleSheet': value['usesSampleSheet'],
+        'requiresInternet': value['requiresInternet'],
         'executionModes': value['executionModes'] == null ? undefined : ((value['executionModes'] as Array<any>).map(ExecutionModeToJSON)),
         'customSettings': CustomPipelineSettingsToJSON(value['customSettings']),
         'fileMappingRules': value['fileMappingRules'] == null ? undefined : ((value['fileMappingRules'] as Array<any>).map(FileMappingRuleToJSON)),

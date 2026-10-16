@@ -144,6 +144,12 @@ export interface Process {
      */
     usesSampleSheet: boolean;
     /**
+     * Whether the pipeline requires Internet access to function (only applicable to HealthOmics)
+     * @type {boolean}
+     * @memberof Process
+     */
+    requiresInternet: boolean;
+    /**
      * Execution modes the pipeline supports
      * @type {Array<ExecutionMode>}
      * @memberof Process
@@ -192,6 +198,7 @@ export function instanceOfProcess(value: object): value is Process {
     if (!('isTenantWide' in value) || value['isTenantWide'] === undefined) return false;
     if (!('allowMultipleSources' in value) || value['allowMultipleSources'] === undefined) return false;
     if (!('usesSampleSheet' in value) || value['usesSampleSheet'] === undefined) return false;
+    if (!('requiresInternet' in value) || value['requiresInternet'] === undefined) return false;
     if (!('executionModes' in value) || value['executionModes'] === undefined) return false;
     if (!('isArchived' in value) || value['isArchived'] === undefined) return false;
     if (!('tags' in value) || value['tags'] === undefined) return false;
@@ -225,6 +232,7 @@ export function ProcessFromJSONTyped(json: any, ignoreDiscriminator: boolean): P
         'isTenantWide': json['isTenantWide'],
         'allowMultipleSources': json['allowMultipleSources'],
         'usesSampleSheet': json['usesSampleSheet'],
+        'requiresInternet': json['requiresInternet'],
         'executionModes': ((json['executionModes'] as Array<any>).map(ExecutionModeFromJSON)),
         'isArchived': json['isArchived'],
         'createdAt': json['createdAt'] == null ? undefined : (new Date(json['createdAt'])),
@@ -261,6 +269,7 @@ export function ProcessToJSONTyped(value?: Process | null, ignoreDiscriminator: 
         'isTenantWide': value['isTenantWide'],
         'allowMultipleSources': value['allowMultipleSources'],
         'usesSampleSheet': value['usesSampleSheet'],
+        'requiresInternet': value['requiresInternet'],
         'executionModes': ((value['executionModes'] as Array<any>).map(ExecutionModeToJSON)),
         'isArchived': value['isArchived'],
         'createdAt': value['createdAt'] == null ? value['createdAt'] : value['createdAt'].toISOString(),
