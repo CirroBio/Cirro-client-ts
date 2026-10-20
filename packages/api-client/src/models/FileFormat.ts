@@ -14,7 +14,7 @@
 
 /**
  * Determines the file format used when passing the schema-validated input to the pipeline.
- *  - CSV: comma-delimited, one row per object, header row taken from the schema's property order.
+ *  - CSV: comma-delimited, one row per object, header row taken from the order properties first appear in the rows.
  *    Nested objects/arrays within a row are JSON-encoded inline as a single cell value (not recommended).
  *  - TSV: same as CSV, but tab-delimited.
  *  - JSON: the row objects are written out unmodified as a JSON array (no flattening).
