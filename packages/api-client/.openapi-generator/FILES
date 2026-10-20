@@ -237,6 +237,7 @@ src/models/SourceColumn.ts
 src/models/SqlSortOrder.ts
 src/models/Status.ts
 src/models/StopExecutionResponse.ts
+src/models/StructuredFile.ts
 src/models/StructuredFileInput.ts
 src/models/StructuredViewQueryRequest.ts
 src/models/SyncStatus.ts

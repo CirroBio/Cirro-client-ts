@@ -13,6 +13,13 @@
  */
 
 import { mapValues } from '../runtime';
+import type { StructuredFile } from './StructuredFile';
+import {
+    StructuredFileFromJSON,
+    StructuredFileFromJSONTyped,
+    StructuredFileToJSON,
+    StructuredFileToJSONTyped,
+} from './StructuredFile';
 import type { Table } from './Table';
 import {
     TableFromJSON,
@@ -76,6 +83,7 @@ export interface DatasetAssetsManifest {
      * List of web optimized tables for the dataset
      * @type {Array<Table>}
      * @memberof DatasetAssetsManifest
+     * @deprecated
      */
     tables?: Array<Table>;
     /**
@@ -84,6 +92,12 @@ export interface DatasetAssetsManifest {
      * @memberof DatasetAssetsManifest
      */
     artifacts?: Array<Artifact>;
+    /**
+     * Structured file input parameters used
+     * @type {Array<StructuredFile>}
+     * @memberof DatasetAssetsManifest
+     */
+    structuredFiles?: Array<StructuredFile>;
 }
 
 /**
@@ -109,6 +123,7 @@ export function DatasetAssetsManifestFromJSONTyped(json: any, ignoreDiscriminato
         'viz': json['viz'] == null ? undefined : ((json['viz'] as Array<any>).map(DatasetVizFromJSON)),
         'tables': json['tables'] == null ? undefined : ((json['tables'] as Array<any>).map(TableFromJSON)),
         'artifacts': json['artifacts'] == null ? undefined : ((json['artifacts'] as Array<any>).map(ArtifactFromJSON)),
+        'structuredFiles': json['structuredFiles'] == null ? undefined : ((json['structuredFiles'] as Array<any>).map(StructuredFileFromJSON)),
     };
 }
 
@@ -129,6 +144,7 @@ export function DatasetAssetsManifestToJSONTyped(value?: DatasetAssetsManifest |
         'viz': value['viz'] == null ? undefined : ((value['viz'] as Array<any>).map(DatasetVizToJSON)),
         'tables': value['tables'] == null ? undefined : ((value['tables'] as Array<any>).map(TableToJSON)),
         'artifacts': value['artifacts'] == null ? undefined : ((value['artifacts'] as Array<any>).map(ArtifactToJSON)),
+        'structuredFiles': value['structuredFiles'] == null ? undefined : ((value['structuredFiles'] as Array<any>).map(StructuredFileToJSON)),
     };
 }
 
