@@ -20,6 +20,13 @@ import {
     AppClientTypeToJSON,
     AppClientTypeToJSONTyped,
 } from './AppClientType';
+import type { Permission } from './Permission';
+import {
+    PermissionFromJSON,
+    PermissionFromJSONTyped,
+    PermissionToJSON,
+    PermissionToJSONTyped,
+} from './Permission';
 import type { PrincipalType } from './PrincipalType';
 import {
     PrincipalTypeFromJSON,
@@ -46,6 +53,12 @@ export interface AppRegistrationTemplate {
      * @memberof AppRegistrationTemplate
      */
     name: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof AppRegistrationTemplate
+     */
+    description: string;
     /**
      * 
      * @type {string}
@@ -88,6 +101,18 @@ export interface AppRegistrationTemplate {
      * @memberof AppRegistrationTemplate
      */
     discoveryEnabled: boolean;
+    /**
+     * 
+     * @type {Array<Permission>}
+     * @memberof AppRegistrationTemplate
+     */
+    globalPermissions: Array<Permission>;
+    /**
+     * 
+     * @type {Array<Permission>}
+     * @memberof AppRegistrationTemplate
+     */
+    projectPermissions: Array<Permission>;
 }
 
 
@@ -98,6 +123,7 @@ export interface AppRegistrationTemplate {
 export function instanceOfAppRegistrationTemplate(value: object): value is AppRegistrationTemplate {
     if (!('id' in value) || value['id'] === undefined) return false;
     if (!('name' in value) || value['name'] === undefined) return false;
+    if (!('description' in value) || value['description'] === undefined) return false;
     if (!('publisher' in value) || value['publisher'] === undefined) return false;
     if (!('appUrl' in value) || value['appUrl'] === undefined) return false;
     if (!('logoUrl' in value) || value['logoUrl'] === undefined) return false;
@@ -105,6 +131,8 @@ export function instanceOfAppRegistrationTemplate(value: object): value is AppRe
     if (!('principalType' in value) || value['principalType'] === undefined) return false;
     if (!('clientType' in value) || value['clientType'] === undefined) return false;
     if (!('discoveryEnabled' in value) || value['discoveryEnabled'] === undefined) return false;
+    if (!('globalPermissions' in value) || value['globalPermissions'] === undefined) return false;
+    if (!('projectPermissions' in value) || value['projectPermissions'] === undefined) return false;
     return true;
 }
 
@@ -120,6 +148,7 @@ export function AppRegistrationTemplateFromJSONTyped(json: any, ignoreDiscrimina
         
         'id': json['id'],
         'name': json['name'],
+        'description': json['description'],
         'publisher': json['publisher'],
         'appUrl': json['appUrl'],
         'logoUrl': json['logoUrl'],
@@ -127,6 +156,8 @@ export function AppRegistrationTemplateFromJSONTyped(json: any, ignoreDiscrimina
         'principalType': PrincipalTypeFromJSON(json['principalType']),
         'clientType': AppClientTypeFromJSON(json['clientType']),
         'discoveryEnabled': json['discoveryEnabled'],
+        'globalPermissions': ((json['globalPermissions'] as Array<any>).map(PermissionFromJSON)),
+        'projectPermissions': ((json['projectPermissions'] as Array<any>).map(PermissionFromJSON)),
     };
 }
 
@@ -143,6 +174,7 @@ export function AppRegistrationTemplateToJSONTyped(value?: AppRegistrationTempla
         
         'id': value['id'],
         'name': value['name'],
+        'description': value['description'],
         'publisher': value['publisher'],
         'appUrl': value['appUrl'],
         'logoUrl': value['logoUrl'],
@@ -150,6 +182,8 @@ export function AppRegistrationTemplateToJSONTyped(value?: AppRegistrationTempla
         'principalType': PrincipalTypeToJSON(value['principalType']),
         'clientType': AppClientTypeToJSON(value['clientType']),
         'discoveryEnabled': value['discoveryEnabled'],
+        'globalPermissions': ((value['globalPermissions'] as Array<any>).map(PermissionToJSON)),
+        'projectPermissions': ((value['projectPermissions'] as Array<any>).map(PermissionToJSON)),
     };
 }
 
