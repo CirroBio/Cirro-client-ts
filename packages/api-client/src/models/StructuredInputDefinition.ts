@@ -24,25 +24,25 @@ import {
 /**
  * Defines a structured file that a pipeline accepts as an input, and the schema used to validate it
  * @export
- * @interface InputFileRequirement
+ * @interface StructuredInputDefinition
  */
-export interface InputFileRequirement {
+export interface StructuredInputDefinition {
     /**
      * 
      * @type {FileFormat}
-     * @memberof InputFileRequirement
+     * @memberof StructuredInputDefinition
      */
     fileFormat: FileFormat;
     /**
      * JSONSchema representation of the input file contents
      * @type {{ [key: string]: any; }}
-     * @memberof InputFileRequirement
+     * @memberof StructuredInputDefinition
      */
     schema: { [key: string]: any; };
     /**
      * Example rows of data conforming to the schema, shown to the user as a starting point
      * @type {Array<{ [key: string]: any; }>}
-     * @memberof InputFileRequirement
+     * @memberof StructuredInputDefinition
      */
     examples?: Array<{ [key: string]: any; }> | null;
 }
@@ -50,19 +50,19 @@ export interface InputFileRequirement {
 
 
 /**
- * Check if a given object implements the InputFileRequirement interface.
+ * Check if a given object implements the StructuredInputDefinition interface.
  */
-export function instanceOfInputFileRequirement(value: object): value is InputFileRequirement {
+export function instanceOfStructuredInputDefinition(value: object): value is StructuredInputDefinition {
     if (!('fileFormat' in value) || value['fileFormat'] === undefined) return false;
     if (!('schema' in value) || value['schema'] === undefined) return false;
     return true;
 }
 
-export function InputFileRequirementFromJSON(json: any): InputFileRequirement {
-    return InputFileRequirementFromJSONTyped(json, false);
+export function StructuredInputDefinitionFromJSON(json: any): StructuredInputDefinition {
+    return StructuredInputDefinitionFromJSONTyped(json, false);
 }
 
-export function InputFileRequirementFromJSONTyped(json: any, ignoreDiscriminator: boolean): InputFileRequirement {
+export function StructuredInputDefinitionFromJSONTyped(json: any, ignoreDiscriminator: boolean): StructuredInputDefinition {
     if (json == null) {
         return json;
     }
@@ -74,11 +74,11 @@ export function InputFileRequirementFromJSONTyped(json: any, ignoreDiscriminator
     };
 }
 
-export function InputFileRequirementToJSON(json: any): InputFileRequirement {
-    return InputFileRequirementToJSONTyped(json, false);
+export function StructuredInputDefinitionToJSON(json: any): StructuredInputDefinition {
+    return StructuredInputDefinitionToJSONTyped(json, false);
 }
 
-export function InputFileRequirementToJSONTyped(value?: InputFileRequirement | null, ignoreDiscriminator: boolean = false): any {
+export function StructuredInputDefinitionToJSONTyped(value?: StructuredInputDefinition | null, ignoreDiscriminator: boolean = false): any {
     if (value == null) {
         return value;
     }

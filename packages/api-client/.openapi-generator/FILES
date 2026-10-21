@@ -130,7 +130,6 @@ src/models/GovernanceType.ts
 src/models/GroupCost.ts
 src/models/ImportDataRequest.ts
 src/models/IngestConflictMode.ts
-src/models/InputFileRequirement.ts
 src/models/InsertRowsRequest.ts
 src/models/InviteUserRequest.ts
 src/models/InviteUserResponse.ts
@@ -237,8 +236,9 @@ src/models/SourceColumn.ts
 src/models/SqlSortOrder.ts
 src/models/Status.ts
 src/models/StopExecutionResponse.ts
-src/models/StructuredFile.ts
-src/models/StructuredFileInput.ts
+src/models/StructuredInput.ts
+src/models/StructuredInputDefinition.ts
+src/models/StructuredInputFile.ts
 src/models/StructuredViewQueryRequest.ts
 src/models/SyncStatus.ts
 src/models/SystemInfoResponse.ts

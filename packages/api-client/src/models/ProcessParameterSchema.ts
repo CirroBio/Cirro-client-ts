@@ -13,13 +13,13 @@
  */
 
 import { mapValues } from '../runtime';
-import type { InputFileRequirement } from './InputFileRequirement';
+import type { StructuredInputDefinition } from './StructuredInputDefinition';
 import {
-    InputFileRequirementFromJSON,
-    InputFileRequirementFromJSONTyped,
-    InputFileRequirementToJSON,
-    InputFileRequirementToJSONTyped,
-} from './InputFileRequirement';
+    StructuredInputDefinitionFromJSON,
+    StructuredInputDefinitionFromJSONTyped,
+    StructuredInputDefinitionToJSON,
+    StructuredInputDefinitionToJSONTyped,
+} from './StructuredInputDefinition';
 
 /**
  * 
@@ -41,10 +41,10 @@ export interface ProcessParameterSchema {
     ui?: { [key: string]: any; };
     /**
      * Structured file inputs required by this process, keyed by requirement name (referenced elsewhere, e.g. in form, by this same key)
-     * @type {{ [key: string]: InputFileRequirement; }}
+     * @type {{ [key: string]: StructuredInputDefinition; }}
      * @memberof ProcessParameterSchema
      */
-    inputFileRequirements?: { [key: string]: InputFileRequirement; };
+    structuredInputs?: { [key: string]: StructuredInputDefinition; };
 }
 
 /**
@@ -66,7 +66,7 @@ export function ProcessParameterSchemaFromJSONTyped(json: any, ignoreDiscriminat
         
         'form': json['form'] == null ? undefined : json['form'],
         'ui': json['ui'] == null ? undefined : json['ui'],
-        'inputFileRequirements': json['inputFileRequirements'] == null ? undefined : (mapValues(json['inputFileRequirements'], InputFileRequirementFromJSON)),
+        'structuredInputs': json['structuredInputs'] == null ? undefined : (mapValues(json['structuredInputs'], StructuredInputDefinitionFromJSON)),
     };
 }
 
@@ -83,7 +83,7 @@ export function ProcessParameterSchemaToJSONTyped(value?: ProcessParameterSchema
         
         'form': value['form'],
         'ui': value['ui'],
-        'inputFileRequirements': value['inputFileRequirements'] == null ? undefined : (mapValues(value['inputFileRequirements'], InputFileRequirementToJSON)),
+        'structuredInputs': value['structuredInputs'] == null ? undefined : (mapValues(value['structuredInputs'], StructuredInputDefinitionToJSON)),
     };
 }
 

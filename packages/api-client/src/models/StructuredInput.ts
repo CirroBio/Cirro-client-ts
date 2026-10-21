@@ -24,25 +24,25 @@ import {
 /**
  * Contents for a structured file that a pipeline accepts as an input
  * @export
- * @interface StructuredFileInput
+ * @interface StructuredInput
  */
-export interface StructuredFileInput {
+export interface StructuredInput {
     /**
      * 
      * @type {Array<{ [key: string]: any; }>}
-     * @memberof StructuredFileInput
+     * @memberof StructuredInput
      */
     data: Array<{ [key: string]: any; }>;
     /**
      * 
      * @type {FileFormat}
-     * @memberof StructuredFileInput
+     * @memberof StructuredInput
      */
     fileFormat: FileFormat;
     /**
      * 
      * @type {Array<string>}
-     * @memberof StructuredFileInput
+     * @memberof StructuredInput
      */
     importSourceUris: Array<string>;
 }
@@ -50,20 +50,20 @@ export interface StructuredFileInput {
 
 
 /**
- * Check if a given object implements the StructuredFileInput interface.
+ * Check if a given object implements the StructuredInput interface.
  */
-export function instanceOfStructuredFileInput(value: object): value is StructuredFileInput {
+export function instanceOfStructuredInput(value: object): value is StructuredInput {
     if (!('data' in value) || value['data'] === undefined) return false;
     if (!('fileFormat' in value) || value['fileFormat'] === undefined) return false;
     if (!('importSourceUris' in value) || value['importSourceUris'] === undefined) return false;
     return true;
 }
 
-export function StructuredFileInputFromJSON(json: any): StructuredFileInput {
-    return StructuredFileInputFromJSONTyped(json, false);
+export function StructuredInputFromJSON(json: any): StructuredInput {
+    return StructuredInputFromJSONTyped(json, false);
 }
 
-export function StructuredFileInputFromJSONTyped(json: any, ignoreDiscriminator: boolean): StructuredFileInput {
+export function StructuredInputFromJSONTyped(json: any, ignoreDiscriminator: boolean): StructuredInput {
     if (json == null) {
         return json;
     }
@@ -75,11 +75,11 @@ export function StructuredFileInputFromJSONTyped(json: any, ignoreDiscriminator:
     };
 }
 
-export function StructuredFileInputToJSON(json: any): StructuredFileInput {
-    return StructuredFileInputToJSONTyped(json, false);
+export function StructuredInputToJSON(json: any): StructuredInput {
+    return StructuredInputToJSONTyped(json, false);
 }
 
-export function StructuredFileInputToJSONTyped(value?: StructuredFileInput | null, ignoreDiscriminator: boolean = false): any {
+export function StructuredInputToJSONTyped(value?: StructuredInput | null, ignoreDiscriminator: boolean = false): any {
     if (value == null) {
         return value;
     }

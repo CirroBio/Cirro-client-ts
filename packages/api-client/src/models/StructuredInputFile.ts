@@ -16,41 +16,41 @@ import { mapValues } from '../runtime';
 /**
  * Record of a structured file used as an input to the pipeline
  * @export
- * @interface StructuredFile
+ * @interface StructuredInputFile
  */
-export interface StructuredFile {
+export interface StructuredInputFile {
     /**
      * Name of the input file
      * @type {string}
-     * @memberof StructuredFile
+     * @memberof StructuredInputFile
      */
     name?: string;
     /**
      * Path to raw input data in JSON format
      * @type {string}
-     * @memberof StructuredFile
+     * @memberof StructuredInputFile
      */
     path?: string;
     /**
      * Path to file passed into the pipeline
      * @type {string}
-     * @memberof StructuredFile
+     * @memberof StructuredInputFile
      */
     serializedPath?: string;
 }
 
 /**
- * Check if a given object implements the StructuredFile interface.
+ * Check if a given object implements the StructuredInputFile interface.
  */
-export function instanceOfStructuredFile(value: object): value is StructuredFile {
+export function instanceOfStructuredInputFile(value: object): value is StructuredInputFile {
     return true;
 }
 
-export function StructuredFileFromJSON(json: any): StructuredFile {
-    return StructuredFileFromJSONTyped(json, false);
+export function StructuredInputFileFromJSON(json: any): StructuredInputFile {
+    return StructuredInputFileFromJSONTyped(json, false);
 }
 
-export function StructuredFileFromJSONTyped(json: any, ignoreDiscriminator: boolean): StructuredFile {
+export function StructuredInputFileFromJSONTyped(json: any, ignoreDiscriminator: boolean): StructuredInputFile {
     if (json == null) {
         return json;
     }
@@ -62,11 +62,11 @@ export function StructuredFileFromJSONTyped(json: any, ignoreDiscriminator: bool
     };
 }
 
-export function StructuredFileToJSON(json: any): StructuredFile {
-    return StructuredFileToJSONTyped(json, false);
+export function StructuredInputFileToJSON(json: any): StructuredInputFile {
+    return StructuredInputFileToJSONTyped(json, false);
 }
 
-export function StructuredFileToJSONTyped(value?: StructuredFile | null, ignoreDiscriminator: boolean = false): any {
+export function StructuredInputFileToJSONTyped(value?: StructuredInputFile | null, ignoreDiscriminator: boolean = false): any {
     if (value == null) {
         return value;
     }
