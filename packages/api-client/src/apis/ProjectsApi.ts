@@ -94,6 +94,10 @@ export interface ArchiveProjectRequest {
     projectId: string;
 }
 
+export interface BackfillEntitiesRequest {
+    projectId: string;
+}
+
 export interface CreateAccessRequestRequest {
     projectId: string;
     createProjectAccessRequest: CreateProjectAccessRequest;
@@ -282,6 +286,60 @@ export class ProjectsApi extends runtime.BaseAPI {
      */
     async archiveProject(requestParameters: ArchiveProjectRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.archiveProjectRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Creates request options for backfillEntities without sending the request
+     */
+    async backfillEntitiesRequestOpts(requestParameters: BackfillEntitiesRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling backfillEntities().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/projects/{projectId}:backfill-entities`;
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+
+        return {
+            path: urlPath,
+            method: 'PUT',
+            headers: headerParameters,
+            query: queryParameters,
+        };
+    }
+
+    /**
+     * Populates the project\'s dataset and file entity tables from its datasets
+     * Backfill entities
+     */
+    async backfillEntitiesRaw(requestParameters: BackfillEntitiesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const requestOptions = await this.backfillEntitiesRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Populates the project\'s dataset and file entity tables from its datasets
+     * Backfill entities
+     */
+    async backfillEntities(requestParameters: BackfillEntitiesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.backfillEntitiesRaw(requestParameters, initOverrides);
     }
 
     /**
