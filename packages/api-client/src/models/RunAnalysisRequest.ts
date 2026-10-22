@@ -13,13 +13,6 @@
  */
 
 import { mapValues } from '../runtime';
-import type { StructuredFileInput } from './StructuredFileInput';
-import {
-    StructuredFileInputFromJSON,
-    StructuredFileInputFromJSONTyped,
-    StructuredFileInputToJSON,
-    StructuredFileInputToJSONTyped,
-} from './StructuredFileInput';
 import type { EnvironmentType } from './EnvironmentType';
 import {
     EnvironmentTypeFromJSON,
@@ -27,6 +20,13 @@ import {
     EnvironmentTypeToJSON,
     EnvironmentTypeToJSONTyped,
 } from './EnvironmentType';
+import type { StructuredInput } from './StructuredInput';
+import {
+    StructuredInputFromJSON,
+    StructuredInputFromJSONTyped,
+    StructuredInputToJSON,
+    StructuredInputToJSONTyped,
+} from './StructuredInput';
 import type { Tag } from './Tag';
 import {
     TagFromJSON,
@@ -90,11 +90,11 @@ export interface RunAnalysisRequest {
      */
     params: { [key: string]: any; };
     /**
-     * Structured file inputs used in the workflow (can be empty), keyed by the input name on `inputFileRequirements`
-     * @type {{ [key: string]: StructuredFileInput; }}
+     * Structured file inputs used in the workflow (can be empty), keyed by the input name on the process `structuredInputs`
+     * @type {{ [key: string]: StructuredInput; }}
      * @memberof RunAnalysisRequest
      */
-    structuredFileInputs?: { [key: string]: StructuredFileInput; } | null;
+    structuredInputs?: { [key: string]: StructuredInput; } | null;
     /**
      * Emails to notify upon workflow success or failure
      * @type {Array<string>}
@@ -158,7 +158,7 @@ export function RunAnalysisRequestFromJSONTyped(json: any, ignoreDiscriminator: 
         'sourceSampleFilesMap': json['sourceSampleFilesMap'] == null ? undefined : json['sourceSampleFilesMap'],
         'resumeDatasetId': json['resumeDatasetId'] == null ? undefined : json['resumeDatasetId'],
         'params': json['params'],
-        'structuredFileInputs': json['structuredFileInputs'] == null ? undefined : (mapValues(json['structuredFileInputs'], StructuredFileInputFromJSON)),
+        'structuredInputs': json['structuredInputs'] == null ? undefined : (mapValues(json['structuredInputs'], StructuredInputFromJSON)),
         'notificationEmails': json['notificationEmails'] == null ? undefined : json['notificationEmails'],
         'computeEnvironmentId': json['computeEnvironmentId'] == null ? undefined : json['computeEnvironmentId'],
         'environmentType': json['environmentType'] == null ? undefined : EnvironmentTypeFromJSON(json['environmentType']),
@@ -186,7 +186,7 @@ export function RunAnalysisRequestToJSONTyped(value?: RunAnalysisRequest | null,
         'sourceSampleFilesMap': value['sourceSampleFilesMap'],
         'resumeDatasetId': value['resumeDatasetId'],
         'params': value['params'],
-        'structuredFileInputs': value['structuredFileInputs'] == null ? undefined : (mapValues(value['structuredFileInputs'], StructuredFileInputToJSON)),
+        'structuredInputs': value['structuredInputs'] == null ? undefined : (mapValues(value['structuredInputs'], StructuredInputToJSON)),
         'notificationEmails': value['notificationEmails'],
         'computeEnvironmentId': value['computeEnvironmentId'],
         'environmentType': EnvironmentTypeToJSON(value['environmentType']),
