@@ -84,11 +84,6 @@ import {
     SheetUpdateResponseToJSON,
 } from '../models/SheetUpdateResponse';
 import {
-    type SqlSortOrder,
-    SqlSortOrderFromJSON,
-    SqlSortOrderToJSON,
-} from '../models/SqlSortOrder';
-import {
     type TargetMapping,
     TargetMappingFromJSON,
     TargetMappingToJSON,
@@ -135,15 +130,6 @@ export interface GetJobsRequest {
 export interface GetSheetRequest {
     projectId: string;
     sheetId: string;
-}
-
-export interface GetSheetDataRequest {
-    projectId: string;
-    sheetId: string;
-    limit?: number;
-    page?: number;
-    orderBy?: string | null;
-    order?: SqlSortOrder;
 }
 
 export interface GetSheetMappingRequest {
@@ -617,88 +603,6 @@ export class SheetsApi extends runtime.BaseAPI {
      */
     async getSheet(requestParameters: GetSheetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SheetDetail> {
         const response = await this.getSheetRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Creates request options for getSheetData without sending the request
-     * @deprecated
-     */
-    async getSheetDataRequestOpts(requestParameters: GetSheetDataRequest): Promise<runtime.RequestOpts> {
-        if (requestParameters['projectId'] == null) {
-            throw new runtime.RequiredError(
-                'projectId',
-                'Required parameter "projectId" was null or undefined when calling getSheetData().'
-            );
-        }
-
-        if (requestParameters['sheetId'] == null) {
-            throw new runtime.RequiredError(
-                'sheetId',
-                'Required parameter "sheetId" was null or undefined when calling getSheetData().'
-            );
-        }
-
-        const queryParameters: any = {};
-
-        if (requestParameters['limit'] != null) {
-            queryParameters['limit'] = requestParameters['limit'];
-        }
-
-        if (requestParameters['page'] != null) {
-            queryParameters['page'] = requestParameters['page'];
-        }
-
-        if (requestParameters['orderBy'] != null) {
-            queryParameters['orderBy'] = requestParameters['orderBy'];
-        }
-
-        if (requestParameters['order'] != null) {
-            queryParameters['order'] = requestParameters['order'];
-        }
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.accessToken) {
-            const token = this.configuration.accessToken;
-            const tokenString = await token("accessToken", []);
-
-            if (tokenString) {
-                headerParameters["Authorization"] = `Bearer ${tokenString}`;
-            }
-        }
-
-        let urlPath = `/projects/{projectId}/sheets/{sheetId}/data`;
-        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
-        urlPath = urlPath.replace('{sheetId}', encodeURIComponent(String(requestParameters['sheetId'])));
-
-        return {
-            path: urlPath,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        };
-    }
-
-    /**
-     * Returns paginated rows from a sheet. The first column is always _row_id, which uniquely identifies each row and is required for row updates via PUT. Defaults page=1, limit=1000, order=ASCENDING.
-     * Get sheet data
-     * @deprecated
-     */
-    async getSheetDataRaw(requestParameters: GetSheetDataRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SheetQueryResponse>> {
-        const requestOptions = await this.getSheetDataRequestOpts(requestParameters);
-        const response = await this.request(requestOptions, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => SheetQueryResponseFromJSON(jsonValue));
-    }
-
-    /**
-     * Returns paginated rows from a sheet. The first column is always _row_id, which uniquely identifies each row and is required for row updates via PUT. Defaults page=1, limit=1000, order=ASCENDING.
-     * Get sheet data
-     * @deprecated
-     */
-    async getSheetData(requestParameters: GetSheetDataRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SheetQueryResponse> {
-        const response = await this.getSheetDataRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

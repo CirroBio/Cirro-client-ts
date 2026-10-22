@@ -13,7 +13,7 @@
  */
 
 /**
- * 
+ * Sort direction.
  * @export
  * @enum {string}
  */
