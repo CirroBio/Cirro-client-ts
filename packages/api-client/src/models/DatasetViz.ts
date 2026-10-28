@@ -20,12 +20,6 @@ import { mapValues } from '../runtime';
  */
 export interface DatasetViz {
     /**
-     * Path to viz configuration, if applicable
-     * @type {string}
-     * @memberof DatasetViz
-     */
-    path?: string;
-    /**
      * Name of viz
      * @type {string}
      * @memberof DatasetViz
@@ -43,6 +37,12 @@ export interface DatasetViz {
      * @memberof DatasetViz
      */
     type?: string;
+    /**
+     * Path to viz configuration, if applicable
+     * @type {string}
+     * @memberof DatasetViz
+     */
+    path?: string;
 }
 
 /**
@@ -62,10 +62,10 @@ export function DatasetVizFromJSONTyped(json: any, ignoreDiscriminator: boolean)
     }
     return {
         
-        'path': json['path'] == null ? undefined : json['path'],
         'name': json['name'] == null ? undefined : json['name'],
         'desc': json['desc'] == null ? undefined : json['desc'],
         'type': json['type'] == null ? undefined : json['type'],
+        'path': json['path'] == null ? undefined : json['path'],
     };
 }
 
@@ -80,10 +80,10 @@ export function DatasetVizToJSONTyped(value?: DatasetViz | null, ignoreDiscrimin
 
     return {
         
-        'path': value['path'],
         'name': value['name'],
         'desc': value['desc'],
         'type': value['type'],
+        'path': value['path'],
     };
 }
 
