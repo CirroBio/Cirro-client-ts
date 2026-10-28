@@ -58,6 +58,7 @@ src/models/CloudAccountType.ts
 src/models/CloudQuota.ts
 src/models/ColumnDataType.ts
 src/models/ColumnDef.ts
+src/models/ColumnDefSlim.ts
 src/models/ColumnDefinition.ts
 src/models/ColumnMapping.ts
 src/models/ColumnRelationship.ts
