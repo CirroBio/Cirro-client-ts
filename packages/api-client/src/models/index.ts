@@ -31,6 +31,7 @@ export * from './CloudAccountType';
 export * from './CloudQuota';
 export * from './ColumnDataType';
 export * from './ColumnDef';
+export * from './ColumnDefSlim';
 export * from './ColumnDefinition';
 export * from './ColumnMapping';
 export * from './ColumnRelationship';

@@ -72,7 +72,7 @@ export interface ColumnDef {
      */
     hidden?: boolean;
     /**
-     * The semantic type of the column.
+     * 
      * @type {SemanticColumnType}
      * @memberof ColumnDef
      */
