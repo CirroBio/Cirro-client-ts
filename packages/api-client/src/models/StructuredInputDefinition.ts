@@ -34,6 +34,12 @@ export interface StructuredInputDefinition {
      */
     fileFormat: FileFormat;
     /**
+     * If defined, the default file to import from a dataset into this input
+     * @type {string}
+     * @memberof StructuredInputDefinition
+     */
+    defaultSourceFile?: string;
+    /**
      * JSONSchema representation of the input file contents
      * @type {{ [key: string]: any; }}
      * @memberof StructuredInputDefinition
@@ -69,6 +75,7 @@ export function StructuredInputDefinitionFromJSONTyped(json: any, ignoreDiscrimi
     return {
         
         'fileFormat': FileFormatFromJSON(json['fileFormat']),
+        'defaultSourceFile': json['defaultSourceFile'] == null ? undefined : json['defaultSourceFile'],
         'schema': json['schema'],
         'examples': json['examples'] == null ? undefined : json['examples'],
     };
@@ -86,6 +93,7 @@ export function StructuredInputDefinitionToJSONTyped(value?: StructuredInputDefi
     return {
         
         'fileFormat': FileFormatToJSON(value['fileFormat']),
+        'defaultSourceFile': value['defaultSourceFile'],
         'schema': value['schema'],
         'examples': value['examples'],
     };

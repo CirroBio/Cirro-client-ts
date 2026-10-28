@@ -144,6 +144,12 @@ export interface ProjectDetail {
      * @type {string}
      * @memberof ProjectDetail
      */
+    roleVersion?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProjectDetail
+     */
     createdBy: string;
     /**
      * 
@@ -207,6 +213,7 @@ export function ProjectDetailFromJSONTyped(json: any, ignoreDiscriminator: boole
         'classificationIds': json['classificationIds'],
         'deployedAt': json['deployedAt'] == null ? undefined : (new Date(json['deployedAt'])),
         'deployedVersion': json['deployedVersion'] == null ? undefined : json['deployedVersion'],
+        'roleVersion': json['roleVersion'] == null ? undefined : json['roleVersion'],
         'createdBy': json['createdBy'],
         'createdAt': (new Date(json['createdAt'])),
         'updatedAt': (new Date(json['updatedAt'])),
@@ -238,6 +245,7 @@ export function ProjectDetailToJSONTyped(value?: ProjectDetail | null, ignoreDis
         'classificationIds': value['classificationIds'],
         'deployedAt': value['deployedAt'] == null ? value['deployedAt'] : value['deployedAt'].toISOString(),
         'deployedVersion': value['deployedVersion'],
+        'roleVersion': value['roleVersion'],
         'createdBy': value['createdBy'],
         'createdAt': value['createdAt'].toISOString(),
         'updatedAt': value['updatedAt'].toISOString(),

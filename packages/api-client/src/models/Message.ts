@@ -36,12 +36,6 @@ import {
 export interface Message {
     /**
      * 
-     * @type {MessageType}
-     * @memberof Message
-     */
-    messageType: MessageType;
-    /**
-     * 
      * @type {string}
      * @memberof Message
      */
@@ -64,6 +58,12 @@ export interface Message {
      * @memberof Message
      */
     links: Array<Entity>;
+    /**
+     * 
+     * @type {MessageType}
+     * @memberof Message
+     */
+    messageType: MessageType;
     /**
      * 
      * @type {boolean}
@@ -96,10 +96,10 @@ export interface Message {
  * Check if a given object implements the Message interface.
  */
 export function instanceOfMessage(value: object): value is Message {
-    if (!('messageType' in value) || value['messageType'] === undefined) return false;
     if (!('id' in value) || value['id'] === undefined) return false;
     if (!('message' in value) || value['message'] === undefined) return false;
     if (!('links' in value) || value['links'] === undefined) return false;
+    if (!('messageType' in value) || value['messageType'] === undefined) return false;
     if (!('hasReplies' in value) || value['hasReplies'] === undefined) return false;
     if (!('createdBy' in value) || value['createdBy'] === undefined) return false;
     if (!('createdAt' in value) || value['createdAt'] === undefined) return false;
@@ -117,11 +117,11 @@ export function MessageFromJSONTyped(json: any, ignoreDiscriminator: boolean): M
     }
     return {
         
-        'messageType': MessageTypeFromJSON(json['messageType']),
         'id': json['id'],
         'message': json['message'],
         'parentMessageId': json['parentMessageId'] == null ? undefined : json['parentMessageId'],
         'links': ((json['links'] as Array<any>).map(EntityFromJSON)),
+        'messageType': MessageTypeFromJSON(json['messageType']),
         'hasReplies': json['hasReplies'],
         'createdBy': json['createdBy'],
         'createdAt': (new Date(json['createdAt'])),
@@ -140,11 +140,11 @@ export function MessageToJSONTyped(value?: Message | null, ignoreDiscriminator: 
 
     return {
         
-        'messageType': MessageTypeToJSON(value['messageType']),
         'id': value['id'],
         'message': value['message'],
         'parentMessageId': value['parentMessageId'],
         'links': ((value['links'] as Array<any>).map(EntityToJSON)),
+        'messageType': MessageTypeToJSON(value['messageType']),
         'hasReplies': value['hasReplies'],
         'createdBy': value['createdBy'],
         'createdAt': value['createdAt'].toISOString(),

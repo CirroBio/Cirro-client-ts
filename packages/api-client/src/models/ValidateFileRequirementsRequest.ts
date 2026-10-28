@@ -21,24 +21,24 @@ import { mapValues } from '../runtime';
 export interface ValidateFileRequirementsRequest {
     /**
      * 
-     * @type {Array<string>}
-     * @memberof ValidateFileRequirementsRequest
-     */
-    fileNames: Array<string>;
-    /**
-     * 
      * @type {string}
      * @memberof ValidateFileRequirementsRequest
      */
     sampleSheet: string;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof ValidateFileRequirementsRequest
+     */
+    fileNames: Array<string>;
 }
 
 /**
  * Check if a given object implements the ValidateFileRequirementsRequest interface.
  */
 export function instanceOfValidateFileRequirementsRequest(value: object): value is ValidateFileRequirementsRequest {
-    if (!('fileNames' in value) || value['fileNames'] === undefined) return false;
     if (!('sampleSheet' in value) || value['sampleSheet'] === undefined) return false;
+    if (!('fileNames' in value) || value['fileNames'] === undefined) return false;
     return true;
 }
 
@@ -52,8 +52,8 @@ export function ValidateFileRequirementsRequestFromJSONTyped(json: any, ignoreDi
     }
     return {
         
-        'fileNames': json['fileNames'],
         'sampleSheet': json['sampleSheet'],
+        'fileNames': json['fileNames'],
     };
 }
 
@@ -68,8 +68,8 @@ export function ValidateFileRequirementsRequestToJSONTyped(value?: ValidateFileR
 
     return {
         
-        'fileNames': value['fileNames'],
         'sampleSheet': value['sampleSheet'],
+        'fileNames': value['fileNames'],
     };
 }
 
