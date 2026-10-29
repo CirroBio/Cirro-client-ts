@@ -190,6 +190,18 @@ export interface SheetDetail {
      */
     schemaVersionId?: number;
     /**
+     * Number of the table's most recent snapshots always kept. Null for VIEW sheets; null on a TABLE sheet means the default of 1.
+     * @type {number}
+     * @memberof SheetDetail
+     */
+    minSnapshotsToKeep?: number | null;
+    /**
+     * Hours after which a snapshot can expire. Null for VIEW sheets; null on a TABLE sheet means the default of 1.
+     * @type {number}
+     * @memberof SheetDetail
+     */
+    maxSnapshotAgeHours?: number | null;
+    /**
      * 
      * @type {Array<Tag>}
      * @memberof SheetDetail
@@ -255,6 +267,8 @@ export function SheetDetailFromJSONTyped(json: any, ignoreDiscriminator: boolean
         'updatedAt': (new Date(json['updatedAt'])),
         'totalRowCount': json['totalRowCount'] == null ? undefined : json['totalRowCount'],
         'schemaVersionId': json['schemaVersionId'] == null ? undefined : json['schemaVersionId'],
+        'minSnapshotsToKeep': json['minSnapshotsToKeep'] == null ? undefined : json['minSnapshotsToKeep'],
+        'maxSnapshotAgeHours': json['maxSnapshotAgeHours'] == null ? undefined : json['maxSnapshotAgeHours'],
         'tags': ((json['tags'] as Array<any>).map(TagFromJSON)),
         'mappingTargets': ((json['mappingTargets'] as Array<any>).map(EntityFromJSON)),
     };
@@ -291,6 +305,8 @@ export function SheetDetailToJSONTyped(value?: SheetDetail | null, ignoreDiscrim
         'updatedAt': value['updatedAt'].toISOString(),
         'totalRowCount': value['totalRowCount'],
         'schemaVersionId': value['schemaVersionId'],
+        'minSnapshotsToKeep': value['minSnapshotsToKeep'],
+        'maxSnapshotAgeHours': value['maxSnapshotAgeHours'],
         'tags': ((value['tags'] as Array<any>).map(TagToJSON)),
         'mappingTargets': ((value['mappingTargets'] as Array<any>).map(EntityToJSON)),
     };
