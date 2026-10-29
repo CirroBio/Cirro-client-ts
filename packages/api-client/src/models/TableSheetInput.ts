@@ -84,6 +84,18 @@ export interface TableSheetInput {
      */
     schemaVersionId?: number | null;
     /**
+     * Number of the table's most recent snapshots that are always kept, however old. Omitting it, on create or update, sets the default.
+     * @type {number}
+     * @memberof TableSheetInput
+     */
+    minSnapshotsToKeep?: number | null;
+    /**
+     * Hours after which a snapshot can expire, once more than minSnapshotsToKeep exist. Omitting it, on create or update, sets the default.
+     * @type {number}
+     * @memberof TableSheetInput
+     */
+    maxSnapshotAgeHours?: number | null;
+    /**
      * Tags for the sheet
      * @type {Array<Tag>}
      * @memberof TableSheetInput
@@ -128,6 +140,8 @@ export function TableSheetInputFromJSONTyped(json: any, ignoreDiscriminator: boo
         'sheetCreationMode': SheetCreationModeFromJSON(json['sheetCreationMode']),
         'columns': ((json['columns'] as Array<any>).map(ColumnDefFromJSON)),
         'schemaVersionId': json['schemaVersionId'] == null ? undefined : json['schemaVersionId'],
+        'minSnapshotsToKeep': json['minSnapshotsToKeep'] == null ? undefined : json['minSnapshotsToKeep'],
+        'maxSnapshotAgeHours': json['maxSnapshotAgeHours'] == null ? undefined : json['maxSnapshotAgeHours'],
         'tags': json['tags'] == null ? undefined : ((json['tags'] as Array<any>).map(TagFromJSON)),
         'sheetType': json['sheetType'] == null ? undefined : json['sheetType'],
     };
@@ -151,6 +165,8 @@ export function TableSheetInputToJSONTyped(value?: TableSheetInput | null, ignor
         'sheetCreationMode': SheetCreationModeToJSON(value['sheetCreationMode']),
         'columns': ((value['columns'] as Array<any>).map(ColumnDefToJSON)),
         'schemaVersionId': value['schemaVersionId'],
+        'minSnapshotsToKeep': value['minSnapshotsToKeep'],
+        'maxSnapshotAgeHours': value['maxSnapshotAgeHours'],
         'tags': value['tags'] == null ? undefined : ((value['tags'] as Array<any>).map(TagToJSON)),
         'sheetType': value['sheetType'],
     };

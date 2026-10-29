@@ -34,7 +34,7 @@ export interface Artifact {
      */
     type: ArtifactType;
     /**
-     * A secondary file or resource associated with a dataset
+     * 
      * @type {string}
      * @memberof Artifact
      */
