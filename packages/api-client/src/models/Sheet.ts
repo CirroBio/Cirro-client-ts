@@ -130,11 +130,11 @@ export interface Sheet {
      */
     status: Status;
     /**
-     * 
+     * Null until a view's columns are stored: while it materializes, or briefly after it is created.
      * @type {Array<ColumnDefSlim>}
      * @memberof Sheet
      */
-    columns: Array<ColumnDefSlim>;
+    columns?: Array<ColumnDefSlim> | null;
     /**
      * 
      * @type {string}
@@ -195,7 +195,6 @@ export function instanceOfSheet(value: object): value is Sheet {
     if (!('sheetCreationMode' in value) || value['sheetCreationMode'] === undefined) return false;
     if (!('virtual' in value) || value['virtual'] === undefined) return false;
     if (!('status' in value) || value['status'] === undefined) return false;
-    if (!('columns' in value) || value['columns'] === undefined) return false;
     if (!('createdBy' in value) || value['createdBy'] === undefined) return false;
     if (!('createdAt' in value) || value['createdAt'] === undefined) return false;
     if (!('updatedAt' in value) || value['updatedAt'] === undefined) return false;
@@ -225,7 +224,7 @@ export function SheetFromJSONTyped(json: any, ignoreDiscriminator: boolean): She
         'sheetCreationMode': SheetCreationModeFromJSON(json['sheetCreationMode']),
         'virtual': json['virtual'],
         'status': StatusFromJSON(json['status']),
-        'columns': ((json['columns'] as Array<any>).map(ColumnDefSlimFromJSON)),
+        'columns': json['columns'] == null ? undefined : ((json['columns'] as Array<any>).map(ColumnDefSlimFromJSON)),
         'createdBy': json['createdBy'],
         'createdAt': (new Date(json['createdAt'])),
         'updatedAt': (new Date(json['updatedAt'])),
@@ -257,7 +256,7 @@ export function SheetToJSONTyped(value?: Sheet | null, ignoreDiscriminator: bool
         'sheetCreationMode': SheetCreationModeToJSON(value['sheetCreationMode']),
         'virtual': value['virtual'],
         'status': StatusToJSON(value['status']),
-        'columns': ((value['columns'] as Array<any>).map(ColumnDefSlimToJSON)),
+        'columns': value['columns'] == null ? undefined : ((value['columns'] as Array<any>).map(ColumnDefSlimToJSON)),
         'createdBy': value['createdBy'],
         'createdAt': value['createdAt'].toISOString(),
         'updatedAt': value['updatedAt'].toISOString(),
