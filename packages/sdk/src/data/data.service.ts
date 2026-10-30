@@ -22,13 +22,17 @@ import {
   SystemApi,
   ToolsApi,
   UsersApi,
-  WorkspacesApi
+  WorkspacesApi,
+  FetchAPI
 } from "@cirrobio/api-client";
 import { generateApiConfig } from "../api/config";
 
 interface DataServiceParams {
-  tokenGetter: () => Promise<string>;
+  /** Omit when `fetchApi` serves a publication, which needs no credentials. */
+  tokenGetter?: () => Promise<string>;
   basePath?: string;
+  /** Replaces `fetch` for every API request, e.g. with `createPublicationFetch`. */
+  fetchApi?: FetchAPI;
 }
 
 export class DataService {
@@ -58,8 +62,8 @@ export class DataService {
   private readonly _usersApi: UsersApi;
   private readonly _workspacesApi: WorkspacesApi;
 
-  constructor({ tokenGetter, basePath = "/api" }: DataServiceParams) {
-    this.apiConfig = generateApiConfig({ basePath, tokenGetter });
+  constructor({ tokenGetter, basePath = "/api", fetchApi }: DataServiceParams) {
+    this.apiConfig = generateApiConfig({ basePath, tokenGetter, fetchApi });
 
     this._appRegistrationsApi = new AppRegistrationsApi(this.apiConfig);
     this._auditApi = new AuditApi(this.apiConfig);
