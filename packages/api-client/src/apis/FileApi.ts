@@ -87,6 +87,7 @@ export interface QueryProjectFilesRequest {
     processId?: string | null;
     createdBy?: string | null;
     pathContains?: string | null;
+    pathRegex?: string | null;
     minSize?: number | null;
     maxSize?: number | null;
     createdAfter?: Date | null;
@@ -394,6 +395,10 @@ export class FileApi extends runtime.BaseAPI {
 
         if (requestParameters['pathContains'] != null) {
             queryParameters['pathContains'] = requestParameters['pathContains'];
+        }
+
+        if (requestParameters['pathRegex'] != null) {
+            queryParameters['pathRegex'] = requestParameters['pathRegex'];
         }
 
         if (requestParameters['minSize'] != null) {
