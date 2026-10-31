@@ -30,6 +30,10 @@ export class FileService {
    * Get a signed URL for a file
    */
   async getSignedUrlFromProjectFile(file: DownloadableFile, params?: GetSignedUrlOptions): Promise<string> {
+    // Files of an externally hosted dataset are served from their own URL, with nothing to sign
+    if (!file.url.startsWith('s3://')) {
+      return file.url;
+    }
     const credentials = await this.getProjectAccessCredentials(file.fileAccessContext);
     const _params: GetFileUrlParams = {
       ...params,

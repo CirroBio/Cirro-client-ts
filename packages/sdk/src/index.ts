@@ -4,3 +4,4 @@ export * from './auth';
 export * from './data';
 export * from './formatters';
 export * from './util';
+export * from './publication';
