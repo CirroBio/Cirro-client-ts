@@ -10,6 +10,7 @@ import {
   toCellValue,
   toColumnDataType,
 } from "./sheet-sql";
+import { stripTrailing } from "./strip-trailing";
 
 export interface PublicationFetchOptions {
   /** Public URL of the publication root, e.g. https://bucket.s3.amazonaws.com/some/prefix */
@@ -46,8 +47,8 @@ const SEGMENT = "([^/:]+)";
  * as `fetchApi`; read calls then work unchanged and everything else is a 404.
  */
 export function createPublicationFetch(options: PublicationFetchOptions): FetchAPI {
-  const baseUrl = options.baseUrl.replace(/\/+$/, "");
-  const apiBasePath = (options.apiBasePath ?? "/api").replace(/\/+$/, "");
+  const baseUrl = stripTrailing(options.baseUrl, "/");
+  const apiBasePath = stripTrailing(options.apiBasePath ?? "/api", "/");
   const fetchDocument = options.fetch ?? ((input, init) => fetch(input, init));
   const v1 = "v1/projects";
 

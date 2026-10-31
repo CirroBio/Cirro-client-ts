@@ -1,4 +1,5 @@
 import { ColumnDataType, Filter, FilterOperator, FilterValuesInner, SheetDataRequest } from "@cirrobio/api-client";
+import { stripTrailing } from "./strip-trailing";
 
 /** Runs one SQL statement, e.g. against a DuckDB-WASM connection, and returns its rows positionally. */
 export type SqlRunner = (sql: string) => Promise<{ columns: string[]; rows: unknown[][] }>;
@@ -106,7 +107,7 @@ export function buildSheetQuery(parquetUrl: string, columnNames: string[], reque
 export function buildRawQuery(query: string, limit = DEFAULT_LIMIT, page = DEFAULT_PAGE) {
   if (limit < 1) throw new SheetQueryError("limit must be >= 1");
   if (page < 1) throw new SheetQueryError("page must be >= 1");
-  const inner = query.replace(/[;\s]+$/, "").trim();
+  const inner = stripTrailing(query, "; \t\r\n").trim();
   return {
     pageSql: `SELECT * FROM (${inner}) LIMIT ${limit} OFFSET ${(page - 1) * limit}`,
     countSql: `SELECT count(*) FROM (${inner})`,
