@@ -69,12 +69,14 @@ export interface RunAnalysisRequest {
      * Samples within the source datasets that will be used as inputs to this workflow. If not specified, all samples will be used.
      * @type {Array<string>}
      * @memberof RunAnalysisRequest
+     * @deprecated
      */
     sourceSampleIds?: Array<string> | null;
     /**
      * Files containing samples used to define source data input to this workflow. If not specified, all files will be used. Keys are sampleIds, and the lists are file paths to include.
      * @type {{ [key: string]: Array<string>; }}
      * @memberof RunAnalysisRequest
+     * @deprecated
      */
     sourceSampleFilesMap?: { [key: string]: Array<string>; } | null;
     /**
