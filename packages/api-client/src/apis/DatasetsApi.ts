@@ -14,6 +14,11 @@
 
 import * as runtime from '../runtime';
 import {
+    type CopyDatasetRequest,
+    CopyDatasetRequestFromJSON,
+    CopyDatasetRequestToJSON,
+} from '../models/CopyDatasetRequest';
+import {
     type CreateResponse,
     CreateResponseFromJSON,
     CreateResponseToJSON,
@@ -58,6 +63,11 @@ import {
     UploadDatasetRequestFromJSON,
     UploadDatasetRequestToJSON,
 } from '../models/UploadDatasetRequest';
+
+export interface CopyDatasetOperationRequest {
+    projectId: string;
+    copyDatasetRequest: CopyDatasetRequest;
+}
 
 export interface DeleteDatasetRequest {
     projectId: string;
@@ -122,6 +132,71 @@ export interface UploadDatasetOperationRequest {
  * 
  */
 export class DatasetsApi extends runtime.BaseAPI {
+
+    /**
+     * Creates request options for copyDataset without sending the request
+     */
+    async copyDatasetRequestOpts(requestParameters: CopyDatasetOperationRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling copyDataset().'
+            );
+        }
+
+        if (requestParameters['copyDatasetRequest'] == null) {
+            throw new runtime.RequiredError(
+                'copyDatasetRequest',
+                'Required parameter "copyDatasetRequest" was null or undefined when calling copyDataset().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/projects/{projectId}/datasets/copy`;
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+
+        return {
+            path: urlPath,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: CopyDatasetRequestToJSON(requestParameters['copyDatasetRequest']),
+        };
+    }
+
+    /**
+     * Creates a dataset in this project from files and folders of datasets in this project or shared with it, e.g. to copy a dataset or combine several
+     * Copy dataset
+     */
+    async copyDatasetRaw(requestParameters: CopyDatasetOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateResponse>> {
+        const requestOptions = await this.copyDatasetRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => CreateResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Creates a dataset in this project from files and folders of datasets in this project or shared with it, e.g. to copy a dataset or combine several
+     * Copy dataset
+     */
+    async copyDataset(requestParameters: CopyDatasetOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateResponse> {
+        const response = await this.copyDatasetRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
 
     /**
      * Creates request options for deleteDataset without sending the request
@@ -384,6 +459,7 @@ export class DatasetsApi extends runtime.BaseAPI {
 
     /**
      * Creates request options for getSampleSheets without sending the request
+     * @deprecated
      */
     async getSampleSheetsRequestOpts(requestParameters: GetSampleSheetsRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['projectId'] == null) {
@@ -428,6 +504,7 @@ export class DatasetsApi extends runtime.BaseAPI {
     /**
      * Generates the sample sheet output for this dataset, useful for debugging the preprocess script.
      * Generate sample sheets
+     * @deprecated
      */
     async getSampleSheetsRaw(requestParameters: GetSampleSheetsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SampleSheets>> {
         const requestOptions = await this.getSampleSheetsRequestOpts(requestParameters);
@@ -439,6 +516,7 @@ export class DatasetsApi extends runtime.BaseAPI {
     /**
      * Generates the sample sheet output for this dataset, useful for debugging the preprocess script.
      * Generate sample sheets
+     * @deprecated
      */
     async getSampleSheets(requestParameters: GetSampleSheetsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SampleSheets> {
         const response = await this.getSampleSheetsRaw(requestParameters, initOverrides);
@@ -512,6 +590,7 @@ export class DatasetsApi extends runtime.BaseAPI {
 
     /**
      * Creates request options for ingestSamples without sending the request
+     * @deprecated
      */
     async ingestSamplesRequestOpts(requestParameters: IngestSamplesRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['projectId'] == null) {
@@ -556,6 +635,7 @@ export class DatasetsApi extends runtime.BaseAPI {
     /**
      * Rerun sample ingest.
      * Rerun sample ingest
+     * @deprecated
      */
     async ingestSamplesRaw(requestParameters: IngestSamplesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
         const requestOptions = await this.ingestSamplesRequestOpts(requestParameters);
@@ -567,6 +647,7 @@ export class DatasetsApi extends runtime.BaseAPI {
     /**
      * Rerun sample ingest.
      * Rerun sample ingest
+     * @deprecated
      */
     async ingestSamples(requestParameters: IngestSamplesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.ingestSamplesRaw(requestParameters, initOverrides);

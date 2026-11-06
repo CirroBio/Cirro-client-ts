@@ -72,6 +72,7 @@ export class MetadataApi extends runtime.BaseAPI {
 
     /**
      * Creates request options for getDatasetSamples without sending the request
+     * @deprecated
      */
     async getDatasetSamplesRequestOpts(requestParameters: GetDatasetSamplesRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['projectId'] == null) {
@@ -116,6 +117,7 @@ export class MetadataApi extends runtime.BaseAPI {
     /**
      * Retrieves a list of samples associated with a dataset along with their metadata
      * Get dataset samples
+     * @deprecated
      */
     async getDatasetSamplesRaw(requestParameters: GetDatasetSamplesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<Sample>>> {
         const requestOptions = await this.getDatasetSamplesRequestOpts(requestParameters);
@@ -127,6 +129,7 @@ export class MetadataApi extends runtime.BaseAPI {
     /**
      * Retrieves a list of samples associated with a dataset along with their metadata
      * Get dataset samples
+     * @deprecated
      */
     async getDatasetSamples(requestParameters: GetDatasetSamplesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<Sample>> {
         const response = await this.getDatasetSamplesRaw(requestParameters, initOverrides);
@@ -135,6 +138,7 @@ export class MetadataApi extends runtime.BaseAPI {
 
     /**
      * Creates request options for getProjectSamples without sending the request
+     * @deprecated
      */
     async getProjectSamplesRequestOpts(requestParameters: GetProjectSamplesRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['projectId'] == null) {
@@ -179,6 +183,7 @@ export class MetadataApi extends runtime.BaseAPI {
     /**
      * Retrieves a list of samples associated with a project along with their metadata
      * Get project samples
+     * @deprecated
      */
     async getProjectSamplesRaw(requestParameters: GetProjectSamplesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PaginatedResponseSampleDto>> {
         const requestOptions = await this.getProjectSamplesRequestOpts(requestParameters);
@@ -190,6 +195,7 @@ export class MetadataApi extends runtime.BaseAPI {
     /**
      * Retrieves a list of samples associated with a project along with their metadata
      * Get project samples
+     * @deprecated
      */
     async getProjectSamples(requestParameters: GetProjectSamplesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<PaginatedResponseSampleDto> {
         const response = await this.getProjectSamplesRaw(requestParameters, initOverrides);
@@ -254,6 +260,7 @@ export class MetadataApi extends runtime.BaseAPI {
 
     /**
      * Creates request options for getSampleById without sending the request
+     * @deprecated
      */
     async getSampleByIdRequestOpts(requestParameters: GetSampleByIdRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['projectId'] == null) {
@@ -298,6 +305,7 @@ export class MetadataApi extends runtime.BaseAPI {
     /**
      * Retrieves a sample by its ID along with its metadata
      * Get sample by ID
+     * @deprecated
      */
     async getSampleByIdRaw(requestParameters: GetSampleByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Sample>> {
         const requestOptions = await this.getSampleByIdRequestOpts(requestParameters);
@@ -309,6 +317,7 @@ export class MetadataApi extends runtime.BaseAPI {
     /**
      * Retrieves a sample by its ID along with its metadata
      * Get sample by ID
+     * @deprecated
      */
     async getSampleById(requestParameters: GetSampleByIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Sample> {
         const response = await this.getSampleByIdRaw(requestParameters, initOverrides);
@@ -382,6 +391,7 @@ export class MetadataApi extends runtime.BaseAPI {
 
     /**
      * Creates request options for updateSample without sending the request
+     * @deprecated
      */
     async updateSampleRequestOpts(requestParameters: UpdateSampleRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['projectId'] == null) {
@@ -436,6 +446,7 @@ export class MetadataApi extends runtime.BaseAPI {
     /**
      * Updates metadata on a sample
      * Update sample
+     * @deprecated
      */
     async updateSampleRaw(requestParameters: UpdateSampleRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Sample>> {
         const requestOptions = await this.updateSampleRequestOpts(requestParameters);
@@ -447,6 +458,7 @@ export class MetadataApi extends runtime.BaseAPI {
     /**
      * Updates metadata on a sample
      * Update sample
+     * @deprecated
      */
     async updateSample(requestParameters: UpdateSampleRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Sample> {
         const response = await this.updateSampleRaw(requestParameters, initOverrides);
