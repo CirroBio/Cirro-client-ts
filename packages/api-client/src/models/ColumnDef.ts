@@ -107,6 +107,12 @@ export interface ColumnDef {
      * @memberof ColumnDef
      */
     unique?: boolean;
+    /**
+     * Whether cross-sheet search looks at this column. TABLE sheets only.
+     * @type {boolean}
+     * @memberof ColumnDef
+     */
+    indexed?: boolean;
 }
 
 
@@ -141,6 +147,7 @@ export function ColumnDefFromJSONTyped(json: any, ignoreDiscriminator: boolean):
         'foreignKey': json['foreignKey'] == null ? undefined : ForeignKeyRefFromJSON(json['foreignKey']),
         'required': json['required'] == null ? undefined : json['required'],
         'unique': json['unique'] == null ? undefined : json['unique'],
+        'indexed': json['indexed'] == null ? undefined : json['indexed'],
     };
 }
 
@@ -166,6 +173,7 @@ export function ColumnDefToJSONTyped(value?: ColumnDef | null, ignoreDiscriminat
         'foreignKey': ForeignKeyRefToJSON(value['foreignKey']),
         'required': value['required'],
         'unique': value['unique'],
+        'indexed': value['indexed'],
     };
 }
 

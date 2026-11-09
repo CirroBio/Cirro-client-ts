@@ -79,6 +79,16 @@ import {
     SheetQueryResponseToJSON,
 } from '../models/SheetQueryResponse';
 import {
+    type SheetSearchRequest,
+    SheetSearchRequestFromJSON,
+    SheetSearchRequestToJSON,
+} from '../models/SheetSearchRequest';
+import {
+    type SheetSearchResponse,
+    SheetSearchResponseFromJSON,
+    SheetSearchResponseToJSON,
+} from '../models/SheetSearchResponse';
+import {
     type SheetUpdateResponse,
     SheetUpdateResponseFromJSON,
     SheetUpdateResponseToJSON,
@@ -176,6 +186,11 @@ export interface SaveSheetMappingRequest {
     targetType: EntityType;
     targetId: string;
     targetMappingInput: TargetMappingInput;
+}
+
+export interface SearchSheetsRequest {
+    projectId: string;
+    sheetSearchRequest: SheetSearchRequest;
 }
 
 export interface TriggerIngestRequest {
@@ -1162,6 +1177,71 @@ export class SheetsApi extends runtime.BaseAPI {
      */
     async saveSheetMapping(requestParameters: SaveSheetMappingRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<TargetMapping> {
         const response = await this.saveSheetMappingRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Creates request options for searchSheets without sending the request
+     */
+    async searchSheetsRequestOpts(requestParameters: SearchSheetsRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling searchSheets().'
+            );
+        }
+
+        if (requestParameters['sheetSearchRequest'] == null) {
+            throw new runtime.RequiredError(
+                'sheetSearchRequest',
+                'Required parameter "sheetSearchRequest" was null or undefined when calling searchSheets().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/projects/{projectId}/sheets/search`;
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+
+        return {
+            path: urlPath,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: SheetSearchRequestToJSON(requestParameters['sheetSearchRequest']),
+        };
+    }
+
+    /**
+     * Finds cells whose value contains valueContains, ignoring case, in every indexed column of the project\'s TABLE sheets, and returns a page of the hits.
+     * Search the project\'s sheets
+     */
+    async searchSheetsRaw(requestParameters: SearchSheetsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SheetSearchResponse>> {
+        const requestOptions = await this.searchSheetsRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SheetSearchResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Finds cells whose value contains valueContains, ignoring case, in every indexed column of the project\'s TABLE sheets, and returns a page of the hits.
+     * Search the project\'s sheets
+     */
+    async searchSheets(requestParameters: SearchSheetsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SheetSearchResponse> {
+        const response = await this.searchSheetsRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

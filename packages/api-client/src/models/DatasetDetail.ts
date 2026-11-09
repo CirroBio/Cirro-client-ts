@@ -34,13 +34,6 @@ import {
     NamedItemToJSON,
     NamedItemToJSONTyped,
 } from './NamedItem';
-import type { DatasetCopyOrigin } from './DatasetCopyOrigin';
-import {
-    DatasetCopyOriginFromJSON,
-    DatasetCopyOriginFromJSONTyped,
-    DatasetCopyOriginToJSON,
-    DatasetCopyOriginToJSONTyped,
-} from './DatasetCopyOrigin';
 
 /**
  * 
@@ -102,12 +95,6 @@ export interface DatasetDetail {
      * @memberof DatasetDetail
      */
     sourceDatasets: Array<NamedItem>;
-    /**
-     * The datasets this dataset copied its files from, if it is a copy
-     * @type {Array<DatasetCopyOrigin>}
-     * @memberof DatasetDetail
-     */
-    copiedFrom?: Array<DatasetCopyOrigin>;
     /**
      * 
      * @type {Array<string>}
@@ -240,7 +227,6 @@ export function DatasetDetailFromJSONTyped(json: any, ignoreDiscriminator: boole
         'originatingProjectId': json['originatingProjectId'] == null ? undefined : json['originatingProjectId'],
         'sourceDatasetIds': json['sourceDatasetIds'],
         'sourceDatasets': ((json['sourceDatasets'] as Array<any>).map(NamedItemFromJSON)),
-        'copiedFrom': json['copiedFrom'] == null ? undefined : ((json['copiedFrom'] as Array<any>).map(DatasetCopyOriginFromJSON)),
         'sourceSampleIds': json['sourceSampleIds'],
         'sourceSampleFilesMap': json['sourceSampleFilesMap'],
         'status': StatusFromJSON(json['status']),
@@ -278,7 +264,6 @@ export function DatasetDetailToJSONTyped(value?: DatasetDetail | null, ignoreDis
         'originatingProjectId': value['originatingProjectId'],
         'sourceDatasetIds': value['sourceDatasetIds'],
         'sourceDatasets': ((value['sourceDatasets'] as Array<any>).map(NamedItemToJSON)),
-        'copiedFrom': value['copiedFrom'] == null ? undefined : ((value['copiedFrom'] as Array<any>).map(DatasetCopyOriginToJSON)),
         'sourceSampleIds': value['sourceSampleIds'],
         'sourceSampleFilesMap': value['sourceSampleFilesMap'],
         'status': StatusToJSON(value['status']),

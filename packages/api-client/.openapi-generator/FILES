@@ -67,7 +67,6 @@ src/models/ComputeEnvironmentConfigurationInput.ts
 src/models/ConfigSource.ts
 src/models/Contact.ts
 src/models/ContactInput.ts
-src/models/CopyDatasetRequest.ts
 src/models/CostComponent.ts
 src/models/CostResponse.ts
 src/models/CostSource.ts
@@ -84,7 +83,6 @@ src/models/Dataset.ts
 src/models/DatasetAssetsManifest.ts
 src/models/DatasetCondition.ts
 src/models/DatasetConditionField.ts
-src/models/DatasetCopyOrigin.ts
 src/models/DatasetDetail.ts
 src/models/DatasetSource.ts
 src/models/DatasetViz.ts
@@ -102,7 +100,6 @@ src/models/FeatureFlags.ts
 src/models/FileDef.ts
 src/models/FileEntry.ts
 src/models/FileFormat.ts
-src/models/FileMapping.ts
 src/models/FileMappingRule.ts
 src/models/FileNameMatch.ts
 src/models/FileNamePattern.ts
@@ -231,6 +228,9 @@ src/models/SheetJob.ts
 src/models/SheetJobType.ts
 src/models/SheetQueryRequest.ts
 src/models/SheetQueryResponse.ts
+src/models/SheetSearchHit.ts
+src/models/SheetSearchRequest.ts
+src/models/SheetSearchResponse.ts
 src/models/SheetSort.ts
 src/models/SheetTemplate.ts
 src/models/SheetType.ts
