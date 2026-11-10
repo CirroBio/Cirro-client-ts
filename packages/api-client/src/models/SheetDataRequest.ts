@@ -58,6 +58,12 @@ export interface SheetDataRequest {
      * @memberof SheetDataRequest
      */
     filter?: Filter | null;
+    /**
+     * Snapshot to read, from the sheet's snapshot list. Omit it to read the current data. TABLE sheets only.
+     * @type {string}
+     * @memberof SheetDataRequest
+     */
+    snapshotId?: string | null;
 }
 
 /**
@@ -81,6 +87,7 @@ export function SheetDataRequestFromJSONTyped(json: any, ignoreDiscriminator: bo
         'page': json['page'] == null ? undefined : json['page'],
         'sort': json['sort'] == null ? undefined : SheetSortFromJSON(json['sort']),
         'filter': json['filter'] == null ? undefined : FilterFromJSON(json['filter']),
+        'snapshotId': json['snapshotId'] == null ? undefined : json['snapshotId'],
     };
 }
 
@@ -99,6 +106,7 @@ export function SheetDataRequestToJSONTyped(value?: SheetDataRequest | null, ign
         'page': value['page'],
         'sort': SheetSortToJSON(value['sort']),
         'filter': FilterToJSON(value['filter']),
+        'snapshotId': value['snapshotId'],
     };
 }
 
