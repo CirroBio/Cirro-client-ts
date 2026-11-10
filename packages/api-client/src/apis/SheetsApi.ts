@@ -54,6 +54,16 @@ import {
     SheetDetailToJSON,
 } from '../models/SheetDetail';
 import {
+    type SheetDiffRequest,
+    SheetDiffRequestFromJSON,
+    SheetDiffRequestToJSON,
+} from '../models/SheetDiffRequest';
+import {
+    type SheetDiffResponse,
+    SheetDiffResponseFromJSON,
+    SheetDiffResponseToJSON,
+} from '../models/SheetDiffResponse';
+import {
     type SheetIngestRequest,
     SheetIngestRequestFromJSON,
     SheetIngestRequestToJSON,
@@ -88,6 +98,11 @@ import {
     SheetSearchResponseFromJSON,
     SheetSearchResponseToJSON,
 } from '../models/SheetSearchResponse';
+import {
+    type SheetSnapshot,
+    SheetSnapshotFromJSON,
+    SheetSnapshotToJSON,
+} from '../models/SheetSnapshot';
 import {
     type SheetUpdateResponse,
     SheetUpdateResponseFromJSON,
@@ -132,6 +147,12 @@ export interface DeleteSheetMappingRequest {
     targetId: string;
 }
 
+export interface DiffSheetSnapshotsRequest {
+    projectId: string;
+    sheetId: string;
+    sheetDiffRequest: SheetDiffRequest;
+}
+
 export interface GetJobsRequest {
     projectId: string;
     sheetId: string;
@@ -156,6 +177,11 @@ export interface GetSheetMappingsRequest {
 
 export interface GetSheetsRequest {
     projectId: string;
+}
+
+export interface GetSnapshotsRequest {
+    projectId: string;
+    sheetId: string;
 }
 
 export interface InsertSheetDataRequest {
@@ -496,6 +522,79 @@ export class SheetsApi extends runtime.BaseAPI {
     }
 
     /**
+     * Creates request options for diffSheetSnapshots without sending the request
+     */
+    async diffSheetSnapshotsRequestOpts(requestParameters: DiffSheetSnapshotsRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling diffSheetSnapshots().'
+            );
+        }
+
+        if (requestParameters['sheetId'] == null) {
+            throw new runtime.RequiredError(
+                'sheetId',
+                'Required parameter "sheetId" was null or undefined when calling diffSheetSnapshots().'
+            );
+        }
+
+        if (requestParameters['sheetDiffRequest'] == null) {
+            throw new runtime.RequiredError(
+                'sheetDiffRequest',
+                'Required parameter "sheetDiffRequest" was null or undefined when calling diffSheetSnapshots().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/projects/{projectId}/sheets/{sheetId}/data/diff`;
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+        urlPath = urlPath.replace('{sheetId}', encodeURIComponent(String(requestParameters['sheetId'])));
+
+        return {
+            path: urlPath,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: SheetDiffRequestToJSON(requestParameters['sheetDiffRequest']),
+        };
+    }
+
+    /**
+     * Returns paginated rows added, deleted or updated between two snapshots of a TABLE sheet, with each row\'s values as of fromSnapshotId (before) and toSnapshotId (after). Rows are matched by _row_id, which an update keeps, so a row deleted and inserted again shows as DELETED and ADDED. A row counts as UPDATED when a commit in between rewrote it.
+     * Diff sheet snapshots
+     */
+    async diffSheetSnapshotsRaw(requestParameters: DiffSheetSnapshotsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SheetDiffResponse>> {
+        const requestOptions = await this.diffSheetSnapshotsRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SheetDiffResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Returns paginated rows added, deleted or updated between two snapshots of a TABLE sheet, with each row\'s values as of fromSnapshotId (before) and toSnapshotId (after). Rows are matched by _row_id, which an update keeps, so a row deleted and inserted again shows as DELETED and ADDED. A row counts as UPDATED when a commit in between rewrote it.
+     * Diff sheet snapshots
+     */
+    async diffSheetSnapshots(requestParameters: DiffSheetSnapshotsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SheetDiffResponse> {
+        const response = await this.diffSheetSnapshotsRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
      * Creates request options for getJobs without sending the request
      */
     async getJobsRequestOpts(requestParameters: GetJobsRequest): Promise<runtime.RequestOpts> {
@@ -815,6 +914,69 @@ export class SheetsApi extends runtime.BaseAPI {
      */
     async getSheets(requestParameters: GetSheetsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<Sheet>> {
         const response = await this.getSheetsRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Creates request options for getSnapshots without sending the request
+     */
+    async getSnapshotsRequestOpts(requestParameters: GetSnapshotsRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling getSnapshots().'
+            );
+        }
+
+        if (requestParameters['sheetId'] == null) {
+            throw new runtime.RequiredError(
+                'sheetId',
+                'Required parameter "sheetId" was null or undefined when calling getSnapshots().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/projects/{projectId}/sheets/{sheetId}/snapshots`;
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+        urlPath = urlPath.replace('{sheetId}', encodeURIComponent(String(requestParameters['sheetId'])));
+
+        return {
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        };
+    }
+
+    /**
+     * Retrieves a TABLE sheet\'s snapshots, newest first. Old snapshots expire under the sheet\'s retention settings, so the list also changes without writes.
+     * List snapshots
+     */
+    async getSnapshotsRaw(requestParameters: GetSnapshotsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<SheetSnapshot>>> {
+        const requestOptions = await this.getSnapshotsRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(SheetSnapshotFromJSON));
+    }
+
+    /**
+     * Retrieves a TABLE sheet\'s snapshots, newest first. Old snapshots expire under the sheet\'s retention settings, so the list also changes without writes.
+     * List snapshots
+     */
+    async getSnapshots(requestParameters: GetSnapshotsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<SheetSnapshot>> {
+        const response = await this.getSnapshotsRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
