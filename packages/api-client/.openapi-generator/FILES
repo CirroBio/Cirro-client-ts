@@ -231,6 +231,9 @@ src/models/SheetJob.ts
 src/models/SheetJobType.ts
 src/models/SheetQueryRequest.ts
 src/models/SheetQueryResponse.ts
+src/models/SheetSearchHit.ts
+src/models/SheetSearchRequest.ts
+src/models/SheetSearchResponse.ts
 src/models/SheetSort.ts
 src/models/SheetTemplate.ts
 src/models/SheetType.ts
