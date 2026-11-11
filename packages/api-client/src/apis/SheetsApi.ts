@@ -1388,7 +1388,7 @@ export class SheetsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Finds cells whose value contains valueContains, ignoring case, in every indexed column of the project\'s TABLE sheets, and returns a page of the hits.
+     * Finds values that contain valueContains, ignoring case, in every indexed column of the project\'s TABLE sheets. Returns a page of hits, one per distinct value in a column of a sheet. Each hit\'s rowCount is the number of rows in that sheet with the value in that column.
      * Search the project\'s sheets
      */
     async searchSheetsRaw(requestParameters: SearchSheetsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SheetSearchResponse>> {
@@ -1399,7 +1399,7 @@ export class SheetsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Finds cells whose value contains valueContains, ignoring case, in every indexed column of the project\'s TABLE sheets, and returns a page of the hits.
+     * Finds values that contain valueContains, ignoring case, in every indexed column of the project\'s TABLE sheets. Returns a page of hits, one per distinct value in a column of a sheet. Each hit\'s rowCount is the number of rows in that sheet with the value in that column.
      * Search the project\'s sheets
      */
     async searchSheets(requestParameters: SearchSheetsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SheetSearchResponse> {

@@ -14,7 +14,7 @@
 
 import { mapValues } from '../runtime';
 /**
- * An indexed cell whose value matched a sheet search
+ * A distinct value in an indexed column that matched a sheet search, with how many rows hold it
  * @export
  * @interface SheetSearchHit
  */
@@ -44,17 +44,17 @@ export interface SheetSearchHit {
      */
     columnName: string;
     /**
-     * The row's `_row_id`, as the sheet data endpoints return it
-     * @type {number}
-     * @memberof SheetSearchHit
-     */
-    rowId: number;
-    /**
-     * The cell's value as text
+     * The value as text
      * @type {string}
      * @memberof SheetSearchHit
      */
     value: string;
+    /**
+     * Number of rows whose cell in this column holds the value
+     * @type {number}
+     * @memberof SheetSearchHit
+     */
+    rowCount: number;
 }
 
 /**
@@ -65,8 +65,8 @@ export function instanceOfSheetSearchHit(value: object): value is SheetSearchHit
     if (!('namespaceName' in value) || value['namespaceName'] === undefined) return false;
     if (!('tableName' in value) || value['tableName'] === undefined) return false;
     if (!('columnName' in value) || value['columnName'] === undefined) return false;
-    if (!('rowId' in value) || value['rowId'] === undefined) return false;
     if (!('value' in value) || value['value'] === undefined) return false;
+    if (!('rowCount' in value) || value['rowCount'] === undefined) return false;
     return true;
 }
 
@@ -84,8 +84,8 @@ export function SheetSearchHitFromJSONTyped(json: any, ignoreDiscriminator: bool
         'namespaceName': json['namespaceName'],
         'tableName': json['tableName'],
         'columnName': json['columnName'],
-        'rowId': json['rowId'],
         'value': json['value'],
+        'rowCount': json['rowCount'],
     };
 }
 
@@ -104,8 +104,8 @@ export function SheetSearchHitToJSONTyped(value?: SheetSearchHit | null, ignoreD
         'namespaceName': value['namespaceName'],
         'tableName': value['tableName'],
         'columnName': value['columnName'],
-        'rowId': value['rowId'],
         'value': value['value'],
+        'rowCount': value['rowCount'],
     };
 }
 
