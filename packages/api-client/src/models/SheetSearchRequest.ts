@@ -20,7 +20,7 @@ import { mapValues } from '../runtime';
  */
 export interface SheetSearchRequest {
     /**
-     * Only return cells whose value contains this text, anywhere in the value (case-insensitive)
+     * Only return hits whose value contains this text, anywhere in the value (case-insensitive)
      * @type {string}
      * @memberof SheetSearchRequest
      */

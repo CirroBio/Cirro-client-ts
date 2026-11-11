@@ -65,6 +65,12 @@ export interface SheetIngestRequest {
      * @memberof SheetIngestRequest
      */
     conflictColumn?: string | null;
+    /**
+     * Delete all existing rows before loading the file. The clear and the load succeed or fail together, so a failed ingest keeps the existing rows. Cannot be combined with onConflict=OVERWRITE.
+     * @type {boolean}
+     * @memberof SheetIngestRequest
+     */
+    clearExisting?: boolean;
 }
 
 
@@ -91,6 +97,7 @@ export function SheetIngestRequestFromJSONTyped(json: any, ignoreDiscriminator: 
         'sourceColumns': json['sourceColumns'] == null ? undefined : ((json['sourceColumns'] as Array<any>).map(SourceColumnFromJSON)),
         'onConflict': json['onConflict'] == null ? undefined : IngestConflictModeFromJSON(json['onConflict']),
         'conflictColumn': json['conflictColumn'] == null ? undefined : json['conflictColumn'],
+        'clearExisting': json['clearExisting'] == null ? undefined : json['clearExisting'],
     };
 }
 
@@ -109,6 +116,7 @@ export function SheetIngestRequestToJSONTyped(value?: SheetIngestRequest | null,
         'sourceColumns': value['sourceColumns'] == null ? undefined : ((value['sourceColumns'] as Array<any>).map(SourceColumnToJSON)),
         'onConflict': IngestConflictModeToJSON(value['onConflict']),
         'conflictColumn': value['conflictColumn'],
+        'clearExisting': value['clearExisting'],
     };
 }
 

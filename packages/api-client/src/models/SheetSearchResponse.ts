@@ -22,7 +22,7 @@ import {
 } from './SheetSearchHit';
 
 /**
- * A page of sheet search hits, ordered by sheet, column and row
+ * A page of sheet search hits, one per distinct value in a column of a sheet: values equal to the search text first, then values starting with it, then the values in the most rows
  * @export
  * @interface SheetSearchResponse
  */
@@ -34,11 +34,17 @@ export interface SheetSearchResponse {
      */
     hits: Array<SheetSearchHit>;
     /**
-     * Number of hits across all pages. Null on a page past the last hit.
+     * Number of hits across all pages, counting a value once per column of each sheet. Null on a page past the last hit.
      * @type {number}
      * @memberof SheetSearchResponse
      */
     totalHits?: number | null;
+    /**
+     * Number of sheets with at least one hit. Null on a page past the last hit.
+     * @type {number}
+     * @memberof SheetSearchResponse
+     */
+    totalSheets?: number | null;
 }
 
 /**
@@ -61,6 +67,7 @@ export function SheetSearchResponseFromJSONTyped(json: any, ignoreDiscriminator:
         
         'hits': ((json['hits'] as Array<any>).map(SheetSearchHitFromJSON)),
         'totalHits': json['totalHits'] == null ? undefined : json['totalHits'],
+        'totalSheets': json['totalSheets'] == null ? undefined : json['totalSheets'],
     };
 }
 
@@ -77,6 +84,7 @@ export function SheetSearchResponseToJSONTyped(value?: SheetSearchResponse | nul
         
         'hits': ((value['hits'] as Array<any>).map(SheetSearchHitToJSON)),
         'totalHits': value['totalHits'],
+        'totalSheets': value['totalSheets'],
     };
 }
 
