@@ -26,7 +26,7 @@ export interface FileMapping {
      */
     src: string;
     /**
-     * Path in the new dataset's data folder. A folder's destination is a folder (ends in /, or empty for the data folder itself). Defaults to the source's path in its dataset, or for an S3 source, its own name
+     * Path in the new dataset's data folder. A folder's destination is a folder (ends in /, or empty for the data folder itself). Defaults to the source's path in its dataset, or for an S3 source, the data folder itself for a folder and its own name for a file
      * @type {string}
      * @memberof FileMapping
      */

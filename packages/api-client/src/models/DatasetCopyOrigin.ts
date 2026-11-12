@@ -14,41 +14,35 @@
 
 import { mapValues } from '../runtime';
 /**
- * A dataset this dataset copied files from, as it was when the copy was made
+ * A source this dataset copied files from: a dataset, as it was when the copy was made, or a file or folder in S3
  * @export
  * @interface DatasetCopyOrigin
  */
 export interface DatasetCopyOrigin {
     /**
-     * ID of the source dataset
+     * The source: the Cirro URI of the dataset, or the S3 URI of the file or folder
      * @type {string}
      * @memberof DatasetCopyOrigin
      */
-    datasetId?: string;
+    uri?: string;
     /**
-     * ID of the project the source dataset belongs to
+     * Who created the source dataset, absent for an S3 source
      * @type {string}
      * @memberof DatasetCopyOrigin
      */
-    projectId?: string;
+    createdBy?: string | null;
     /**
-     * Who created the source dataset
-     * @type {string}
-     * @memberof DatasetCopyOrigin
-     */
-    createdBy?: string;
-    /**
-     * When the source dataset was created
+     * When the source dataset was created, absent for an S3 source
      * @type {Date}
      * @memberof DatasetCopyOrigin
      */
-    createdAt?: Date;
+    createdAt?: Date | null;
     /**
-     * When the source dataset was last updated before it was copied
+     * When the source dataset was last updated before it was copied, absent for an S3 source
      * @type {Date}
      * @memberof DatasetCopyOrigin
      */
-    updatedAt?: Date;
+    updatedAt?: Date | null;
     /**
      * Whether the source run's details (params, reports, logs) were copied from this dataset
      * @type {boolean}
@@ -74,8 +68,7 @@ export function DatasetCopyOriginFromJSONTyped(json: any, ignoreDiscriminator: b
     }
     return {
         
-        'datasetId': json['datasetId'] == null ? undefined : json['datasetId'],
-        'projectId': json['projectId'] == null ? undefined : json['projectId'],
+        'uri': json['uri'] == null ? undefined : json['uri'],
         'createdBy': json['createdBy'] == null ? undefined : json['createdBy'],
         'createdAt': json['createdAt'] == null ? undefined : (new Date(json['createdAt'])),
         'updatedAt': json['updatedAt'] == null ? undefined : (new Date(json['updatedAt'])),
@@ -94,8 +87,7 @@ export function DatasetCopyOriginToJSONTyped(value?: DatasetCopyOrigin | null, i
 
     return {
         
-        'datasetId': value['datasetId'],
-        'projectId': value['projectId'],
+        'uri': value['uri'],
         'createdBy': value['createdBy'],
         'createdAt': value['createdAt'] == null ? value['createdAt'] : value['createdAt'].toISOString(),
         'updatedAt': value['updatedAt'] == null ? value['updatedAt'] : value['updatedAt'].toISOString(),
