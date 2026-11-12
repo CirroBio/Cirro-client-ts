@@ -20,6 +20,13 @@ import {
     StatusToJSON,
     StatusToJSONTyped,
 } from './Status';
+import type { EnvironmentType } from './EnvironmentType';
+import {
+    EnvironmentTypeFromJSON,
+    EnvironmentTypeFromJSONTyped,
+    EnvironmentTypeToJSON,
+    EnvironmentTypeToJSONTyped,
+} from './EnvironmentType';
 import type { Tag } from './Tag';
 import {
     TagFromJSON,
@@ -133,6 +140,12 @@ export interface DatasetDetail {
      */
     statusMessage: string;
     /**
+     * 
+     * @type {EnvironmentType}
+     * @memberof DatasetDetail
+     */
+    computeEnvironmentType?: EnvironmentType | null;
+    /**
      * Tags
      * @type {Array<Tag>}
      * @memberof DatasetDetail
@@ -245,6 +258,7 @@ export function DatasetDetailFromJSONTyped(json: any, ignoreDiscriminator: boole
         'sourceSampleFilesMap': json['sourceSampleFilesMap'],
         'status': StatusFromJSON(json['status']),
         'statusMessage': json['statusMessage'],
+        'computeEnvironmentType': json['computeEnvironmentType'] == null ? undefined : EnvironmentTypeFromJSON(json['computeEnvironmentType']),
         'tags': ((json['tags'] as Array<any>).map(TagFromJSON)),
         'params': json['params'],
         'info': json['info'],
@@ -283,6 +297,7 @@ export function DatasetDetailToJSONTyped(value?: DatasetDetail | null, ignoreDis
         'sourceSampleFilesMap': value['sourceSampleFilesMap'],
         'status': StatusToJSON(value['status']),
         'statusMessage': value['statusMessage'],
+        'computeEnvironmentType': EnvironmentTypeToJSON(value['computeEnvironmentType']),
         'tags': ((value['tags'] as Array<any>).map(TagToJSON)),
         'params': value['params'],
         'info': value['info'],
