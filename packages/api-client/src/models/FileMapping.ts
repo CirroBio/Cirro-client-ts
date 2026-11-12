@@ -14,7 +14,7 @@
 
 import { mapValues } from '../runtime';
 /**
- * A file or folder to copy into the new dataset
+ * 
  * @export
  * @interface FileMapping
  */

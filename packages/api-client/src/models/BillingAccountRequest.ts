@@ -70,7 +70,7 @@ export interface BillingAccountRequest {
      * @type {string}
      * @memberof BillingAccountRequest
      */
-    primaryBudgetNumber: string;
+    primaryBudgetNumber?: string | null;
     /**
      * 
      * @type {string}
@@ -95,7 +95,6 @@ export function instanceOfBillingAccountRequest(value: object): value is Billing
     if (!('contacts' in value) || value['contacts'] === undefined) return false;
     if (!('customerType' in value) || value['customerType'] === undefined) return false;
     if (!('billingMethod' in value) || value['billingMethod'] === undefined) return false;
-    if (!('primaryBudgetNumber' in value) || value['primaryBudgetNumber'] === undefined) return false;
     if (!('owner' in value) || value['owner'] === undefined) return false;
     if (!('sharedWith' in value) || value['sharedWith'] === undefined) return false;
     return true;
@@ -115,7 +114,7 @@ export function BillingAccountRequestFromJSONTyped(json: any, ignoreDiscriminato
         'contacts': ((json['contacts'] as Array<any>).map(ContactFromJSON)),
         'customerType': CustomerTypeFromJSON(json['customerType']),
         'billingMethod': BillingMethodFromJSON(json['billingMethod']),
-        'primaryBudgetNumber': json['primaryBudgetNumber'],
+        'primaryBudgetNumber': json['primaryBudgetNumber'] == null ? undefined : json['primaryBudgetNumber'],
         'owner': json['owner'],
         'sharedWith': json['sharedWith'],
     };

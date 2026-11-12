@@ -82,7 +82,7 @@ export interface BillingAccount {
      * @type {string}
      * @memberof BillingAccount
      */
-    primaryBudgetNumber: string;
+    primaryBudgetNumber?: string | null;
     /**
      * 
      * @type {string}
@@ -115,7 +115,6 @@ export function instanceOfBillingAccount(value: object): value is BillingAccount
     if (!('contacts' in value) || value['contacts'] === undefined) return false;
     if (!('customerType' in value) || value['customerType'] === undefined) return false;
     if (!('billingMethod' in value) || value['billingMethod'] === undefined) return false;
-    if (!('primaryBudgetNumber' in value) || value['primaryBudgetNumber'] === undefined) return false;
     if (!('owner' in value) || value['owner'] === undefined) return false;
     if (!('sharedWith' in value) || value['sharedWith'] === undefined) return false;
     if (!('isArchived' in value) || value['isArchived'] === undefined) return false;
@@ -138,7 +137,7 @@ export function BillingAccountFromJSONTyped(json: any, ignoreDiscriminator: bool
         'contacts': ((json['contacts'] as Array<any>).map(ContactFromJSON)),
         'customerType': CustomerTypeFromJSON(json['customerType']),
         'billingMethod': BillingMethodFromJSON(json['billingMethod']),
-        'primaryBudgetNumber': json['primaryBudgetNumber'],
+        'primaryBudgetNumber': json['primaryBudgetNumber'] == null ? undefined : json['primaryBudgetNumber'],
         'owner': json['owner'],
         'sharedWith': json['sharedWith'],
         'isArchived': json['isArchived'],
