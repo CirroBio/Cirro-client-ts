@@ -20,7 +20,8 @@
 export enum BillingMethod {
     BudgetNumber = 'BUDGET_NUMBER',
     PurchaseOrder = 'PURCHASE_ORDER',
-    Credit = 'CREDIT'
+    Credit = 'CREDIT',
+    None = 'NONE'
 }
 
 
