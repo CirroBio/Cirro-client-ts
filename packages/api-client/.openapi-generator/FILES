@@ -236,7 +236,6 @@ src/models/SheetQueryResponse.ts
 src/models/SheetRowChange.ts
 src/models/SheetRowChangeType.ts
 src/models/SheetSearchHit.ts
-src/models/SheetSearchRequest.ts
 src/models/SheetSearchResponse.ts
 src/models/SheetSnapshot.ts
 src/models/SheetSort.ts

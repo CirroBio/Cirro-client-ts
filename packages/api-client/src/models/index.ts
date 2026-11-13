@@ -209,7 +209,6 @@ export * from './SheetQueryResponse';
 export * from './SheetRowChange';
 export * from './SheetRowChangeType';
 export * from './SheetSearchHit';
-export * from './SheetSearchRequest';
 export * from './SheetSearchResponse';
 export * from './SheetSnapshot';
 export * from './SheetSort';

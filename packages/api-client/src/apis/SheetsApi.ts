@@ -89,11 +89,6 @@ import {
     SheetQueryResponseToJSON,
 } from '../models/SheetQueryResponse';
 import {
-    type SheetSearchRequest,
-    SheetSearchRequestFromJSON,
-    SheetSearchRequestToJSON,
-} from '../models/SheetSearchRequest';
-import {
     type SheetSearchResponse,
     SheetSearchResponseFromJSON,
     SheetSearchResponseToJSON,
@@ -216,7 +211,9 @@ export interface SaveSheetMappingRequest {
 
 export interface SearchSheetsRequest {
     projectId: string;
-    sheetSearchRequest: SheetSearchRequest;
+    valueContains: string;
+    limit?: number;
+    page?: number;
 }
 
 export interface TriggerIngestRequest {
@@ -1353,18 +1350,28 @@ export class SheetsApi extends runtime.BaseAPI {
             );
         }
 
-        if (requestParameters['sheetSearchRequest'] == null) {
+        if (requestParameters['valueContains'] == null) {
             throw new runtime.RequiredError(
-                'sheetSearchRequest',
-                'Required parameter "sheetSearchRequest" was null or undefined when calling searchSheets().'
+                'valueContains',
+                'Required parameter "valueContains" was null or undefined when calling searchSheets().'
             );
         }
 
         const queryParameters: any = {};
 
-        const headerParameters: runtime.HTTPHeaders = {};
+        if (requestParameters['valueContains'] != null) {
+            queryParameters['valueContains'] = requestParameters['valueContains'];
+        }
 
-        headerParameters['Content-Type'] = 'application/json';
+        if (requestParameters['limit'] != null) {
+            queryParameters['limit'] = requestParameters['limit'];
+        }
+
+        if (requestParameters['page'] != null) {
+            queryParameters['page'] = requestParameters['page'];
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
 
         if (this.configuration && this.configuration.accessToken) {
             const token = this.configuration.accessToken;
@@ -1380,10 +1387,9 @@ export class SheetsApi extends runtime.BaseAPI {
 
         return {
             path: urlPath,
-            method: 'POST',
+            method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-            body: SheetSearchRequestToJSON(requestParameters['sheetSearchRequest']),
         };
     }
 
