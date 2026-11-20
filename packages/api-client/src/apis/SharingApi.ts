@@ -43,6 +43,11 @@ import {
     ShareInputFromJSON,
     ShareInputToJSON,
 } from '../models/ShareInput';
+import {
+    type Sheet,
+    SheetFromJSON,
+    SheetToJSON,
+} from '../models/Sheet';
 
 export interface CreateShareRequest {
     projectId: string;
@@ -75,6 +80,11 @@ export interface GetSharedDatasetsRequest {
     shareId: string;
     limit?: number;
     nextToken?: string;
+}
+
+export interface GetSharedSheetsRequest {
+    projectId: string;
+    shareId: string;
 }
 
 export interface GetSharesRequest {
@@ -492,6 +502,69 @@ export class SharingApi extends runtime.BaseAPI {
      */
     async getSharedDatasets(requestParameters: GetSharedDatasetsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<PaginatedResponseDatasetListDto> {
         const response = await this.getSharedDatasetsRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Creates request options for getSharedSheets without sending the request
+     */
+    async getSharedSheetsRequestOpts(requestParameters: GetSharedSheetsRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['projectId'] == null) {
+            throw new runtime.RequiredError(
+                'projectId',
+                'Required parameter "projectId" was null or undefined when calling getSharedSheets().'
+            );
+        }
+
+        if (requestParameters['shareId'] == null) {
+            throw new runtime.RequiredError(
+                'shareId',
+                'Required parameter "shareId" was null or undefined when calling getSharedSheets().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("accessToken", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/projects/{projectId}/shares/{shareId}/sheets`;
+        urlPath = urlPath.replace('{projectId}', encodeURIComponent(String(requestParameters['projectId'])));
+        urlPath = urlPath.replace('{shareId}', encodeURIComponent(String(requestParameters['shareId'])));
+
+        return {
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        };
+    }
+
+    /**
+     * Get sheet listing for a share
+     * Get share sheets
+     */
+    async getSharedSheetsRaw(requestParameters: GetSharedSheetsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<Sheet>>> {
+        const requestOptions = await this.getSharedSheetsRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(SheetFromJSON));
+    }
+
+    /**
+     * Get sheet listing for a share
+     * Get share sheets
+     */
+    async getSharedSheets(requestParameters: GetSharedSheetsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<Sheet>> {
+        const response = await this.getSharedSheetsRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

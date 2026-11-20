@@ -13,6 +13,13 @@
  */
 
 import { mapValues } from '../runtime';
+import type { ShareItemType } from './ShareItemType';
+import {
+    ShareItemTypeFromJSON,
+    ShareItemTypeFromJSONTyped,
+    ShareItemTypeToJSON,
+    ShareItemTypeToJSONTyped,
+} from './ShareItemType';
 import type { DatasetCondition } from './DatasetCondition';
 import {
     DatasetConditionFromJSON,
@@ -64,11 +71,17 @@ export interface ShareInput {
      */
     sharedProjectIds?: Array<string>;
     /**
-     * Whether files within the share are restricted from viewing or downloading
+     * Whether files within the share are restricted from viewing or downloading. Sheets in the share stay readable.
      * @type {boolean}
      * @memberof ShareInput
      */
     isViewRestricted?: boolean;
+    /**
+     * What the share's conditions select. Omitted means datasets only; required to update a share that includes sheets.
+     * @type {Array<ShareItemType>}
+     * @memberof ShareInput
+     */
+    itemTypes?: Array<ShareItemType> | null;
 }
 
 /**
@@ -99,6 +112,7 @@ export function ShareInputFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'keywords': json['keywords'] == null ? undefined : json['keywords'],
         'sharedProjectIds': json['sharedProjectIds'] == null ? undefined : json['sharedProjectIds'],
         'isViewRestricted': json['isViewRestricted'] == null ? undefined : json['isViewRestricted'],
+        'itemTypes': json['itemTypes'] == null ? undefined : ((json['itemTypes'] as Array<any>).map(ShareItemTypeFromJSON)),
     };
 }
 
@@ -120,6 +134,7 @@ export function ShareInputToJSONTyped(value?: ShareInput | null, ignoreDiscrimin
         'keywords': value['keywords'],
         'sharedProjectIds': value['sharedProjectIds'],
         'isViewRestricted': value['isViewRestricted'],
+        'itemTypes': value['itemTypes'] == null ? undefined : ((value['itemTypes'] as Array<any>).map(ShareItemTypeToJSON)),
     };
 }
 

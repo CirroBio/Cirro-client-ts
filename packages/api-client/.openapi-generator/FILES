@@ -215,6 +215,7 @@ src/models/SftpCredentials.ts
 src/models/Share.ts
 src/models/ShareDetail.ts
 src/models/ShareInput.ts
+src/models/ShareItemType.ts
 src/models/ShareType.ts
 src/models/ShareUsage.ts
 src/models/SharedFilesystem.ts

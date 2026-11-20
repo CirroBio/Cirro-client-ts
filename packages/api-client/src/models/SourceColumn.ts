@@ -38,7 +38,7 @@ export interface SourceColumn {
      */
     sheetColumn: string;
     /**
-     * Dataset the mapping references. Only allowed on Cirro-typed target columns: on CIRRO_FILE/CIRRO_FOLDER, source values are bare paths within that dataset; on CIRRO_DATASET, omit fileColumn/index and every row gets that dataset's URI. When omitted, source values must be full Cirro URIs.
+     * Dataset the mapping references. Only allowed on Cirro-typed target columns: on CIRRO_FILE/CIRRO_FOLDER, source values are bare paths within that dataset; on CIRRO_DATASET, omit fileColumn/index and every row gets that dataset's URI. When omitted, source values must be full Cirro URIs; CIRRO_FILE/CIRRO_FOLDER also take s3://, gs://, az://, drs://, https://, ftp://, syn://, or file:// URIs.
      * @type {string}
      * @memberof SourceColumn
      */

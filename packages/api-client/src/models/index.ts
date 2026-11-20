@@ -188,6 +188,7 @@ export * from './SftpCredentials';
 export * from './Share';
 export * from './ShareDetail';
 export * from './ShareInput';
+export * from './ShareItemType';
 export * from './ShareType';
 export * from './ShareUsage';
 export * from './SharedFilesystem';
