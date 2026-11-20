@@ -13,7 +13,7 @@
  */
 
 /**
- * 
+ * The field a share condition matches on. Applies to datasets and sheets: TAG and CREATED_BY match both, DATASET_ID and PROCESS_ID match datasets only, and SHEET_ID and NAMESPACE match sheets only.
  * @export
  * @enum {string}
  */
@@ -21,7 +21,9 @@ export enum DatasetConditionField {
     DatasetId = 'DATASET_ID',
     Tag = 'TAG',
     ProcessId = 'PROCESS_ID',
-    CreatedBy = 'CREATED_BY'
+    CreatedBy = 'CREATED_BY',
+    SheetId = 'SHEET_ID',
+    Namespace = 'NAMESPACE'
 }
 
 

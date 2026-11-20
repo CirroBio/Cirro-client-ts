@@ -13,6 +13,13 @@
  */
 
 import { mapValues } from '../runtime';
+import type { ShareItemType } from './ShareItemType';
+import {
+    ShareItemTypeFromJSON,
+    ShareItemTypeFromJSONTyped,
+    ShareItemTypeToJSON,
+    ShareItemTypeToJSONTyped,
+} from './ShareItemType';
 import type { DatasetCondition } from './DatasetCondition';
 import {
     DatasetConditionFromJSON,
@@ -83,6 +90,12 @@ export interface Share {
      */
     isViewRestricted: boolean;
     /**
+     * What the share's conditions select
+     * @type {Array<ShareItemType>}
+     * @memberof Share
+     */
+    itemTypes?: Array<ShareItemType>;
+    /**
      * 
      * @type {Array<string>}
      * @memberof Share
@@ -147,6 +160,7 @@ export function ShareFromJSONTyped(json: any, ignoreDiscriminator: boolean): Sha
         'conditions': ((json['conditions'] as Array<any>).map(DatasetConditionFromJSON)),
         'classificationIds': json['classificationIds'],
         'isViewRestricted': json['isViewRestricted'],
+        'itemTypes': json['itemTypes'] == null ? undefined : ((json['itemTypes'] as Array<any>).map(ShareItemTypeFromJSON)),
         'keywords': json['keywords'],
         'createdBy': json['createdBy'],
         'createdAt': (new Date(json['createdAt'])),
@@ -173,6 +187,7 @@ export function ShareToJSONTyped(value?: Share | null, ignoreDiscriminator: bool
         'conditions': ((value['conditions'] as Array<any>).map(DatasetConditionToJSON)),
         'classificationIds': value['classificationIds'],
         'isViewRestricted': value['isViewRestricted'],
+        'itemTypes': value['itemTypes'] == null ? undefined : ((value['itemTypes'] as Array<any>).map(ShareItemTypeToJSON)),
         'keywords': value['keywords'],
         'createdBy': value['createdBy'],
         'createdAt': value['createdAt'].toISOString(),

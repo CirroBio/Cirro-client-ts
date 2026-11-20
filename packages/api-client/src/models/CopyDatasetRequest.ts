@@ -35,7 +35,7 @@ import {
  */
 export interface CopyDatasetRequest {
     /**
-     * Files and folders to copy into the new dataset, from one or more datasets (at most 40) or S3 buckets. To copy a whole dataset, give the folder cirro::<projectId>:dataset:<datasetId>/
+     * Files and folders to copy into the new dataset, from one or more datasets (at most 512 from other projects) or S3 buckets. To copy a whole dataset, give the folder cirro::<projectId>:dataset:<datasetId>/
      * @type {Array<FileMapping>}
      * @memberof CopyDatasetRequest
      */

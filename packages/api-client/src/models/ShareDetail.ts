@@ -13,6 +13,13 @@
  */
 
 import { mapValues } from '../runtime';
+import type { ShareItemType } from './ShareItemType';
+import {
+    ShareItemTypeFromJSON,
+    ShareItemTypeFromJSONTyped,
+    ShareItemTypeToJSON,
+    ShareItemTypeToJSONTyped,
+} from './ShareItemType';
 import type { DatasetCondition } from './DatasetCondition';
 import {
     DatasetConditionFromJSON,
@@ -102,6 +109,12 @@ export interface ShareDetail {
      */
     isViewRestricted: boolean;
     /**
+     * What the share's conditions select
+     * @type {Array<ShareItemType>}
+     * @memberof ShareDetail
+     */
+    itemTypes?: Array<ShareItemType>;
+    /**
      * 
      * @type {string}
      * @memberof ShareDetail
@@ -163,6 +176,7 @@ export function ShareDetailFromJSONTyped(json: any, ignoreDiscriminator: boolean
         'keywords': json['keywords'],
         'classificationIds': json['classificationIds'],
         'isViewRestricted': json['isViewRestricted'],
+        'itemTypes': json['itemTypes'] == null ? undefined : ((json['itemTypes'] as Array<any>).map(ShareItemTypeFromJSON)),
         'createdBy': json['createdBy'],
         'createdAt': (new Date(json['createdAt'])),
         'updatedAt': (new Date(json['updatedAt'])),
@@ -190,6 +204,7 @@ export function ShareDetailToJSONTyped(value?: ShareDetail | null, ignoreDiscrim
         'keywords': value['keywords'],
         'classificationIds': value['classificationIds'],
         'isViewRestricted': value['isViewRestricted'],
+        'itemTypes': value['itemTypes'] == null ? undefined : ((value['itemTypes'] as Array<any>).map(ShareItemTypeToJSON)),
         'createdBy': value['createdBy'],
         'createdAt': value['createdAt'].toISOString(),
         'updatedAt': value['updatedAt'].toISOString(),

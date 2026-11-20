@@ -62,6 +62,13 @@ import {
     TagToJSON,
     TagToJSONTyped,
 } from './Tag';
+import type { NamedItem } from './NamedItem';
+import {
+    NamedItemFromJSON,
+    NamedItemFromJSONTyped,
+    NamedItemToJSON,
+    NamedItemToJSONTyped,
+} from './NamedItem';
 
 /**
  * 
@@ -93,6 +100,12 @@ export interface SheetDetail {
      * @memberof SheetDetail
      */
     projectId: string;
+    /**
+     * The originating project ID might be different if the sheet was shared from another project.
+     * @type {string}
+     * @memberof SheetDetail
+     */
+    originatingProjectId?: string;
     /**
      * 
      * @type {string}
@@ -213,6 +226,12 @@ export interface SheetDetail {
      * @memberof SheetDetail
      */
     mappingTargets: Array<Entity>;
+    /**
+     * 
+     * @type {NamedItem}
+     * @memberof SheetDetail
+     */
+    share?: NamedItem | null;
 }
 
 
@@ -251,6 +270,7 @@ export function SheetDetailFromJSONTyped(json: any, ignoreDiscriminator: boolean
         'name': json['name'],
         'description': json['description'],
         'projectId': json['projectId'],
+        'originatingProjectId': json['originatingProjectId'] == null ? undefined : json['originatingProjectId'],
         'namespaceName': json['namespaceName'],
         'tableName': json['tableName'],
         'resourceArn': json['resourceArn'] == null ? undefined : json['resourceArn'],
@@ -271,6 +291,7 @@ export function SheetDetailFromJSONTyped(json: any, ignoreDiscriminator: boolean
         'maxSnapshotAgeHours': json['maxSnapshotAgeHours'] == null ? undefined : json['maxSnapshotAgeHours'],
         'tags': ((json['tags'] as Array<any>).map(TagFromJSON)),
         'mappingTargets': ((json['mappingTargets'] as Array<any>).map(EntityFromJSON)),
+        'share': json['share'] == null ? undefined : NamedItemFromJSON(json['share']),
     };
 }
 
@@ -289,6 +310,7 @@ export function SheetDetailToJSONTyped(value?: SheetDetail | null, ignoreDiscrim
         'name': value['name'],
         'description': value['description'],
         'projectId': value['projectId'],
+        'originatingProjectId': value['originatingProjectId'],
         'namespaceName': value['namespaceName'],
         'tableName': value['tableName'],
         'resourceArn': value['resourceArn'],
@@ -309,6 +331,7 @@ export function SheetDetailToJSONTyped(value?: SheetDetail | null, ignoreDiscrim
         'maxSnapshotAgeHours': value['maxSnapshotAgeHours'],
         'tags': ((value['tags'] as Array<any>).map(TagToJSON)),
         'mappingTargets': ((value['mappingTargets'] as Array<any>).map(EntityToJSON)),
+        'share': NamedItemToJSON(value['share']),
     };
 }
 
